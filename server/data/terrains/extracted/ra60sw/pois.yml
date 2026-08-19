@@ -1,0 +1,44 @@
+biocom_condition_slots:
+  mud:
+  - - 80
+    - 111
+craters:
+- biocom_type: 8080
+  tile:
+  - 80
+  - 111
+biocoms:
+- biocom_type: 8081
+  tile:
+  - 79
+  - 96
+- biocom_type: 8081
+  tile:
+  - 128
+  - 96
+- biocom_type: 8081
+  tile:
+  - 63
+  - 143
+- biocom_type: 8081
+  tile:
+  - 127
+  - 143
+warpholes:
+  0:
+  - 73
+  - 101
+  1:
+  - 137
+  - 122
+cargo_in_warpholes: []
+port_points:
+- - 73
+  - 92
+- - 144
+  - 123
+camp_warpholes: []
+camp_artifacts: []
+camp_workbench_slots: []
+faction_props: []
+scoop_slots: []

@@ -1,0 +1,32 @@
+using MsgPack;
+
+namespace Messages;
+
+public struct Ready
+{
+	public const uint TypeCode = 20u;
+
+	public static void Pack(Packer packer, Ready val, bool hint = false)
+	{
+		if (hint)
+		{
+			packer.PackArrayHeader(1);
+			packer.Pack(20u);
+		}
+		else
+		{
+			packer.PackArrayHeader(0);
+		}
+	}
+
+	public static Ready Unpack(Unpacker unpacker)
+	{
+		Ready result = default(Ready);
+		return result;
+	}
+
+	public override string ToString()
+	{
+		return "<Ready>";
+	}
+}

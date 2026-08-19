@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net20</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>11.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="UnityEngine" />
+    <Reference Include="Debug" />
+    <Reference Include="System.Core">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EasyConsole" />
+    <Reference Include="NSpeex" />
+    <Reference Include="MsgPack" />
+    <Reference Include="Vectrosity" />
+    <Reference Include="NCalc" />
+    <Reference Include="Tapjoy" />
+    <Reference Include="snappy.net" />
+    <Reference Include="HOTween" />
+    <Reference Include="ICSharpCode.SharpZipLib" />
+    <Reference Include="Assembly-CSharp-firstpass" />
+    <Reference Include="System.Xml.Linq">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Tapjoy.Android" />
+    <Reference Include="UnityEngine.UI" />
+  </ItemGroup>
+</Project>

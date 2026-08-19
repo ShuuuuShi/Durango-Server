@@ -1,0 +1,692 @@
+Seed: 10005
+ContentsSeed: 105
+Size: 256
+Count: 5000
+RiverMetas:
+- MaxWidth: 15
+  MinWidth: 8
+  Count: 5
+- MaxWidth: 12
+  MinWidth: 6
+  Count: 3
+- MaxWidth: 5
+  MinWidth: 5
+  Count: 5
+RiverExtrapolation: 10
+CoastCount: 2
+ShapeRatio: 0.449999988
+LakeRatio: 0.0700000003
+LakeMaxDepthRatio: 1
+DownSampleFator: 8
+RemoveDebris: true
+IsEntrySeaside: true
+OceanMargin: 30
+EntryCount: 1
+PerturbRatio: 0.5
+TemplateName: ri50snSub01
+TileSetName: snowfields
+NoiseOptions:
+- NoiseFreqIndex: 1
+  NoiseAmpIndex: 3
+  NoisePersIndex: 7
+  NoiseOctaveIndex: 2
+  NoiseLacuIndex: 9
+- NoiseFreqIndex: 13
+  NoiseAmpIndex: 3
+  NoisePersIndex: 7
+  NoiseOctaveIndex: 2
+  NoiseLacuIndex: 9
+  NoiseTurbulence: true
+- NoiseFreqIndex: 28
+  NoiseAmpIndex: 3
+  NoisePersIndex: 7
+  NoiseOctaveIndex: 4
+  NoiseLacuIndex: 9
+- NoiseFreqIndex: 1
+  NoiseAmpIndex: 3
+  NoisePersIndex: 7
+  NoiseOctaveIndex: 2
+  NoiseLacuIndex: 9
+- NoiseFreqIndex: 1
+  NoiseAmpIndex: 3
+  NoisePersIndex: 7
+  NoiseOctaveIndex: 2
+  NoiseLacuIndex: 9
+- NoiseFreqIndex: 13
+  NoiseAmpIndex: 3
+  NoisePersIndex: 7
+  NoiseOctaveIndex: 2
+  NoiseLacuIndex: 9
+CliffOptions:
+- Type: Cliff
+  Name: cliff_common_a
+  Weight: 10
+- Type: Cliff
+  Name: cliff_common_b
+  Weight: 10
+- Type: Cliff
+  Name: cliff_common_c
+  Weight: 10
+- Type: Cliff
+  Name: cliff_desert_a
+  Weight: 10
+- Type: Cliff
+  Name: cliff_desert_b
+  Weight: 10
+- Type: Cliff
+  Name: cliff_desert_c
+  Weight: 10
+- Type: Cliff
+  Name: cliff_snow_a
+  Weight: 10
+- Type: Cliff
+  Name: cliff_snow_b
+  Weight: 10
+- Type: Cliff
+  Name: cliff_snow_c
+  Weight: 10
+- Type: Cliff
+  Name: cliff_tropical_a
+  Weight: 10
+- Type: Cliff
+  Name: cliff_tropical_b
+  Weight: 10
+- Type: Cliff
+  Name: cliff_tropical_blue_a
+  Weight: 10
+- Type: Cliff
+  Name: cliff_tropical_blue_b
+  Weight: 10
+- Type: Cliff
+  Name: cliff_tropical_blue_c
+  Weight: 10
+- Type: Cliff
+  Name: cliff_tropical_c
+  Weight: 10
+- Type: Cliff
+  Name: cliff_tundra_a
+  Weight: 10
+- Type: Cliff
+  Name: cliff_tundra_b
+  Weight: 10
+- Type: Cliff
+  Name: cliff_tundra_c
+  Weight: 10
+- Type: Cliff
+  Name: cliff_grassland_a
+  Weight: 10
+- Type: Cliff
+  Name: cliff_grassland_b
+  Weight: 10
+- Type: Cliff
+  Name: cliff_grassland_c
+  Weight: 10
+- Type: Cliff
+  Name: cliff_volcanic_a
+  Weight: 10
+- Type: Cliff
+  Name: cliff_volcanic_b
+  Weight: 10
+- Type: Cliff
+  Name: cliff_volcanic_c
+  Weight: 10
+- Type: Cliff
+  Name: cliff_savanna_a
+  Weight: 10
+- Type: Cliff
+  Name: cliff_savanna_b
+  Weight: 10
+- Type: Cliff
+  Name: cliff_savanna_c
+  Weight: 10
+LandmarkOptions:
+- Type: Landmark
+  Name: M_schoolbus_01_a
+  Weight: 10
+- Type: Landmark
+  Name: S_car_01_a
+  Weight: 10
+- Type: Landmark
+  Name: S_car_01_b
+  Weight: 10
+- Type: Landmark
+  Name: S_car_01_c
+  Weight: 10
+- Type: Landmark
+  Name: S_car_01_d
+  Weight: 10
+- Type: Landmark
+  Name: S_car_02_a
+  Weight: 10
+- Type: Landmark
+  Name: S_car_02_b
+  Weight: 10
+- Type: Landmark
+  Name: S_car_02_c
+  Weight: 10
+- Type: Landmark
+  Name: S_car_02_d
+  Weight: 10
+- Type: Landmark
+  Name: S_car_03_a
+  Weight: 10
+- Type: Landmark
+  Name: S_car_03_b
+  Weight: 10
+- Type: Landmark
+  Name: S_car_04_a
+  Weight: 10
+- Type: Landmark
+  Name: S_car_06_a
+  Weight: 10
+- Type: Landmark
+  Name: S_car_06_b
+  Weight: 10
+- Type: Landmark
+  Name: barrier_01
+  Weight: 10
+- Type: Landmark
+  Name: billboard_01
+  Weight: 10
+- Type: Landmark
+  Name: billboard_02
+  Weight: 10
+- Type: Landmark
+  Name: busstop_01
+  Weight: 10
+- Type: Landmark
+  Name: hydrant_01
+  Weight: 10
+- Type: Landmark
+  Name: overpass_01
+  Weight: 10
+- Type: Landmark
+  Name: pbooth_01
+  Weight: 10
+- Type: Landmark
+  Name: powerbox_01
+  Weight: 10
+- Type: Landmark
+  Name: powerbox_02
+  Weight: 10
+- Type: Landmark
+  Name: powerbox_03
+  Weight: 10
+- Type: Landmark
+  Name: powerbox_04
+  Weight: 10
+- Type: Landmark
+  Name: roadsign_01
+  Weight: 10
+- Type: Landmark
+  Name: roadsign_02
+  Weight: 10
+- Type: Landmark
+  Name: roadsign_03
+  Weight: 10
+- Type: Landmark
+  Name: roadsign_04
+  Weight: 10
+- Type: Landmark
+  Name: roadsign_05
+  Weight: 10
+- Type: Landmark
+  Name: roadsign_06
+  Weight: 10
+- Type: Landmark
+  Name: roadsign_07
+  Weight: 10
+- Type: Landmark
+  Name: signpost_gate_01
+  Weight: 10
+- Type: Landmark
+  Name: signpost_gate_02
+  Weight: 10
+- Type: Landmark
+  Name: streetlamp_01
+  Weight: 10
+- Type: Landmark
+  Name: streetlights_01
+  Weight: 10
+- Type: Landmark
+  Name: streetlights_02
+  Weight: 10
+- Type: Landmark
+  Name: streetlights_03
+  Weight: 10
+- Type: Landmark
+  Name: streetpole_01
+  Weight: 10
+- Type: Landmark
+  Name: tire_01
+  Weight: 10
+- Type: Landmark
+  Name: trafficcone_01
+  Weight: 10
+- Type: Landmark
+  Name: cat_tower_01
+  Weight: 10
+- Type: Landmark
+  Name: cat_tower_02
+  Weight: 10
+- Type: Landmark
+  Name: coffee_dutch_01
+  Weight: 10
+- Type: Landmark
+  Name: copymachine_01
+  Weight: 10
+- Type: Landmark
+  Name: fan_01
+  Weight: 10
+- Type: Landmark
+  Name: parasol_01
+  Weight: 10
+- Type: Landmark
+  Name: parasol_01_table
+  Weight: 10
+- Type: Landmark
+  Name: store_kart_01
+  Weight: 10
+- Type: Landmark
+  Name: treadmill_01
+  Weight: 10
+- Type: Landmark
+  Name: treadmill_01_bag
+  Weight: 10
+- Type: Landmark
+  Name: treadmill_01_leather
+  Weight: 10
+- Type: Landmark
+  Name: treadmill_01_rubber
+  Weight: 10
+- Type: Landmark
+  Name: bed_01_airmat
+  Weight: 10
+- Type: Landmark
+  Name: bed_01_steel
+  Weight: 10
+- Type: Landmark
+  Name: bed_02_steel_hospital
+  Weight: 10
+- Type: Landmark
+  Name: punchmachine_01
+  Weight: 10
+- Type: Landmark
+  Name: slide_01
+  Weight: 10
+- Type: Landmark
+  Name: spring_horse_01
+  Weight: 10
+- Type: Landmark
+  Name: spring_horse_02
+  Weight: 10
+- Type: Landmark
+  Name: audio_set_01
+  Weight: 10
+- Type: Landmark
+  Name: boombox_01
+  Weight: 10
+- Type: Landmark
+  Name: jukebox_01
+  Weight: 10
+- Type: Landmark
+  Name: barrel_01
+  Weight: 10
+- Type: Landmark
+  Name: barrel_01_fire
+  Weight: 10
+- Type: Landmark
+  Name: barrel_02
+  Weight: 10
+- Type: Landmark
+  Name: barrel_02_fire
+  Weight: 10
+- Type: Landmark
+  Name: barrel_oak_01
+  Weight: 10
+- Type: Landmark
+  Name: cabinet_01
+  Weight: 10
+- Type: Landmark
+  Name: cabinet_02
+  Weight: 10
+- Type: Landmark
+  Name: dumpster_01
+  Weight: 10
+- Type: Landmark
+  Name: icebox_01
+  Weight: 10
+- Type: Landmark
+  Name: icebox_02
+  Weight: 10
+- Type: Landmark
+  Name: refrigerator_01
+  Weight: 10
+- Type: Landmark
+  Name: refrigerator_02
+  Weight: 10
+- Type: Landmark
+  Name: refrigerator_03
+  Weight: 10
+- Type: Landmark
+  Name: wastebasket_01
+  Weight: 10
+- Type: Landmark
+  Name: wastebasket_02
+  Weight: 10
+- Type: Landmark
+  Name: worktable_warp_01
+  Weight: 10
+- Type: Landmark
+  Name: worktable_warp_02
+  Weight: 10
+- Type: Landmark
+  Name: worktable_warp_03
+  Weight: 10
+- Type: Landmark
+  Name: worktable_warp_04
+  Weight: 10
+- Type: Landmark
+  Name: worktable_warp_05
+  Weight: 10
+- Type: Landmark
+  Name: aqua_crack_01
+  Weight: 10
+- Type: Landmark
+  Name: crack_01
+  Weight: 10
+- Type: Landmark
+  Name: aqua_crater_01
+  Weight: 10
+- Type: Landmark
+  Name: crater_01
+  Weight: 10
+- Type: Landmark
+  Name: warphole_01
+  Weight: 10
+- Type: Landmark
+  Name: camp_01
+  Weight: 10
+- Type: Landmark
+  Name: camp_board_01
+  Weight: 10
+- Type: Landmark
+  Name: camp_communication_station_01
+  Weight: 10
+- Type: Landmark
+  Name: camp_rest_01
+  Weight: 10
+- Type: Landmark
+  Name: camp_rest_02
+  Weight: 10
+- Type: Landmark
+  Name: camp_rest_02_b
+  Weight: 10
+- Type: Landmark
+  Name: camp_square_01
+  Weight: 10
+- Type: Landmark
+  Name: camp_square_01_b
+  Weight: 10
+- Type: Landmark
+  Name: camp_square_01_fire
+  Weight: 10
+- Type: Landmark
+  Name: camp_warehouse_01
+  Weight: 10
+- Type: Landmark
+  Name: camp_warphole_01
+  Weight: 10
+- Type: Landmark
+  Name: camp_workspace_01
+  Weight: 10
+- Type: Landmark
+  Name: ST_wreckedship_01
+  Weight: 10
+- Type: Landmark
+  Name: ST_wreckedship_02
+  Weight: 10
+- Type: Landmark
+  Name: ST_wreckedship_a
+  Weight: 10
+- Type: Landmark
+  Name: ST_wreckedship_b
+  Weight: 10
+- Type: Landmark
+  Name: ST_wreckedship_c
+  Weight: 10
+- Type: Landmark
+  Name: ST_wreckedship_d
+  Weight: 10
+- Type: Landmark
+  Name: seol_camp_rest_02
+  Weight: 10
+- Type: Landmark
+  Name: biocom_marker
+  Weight: 10
+- Type: Landmark
+  Name: ST_airplane_wreckage_01
+  Weight: 10
+- Type: Landmark
+  Name: ST_highway_01
+  Weight: 10
+- Type: Landmark
+  Name: ST_train_wreckage_01_a
+  Weight: 10
+- Type: Landmark
+  Name: ST_train_wreckage_01_b
+  Weight: 10
+- Type: Landmark
+  Name: ST_train_wreckage_01_c
+  Weight: 10
+ScoopOptions:
+- Name: ice_field_01
+  Weight: 10
+- Name: scoop_ground_03_road_00
+  Weight: 10
+- Name: scoop_ground_03_road_01
+  Weight: 10
+- Name: scoop_ground_03_road_02
+  Weight: 10
+- Name: scoop_ground_03_road_03
+  Weight: 10
+- Name: scoop_ground_03_road_04
+  Weight: 10
+- Name: scoop_ground_03_store_01
+  Weight: 10
+- Name: scoop_ground_04_road_00
+  Weight: 10
+- Name: scoop_ground_04_road_01
+  Weight: 10
+- Name: scoop_ground_04_road_02
+  Weight: 10
+- Name: scoop_ground_04_road_03
+  Weight: 10
+- Name: scoop_ground_04_road_04
+  Weight: 10
+- Name: scoop_ground_04_store_01
+  Weight: 10
+- Name: scoop_ground_05_road_00
+  Weight: 10
+- Name: scoop_ground_05_road_01
+  Weight: 10
+- Name: scoop_ground_05_road_02
+  Weight: 10
+- Name: scoop_ground_05_road_03
+  Weight: 10
+- Name: scoop_ground_05_road_04
+  Weight: 10
+- Name: scoop_ground_05_store_01
+  Weight: 10
+- Name: scoop_ground_06_road_00
+  Weight: 10
+- Name: scoop_ground_06_road_01
+  Weight: 10
+- Name: scoop_ground_06_road_02
+  Weight: 10
+- Name: scoop_ground_06_road_03
+  Weight: 10
+- Name: scoop_ground_06_road_04
+  Weight: 10
+- Name: scoop_ground_06_store_01
+  Weight: 10
+- Name: scoop_ground_07_road_00
+  Weight: 10
+- Name: scoop_ground_07_road_01
+  Weight: 10
+- Name: scoop_ground_07_road_02
+  Weight: 10
+- Name: scoop_ground_07_road_03
+  Weight: 10
+- Name: scoop_ground_07_road_04
+  Weight: 10
+- Name: scoop_ground_07_store_01
+  Weight: 10
+- Name: scoop_ground_08_road_00
+  Weight: 10
+- Name: scoop_ground_08_road_01
+  Weight: 10
+- Name: scoop_ground_08_road_02
+  Weight: 10
+- Name: scoop_ground_08_road_03
+  Weight: 10
+- Name: scoop_ground_08_road_04
+  Weight: 10
+- Name: scoop_ground_08_store_01
+  Weight: 10
+WorldPropOptions:
+- Type: World
+  Name: hotspring_01
+  Weight: 10
+CliffGroupOptions:
+- ConnectRatio: 0.5
+  Margin: 5
+  MinConnection: 2
+  MaxConnection: 6
+  AngleContraintDegree: 108
+  NextAngleContraintDegree: 120
+  Noise:
+    NoiseFreqIndex: 13
+    NoiseAmpIndex: 3
+    NoisePersIndex: 7
+    NoiseOctaveIndex: 2
+    NoiseLacuIndex: 9
+- Group: 1
+  ConnectRatio: 0.5
+  Margin: 5
+  MinConnection: 2
+  MaxConnection: 6
+  AngleContraintDegree: 108
+  NextAngleContraintDegree: 120
+  Noise:
+    NoiseFreqIndex: 13
+    NoiseAmpIndex: 3
+    NoisePersIndex: 7
+    NoiseOctaveIndex: 2
+    NoiseLacuIndex: 9
+- Group: 2
+  Max: 50
+  ConnectRatio: 0.5
+  Margin: 5
+  MinConnection: 2
+  MaxConnection: 6
+  AngleContraintDegree: 108
+  NextAngleContraintDegree: 120
+  Noise:
+    NoiseFreqIndex: 13
+    NoiseAmpIndex: 3
+    NoisePersIndex: 7
+    NoiseOctaveIndex: 2
+    NoiseLacuIndex: 9
+- Group: 3
+  ConnectRatio: 0.5
+  Margin: 5
+  MinConnection: 2
+  MaxConnection: 6
+  AngleContraintDegree: 108
+  NextAngleContraintDegree: 120
+  Noise:
+    NoiseFreqIndex: 13
+    NoiseAmpIndex: 3
+    NoisePersIndex: 7
+    NoiseOctaveIndex: 2
+    NoiseLacuIndex: 9
+- Group: 4
+  ConnectRatio: 0.5
+  Margin: 5
+  MinConnection: 2
+  MaxConnection: 6
+  AngleContraintDegree: 108
+  NextAngleContraintDegree: 120
+  Noise:
+    NoiseFreqIndex: 13
+    NoiseAmpIndex: 3
+    NoisePersIndex: 7
+    NoiseOctaveIndex: 2
+    NoiseLacuIndex: 9
+- Group: 5
+  ConnectRatio: 0.5
+  Margin: 5
+  MinConnection: 2
+  MaxConnection: 6
+  AngleContraintDegree: 108
+  NextAngleContraintDegree: 120
+  Noise:
+    NoiseFreqIndex: 13
+    NoiseAmpIndex: 3
+    NoisePersIndex: 7
+    NoiseOctaveIndex: 2
+    NoiseLacuIndex: 9
+- Group: 6
+  ConnectRatio: 0.5
+  Margin: 5
+  MinConnection: 2
+  MaxConnection: 6
+  AngleContraintDegree: 108
+  NextAngleContraintDegree: 120
+  Noise:
+    NoiseFreqIndex: 13
+    NoiseAmpIndex: 3
+    NoisePersIndex: 7
+    NoiseOctaveIndex: 2
+    NoiseLacuIndex: 9
+RandomCliffs: true
+LandmarkMaxCount: 50
+ScoopMaxCount: 8
+ScoopMinNoise: 0.5
+BiomesNoiseScale: 0.100000001
+BiomesNoiseFreqIndex: 13
+BiomesWeightValues:
+- 50
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+LakeType: snow_field
+OceanType: cold_ocean
+RiverType: temperate_forest
+ColorSet: snowfields
+SampleMapdDataList: []
+ManualLandmarkInstances: []
+AssignPortNeutralWarphole: true
+ExtraWarpholes: 5
+RiftCount: 2
+WarpholeDistance: 50
+BiocomDistance: 30
+CraterDistance: 50
+RiftDistance: 30
+HerdPinsCount: 200
+HerdDistanceFromWarpholes: 20
+HerdDistanceFromCraters: 20
+HerdDistanceFromPorts: 40
+HerdDistanceFromRifts: 20
+FactionPropCount: 8
+FactionPropDistanceFromWarpholes: 20
+FactionPropSelfDistance: 50
+FactionPropDistanceFromCraters: 20
+FactionPropDistanceFromPorts: 20
+FactionPropDistanceFromRifts: 20
+CampSetName: ''

@@ -1,0 +1,32 @@
+using MsgPack;
+
+namespace Messages;
+
+public struct GetClanCreationCosts
+{
+	public const uint TypeCode = 3667u;
+
+	public static void Pack(Packer packer, GetClanCreationCosts val, bool hint = false)
+	{
+		if (hint)
+		{
+			packer.PackArrayHeader(1);
+			packer.Pack(3667u);
+		}
+		else
+		{
+			packer.PackArrayHeader(0);
+		}
+	}
+
+	public static GetClanCreationCosts Unpack(Unpacker unpacker)
+	{
+		GetClanCreationCosts result = default(GetClanCreationCosts);
+		return result;
+	}
+
+	public override string ToString()
+	{
+		return "<GetClanCreationCosts>";
+	}
+}

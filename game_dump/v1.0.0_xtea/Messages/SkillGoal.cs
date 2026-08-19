@@ -1,0 +1,45 @@
+using MsgPack;
+
+namespace Messages;
+
+public struct SkillGoal
+{
+	public const uint TypeCode = 3512u;
+
+	public Skill Skill;
+
+	public float Progress;
+
+	public static void Pack(Packer packer, SkillGoal val, bool hint = false)
+	{
+		if (hint)
+		{
+			packer.PackArrayHeader(3);
+			packer.Pack(3512u);
+		}
+		else
+		{
+			packer.PackArrayHeader(2);
+		}
+		Skill.Pack(packer, val.Skill);
+		packer.Pack(val.Progress);
+	}
+
+	public static SkillGoal Unpack(Unpacker unpacker)
+	{
+		//IL_001e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0023: Unknown result type (might be due to invalid IL or missing references)
+		unpacker.Read();
+		SkillGoal result = default(SkillGoal);
+		result.Skill = Skill.Unpack(unpacker);
+		unpacker.Read();
+		MessagePackObject lastReadData = unpacker.LastReadData;
+		result.Progress = ((MessagePackObject)(ref lastReadData)).AsSingle();
+		return result;
+	}
+
+	public override string ToString()
+	{
+		return $"<SkillGoal Skill={Skill} Progress={Progress}>";
+	}
+}

@@ -1,0 +1,21 @@
+public enum AnimEventCmd
+{
+	Particle,
+	Sound,
+	Vibrate,
+	CustomCmd,
+	TrailOn,
+	TrailOff,
+	WeaponVisible,
+	WeaponInvisible,
+	SceneTimeScale,
+	CameraShake,
+	CameraZoom,
+	ChangeEquip,
+	LocateProp,
+	UnlocateProp,
+	Voice,
+	LandingEffect,
+	IntegratedEffect,
+	All
+}

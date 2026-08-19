@@ -1,0 +1,438 @@
+using System;
+using System.Collections.Generic;
+using Durango.Logic.Clusters;
+using Durango.System;
+using Durango.UI.Control;
+using JetBrains.Annotations;
+using L10N;
+using UnityEngine;
+
+namespace Durango.UI;
+
+public class TitleMenuUserControlBase : MonoBehaviour
+{
+	private const string ClusterPrefKey = "last_selected_cluster_key";
+
+	protected readonly Clusters Clusters = new Clusters();
+
+	protected TitleMenuGroup.State LastState;
+
+	protected bool IsAccountReady;
+
+	[SerializeField]
+	protected UILabel _explainLabel;
+
+	[SerializeField]
+	protected UIWidget _mainContent;
+
+	[SerializeField]
+	private TitleClusterSelection _clusterSelection;
+
+	[SerializeField]
+	private UILabel _versionInfoLabel;
+
+	[SerializeField]
+	private TitleMessageBoxBase _messageBox;
+
+	[SerializeField]
+	private UILabel _clusterSelectionButtonLabel;
+
+	[SerializeField]
+	private UIWidget _selectionButtnoHolder;
+
+	[SerializeField]
+	private UIWidget _buttonSeperator;
+
+	[SerializeField]
+	private SelectableWidget _clusterSelectionButton;
+
+	[SerializeField]
+	private SelectableWidget _playerSelectionButton;
+
+	[SerializeField]
+	private UILabel _playerSelectionButtonLabel;
+
+	[SerializeField]
+	protected SelectableWidget _logoutButton;
+
+	[SerializeField]
+	private SelectableWidget _noticeButton;
+
+	[SerializeField]
+	private ListObjectPool _outlinks;
+
+	[SerializeField]
+	private RectLayoutComponent _bottomLayout;
+
+	[SerializeField]
+	private TweenerPlayer _tweener;
+
+	[SerializeField]
+	private SelectableWidget _clusterSelectionBackButton;
+
+	private Action _onConfirm;
+
+	private Action _onPlayerSelection;
+
+	private float _nextMaintenanceCheckTime;
+
+	public bool QuitWhenErrorOccurred { get; set; }
+
+	public bool IsLoginProcess { get; set; }
+
+	public virtual bool RetryConnect { get; set; }
+
+	private string LastSelectedClusterKey
+	{
+		get
+		{
+			string text = Preferences.GetString("last_selected_cluster_key", string.Empty);
+			if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(Clusters.GetCluster(text).GatewayUrlRoot))
+			{
+				string text2 = (LastSelectedClusterKey = Clusters.GetRecommendableCluster());
+				text = text2;
+			}
+			return text;
+		}
+		set
+		{
+			if (!string.IsNullOrEmpty(value))
+			{
+				Preferences.SetString("last_selected_cluster_key", value);
+			}
+		}
+	}
+
+	public bool IsMessageBoxOpen => _messageBox.gameObject.activeInHierarchy;
+
+	protected virtual void Start()
+	{
+		TitleUIRootResizer.AddOnScreenResized(OnScreenResized);
+		_clusterSelectionButton.Clicked = ClusterSelectButton_Clicked;
+		_playerSelectionButton.Clicked = PlayerSelectionButton_Clicked;
+		_noticeButton.Clicked = Platform.Instance.ShowNotice;
+		_messageBox.Close();
+		UpdateVersionInfo(string.Empty);
+		_tweener.Play(1f);
+		_clusterSelectionBackButton.Clicked = delegate
+		{
+			OnReceiveBackMessage(null);
+		};
+		UIEventListener.Get(_mainContent.gameObject).onClick = delegate
+		{
+			OnConfirm();
+		};
+		GameSystem<InputSystem>.Instance().On(InputCommand.Back, OnReceiveBackMessage);
+		GameSystem<InputSystem>.Instance().On(InputCommand.SelectCurrentCell, OnReceiveSelectCurrentCellMessage);
+	}
+
+	private void OnDestroy()
+	{
+		GameSystem<InputSystem>.Instance().Off(InputCommand.Back, OnReceiveBackMessage);
+		GameSystem<InputSystem>.Instance().Off(InputCommand.SelectCurrentCell, OnReceiveSelectCurrentCellMessage);
+	}
+
+	private void Update()
+	{
+		if (LastState == TitleMenuGroup.State.SelectCluster && _nextMaintenanceCheckTime > 0f && _nextMaintenanceCheckTime < Time.realtimeSinceStartup)
+		{
+			UpdateServerAndPlayerInfo();
+		}
+	}
+
+	public virtual void ShowCluster(Action onConfirm, Action onPlayerSelection, Action onLogout, bool autoConfirm)
+	{
+		HideOutlinks();
+		_onConfirm = onConfirm;
+		_onPlayerSelection = onPlayerSelection;
+		Cluster selectedCluster = GetSelectedCluster();
+		GameManager.SetCluster(LastSelectedClusterKey, selectedCluster.GatewayUrlRoot, selectedCluster.Mode);
+		UpdateServerAndPlayerInfo();
+		if (autoConfirm)
+		{
+			OnConfirm();
+		}
+	}
+
+	private void ClusterSelectButton_Clicked()
+	{
+		_mainContent.gameObject.SetActive(value: false);
+		_clusterSelection.gameObject.SetActive(value: true);
+		_clusterSelection.ShowClusters(Clusters, OnClusterConfirmed, LastSelectedClusterKey);
+	}
+
+	private void PlayerSelectionButton_Clicked()
+	{
+		if (_onPlayerSelection != null)
+		{
+			_onPlayerSelection();
+		}
+	}
+
+	protected virtual void OnConfirm()
+	{
+		if (LastState != TitleMenuGroup.State.SelectCluster || !IsAccountReady)
+		{
+			return;
+		}
+		_clusterSelectionButton.Disabled = true;
+		_playerSelectionButton.Disabled = true;
+		if (_onConfirm != null)
+		{
+			Account selectedAccount = GetSelectedAccount();
+			if (selectedAccount != null)
+			{
+				Pair<string, int> recommendedPlayer = selectedAccount.GetRecommendedPlayer();
+				GameManager.PlayerId = recommendedPlayer.Item1;
+				GameManager.PlayerSlotIndex = recommendedPlayer.Item2;
+			}
+			else
+			{
+				GameManager.PlayerId = null;
+			}
+			_onConfirm();
+		}
+	}
+
+	private void OnClusterConfirmed(string selectedClusterKey)
+	{
+		_mainContent.gameObject.SetActive(value: true);
+		_clusterSelection.gameObject.SetActive(value: false);
+		LastSelectedClusterKey = selectedClusterKey;
+		Cluster selectedCluster = GetSelectedCluster();
+		GameManager.SetCluster(LastSelectedClusterKey, selectedCluster.GatewayUrlRoot, selectedCluster.Mode);
+		UpdateServerAndPlayerInfo();
+	}
+
+	public virtual void OnStateChanged(TitleMenuGroup.State state)
+	{
+		LastState = state;
+		bool active = state == TitleMenuGroup.State.SelectCluster;
+		if (Clusters.Offline)
+		{
+			active = false;
+		}
+		_logoutButton.gameObject.SetActive(active);
+		_noticeButton.gameObject.SetActive(active);
+		if (state == TitleMenuGroup.State.Initial)
+		{
+			_selectionButtnoHolder.gameObject.SetActive(value: false);
+			HideOutlinks();
+		}
+	}
+
+	public void SetExplainLabel(string text, bool important = false)
+	{
+		if (GameManager.Emigrated == GameManager.EmigratedType.None || important)
+		{
+			_explainLabel.text = text;
+		}
+		_bottomLayout.UpdateLayout();
+	}
+
+	public void UpdateVersionInfo(string serverVersion = "")
+	{
+		string text = "* Client: " + CurrentBundleVersion.GetClientVersion();
+		if (!string.IsNullOrEmpty(serverVersion))
+		{
+			text = text + " / Server: " + serverVersion;
+		}
+		string nPA = Platform.Instance.NPA;
+		if (!string.IsNullOrEmpty(nPA))
+		{
+			text = text + " / NPA: " + nPA;
+		}
+		_versionInfoLabel.text = text;
+	}
+
+	public bool IsInMaintenance()
+	{
+		return Clusters.IsInMaintenance();
+	}
+
+	public virtual bool ShowMaintenance()
+	{
+		IList<Urls> outlinks = Clusters.GetOutlinks();
+		string maintenanceText = Clusters.GetMaintenanceText(LocalizeSystem.Locale);
+		if (outlinks.Count <= 0 || string.IsNullOrEmpty(maintenanceText))
+		{
+			HideOutlinks();
+			return false;
+		}
+		SetExplainLabel(maintenanceText, important: true);
+		_outlinks.BaseObject.transform.parent.gameObject.SetActive(value: true);
+		_outlinks.BeginLoad();
+		for (int i = 0; i < outlinks.Count; i++)
+		{
+			Urls urls = outlinks[i];
+			string title = urls.GetTitle(LocalizeSystem.Locale);
+			if (!string.IsNullOrEmpty(title))
+			{
+				_outlinks.GetNext().GetComponent<TitleOutlinkNode>().Set(title, urls);
+			}
+		}
+		_outlinks.EndLoad();
+		UpdateOutlinkLayout();
+		return true;
+	}
+
+	protected virtual void HideOutlinks()
+	{
+		_outlinks.BaseObject.transform.parent.gameObject.SetActive(value: false);
+		_bottomLayout.UpdateLayout();
+		UIUtility.UpdateAnchors(base.transform);
+	}
+
+	public void UpdateServerAndPlayerInfo(bool forceUpdate = false)
+	{
+		string lastSelectedClusterKey = LastSelectedClusterKey;
+		Cluster cluster = Clusters.GetCluster(lastSelectedClusterKey);
+		_clusterSelectionButton.Disabled = false;
+		_clusterSelectionButtonLabel.text = cluster.GetName(LocalizeSystem.Locale);
+		UpdateButtonLayout(showPlayerButton: false);
+		IsAccountReady = false;
+		SetExplainLabel(ManualTranslator.LoadingUserInfo);
+		_nextMaintenanceCheckTime = 0f;
+		Clusters.GetOrRequestAccounts(lastSelectedClusterKey, OnClusterAccountUpdated, forceUpdate);
+	}
+
+	protected virtual void OnClusterAccountUpdated(Account account)
+	{
+		Cluster selectedCluster = GetSelectedCluster();
+		if (account == null && selectedCluster.IsInMaintenance())
+		{
+			_nextMaintenanceCheckTime = Time.realtimeSinceStartup + 60f;
+			SetExplainLabel(selectedCluster.GetMaintenanceText(LocalizeSystem.Locale), important: true);
+			return;
+		}
+		bool flag = account != null && account.MaxPlayerSlotCount > 1 && account.PlayerSlotCount >= 1;
+		UpdateButtonLayout(flag);
+		if (flag)
+		{
+			_playerSelectionButton.Disabled = false;
+			string playerInfoText = account.GetPlayerInfoText(account.GetRecommendedPlayer().Item1);
+			_playerSelectionButtonLabel.text = (string.IsNullOrEmpty(playerInfoText) ? ManualTranslator.NoCharacter : playerInfoText);
+		}
+		IsAccountReady = true;
+		SetExplainLabel(ManualTranslator.TouchTheScreen);
+	}
+
+	protected virtual void UpdateButtonLayout(bool showPlayerButton)
+	{
+		bool flag = Clusters.Count >= 2;
+		_selectionButtnoHolder.gameObject.SetActive(flag || showPlayerButton);
+		_selectionButtnoHolder.width = ((!flag || !showPlayerButton) ? 272 : 554);
+		_clusterSelectionButton.gameObject.SetActive(flag);
+		_playerSelectionButton.gameObject.SetActive(showPlayerButton);
+		if ((bool)_buttonSeperator)
+		{
+			_buttonSeperator.gameObject.SetActive(showPlayerButton);
+		}
+		UIUtility.WidgetsGridReposition(new UIWidget[2] { _clusterSelectionButton.Widget, _playerSelectionButton.Widget }, null, Vector2.right, _selectionButtnoHolder.localCorners[1], _selectionButtnoHolder.height, new Vector2(272f, 48f), 0f, 0f);
+		_bottomLayout.UpdateLayout();
+		UIUtility.UpdateAnchors(base.transform);
+	}
+
+	[NotNull]
+	public Cluster GetSelectedCluster()
+	{
+		return Clusters.GetCluster(LastSelectedClusterKey);
+	}
+
+	public string GetSelectedClusterKey()
+	{
+		return LastSelectedClusterKey;
+	}
+
+	[CanBeNull]
+	public Account GetSelectedAccount()
+	{
+		return Clusters.GetAccount(LastSelectedClusterKey);
+	}
+
+	public bool TryUpdateClusters(string response)
+	{
+		Clusters.LoadFromJson(response);
+		if (Clusters.Count > 0)
+		{
+			GameManager.SetArenaAuthServer(Clusters.ArenaAuthUrl);
+			return true;
+		}
+		return false;
+	}
+
+	public void ForceSetClusters(string gateway)
+	{
+		Clusters.ForceSetCluster(gateway);
+	}
+
+	private void OnScreenResized()
+	{
+		UpdateOutlinkLayout();
+		Rect safeRect = TitleUIRootResizer.GetSafeRect();
+		_mainContent.leftAnchor.relative = safeRect.xMin;
+		_mainContent.rightAnchor.relative = safeRect.xMax;
+		_mainContent.bottomAnchor.relative = safeRect.yMin;
+		_mainContent.topAnchor.relative = safeRect.yMax;
+		UIUtility.UpdateAnchors(_mainContent.transform);
+	}
+
+	private void UpdateOutlinkLayout()
+	{
+		bool isPortrait = TitleUIRootResizer.IsPortrait;
+		UIWidget component = _outlinks.BaseObject.transform.parent.GetComponent<UIWidget>();
+		Point2 point = default(Point2);
+		if (isPortrait)
+		{
+			float num = UIUtility.WidgetsReposition(_outlinks, Vector3.down, Vector3.zero, 0f, 0.5f);
+			point.x = _outlinks.BaseObject.GetComponent<UIWidget>().width;
+			point.y = (int)num;
+		}
+		else
+		{
+			float num2 = UIUtility.WidgetsReposition(_outlinks, Vector3.right, Vector3.zero, 0f, 0.5f);
+			point.x = (int)num2;
+			point.y = _outlinks.BaseObject.GetComponent<UIWidget>().height;
+		}
+		component.SetDimensions(point.x, point.y);
+		for (int i = 0; i < _outlinks.Count; i++)
+		{
+			_outlinks[i].GetComponent<TitleOutlinkNode>().SetBorder(isPortrait, i == _outlinks.Count - 1);
+		}
+		_bottomLayout.UpdateLayout();
+		UIUtility.UpdateAnchors(base.transform);
+	}
+
+	public virtual void ShowMessageBox(string title, string explain, Action okAction, Action cancelAction = null, string okButtonLabel = null, string cancelButtonLabel = null)
+	{
+		_messageBox.Show(title, explain, okAction, cancelAction, okButtonLabel, cancelButtonLabel);
+	}
+
+	public virtual void CloseMessageBox()
+	{
+		_messageBox.Close();
+	}
+
+	public void SetContentActive(bool isActive)
+	{
+		_mainContent.gameObject.SetActive(isActive);
+	}
+
+	public void Clear()
+	{
+		Clusters.Clear();
+		_explainLabel.text = string.Empty;
+		_nextMaintenanceCheckTime = 0f;
+	}
+
+	protected virtual void OnReceiveBackMessage(InputCommandMessage message)
+	{
+		_mainContent.gameObject.SetActive(value: true);
+		_clusterSelection.gameObject.SetActive(value: false);
+	}
+
+	protected void OnReceiveSelectCurrentCellMessage(InputCommandMessage message)
+	{
+		_clusterSelection.ConfirmCluster();
+	}
+}

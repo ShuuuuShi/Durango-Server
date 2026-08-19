@@ -1,0 +1,71 @@
+biocom_condition_slots:
+  mine:
+  - - 191
+    - 80
+  common:
+  - - 159
+    - 191
+  - - 79
+    - 128
+  - - 144
+    - 128
+craters:
+- biocom_type: 5035
+  tile:
+  - 191
+  - 80
+- biocom_type: 5036
+  tile:
+  - 159
+  - 191
+- biocom_type: 5039
+  tile:
+  - 79
+  - 128
+- biocom_type: 5040
+  tile:
+  - 144
+  - 128
+biocoms:
+- biocom_type: 5041
+  tile:
+  - 192
+  - 79
+- biocom_type: 5041
+  tile:
+  - 143
+  - 111
+warpholes:
+  0:
+  - 168
+  - 214
+  1:
+  - 94
+  - 52
+  2:
+  - 69
+  - 139
+  3:
+  - 169
+  - 130
+  4:
+  - 120
+  - 112
+cargo_in_warpholes: []
+rifts:
+- - 110
+  - 191
+- - 212
+  - 93
+port_points:
+- - 28
+  - 52
+camp_warpholes: []
+camp_artifacts:
+- entity_type: 9450
+  tile:
+  - 37
+  - 52
+camp_workbench_slots: []
+faction_props: []
+scoop_slots: []

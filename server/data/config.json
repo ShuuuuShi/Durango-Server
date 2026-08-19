@@ -1,0 +1,343 @@
+{
+  "Animals": {
+    "LifeBase": 30.0,
+    "LifePerLevel": 8.0,
+    "DamageBase": 2.0,
+    "DamagePerLevel": 0.4,
+    "CorpseSeconds": 150.0,
+    "RespawnSeconds": 60.0,
+    "ChaseSpeed": 300.0,
+    "FleeSpeed": 280.0,
+    "SightTiles": 6.0,
+    "GiveUpTiles": 20.0,
+    "AggroSeconds": 20.0,
+    "FirstAttackDelay": 0.5,
+    "WalkSpeed": 120.0,
+    "RestMinSeconds": 4.0,
+    "RestMaxSeconds": 11.0,
+    "MaxWalkLegSeconds": 5.0,
+    "MinTilesInland": 3,
+    "InlandTilesPerSize": 3,
+    "SpawnRadiusTiles": 30.0,
+    "WanderRadiusTiles": 12.5
+  },
+  "Exp": {
+    "KillBase": 4,
+    "KillPerLevel": 3,
+    "Gather": 2,
+    "Butchery": 3,
+    "Craft": 5,
+    "Build": 8,
+    "SkillPointsPerLevel": 3
+  },
+  "Skills": {
+    "FullAt": 60,
+    "GatherSpeed": 0.4,
+    "GatherBonus": 0.3,
+    "ButcherySpeed": 0.4,
+    "ButcheryBonus": 0.3,
+    "MeleeDamage": 0.5,
+    "DefenseReduce": 0.3,
+    "CraftSpeed": 0.4,
+    "StaminaSave": 0.3,
+    "RequiredPlayerLevelPerSkillLevel": 1.0,
+    "ProficiencyEnabled": true,
+    "ProficiencyRate": 1.0
+  },
+  "Spawn": [
+    {
+      "Type": 2042,
+      "Name": "เน€เธยเน€เธเธ”เน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธ’",
+      "MinLevel": 1,
+      "MaxLevel": 3,
+      "Quota": 6,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 1.4,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2015,
+      "Name": "เน€เธยเน€เธเธเน€เธเธเน€เธยเน€เธยเน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธ’เน€เธโ€”เน€เธเธ‘เน€เธเธ",
+      "MinLevel": 1,
+      "MaxLevel": 4,
+      "Quota": 6,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 3.0,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2033,
+      "Name": "เน€เธยเน€เธโ€เน€เธยเน€เธโ€เน€เธยเน€เธเธ”เน€เธยเน€เธเธ”เน€เธเธ",
+      "MinLevel": 2,
+      "MaxLevel": 5,
+      "Quota": 4,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 3.0,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2006,
+      "Name": "เน€เธโฌเน€เธยเน€เธยเน€เธเธ’เน€เธยเน€เธยเน€เธโ€เน€เธเธ‘เน€เธเธ",
+      "MinLevel": 3,
+      "MaxLevel": 6,
+      "Quota": 4,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 1.6,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2017,
+      "Name": "เน€เธยเน€เธยเน€เธเธเน€เธยเน€เธโ€ขเน€เธโฌเน€เธยเน€เธเธเน€เธเธ’เน€เธโ€”เน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธย",
+      "MinLevel": 3,
+      "MaxLevel": 7,
+      "Quota": 4,
+      "Behavior": "FightBack",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 1.3,
+      "BehaviorEnum": 1
+    },
+    {
+      "Type": 2009,
+      "Name": "เน€เธยเน€เธเธ’เน€เธเธเน€เธเธ’เน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธยเน€เธเธ…เน€เธยเน€เธเธ‘เน€เธเธ",
+      "MinLevel": 5,
+      "MaxLevel": 9,
+      "Quota": 3,
+      "Behavior": "FightBack",
+      "MinTilesFromEntry": 4,
+      "AttackCooltime": 2.0,
+      "BehaviorEnum": 1
+    },
+    {
+      "Type": 2000,
+      "Name": "เน€เธเธเน€เธโฌเน€เธโ€ขเน€เธยเน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธเธ‘เน€เธเธ",
+      "MinLevel": 6,
+      "MaxLevel": 10,
+      "Quota": 2,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 6,
+      "AttackCooltime": 2.1,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2003,
+      "Name": "เน€เธโ€”เน€เธเธเน€เธเธ”เน€เธโฌเน€เธยเน€เธเธเน€เธเธ’เน€เธโ€”เน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธย",
+      "MinLevel": 6,
+      "MaxLevel": 10,
+      "Quota": 2,
+      "Behavior": "FightBack",
+      "MinTilesFromEntry": 6,
+      "AttackCooltime": 1.4,
+      "BehaviorEnum": 1
+    },
+    {
+      "Type": 2002,
+      "Name": "เน€เธยเน€เธเธเน€เธเธเน€เธเธ”เน€เธยเน€เธเธเน€เธยเน€เธโฌเน€เธโ€ขเน€เธเธเน€เธเธเน€เธย",
+      "MinLevel": 4,
+      "MaxLevel": 8,
+      "Quota": 2,
+      "Behavior": "Aggressive",
+      "MinTilesFromEntry": 12,
+      "AttackCooltime": 1.3,
+      "BehaviorEnum": 2
+    },
+    {
+      "Type": 2001,
+      "Name": "เน€เธยเน€เธเธเน€เธยเน€เธยเน€เธโฌเน€เธโ€ขเน€เธเธเน€เธเธเน€เธย",
+      "MinLevel": 7,
+      "MaxLevel": 10,
+      "Quota": 1,
+      "Behavior": "Aggressive",
+      "MinTilesFromEntry": 20,
+      "AttackCooltime": 1.7,
+      "BehaviorEnum": 2
+    }
+  ],
+  "Zones": [
+    {
+      "Id": "meadow",
+      "Name": "เน€เธโ€”เน€เธเธเน€เธยเน€เธยเน€เธเธเน€เธยเน€เธยเน€เธเธ’เน€เธเธเน€เธยเน€เธยเน€เธเธ’เน€เธยเน€เธยเน€เธเธ’เน€เธย",
+      "OffsetTileX": 0.0,
+      "OffsetTileY": 0.0,
+      "RadiusTiles": 14.0,
+      "Species": [
+        2042,
+        2015,
+        2033
+      ]
+    },
+    {
+      "Id": "forest",
+      "Name": "เน€เธยเน€เธเธ’เน€เธเธเน€เธยเน€เธยเน€เธเธ’",
+      "OffsetTileX": 22.0,
+      "OffsetTileY": 6.0,
+      "RadiusTiles": 13.0,
+      "Species": [
+        2006,
+        2017
+      ]
+    },
+    {
+      "Id": "highland",
+      "Name": "เน€เธโ€”เน€เธเธ•เน€เธยเน€เธเธเน€เธเธ’เน€เธยเน€เธเธเน€เธเธเน€เธย",
+      "OffsetTileX": -8.0,
+      "OffsetTileY": 24.0,
+      "RadiusTiles": 13.0,
+      "Species": [
+        2009,
+        2000,
+        2003
+      ]
+    },
+    {
+      "Id": "raptor_den",
+      "Name": "เน€เธเธเน€เธเธเน€เธยเน€เธยเน€เธเธเน€เธยเน€เธยเน€เธโฌเน€เธโ€ขเน€เธเธเน€เธเธเน€เธย",
+      "OffsetTileX": 26.0,
+      "OffsetTileY": -22.0,
+      "RadiusTiles": 10.0,
+      "Species": [
+        2002,
+        2001
+      ]
+    }
+  ],
+  "World": {
+    "ChunkSendRange": 2
+  },
+  "Tools": {
+    "Enabled": true,
+    "DurabilityBase": 20.0,
+    "DurabilityPerTier": 20.0,
+    "WearPerUse": 1.0
+  },
+  "Features": {
+    "Gathering": true,
+    "Crafting": true,
+    "Combat": true,
+    "Butchery": true,
+    "Building": true,
+    "Progression": true,
+    "Skills": true,
+    "Equipment": true,
+    "Survival": true,
+    "ToolDurability": true,
+    "Chat": true,
+    "IslandTravel": false,
+    "Jobs": false,
+    "Cooking": true,
+    "Farming": false,
+    "Livestock": false,
+    "Taming": false,
+    "Market": false,
+    "Quests": false,
+    "Pvp": false,
+    "LandPermission": false,
+    "PartyAndClan": false,
+    "Emotes": false,
+    "MaxPlayerLevel": 20
+  },
+  "Survival": {
+    "StaminaMax": 100.0,
+    "StaminaRegenPerSec": 1.2,
+    "StaminaRegenDelaySeconds": 4.0,
+    "StaminaRegenWhileResting": 10.0,
+    "StaminaCostCollect": 6.0,
+    "StaminaCostCraft": 4.0,
+    "StaminaCostBuild": 8.0,
+    "FatigueMax": 100.0,
+    "FatiguePerSec": 0.027777778,
+    "FatiguePerAction": 0.35,
+    "FatigueCaution": 60.0,
+    "FatigueDanger": 85.0,
+    "LifeMax": 100.0,
+    "LifeRegenPerSec": 0.5,
+    "LifePerLevel": 2.0,
+    "LifePerEndurance": 0.8,
+    "StaminaPerLevel": 1.0,
+    "StaminaPerWill": 0.5,
+    "LifeDrainWhenExhausted": 0.6,
+    "RestFatiguePerSec": 4.0,
+    "RestRangeTiles": 3.0
+  },
+  "Starter": {
+    "Recipes": [
+      "handle",
+      "twist_rope",
+      "twist_rope_02",
+      "extend_rope",
+      "extend_stick",
+      "cut_pillar",
+      "sheaf",
+      "blade_stone",
+      "blade_big_stone",
+      "blade_bone",
+      "blade_big_bone",
+      "blade_saw_stone",
+      "club_onehand_wooden_01",
+      "assembled_hammer_one_01",
+      "assembled_hammer_two_01",
+      "assembled_axe_one_01",
+      "assembled_axe_two_01",
+      "assembled_sword_one_01",
+      "assembled_sword_two_01",
+      "bowstring_01",
+      "bow_wooden_assembled",
+      "harpoon_wooden_01",
+      "handle_lance_01",
+      "hoe_wooden_00",
+      "hoe_wooden_01",
+      "pickaxe_wooden_01",
+      "clothes_leaf_01",
+      "hat_leaf",
+      "shoes_footwraps",
+      "shoes_sandal_straw",
+      "skewer",
+      "boil",
+      "broth",
+      "boiled_meat"
+    ],
+    "Blueprints": [
+      "bonfire",
+      "bonfire_01",
+      "fur_table",
+      "tent",
+      "fishtrap",
+      "trap_basket",
+      "dryingrack_01",
+      "kiln_01",
+      "furnace_01",
+      "fur_box_03_leaf",
+      "fence1",
+      "gate1"
+    ]
+  },
+  "Food": {
+    "EnergyScale": 0.5,
+    "FatigueScale": 0.1,
+    "HealthScale": 1.0,
+    "RawFoodEnergyScale": 0.6,
+    "RawFoodFatigue": 3.0,
+    "DigestScale": 1.0
+  },
+  "Abilities": {
+    "Base": 10.0,
+    "PerLevel": 0.5,
+    "PerProficiency": 0.35,
+    "Max": 100.0
+  },
+  "Combat": {
+    "BareHandAttack": 6.0,
+    "AttackPerLevel": 0.3,
+    "AttackPerStrength": 0.15,
+    "WeaponAttackScale": 0.14,
+    "ArmorDefenseScale": 1.0,
+    "ArmorDefenseK": 120.0,
+    "ArmorMaxReduce": 0.75,
+    "CritChance": 0.12,
+    "CritMultiplier": 1.6
+  },
+  "TotalQuota": 34
+}

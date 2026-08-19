@@ -1,0 +1,409 @@
+<title>Durango Beta 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  /* ── โทนสี: หินปูน + เฟิร์น + อำพัน (ได้จากเกาะในเกม ไม่ใช่ธีมสำเร็จรูป) ───── */
+  :root {
+    --ground:   #EDF0E9;
+    --surface:  #F8FAF5;
+    --sunken:   #E3E8DE;
+    --ink:      #101F19;
+    --stone:    #5D6E64;
+    --hairline: #CBD3C6;
+    --fern:     #1E6B49;
+    --fern-bg:  #DCEBE1;
+    --amber:    #96631A;
+    --amber-bg: #F2E8D2;
+    --clay:     #93382B;
+    --clay-bg:  #F3DED9;
+    --shadow:   0 1px 0 rgba(16,31,25,.06), 0 2px 10px rgba(16,31,25,.05);
+
+    --font-display: "Bahnschrift", "Oswald", "Archivo Narrow", "Leelawadee UI", "Noto Sans Thai", Tahoma, sans-serif;
+    --font-body: "Leelawadee UI", "Noto Sans Thai", "IBM Plex Sans Thai", Sarabun, "Segoe UI", sans-serif;
+    --font-mono: "Cascadia Mono", Consolas, ui-monospace, "Courier New", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:   #0B1512;
+      --surface:  #12201B;
+      --sunken:   #0F1A16;
+      --ink:      #E4EBE3;
+      --stone:    #90A296;
+      --hairline: #24352C;
+      --fern:     #55C08C;
+      --fern-bg:  #123026;
+      --amber:    #DEA84F;
+      --amber-bg: #2E2413;
+      --clay:     #E28170;
+      --clay-bg:  #331914;
+      --shadow:   0 1px 0 rgba(0,0,0,.3), 0 2px 12px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:   #0B1512;
+    --surface:  #12201B;
+    --sunken:   #0F1A16;
+    --ink:      #E4EBE3;
+    --stone:    #90A296;
+    --hairline: #24352C;
+    --fern:     #55C08C;
+    --fern-bg:  #123026;
+    --amber:    #DEA84F;
+    --amber-bg: #2E2413;
+    --clay:     #E28170;
+    --clay-bg:  #331914;
+    --shadow:   0 1px 0 rgba(0,0,0,.3), 0 2px 12px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 60rem; margin: 0 auto; padding: 0 1.5rem 5rem; }
+
+  /* ── หัวเรื่อง ─────────────────────────────────────────────── */
+  header.masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 3.5rem 0 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin: 0 0 .6rem;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 7vw, 4.2rem);
+    line-height: 1.02;
+    letter-spacing: -.01em;
+    font-weight: 700;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .lede {
+    max-width: 46ch;
+    color: var(--stone);
+    margin: .9rem 0 0;
+    font-size: 1.05rem;
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin: 2.25rem 0 0;
+  }
+  .tile { background: var(--surface); padding: 1rem 1.1rem; }
+  .tile .n {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    display: block;
+  }
+  .tile .l {
+    font-size: .82rem;
+    color: var(--stone);
+    display: block;
+    margin-top: .15rem;
+  }
+
+  /* ── ส่วนต่าง ๆ ────────────────────────────────────────────── */
+  section { margin: 3.25rem 0 0; }
+  .sec-label {
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--fern);
+    margin: 0 0 .35rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 .75rem;
+    letter-spacing: -.005em;
+    text-wrap: balance;
+  }
+  h3 {
+    font-size: 1.02rem;
+    font-weight: 700;
+    margin: 1.75rem 0 .4rem;
+  }
+  p { margin: 0 0 .9rem; max-width: 68ch; }
+  .muted { color: var(--stone); }
+  .small { font-size: .88rem; }
+  code, .mono { font-family: var(--font-mono); font-size: .88em; }
+
+  /* ── ป้ายสถานะ ─────────────────────────────────────────────── */
+  .chip {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    letter-spacing: .05em;
+    padding: .16rem .5rem;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .chip.on    { color: var(--fern);  background: var(--fern-bg); }
+  .chip.hold  { color: var(--amber); background: var(--amber-bg); }
+  .chip.off   { color: var(--clay);  background: var(--clay-bg); }
+
+  /* ── ตาราง ─────────────────────────────────────────────────── */
+  .scroll { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: .93rem; }
+  th, td { text-align: left; padding: .55rem .8rem; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+  thead th {
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--stone);
+    background: var(--sunken);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  caption {
+    caption-side: bottom;
+    text-align: left;
+    padding: .6rem .8rem;
+    font-size: .82rem;
+    color: var(--stone);
+    border-top: 1px solid var(--hairline);
+  }
+
+  /* ── รายการติ๊ก ────────────────────────────────────────────── */
+  .progress {
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    margin: 0 0 1rem;
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    color: var(--stone);
+  }
+  .bar { flex: 1; height: 6px; background: var(--sunken); border: 1px solid var(--hairline); }
+  .bar span { display: block; height: 100%; width: 0; background: var(--fern); }
+  .checks { list-style: none; margin: 0; padding: 0; border: 1px solid var(--hairline); background: var(--surface); }
+  .checks li { border-bottom: 1px solid var(--hairline); }
+  .checks li:last-child { border-bottom: 0; }
+  .checks label { display: flex; gap: .75rem; padding: .7rem .9rem; cursor: pointer; align-items: flex-start; }
+  .checks input { margin: .35rem 0 0; accent-color: var(--fern); flex: none; width: 1rem; height: 1rem; }
+  .checks input:focus-visible { outline: 2px solid var(--fern); outline-offset: 2px; }
+  .checks .what { font-weight: 700; }
+  .checks .how { color: var(--stone); font-size: .88rem; display: block; }
+  .checks input:checked ~ .txt .what { color: var(--stone); text-decoration: line-through; }
+
+  ul.plain { padding-left: 1.1rem; margin: 0 0 1rem; max-width: 68ch; }
+  ul.plain li { margin-bottom: .35rem; }
+
+  .callout {
+    border-left: 3px solid var(--amber);
+    background: var(--amber-bg);
+    padding: .85rem 1rem;
+    margin: 1.25rem 0;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  footer {
+    margin-top: 4rem;
+    border-top: 1px solid var(--hairline);
+    padding-top: 1.25rem;
+    color: var(--stone);
+    font-size: .85rem;
+  }
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">เซิร์ฟเวอร์ทดสอบ · เกาะเริ่มต้น</p>
+  <h1>Durango Beta 1.0</h1>
+  <p class="lede">เกาะเลเวล 1-10 บนเซิร์ฟเวอร์ที่เขียนขึ้นใหม่ทั้งตัว
+    นี่คือรายการว่าเข้าไปแล้วจะเจออะไร อะไรเล่นได้ อะไรยังปิดอยู่ และอยากให้ช่วยลองอะไรบ้าง</p>
+
+  <div class="tiles">
+    <div class="tile"><span class="n">34</span><span class="l">สัตว์ในเกาะ จาก 10 ชนิด</span></div>
+    <div class="tile"><span class="n">14</span><span class="l">ระบบที่เปิดให้เล่น</span></div>
+    <div class="tile"><span class="n">32</span><span class="l">คนออนไลน์พร้อมกันได้</span></div>
+    <div class="tile"><span class="n">2</span><span class="l">ของติดตัวตอนเกิดใหม่</span></div>
+  </div>
+</header>
+
+<section>
+  <p class="sec-label">เริ่มต้น</p>
+  <h2>ห้านาทีแรกหลังเข้าเกม</h2>
+  <p>เข้ามาที่จุดเกิดกลางเกาะพร้อม <strong>ขวานหิน 1 เล่ม</strong> กับ <strong>กองไฟ 1 กอง</strong> ในกระเป๋า
+    ตำแหน่งกับของในกระเป๋าถูกจำไว้ข้ามรอบ ออกแล้วเข้าใหม่จะกลับมาที่เดิม</p>
+  <ul class="plain">
+    <li><strong>แตะต้นไม้/พุ่มไม้/ก้อนหิน</strong> รอบตัว → เมนูเก็บของขึ้น เลือกได้ว่าจะเอาอะไร แต่ละจุดมีจำนวนจำกัดและเก็บหมดแล้วหายไปจริง</li>
+    <li><strong>คลิกสัตว์</strong> → ปุ่มโจมตีสีแดงเด้งขึ้นมา กดแล้วเข้าโหมดต่อสู้</li>
+    <li><strong>ฆ่าแล้วซากจะเรืองแสง</strong> — ออกจากโหมดต่อสู้ แล้วแตะซากเพื่อแล่เอาเนื้อ/หนัง/กระดูก</li>
+    <li><strong>วางกองไฟ</strong> แล้วใช้เป็นโต๊ะคราฟต์ได้เลย</li>
+    <li><strong>เก็บหิน 1 ก้อนแล้วคราฟต์เป็นมีด</strong> (สูตร "ใบมีดหิน") — ไม่มีมีดแล่ซากไม่ได้</li>
+  </ul>
+  <div class="callout">
+    <p><strong>งานแต่ละอย่างต้องใช้เครื่องมือของมัน</strong> — ตัดไม้ต้องมี<strong>ขวาน</strong> (แจกให้ตอนเกิด) ·
+      แล่ซากต้องมี<strong>มีด</strong> · ทุบหินก้อนใหญ่กับแร่ต้องมี<strong>อีเต้อ</strong>
+      ส่วนผลไม้ ใบไม้ ลำต้น หินก้อนเล็ก เก็บด้วยมือเปล่าได้เลย</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>เขตปลอดภัย 8 tile รอบจุดเกิด</strong> — สัตว์ที่ไล่กัดก่อน (โอวิแรปเตอร์ · แร็ปเตอร์)
+      ถูกบังคับให้เกิดไกลออกไป 12 และ 20 tile คนเพิ่งเข้าเกมจะไม่โดนรุมตั้งแต่วินาทีแรก</p>
+  </div>
+</section>
+
+<section>
+  <p class="sec-label">ระบบ</p>
+  <h2>อะไรเปิด อะไรปิด</h2>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th>ระบบ</th><th>สถานะ</th><th>รายละเอียด</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>เดิน · สตรีมแมพ · เซฟ</td><td><span class="chip on">เล่นได้</span></td><td>เซฟอัตโนมัติทุก 60 วินาที และตอนปิดเซิร์ฟ</td></tr>
+        <tr><td>เก็บของจากธรรมชาติ</td><td><span class="chip on">เล่นได้</span></td><td>ของแต่ละจุดเป็นของกลาง ใครเก็บก่อนได้ก่อน · <strong>ไม้ต้องใช้ขวาน หินใหญ่ต้องใช้อีเต้อ</strong></td></tr>
+        <tr><td>คราฟต์</td><td><span class="chip on">เล่นได้</span></td><td>ตรวจวัตถุดิบจริง ใส่ครบถึงจะสำเร็จ</td></tr>
+        <tr><td>กระเป๋า · กล่องเก็บของ</td><td><span class="chip on">เล่นได้</span></td><td>กระเป๋า 50 ชิ้น · กล่อง 200 ชิ้น · เปิดได้เฉพาะกล่องตัวเอง</td></tr>
+        <tr><td>ทิ้งของ · กินของ</td><td><span class="chip on">เล่นได้</span></td><td>กินแล้วสตามินาขึ้น</td></tr>
+        <tr><td>สวมใส่อุปกรณ์</td><td><span class="chip on">เล่นได้</span></td><td>ถืออาวุธแล้วท่าโจมตีเปลี่ยนตามชนิดอาวุธ</td></tr>
+        <tr><td>เลือด · สตามินา · ความล้า</td><td><span class="chip on">เล่นได้</span></td><td>ความล้าสูงทำให้ทุกอย่างเปลืองสตามินาขึ้น</td></tr>
+        <tr><td>สัตว์ · ต่อสู้ · ตาย/ฟื้น</td><td><span class="chip on">เล่นได้</span></td><td>ตายแล้วฟื้นที่จุดเกิด <strong>ไม่เสียของ</strong></td></tr>
+        <tr><td>แล่ซากสัตว์</td><td><span class="chip on">ใหม่</span></td><td><strong>ต้องมีมีด</strong> — คราฟต์เองได้จากหิน 1 ก้อน</td></tr>
+        <tr><td>สร้างสิ่งปลูกสร้าง</td><td><span class="chip on">เล่นได้</span></td><td>สูงสุด 40 หลังต่อคน · รื้อได้เฉพาะของตัวเอง</td></tr>
+        <tr><td>แชทช่องรวม</td><td><span class="chip on">เล่นได้</span></td><td>ไม่เกิน 200 ตัวอักษร · ส่งได้ทุก 0.7 วินาที</td></tr>
+        <tr><td>สกิล</td><td><span class="chip on">ใหม่</span></td><td><strong>มีผลจริง</strong> — เก็บของ/แล่เร็วขึ้น · ดาเมจ · ลดดาเมจที่รับ · คราฟต์ · ประหยัดสตามินา</td></tr>
+        <tr><td>แชทส่วนตัว</td><td><span class="chip hold">ปิดใน beta</span></td><td>ช่องทางนี้ยังไม่มีระบบยืนยันตัวตน ปลอมชื่อคนอื่นได้</td></tr>
+        <tr><td>เพ็ท · ปาร์ตี้ · แคลน · ตลาด · ภารกิจ</td><td><span class="chip off">ยังไม่มี</span></td><td>เมนูถูกซ่อนไว้ 24 เมนู กดไม่เจอเพราะยังไม่ได้ทำ ไม่ใช่บั๊ก</td></tr>
+        <tr><td>ค่าประสบการณ์ · เลเวลอัป</td><td><span class="chip on">ใหม่</span></td><td>ได้ exp จากล่าสัตว์ · เก็บของ · แล่เนื้อ · คราฟต์ · สร้าง — ขึ้นเลเวลแล้วได้แต้มสกิล</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <p class="sec-label">สัตว์</p>
+  <h2>สิบชนิดที่อยู่บนเกาะ</h2>
+  <p>ทุกชนิดมีโมเดลและอนิเมชันครบ (ยืน เดิน วิ่ง โจมตี ตาย) จำนวนในโลกคงที่ตามโควตา
+    ตายแล้วเกิดใหม่เป็นชนิดเดิมใน 60 วินาที</p>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th>ชนิด</th><th class="num">เลเวล</th><th class="num">มีกี่ตัว</th><th>เจอแล้วมันทำอะไร</th><th>แล่ได้</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>กิ้งก่า</td><td class="num">1-3</td><td class="num">6</td><td><span class="chip on">วิ่งหนี</span></td><td>เนื้อกิ้งก่า · เศษหนัง</td></tr>
+        <tr><td>คอมป์โซกนาทัส</td><td class="num">1-4</td><td class="num">6</td><td><span class="chip on">วิ่งหนี</span></td><td>เนื้อ · เศษหนัง · เขี้ยว</td></tr>
+        <tr><td>โดโดฟิซิส</td><td class="num">2-5</td><td class="num">4</td><td><span class="chip on">วิ่งหนี</span></td><td>เนื้อ · ขนนก</td></tr>
+        <tr><td>เฟนาโคดัส</td><td class="num">3-6</td><td class="num">4</td><td><span class="chip on">วิ่งหนี</span></td><td>เนื้อ · หนังดิบ · กระดูกขา</td></tr>
+        <tr><td>โปรโตเซราท็อปส์</td><td class="num">3-7</td><td class="num">4</td><td><span class="chip hold">สู้กลับ</span></td><td>เนื้อ · หนังดิบ · กะโหลก</td></tr>
+        <tr><td>พาราซอโรโลฟัส</td><td class="num">5-9</td><td class="num">3</td><td><span class="chip hold">สู้กลับ</span></td><td>เนื้อ · หนังผืนใหญ่ · กระดูกขาใหญ่</td></tr>
+        <tr><td>สเตโกซอรัส</td><td class="num">6-10</td><td class="num">2</td><td><span class="chip on">วิ่งหนี</span></td><td>เนื้อ · หนังเกราะ · ซี่โครง</td></tr>
+        <tr><td>ทริเซราท็อปส์</td><td class="num">6-10</td><td class="num">2</td><td><span class="chip hold">สู้กลับ</span></td><td>เนื้อ · หนังเกราะ · เขา</td></tr>
+        <tr><td>โอวิแรปเตอร์</td><td class="num">4-8</td><td class="num">2</td><td><span class="chip off">ไล่กัดก่อน</span></td><td>เนื้อ · เศษหนัง · เขี้ยว · ขนนก</td></tr>
+        <tr><td>แร็ปเตอร์</td><td class="num">7-10</td><td class="num">1</td><td><span class="chip off">ไล่กัดก่อน</span></td><td>เนื้อ · หนังดิบ · เขี้ยว</td></tr>
+      </tbody>
+      <caption>ตัวใหญ่ให้ของมากกว่าตัวเล็ก และทุก 5 เลเวลได้เพิ่มอีกชนิดละ 1 ชิ้น · ซากอยู่ในโลก 150 วินาที</caption>
+    </table>
+  </div>
+</section>
+
+<section>
+  <p class="sec-label">กติกา</p>
+  <h2>ข้อจำกัดที่ควรรู้ก่อนเข้า</h2>
+  <ul class="plain">
+    <li><strong>ต้องมีชื่ออยู่ในรายชื่อที่อนุญาต</strong> ถึงจะเข้าได้ — ถ้าเข้าไม่ได้ให้แจ้งชื่อตัวละครไว้</li>
+    <li><strong>32 คนพร้อมกัน</strong> และ 4 เส้นต่อ 1 IP</li>
+    <li><strong>ยิงคำสั่งถี่เกิน 120 ครั้ง/วินาที จะถูกเตะ</strong> — เล่นปกติไม่มีทางชน ยกเว้นใช้ tool</li>
+    <li><strong>ขยับเร็วผิดปกติจะถูกดึงกลับ</strong> ถ้าเน็ตกระตุกแล้วโดนดึง แจ้งได้เลยว่าเจอตอนไหน</li>
+    <li><strong>ตายไม่เสียของ</strong> ฟื้นที่จุดเกิดพร้อมเลือดและสตามินาเต็ม (ความล้าไม่ล้าง)</li>
+    <li><strong>คำสั่งทดสอบทั้งหมดถูกปิด</strong> บนเซิร์ฟที่เปิดให้เล่นจริง</li>
+  </ul>
+</section>
+
+<section>
+  <p class="sec-label">ช่วยลอง</p>
+  <h2>เช็คลิสต์สำหรับผู้ทดสอบ</h2>
+  <p>ติ๊กไปเรื่อย ๆ ระหว่างเล่น ข้อไหนไม่เป็นอย่างที่เขียนไว้คือเจอบั๊ก — จดไว้ว่าตอนนั้นทำอะไรอยู่</p>
+
+  <div class="progress">
+    <span>ติ๊กแล้ว <strong id="done">0</strong>/<span id="total">0</span></span>
+    <span class="bar"><span id="fill"></span></span>
+  </div>
+
+  <ul class="checks" id="list">
+    <li><label><input type="checkbox"><span class="txt"><span class="what">คลิกที่สัตว์แล้วปุ่มโจมตีเด้งขึ้นมา</span><span class="how">พร้อมชื่อกับเลเวลของมัน</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">ตีแล้วมันตอบสนองทันที</span><span class="how">ตัวที่สู้กลับต้องสวนภายในราว 1 วินาที ตัวขี้ตกใจต้องวิ่งหนีทันที ไม่ใช่ยืนนิ่ง</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">สัตว์เดินลื่น ไม่วาร์ป ไม่ค้างท่า</span><span class="how">ตายแล้วต้องนอนนิ่ง ไม่ล้มแล้วลุกวนซ้ำ</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">ฆ่าแล้วซากเรืองแสง</span><span class="how">ขอบตัวสัตว์วิบวับ แปลว่าแล่ได้</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">แตะซากแล้วมีเมนูเนื้อ/หนัง/กระดูก</span><span class="how">ต้องออกจากโหมดต่อสู้ก่อน ไม่งั้นเมนูไม่ขึ้น</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">แล่แล้วของเข้ากระเป๋าจริง</span><span class="how">แล่จนหมดทุกชิ้นส่วนแล้วซากต้องหายไปเลย</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">เก็บของจากต้นไม้/พุ่มไม้ได้</span><span class="how">จำนวนที่เหลือลดลงจริง และเก็บหมดแล้วต้นนั้นหายไป</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">คราฟต์ของได้ และวัตถุดิบถูกหักออกจริง</span><span class="how">ใส่ของผิดชนิดต้องคราฟต์ไม่ผ่าน</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">คราฟต์มีดจากหินแล้วเอาไปแล่ซากได้</span><span class="how">ก่อนมีมีดต้องขึ้นหน้าต่าง "ต้องใช้เครื่องมือ"</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">ตัดไม้ได้ตอนมีขวาน</span><span class="how">ถ้าเอาขวานใส่กล่องไว้แล้วลองตัด ต้องโดนปฏิเสธ</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">หลอด exp ขึ้นตอนล่าสัตว์/เก็บของ และขึ้นเลเวลได้จริง</span><span class="how">ขึ้นเลเวลแล้วต้องได้แต้มสกิลเพิ่ม 3 แต้ม</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">เอาแต้มไปเรียนสกิลแล้วรู้สึกถึงผล</span><span class="how">สกิลเก็บของทำให้เก็บเร็วขึ้นและบางครั้งได้ 2 ชิ้น · สกิลต่อสู้ทำให้ตีแรงขึ้น</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">วางกองไฟแล้วใช้งานได้</span><span class="how">แตะแล้วมีเมนูคราฟต์</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">กระเป๋าเต็มแล้วกดทิ้งของได้</span><span class="how">50 ชิ้นคือเต็ม</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">กินของแล้วสตามินาขึ้น</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">ตายแล้วฟื้นได้ และเด้งกลับจุดเกิดจริง</span><span class="how">ของในกระเป๋าต้องอยู่ครบ</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">ออกจากโหมดต่อสู้ได้</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">เห็นผู้เล่นคนอื่นเดินไปมาถูกตำแหน่ง</span><span class="how">และแชทช่องรวมถึงกัน</span></span></label></li>
+    <li><label><input type="checkbox"><span class="txt"><span class="what">ออกเกมแล้วเข้าใหม่ ของและตำแหน่งยังอยู่</span></span></label></li>
+  </ul>
+</section>
+
+<section>
+  <p class="sec-label">รู้แล้ว</p>
+  <h2>บั๊กที่รู้อยู่แล้ว ไม่ต้องแจ้งซ้ำ</h2>
+  <ul class="plain">
+    <li>แชทส่วนตัวใช้ไม่ได้ (ปิดไว้ตั้งใจ)</li>
+    <li>เมนูเพ็ท/ปาร์ตี้/แคลน/ตลาด/ภารกิจหายไป — ซ่อนไว้เพราะยังไม่ได้ทำ</li>
+        <li>เวลาเก็บของธรรมชาติยังนิ่งอยู่ที่ประมาณ 2 วินาทีทุกชิ้น ยังไม่ต่างกันตามของ</li>
+    <li>ยังมีเกาะเดียว (เกาะเลเวล 1-10) — เกาะเลเวลสูงกำลังทำ</li>
+    <li>ของที่ "กินได้" ยังตัดสินจากชื่อของ ไม่ใช่ค่าโภชนาการจริง</li>
+  </ul>
+  <h3>เจอบั๊กแล้วบอกอะไรบ้าง</h3>
+  <p class="muted">ชื่อตัวละคร · เวลาโดยประมาณ · ตอนนั้นกำลังทำอะไร · เกิดอะไรขึ้นเทียบกับที่ควรเป็น
+    ถ้าถ่ายคลิปหรือแคปหน้าจอได้จะดีมาก</p>
+</section>
+
+<footer>
+  <p>Durango Beta 1.0 · เกาะเริ่มต้นเลเวล 1-10 · เซิร์ฟเวอร์เขียนขึ้นใหม่ทั้งตัว ไม่ใช่ของ NEXON เดิม</p>
+</footer>
+
+</div>
+
+<script>
+  (function () {
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('#list input'));
+    var done = document.getElementById('done');
+    var total = document.getElementById('total');
+    var fill = document.getElementById('fill');
+    total.textContent = boxes.length;
+    function update() {
+      var n = boxes.filter(function (b) { return b.checked; }).length;
+      done.textContent = n;
+      fill.style.width = (n / boxes.length * 100) + '%';
+    }
+    boxes.forEach(function (b) { b.addEventListener('change', update); });
+    update();
+  })();
+</script>

@@ -1,0 +1,749 @@
+{
+   "tile_count": [
+      256,
+      256
+   ],
+   "lake_biome": "snow_field",
+   "ocean_biome": "cold_ocean",
+   "river_biome": "temperate_forest",
+   "color_set": "snowfields",
+   "region_template": "ri50snSub01",
+   "tile_set": "snowfields",
+   "entry_points": [
+      [137,43]
+   ],
+   "landmarks": [
+      {
+         "prefab": "Models/Prop/warp/vehicle/M_schoolbus_01_a.prefab"
+      },
+      {
+         "id": 1,
+         "prefab": "Models/Prop/warp/vehicle/S_car_01_a.prefab"
+      },
+      {
+         "id": 2,
+         "prefab": "Models/Prop/warp/vehicle/S_car_01_b.prefab"
+      },
+      {
+         "id": 3,
+         "prefab": "Models/Prop/warp/vehicle/S_car_01_c.prefab"
+      },
+      {
+         "id": 4,
+         "prefab": "Models/Prop/warp/vehicle/S_car_01_d.prefab"
+      },
+      {
+         "id": 5,
+         "prefab": "Models/Prop/warp/vehicle/S_car_02_a.prefab"
+      },
+      {
+         "id": 6,
+         "prefab": "Models/Prop/warp/vehicle/S_car_02_b.prefab"
+      },
+      {
+         "id": 7,
+         "prefab": "Models/Prop/warp/vehicle/S_car_02_c.prefab"
+      },
+      {
+         "id": 8,
+         "prefab": "Models/Prop/warp/vehicle/S_car_02_d.prefab"
+      },
+      {
+         "id": 9,
+         "prefab": "Models/Prop/warp/vehicle/S_car_03_a.prefab"
+      },
+      {
+         "id": 10,
+         "prefab": "Models/Prop/warp/vehicle/S_car_03_b.prefab"
+      },
+      {
+         "id": 11,
+         "prefab": "Models/Prop/warp/vehicle/S_car_04_a.prefab"
+      },
+      {
+         "id": 12,
+         "prefab": "Models/Prop/warp/vehicle/S_car_06_a.prefab"
+      },
+      {
+         "id": 13,
+         "prefab": "Models/Prop/warp/vehicle/S_car_06_b.prefab"
+      },
+      {
+         "id": 14,
+         "prefab": "Models/Prop/warp/city_prop_set/barrier_01.prefab"
+      },
+      {
+         "id": 15,
+         "prefab": "Models/Prop/warp/city_prop_set/billboard_01.prefab"
+      },
+      {
+         "id": 16,
+         "prefab": "Models/Prop/warp/city_prop_set/billboard_02.prefab"
+      },
+      {
+         "id": 17,
+         "prefab": "Models/Prop/warp/city_prop_set/busstop_01.prefab"
+      },
+      {
+         "id": 18,
+         "prefab": "Models/Prop/warp/city_prop_set/hydrant_01.prefab"
+      },
+      {
+         "id": 19,
+         "prefab": "Models/Prop/warp/city_prop_set/overpass_01.prefab"
+      },
+      {
+         "id": 20,
+         "prefab": "Models/Prop/warp/city_prop_set/pbooth_01.prefab"
+      },
+      {
+         "id": 21,
+         "prefab": "Models/Prop/warp/city_prop_set/powerbox_01.prefab"
+      },
+      {
+         "id": 22,
+         "prefab": "Models/Prop/warp/city_prop_set/powerbox_02.prefab"
+      },
+      {
+         "id": 23,
+         "prefab": "Models/Prop/warp/city_prop_set/powerbox_03.prefab"
+      },
+      {
+         "id": 24,
+         "prefab": "Models/Prop/warp/city_prop_set/powerbox_04.prefab"
+      },
+      {
+         "id": 25,
+         "prefab": "Models/Prop/warp/city_prop_set/roadsign_01.prefab"
+      },
+      {
+         "id": 26,
+         "prefab": "Models/Prop/warp/city_prop_set/roadsign_02.prefab"
+      },
+      {
+         "id": 27,
+         "prefab": "Models/Prop/warp/city_prop_set/roadsign_03.prefab"
+      },
+      {
+         "id": 28,
+         "prefab": "Models/Prop/warp/city_prop_set/roadsign_04.prefab"
+      },
+      {
+         "id": 29,
+         "prefab": "Models/Prop/warp/city_prop_set/roadsign_05.prefab"
+      },
+      {
+         "id": 30,
+         "prefab": "Models/Prop/warp/city_prop_set/roadsign_06.prefab"
+      },
+      {
+         "id": 31,
+         "prefab": "Models/Prop/warp/city_prop_set/roadsign_07.prefab"
+      },
+      {
+         "id": 32,
+         "prefab": "Models/Prop/warp/city_prop_set/signpost_gate_01.prefab"
+      },
+      {
+         "id": 33,
+         "prefab": "Models/Prop/warp/city_prop_set/signpost_gate_02.prefab"
+      },
+      {
+         "id": 34,
+         "prefab": "Models/Prop/warp/city_prop_set/streetlamp_01.prefab"
+      },
+      {
+         "id": 35,
+         "prefab": "Models/Prop/warp/city_prop_set/streetlights_01.prefab"
+      },
+      {
+         "id": 36,
+         "prefab": "Models/Prop/warp/city_prop_set/streetlights_02.prefab"
+      },
+      {
+         "id": 37,
+         "prefab": "Models/Prop/warp/city_prop_set/streetlights_03.prefab"
+      },
+      {
+         "id": 38,
+         "prefab": "Models/Prop/warp/city_prop_set/streetpole_01.prefab"
+      },
+      {
+         "id": 39,
+         "prefab": "Models/Prop/warp/city_prop_set/tire_01.prefab"
+      },
+      {
+         "id": 40,
+         "prefab": "Models/Prop/warp/city_prop_set/trafficcone_01.prefab"
+      },
+      {
+         "id": 41,
+         "prefab": "Models/Prop/furniture_warp/etc\\cat_tower_01.prefab"
+      },
+      {
+         "id": 42,
+         "prefab": "Models/Prop/furniture_warp/etc\\cat_tower_02.prefab"
+      },
+      {
+         "id": 43,
+         "prefab": "Models/Prop/furniture_warp/etc\\coffee_dutch_01.prefab"
+      },
+      {
+         "id": 44,
+         "prefab": "Models/Prop/furniture_warp/etc\\copymachine_01.prefab"
+      },
+      {
+         "id": 45,
+         "prefab": "Models/Prop/furniture_warp/etc\\fan_01.prefab"
+      },
+      {
+         "id": 46,
+         "prefab": "Models/Prop/furniture_warp/etc\\parasol_01.prefab"
+      },
+      {
+         "id": 47,
+         "prefab": "Models/Prop/furniture_warp/etc\\parasol_01_table.prefab"
+      },
+      {
+         "id": 48,
+         "prefab": "Models/Prop/furniture_warp/etc\\store_kart_01.prefab"
+      },
+      {
+         "id": 49,
+         "prefab": "Models/Prop/furniture_warp/etc\\treadmill_01.prefab"
+      },
+      {
+         "id": 50,
+         "prefab": "Models/Prop/furniture_warp/etc\\treadmill_01_bag.prefab"
+      },
+      {
+         "id": 51,
+         "prefab": "Models/Prop/furniture_warp/etc\\treadmill_01_leather.prefab"
+      },
+      {
+         "id": 52,
+         "prefab": "Models/Prop/furniture_warp/etc\\treadmill_01_rubber.prefab"
+      },
+      {
+         "id": 53,
+         "prefab": "Models/Prop/furniture_warp/housing\\bed_01_airmat.prefab"
+      },
+      {
+         "id": 54,
+         "prefab": "Models/Prop/furniture_warp/housing\\bed_01_steel.prefab"
+      },
+      {
+         "id": 55,
+         "prefab": "Models/Prop/furniture_warp/housing\\bed_02_steel_hospital.prefab"
+      },
+      {
+         "id": 56,
+         "prefab": "Models/Prop/furniture_warp/playground\\punchmachine_01.prefab"
+      },
+      {
+         "id": 57,
+         "prefab": "Models/Prop/furniture_warp/playground\\slide_01.prefab"
+      },
+      {
+         "id": 58,
+         "prefab": "Models/Prop/furniture_warp/playground\\spring_horse_01.prefab"
+      },
+      {
+         "id": 59,
+         "prefab": "Models/Prop/furniture_warp/playground\\spring_horse_02.prefab"
+      },
+      {
+         "id": 60,
+         "prefab": "Models/Prop/furniture_warp/sound_tool\\audio_set_01.prefab"
+      },
+      {
+         "id": 61,
+         "prefab": "Models/Prop/furniture_warp/sound_tool\\boombox_01.prefab"
+      },
+      {
+         "id": 62,
+         "prefab": "Models/Prop/furniture_warp/sound_tool\\jukebox_01.prefab"
+      },
+      {
+         "id": 63,
+         "prefab": "Models/Prop/furniture_warp/storage\\barrel_01.prefab"
+      },
+      {
+         "id": 64,
+         "prefab": "Models/Prop/furniture_warp/storage\\barrel_01_fire.prefab"
+      },
+      {
+         "id": 65,
+         "prefab": "Models/Prop/furniture_warp/storage\\barrel_02.prefab"
+      },
+      {
+         "id": 66,
+         "prefab": "Models/Prop/furniture_warp/storage\\barrel_02_fire.prefab"
+      },
+      {
+         "id": 67,
+         "prefab": "Models/Prop/furniture_warp/storage\\barrel_oak_01.prefab"
+      },
+      {
+         "id": 68,
+         "prefab": "Models/Prop/furniture_warp/storage\\cabinet_01.prefab"
+      },
+      {
+         "id": 69,
+         "prefab": "Models/Prop/furniture_warp/storage\\cabinet_02.prefab"
+      },
+      {
+         "id": 70,
+         "prefab": "Models/Prop/furniture_warp/storage\\dumpster_01.prefab"
+      },
+      {
+         "id": 71,
+         "prefab": "Models/Prop/furniture_warp/storage\\icebox_01.prefab"
+      },
+      {
+         "id": 72,
+         "prefab": "Models/Prop/furniture_warp/storage\\icebox_02.prefab"
+      },
+      {
+         "id": 73,
+         "prefab": "Models/Prop/furniture_warp/storage\\refrigerator_01.prefab"
+      },
+      {
+         "id": 74,
+         "prefab": "Models/Prop/furniture_warp/storage\\refrigerator_02.prefab"
+      },
+      {
+         "id": 75,
+         "prefab": "Models/Prop/furniture_warp/storage\\refrigerator_03.prefab"
+      },
+      {
+         "id": 76,
+         "prefab": "Models/Prop/furniture_warp/storage\\wastebasket_01.prefab"
+      },
+      {
+         "id": 77,
+         "prefab": "Models/Prop/furniture_warp/storage\\wastebasket_02.prefab"
+      },
+      {
+         "id": 78,
+         "prefab": "Models/Prop/furniture_warp/workbench\\worktable_warp_01.prefab"
+      },
+      {
+         "id": 79,
+         "prefab": "Models/Prop/furniture_warp/workbench\\worktable_warp_02.prefab"
+      },
+      {
+         "id": 80,
+         "prefab": "Models/Prop/furniture_warp/workbench\\worktable_warp_03.prefab"
+      },
+      {
+         "id": 81,
+         "prefab": "Models/Prop/furniture_warp/workbench\\worktable_warp_04.prefab"
+      },
+      {
+         "id": 82,
+         "prefab": "Models/Prop/furniture_warp/workbench\\worktable_warp_05.prefab"
+      },
+      {
+         "id": 83,
+         "prefab": "Models/Prop/nature/crack/aqua_crack_01.prefab"
+      },
+      {
+         "id": 84,
+         "prefab": "Models/Prop/nature/crack/crack_01.prefab"
+      },
+      {
+         "id": 85,
+         "prefab": "Models/Prop/nature/crater/aqua_crater_01.prefab"
+      },
+      {
+         "id": 86,
+         "prefab": "Models/Prop/nature/crater/crater_01.prefab"
+      },
+      {
+         "id": 87,
+         "prefab": "Models/Prop/nature/warphole/warphole_01.prefab"
+      },
+      {
+         "id": 88,
+         "prefab": "Models/Prop/facility/camp/camp_01.prefab"
+      },
+      {
+         "id": 89,
+         "prefab": "Models/Prop/facility/camp/camp_board_01.prefab"
+      },
+      {
+         "id": 90,
+         "prefab": "Models/Prop/facility/camp/camp_communication_station_01.prefab"
+      },
+      {
+         "id": 91,
+         "prefab": "Models/Prop/facility/camp/camp_rest_01.prefab"
+      },
+      {
+         "id": 92,
+         "prefab": "Models/Prop/facility/camp/camp_rest_02.prefab"
+      },
+      {
+         "id": 93,
+         "prefab": "Models/Prop/facility/camp/camp_rest_02_b.prefab"
+      },
+      {
+         "id": 94,
+         "prefab": "Models/Prop/facility/camp/camp_square_01.prefab"
+      },
+      {
+         "id": 95,
+         "prefab": "Models/Prop/facility/camp/camp_square_01_b.prefab"
+      },
+      {
+         "id": 96,
+         "prefab": "Models/Prop/facility/camp/camp_square_01_fire.prefab"
+      },
+      {
+         "id": 97,
+         "prefab": "Models/Prop/facility/camp/camp_warehouse_01.prefab"
+      },
+      {
+         "id": 98,
+         "prefab": "Models/Prop/facility/camp/camp_warphole_01.prefab"
+      },
+      {
+         "id": 99,
+         "prefab": "Models/Prop/facility/camp/camp_workspace_01.prefab"
+      },
+      {
+         "id": 100,
+         "prefab": "Models/Prop/wreckedship/ST_wreckedship_01.prefab"
+      },
+      {
+         "id": 101,
+         "prefab": "Models/Prop/wreckedship/ST_wreckedship_02.prefab"
+      },
+      {
+         "id": 102,
+         "prefab": "Models/Prop/wreckedship/ST_wreckedship_a.prefab"
+      },
+      {
+         "id": 103,
+         "prefab": "Models/Prop/wreckedship/ST_wreckedship_b.prefab"
+      },
+      {
+         "id": 104,
+         "prefab": "Models/Prop/wreckedship/ST_wreckedship_c.prefab"
+      },
+      {
+         "id": 105,
+         "prefab": "Models/Prop/wreckedship/ST_wreckedship_d.prefab"
+      },
+      {
+         "id": 106,
+         "prefab": "Models/Prop/facility/camp/seol_camp_rest_02.prefab"
+      },
+      {
+         "id": 107,
+         "prefab": "Models/Landmark/Static/biocom_marker.prefab"
+      },
+      {
+         "id": 108,
+         "prefab": "Models/Landmark/Static/ST_airplane_wreckage_01.prefab"
+      },
+      {
+         "id": 109,
+         "prefab": "Models/Landmark/Static/ST_highway_01.prefab"
+      },
+      {
+         "id": 110,
+         "prefab": "Models/Landmark/Static/ST_train_wreckage_01_a.prefab"
+      },
+      {
+         "id": 111,
+         "prefab": "Models/Landmark/Static/ST_train_wreckage_01_b.prefab"
+      },
+      {
+         "id": 112,
+         "prefab": "Models/Landmark/Static/ST_train_wreckage_01_c.prefab"
+      },
+      {
+         "id": 1000,
+         "prefab": "Models/Landmark/Scoop/ice_field_01.prefab"
+      },
+      {
+         "id": 1001,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_03_road_00.prefab"
+      },
+      {
+         "id": 1002,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_03_road_01.prefab"
+      },
+      {
+         "id": 1003,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_03_road_02.prefab"
+      },
+      {
+         "id": 1004,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_03_road_03.prefab"
+      },
+      {
+         "id": 1005,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_03_road_04.prefab"
+      },
+      {
+         "id": 1006,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_03_store_01.prefab"
+      },
+      {
+         "id": 1007,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_04_road_00.prefab"
+      },
+      {
+         "id": 1008,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_04_road_01.prefab"
+      },
+      {
+         "id": 1009,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_04_road_02.prefab"
+      },
+      {
+         "id": 1010,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_04_road_03.prefab"
+      },
+      {
+         "id": 1011,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_04_road_04.prefab"
+      },
+      {
+         "id": 1012,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_04_store_01.prefab"
+      },
+      {
+         "id": 1013,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_05_road_00.prefab"
+      },
+      {
+         "id": 1014,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_05_road_01.prefab"
+      },
+      {
+         "id": 1015,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_05_road_02.prefab"
+      },
+      {
+         "id": 1016,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_05_road_03.prefab"
+      },
+      {
+         "id": 1017,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_05_road_04.prefab"
+      },
+      {
+         "id": 1018,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_05_store_01.prefab"
+      },
+      {
+         "id": 1019,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_06_road_00.prefab"
+      },
+      {
+         "id": 1020,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_06_road_01.prefab"
+      },
+      {
+         "id": 1021,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_06_road_02.prefab"
+      },
+      {
+         "id": 1022,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_06_road_03.prefab"
+      },
+      {
+         "id": 1023,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_06_road_04.prefab"
+      },
+      {
+         "id": 1024,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_06_store_01.prefab"
+      },
+      {
+         "id": 1025,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_07_road_00.prefab"
+      },
+      {
+         "id": 1026,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_07_road_01.prefab"
+      },
+      {
+         "id": 1027,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_07_road_02.prefab"
+      },
+      {
+         "id": 1028,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_07_road_03.prefab"
+      },
+      {
+         "id": 1029,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_07_road_04.prefab"
+      },
+      {
+         "id": 1030,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_07_store_01.prefab"
+      },
+      {
+         "id": 1031,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_08_road_00.prefab"
+      },
+      {
+         "id": 1032,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_08_road_01.prefab"
+      },
+      {
+         "id": 1033,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_08_road_02.prefab"
+      },
+      {
+         "id": 1034,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_08_road_03.prefab"
+      },
+      {
+         "id": 1035,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_08_road_04.prefab"
+      },
+      {
+         "id": 1036,
+         "prefab": "Models/Landmark/Scoop/scoop_ground_08_store_01.prefab"
+      },
+      {
+         "id": 2000,
+         "prefab": "Models/Cliff/Common/cliff_common_a.prefab"
+      },
+      {
+         "id": 2001,
+         "prefab": "Models/Cliff/Common/cliff_common_b.prefab"
+      },
+      {
+         "id": 2002,
+         "prefab": "Models/Cliff/Common/cliff_common_c.prefab"
+      },
+      {
+         "id": 2003,
+         "prefab": "Models/Cliff/Desert/cliff_desert_a.prefab"
+      },
+      {
+         "id": 2004,
+         "prefab": "Models/Cliff/Desert/cliff_desert_b.prefab"
+      },
+      {
+         "id": 2005,
+         "prefab": "Models/Cliff/Desert/cliff_desert_c.prefab"
+      },
+      {
+         "id": 2006,
+         "prefab": "Models/Cliff/Snow/cliff_snow_a.prefab"
+      },
+      {
+         "id": 2007,
+         "prefab": "Models/Cliff/Snow/cliff_snow_b.prefab"
+      },
+      {
+         "id": 2008,
+         "prefab": "Models/Cliff/Snow/cliff_snow_c.prefab"
+      },
+      {
+         "id": 2009,
+         "prefab": "Models/Cliff/Tropical/cliff_tropical_a.prefab"
+      },
+      {
+         "id": 2010,
+         "prefab": "Models/Cliff/Tropical/cliff_tropical_b.prefab"
+      },
+      {
+         "id": 2011,
+         "prefab": "Models/Cliff/Tropical/cliff_tropical_blue_a.prefab"
+      },
+      {
+         "id": 2012,
+         "prefab": "Models/Cliff/Tropical/cliff_tropical_blue_b.prefab"
+      },
+      {
+         "id": 2013,
+         "prefab": "Models/Cliff/Tropical/cliff_tropical_blue_c.prefab"
+      },
+      {
+         "id": 2014,
+         "prefab": "Models/Cliff/Tropical/cliff_tropical_c.prefab"
+      },
+      {
+         "id": 2015,
+         "prefab": "Models/Cliff/Tundra/cliff_tundra_a.prefab"
+      },
+      {
+         "id": 2016,
+         "prefab": "Models/Cliff/Tundra/cliff_tundra_b.prefab"
+      },
+      {
+         "id": 2017,
+         "prefab": "Models/Cliff/Tundra/cliff_tundra_c.prefab"
+      },
+      {
+         "id": 2018,
+         "prefab": "Models/Cliff/Grassland/cliff_grassland_a.prefab"
+      },
+      {
+         "id": 2019,
+         "prefab": "Models/Cliff/Grassland/cliff_grassland_b.prefab"
+      },
+      {
+         "id": 2020,
+         "prefab": "Models/Cliff/Grassland/cliff_grassland_c.prefab"
+      },
+      {
+         "id": 2021,
+         "prefab": "Models/Cliff/Volcanic/cliff_volcanic_a.prefab"
+      },
+      {
+         "id": 2022,
+         "prefab": "Models/Cliff/Volcanic/cliff_volcanic_b.prefab"
+      },
+      {
+         "id": 2023,
+         "prefab": "Models/Cliff/Volcanic/cliff_volcanic_c.prefab"
+      },
+      {
+         "id": 2024,
+         "prefab": "Models/Cliff/Savanna/cliff_savanna_a.prefab"
+      },
+      {
+         "id": 2025,
+         "prefab": "Models/Cliff/Savanna/cliff_savanna_b.prefab"
+      },
+      {
+         "id": 2026,
+         "prefab": "Models/Cliff/Savanna/cliff_savanna_c.prefab"
+      },
+      {
+         "id": 2503,
+         "prefab": "Models/Cliff/Lava/cliff_lava_crater_a.prefab"
+      },
+      {
+         "id": 2504,
+         "prefab": "Models/Cliff/Lava/cliff_lava_crater_b.prefab"
+      },
+      {
+         "id": 2505,
+         "prefab": "Models/Cliff/Lava/cliff_lava_crater_c.prefab"
+      },
+      {
+         "id": 2506,
+         "prefab": "Models/Cliff/Lava/cliff_lava_crater_stream_a.prefab"
+      },
+      {
+         "id": 2507,
+         "prefab": "Models/Cliff/Lava/cliff_lava_ocean_a.prefab"
+      },
+      {
+         "id": 4000,
+         "prefab": "Models/Prop/world/lake\\hotspring\\hotspring_01.prefab"
+      }
+   ],
+   "indicators": []
+}

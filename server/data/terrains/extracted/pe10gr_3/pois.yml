@@ -1,0 +1,13 @@
+biocom_condition_slots: {}
+craters: []
+biocoms: []
+warpholes: {}
+cargo_in_warpholes: []
+port_points:
+- - 146
+  - 35
+camp_warpholes: []
+camp_artifacts: []
+camp_workbench_slots: []
+faction_props: []
+scoop_slots: []

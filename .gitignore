@@ -1,0 +1,40 @@
+# Build outputs
+**/bin/
+**/obj/
+**/publish/
+artifacts/
+
+# Installed game files and extracted packages (not source)
+game/
+game-backup/
+version_control/
+
+# Runtime state
+server/saves/
+server/saves-backup-*/
+server/data/whitelist.txt
+*.log
+*.pid
+
+# Local credentials
+discord-bot/config.json
+.env
+.env.*
+*.pem
+*.pfx
+*.key
+
+# Local/editor files
+**/__pycache__/
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+Thumbs.db
+Desktop.ini
+
+# Local screenshots and scratch files
+shots/
+New Text Document.txt
+

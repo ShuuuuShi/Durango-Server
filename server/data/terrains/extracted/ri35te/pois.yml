@@ -1,0 +1,37 @@
+biocom_condition_slots: {}
+craters: []
+biocoms: []
+warpholes:
+  0:
+  - 81
+  - 84
+  1:
+  - 179
+  - 88
+  2:
+  - 69
+  - 139
+  3:
+  - 214
+  - 160
+  4:
+  - 120
+  - 169
+cargo_in_warpholes: []
+rifts:
+- - 132
+  - 47
+- - 188
+  - 34
+port_points:
+- - 40
+  - 177
+camp_warpholes: []
+camp_artifacts:
+- entity_type: 9450
+  tile:
+  - 48
+  - 178
+camp_workbench_slots: []
+faction_props: []
+scoop_slots: []

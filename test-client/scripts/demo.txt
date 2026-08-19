@@ -1,0 +1,28 @@
+# สคริปต์โชว์ให้ดูในเกมจริง — รันด้วย
+#   dotnet run --no-build -- --console 127.0.0.1 8191 bot-demo --script scripts/demo.txt
+# ต้องมี client จริงต่ออยู่ด้วยถึงจะเห็นภาพ (tools/connect-game.ps1)
+
+look
+goto player
+wait 2
+chat สวัสดีครับ ผมคือบอทที่คุมด้วย packet ล้วน
+wait 1
+
+# เดินวนรอบผู้เล่นให้เห็นว่าขยับจริง
+move 42 175
+wait 3
+move 38 175
+wait 3
+move 38 180
+wait 3
+move 42 180
+wait 3
+
+# เก็บของ 25 วินาที
+farm 25
+
+# หาสัตว์มาตี (สัตว์จะสู้กลับหรือวิ่งหนีตามชนิด)
+target near
+kill near 45
+status
+inv

@@ -1,0 +1,152 @@
+{
+  "Animals": {
+    "LifeBase": 30.0,
+    "LifePerLevel": 8.0,
+    "DamageBase": 2.0,
+    "DamagePerLevel": 0.4,
+    "CorpseSeconds": 150.0,
+    "RespawnSeconds": 60.0,
+    "ChaseSpeed": 300.0,
+    "FleeSpeed": 280.0,
+    "SightTiles": 6.0,
+    "GiveUpTiles": 20.0,
+    "AggroSeconds": 20.0,
+    "FirstAttackDelay": 0.5,
+    "SpawnRadiusTiles": 30.0,
+    "WanderRadiusTiles": 12.5
+  },
+  "Exp": {
+    "KillBase": 4,
+    "KillPerLevel": 3,
+    "Gather": 2,
+    "Butchery": 3,
+    "Craft": 5,
+    "Build": 8,
+    "SkillPointsPerLevel": 3
+  },
+  "Skills": {
+    "FullAt": 60,
+    "GatherSpeed": 0.4,
+    "GatherBonus": 0.3,
+    "ButcherySpeed": 0.4,
+    "ButcheryBonus": 0.3,
+    "MeleeDamage": 0.5,
+    "DefenseReduce": 0.3,
+    "CraftSpeed": 0.4,
+    "StaminaSave": 0.3,
+    "RequiredPlayerLevelPerSkillLevel": 1.0
+  },
+  "Spawn": [
+    {
+      "Type": 2042,
+      "Name": "กิ้งก่า",
+      "MinLevel": 10,
+      "MaxLevel": 12,
+      "Quota": 6,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 1.4,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2015,
+      "Name": "คอมป์โซกนาทัส",
+      "MinLevel": 10,
+      "MaxLevel": 13,
+      "Quota": 6,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 3.0,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2033,
+      "Name": "โดโดฟิซิส",
+      "MinLevel": 11,
+      "MaxLevel": 14,
+      "Quota": 4,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 3.0,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2006,
+      "Name": "เฟนาโคดัส",
+      "MinLevel": 12,
+      "MaxLevel": 16,
+      "Quota": 4,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 1.6,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2017,
+      "Name": "โปรโตเซราท็อปส์",
+      "MinLevel": 12,
+      "MaxLevel": 17,
+      "Quota": 4,
+      "Behavior": "FightBack",
+      "MinTilesFromEntry": 0,
+      "AttackCooltime": 1.3,
+      "BehaviorEnum": 1
+    },
+    {
+      "Type": 2009,
+      "Name": "พาราซอโรโลฟัส",
+      "MinLevel": 14,
+      "MaxLevel": 19,
+      "Quota": 3,
+      "Behavior": "FightBack",
+      "MinTilesFromEntry": 4,
+      "AttackCooltime": 2.0,
+      "BehaviorEnum": 1
+    },
+    {
+      "Type": 2000,
+      "Name": "สเตโกซอรัส",
+      "MinLevel": 16,
+      "MaxLevel": 20,
+      "Quota": 2,
+      "Behavior": "Flee",
+      "MinTilesFromEntry": 6,
+      "AttackCooltime": 2.1,
+      "BehaviorEnum": 0
+    },
+    {
+      "Type": 2003,
+      "Name": "ทริเซราท็อปส์",
+      "MinLevel": 16,
+      "MaxLevel": 20,
+      "Quota": 2,
+      "Behavior": "FightBack",
+      "MinTilesFromEntry": 6,
+      "AttackCooltime": 1.4,
+      "BehaviorEnum": 1
+    },
+    {
+      "Type": 2002,
+      "Name": "โอวิแรปเตอร์",
+      "MinLevel": 13,
+      "MaxLevel": 18,
+      "Quota": 2,
+      "Behavior": "Aggressive",
+      "MinTilesFromEntry": 12,
+      "AttackCooltime": 1.3,
+      "BehaviorEnum": 2
+    },
+    {
+      "Type": 2001,
+      "Name": "แร็ปเตอร์",
+      "MinLevel": 17,
+      "MaxLevel": 20,
+      "Quota": 1,
+      "Behavior": "Aggressive",
+      "MinTilesFromEntry": 20,
+      "AttackCooltime": 1.7,
+      "BehaviorEnum": 2
+    }
+  ],
+  "TotalQuota": 34
+}

@@ -1,0 +1,85 @@
+using System;
+using System.Net.Http;
+using System.Text;
+
+namespace DurangoTestClient;
+
+/// <summary>
+/// GP-12: ขอ session token จาก gateway (HTTP) เหมือนที่ตัวเกมจริงทำ ก่อนจะ Auth เข้าพอร์ตเกม
+///
+/// server ไม่รับ Auth ที่ไม่มี token แล้ว (เว้นแต่รันด้วย --insecure-auth)
+/// ตัวเกมจริงยิง POST /sessions พร้อมฟิลด์ "player" = JSON ของเกาะตัวเอง
+/// ตัวทดสอบส่งแค่ player_info เท่าที่ server ต้องใช้ (id/ชื่อ/เลเวล)
+/// </summary>
+public static class SessionClient
+{
+    /// <summary>พอร์ต gateway เริ่มต้น (พอร์ตเกม 8191 - 1)</summary>
+    public const int DefaultGatewayPort = 8190;
+
+    /// <summary>
+    /// คืน session token ถ้าขอสำเร็จ, คืน null ถ้าติดต่อ gateway ไม่ได้
+    /// (เรียกต่อได้ — server ที่รัน --insecure-auth ยังรับ Auth ที่ไม่มี token)
+    /// </summary>
+    public static string Fetch(string host, int gatewayPort, string entityId, string name, int level = 1)
+    {
+        string playerJson =
+            "{\"player_info\":{\"player_entity_id\":\"" + Escape(entityId) + "\"," +
+            "\"player_name\":\"" + Escape(name) + "\"," +
+            "\"player_level\":" + level + "}}";
+        try
+        {
+            using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
+            var body = new StringContent(
+                "player=" + Uri.EscapeDataString(playerJson),
+                Encoding.UTF8,
+                "application/x-www-form-urlencoded");
+            string url = $"http://{host}:{gatewayPort}/sessions";
+            string reply = http.PostAsync(url, body).GetAwaiter().GetResult()
+                .Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            string token = ReadJsonString(reply, "session_token");
+            if (string.IsNullOrEmpty(token))
+            {
+                Console.WriteLine("[session] gateway ไม่ได้ส่ง session_token กลับมา: " + reply);
+                return null;
+            }
+            Console.WriteLine($"[session] ได้ token จาก {url} (…{token.Substring(Math.Max(0, token.Length - 6))})");
+            return token;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"[session] ขอ token จาก gateway {host}:{gatewayPort} ไม่ได้: {e.Message}");
+            return null;
+        }
+    }
+
+    /// <summary>อ่านค่า string ของคีย์หนึ่งจาก JSON แบน ๆ (เลี่ยงการลาก Newtonsoft เข้ามาในตัวทดสอบ)</summary>
+    private static string ReadJsonString(string json, string key)
+    {
+        if (string.IsNullOrEmpty(json))
+        {
+            return null;
+        }
+        int at = json.IndexOf("\"" + key + "\"", StringComparison.Ordinal);
+        if (at < 0)
+        {
+            return null;
+        }
+        int colon = json.IndexOf(':', at);
+        if (colon < 0)
+        {
+            return null;
+        }
+        int open = json.IndexOf('"', colon);
+        if (open < 0)
+        {
+            return null;
+        }
+        int close = json.IndexOf('"', open + 1);
+        return close > open ? json.Substring(open + 1, close - open - 1) : null;
+    }
+
+    private static string Escape(string s)
+    {
+        return (s ?? string.Empty).Replace("\\", "\\\\").Replace("\"", "\\\"");
+    }
+}

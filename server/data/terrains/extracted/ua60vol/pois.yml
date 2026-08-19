@@ -1,0 +1,100 @@
+biocom_condition_slots:
+  mud:
+  - - 111
+    - 176
+  bonepile:
+  - - 47
+    - 144
+  volcanic_common:
+  - - 47
+    - 80
+  - - 208
+    - 127
+craters:
+- biocom_type: 10115
+  tile:
+  - 127
+  - 95
+- biocom_type: 9002
+  tile:
+  - 111
+  - 176
+- biocom_type: 9003
+  tile:
+  - 47
+  - 144
+- biocom_type: 9012
+  tile:
+  - 47
+  - 80
+- biocom_type: 9013
+  tile:
+  - 208
+  - 127
+biocoms:
+- biocom_type: 9017
+  tile:
+  - 127
+  - 31
+- biocom_type: 9207
+  tile:
+  - 192
+  - 127
+- biocom_type: 9207
+  tile:
+  - 63
+  - 80
+- biocom_type: 9207
+  tile:
+  - 128
+  - 175
+- biocom_type: 9207
+  tile:
+  - 144
+  - 95
+- biocom_type: 9207
+  tile:
+  - 80
+  - 144
+warpholes:
+  0:
+  - 244
+  - 117
+  1:
+  - 111
+  - 195
+cargo_in_warpholes: []
+rifts:
+- - 11
+  - 142
+- - 41
+  - 188
+- - 161
+  - 33
+port_points:
+- - 250
+  - 116
+camp_warpholes: []
+camp_artifacts: []
+camp_workbench_slots: []
+faction_props: []
+scoop_slots:
+- scoop_point:
+  - 127
+  - 95
+  slots:
+  - x: 124
+    y: 90
+    tag: tree_01
+    offset_x: 37
+    offset_z: 90
+  - x: 124
+    y: 97
+    tag: tree_02
+    offset_x: 35
+    offset_z: 49
+  - x: 128
+    y: 98
+    tag: tree_03
+    offset_x: 44
+    offset_z: 85

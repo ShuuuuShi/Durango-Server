@@ -1,0 +1,19 @@
+public enum StateClipCondition
+{
+	Framework,
+	StandState,
+	PrevState,
+	IsMoving,
+	RunState,
+	IsInWater,
+	IsSwimming,
+	TargetSize,
+	Random,
+	IsWaterCarried,
+	IsBushWhack,
+	IsTired,
+	IsRoadRunning,
+	IsRest,
+	IsSleep,
+	IsNovice
+}

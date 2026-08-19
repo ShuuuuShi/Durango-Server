@@ -1,0 +1,13 @@
+namespace Durango.Network;
+
+public enum EntityType
+{
+	UNSET = 0,
+	MALE = 1000,
+	FEMALE = 1001,
+	NATIVE_MALE = 1002,
+	NATIVE_FEMALE = 1003,
+	FIRST_ANIMAL_MODEL_ID = 2000,
+	LAST_ANIMAL_MODEL_ID = 3000,
+	BOX_SIMPLE = 60000
+}

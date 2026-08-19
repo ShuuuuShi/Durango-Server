@@ -1,0 +1,60 @@
+using MsgPack;
+
+namespace Messages;
+
+public struct AddFavoriteRegionOwners
+{
+	public const uint TypeCode = 20011u;
+
+	public string[] EntityIds;
+
+	public static void Pack(Packer packer, AddFavoriteRegionOwners val, bool hint = false)
+	{
+		if (hint)
+		{
+			packer.PackArrayHeader(2);
+			packer.Pack(20011u);
+		}
+		else
+		{
+			packer.PackArrayHeader(1);
+		}
+		if (val.EntityIds == null)
+		{
+			packer.PackArrayHeader(0);
+			return;
+		}
+		packer.PackArrayHeader(val.EntityIds.Length);
+		for (int i = 0; i < val.EntityIds.Length; i++)
+		{
+			if (val.EntityIds[i] == null)
+			{
+				packer.PackString(string.Empty);
+			}
+			else
+			{
+				packer.PackString(val.EntityIds[i]);
+			}
+		}
+	}
+
+	public static AddFavoriteRegionOwners Unpack(Unpacker unpacker)
+	{
+		unpacker.Read();
+		int num = unpacker.LastReadData.AsInt32();
+		AddFavoriteRegionOwners result = default(AddFavoriteRegionOwners);
+		result.EntityIds = new string[num];
+		for (int i = 0; i < num; i++)
+		{
+			unpacker.Read();
+			result.EntityIds[i] = unpacker.LastReadData.AsString();
+		}
+		return result;
+	}
+
+	public override string ToString()
+	{
+		object[] entityIds = EntityIds;
+		return string.Format("<AddFavoriteRegionOwners EntityIds={0}>", entityIds);
+	}
+}

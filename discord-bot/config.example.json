@@ -1,0 +1,8 @@
+{
+  "token": "PUT_DISCORD_BOT_TOKEN_HERE",
+  "channels": {
+    "answer": [],
+    "announce": ""
+  },
+  "brief_path": "../agent-brief/PROJECT-BRIEF.md"
+}

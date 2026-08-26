@@ -1,0 +1,96 @@
+# DurangoMemoryBot MVP
+
+`DurangoMemoryBot.dll` เป็น client mod สำหรับอ่าน managed state แบบ whitelist และสั่งงานผ่าน API เกมจริง โดยไม่ใช้เมาส์/คีย์บอร์ดหรือ screenshot เป็นค่าเริ่มต้น
+
+## ข้อจำกัดสำคัญ
+
+- ไม่ใช่ raw process-memory reader/writer
+- ไม่เปิด arbitrary reflection หรือ private object path
+- mod ทำงานใน Unity Mono process เดียวกับเกม จึงต้องติดตั้งเฉพาะ DLL ที่เชื่อถือได้
+- คำสั่ง gameplay ยังผ่านระบบเกมและ server validation เดิม
+
+## ติดตั้ง
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/build-memory-bot.ps1
+```
+
+สคริปต์จะติดตั้งเฉพาะ `game/mods/DurangoMemoryBot.dll` ไม่ overwrite `Assembly-CSharp.dll`
+
+## เปิด bridge
+
+ตั้งค่าได้ก่อนเปิดเกม:
+
+```powershell
+$env:DURANGO_MEMORYBOT=1
+$env:DURANGO_MEMORYBOT_PORT=8193
+$env:DURANGO_MEMORYBOT_TOKEN='ตั้งรหัสลับถ้าต้องการ'
+$env:DURANGO_MEMORYBOT_OVERLAY=1
+```
+
+ค่า default คือ port `8193` และไม่มี token ถ้าไม่ตั้ง environment variable
+
+## Protocol
+
+ส่ง JSON หนึ่งบรรทัดผ่าน TCP loopback `127.0.0.1:8193` และรับ JSON หนึ่งบรรทัดกลับ
+
+อ่านข้อมูล:
+
+```json
+{"request_id":"1","op":"read","path":"player.local"}
+```
+
+paths ที่รองรับใน MVP:
+
+```text
+game
+screen
+player.local
+survival
+inventory
+inv
+status
+interaction
+combat
+world.nearby
+```
+
+สั่งงาน:
+
+```json
+{"request_id":"2","op":"command","name":"player.stop"}
+{"request_id":"3","op":"command","name":"player.move_to","x":8200,"y":35600}
+{"request_id":"4","op":"command","name":"inventory.use","item_id":"item-id"}
+{"request_id":"5","op":"command","name":"combat.use_action","action_id":"barehand_kick_a"}
+{"request_id":"6","op":"command","name":"ui.open","uri":"Inventory"}
+{"request_id":"7","op":"command","name":"interaction.select_nearest","kind":"prop"}
+{"request_id":"8","op":"command","name":"interaction.refresh"}
+{"request_id":"9","op":"command","name":"interaction.execute","action_id":"Rest"}
+```
+
+`interaction.select_nearest` จะเลือกเป้าหมายใกล้สุดจากระบบ interaction จริงและส่ง touch request ตาม pipeline เกมเดิม; หลังจากนั้นอ่าน `interaction` เพื่อรอเมนู แล้วจึงใช้ `interaction.execute` ด้วย action ที่มีอยู่และไม่ถูกปิดใช้งาน เช่น `Rest`, `Collect` หรือ `Attack`. คำสั่งเหล่านี้คืนสถานะการรับคำสั่ง ไม่ได้ bypass server validation.
+
+Capture เฉพาะเมื่อสั่ง:
+
+```json
+{"request_id":"7","op":"capture","filename":"manual-check.png"}
+```
+
+ไฟล์ capture จะถูกเขียนใต้ `game/MemoryBotCaptures/`; ไม่รับ absolute path หรือ `..`
+
+## Smoke client
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/MemoryBotClient/memorybot-client.ps1 -Path game
+powershell -ExecutionPolicy Bypass -File tools/MemoryBotClient/memorybot-client.ps1 -Path survival
+powershell -ExecutionPolicy Bypass -File tools/MemoryBotClient/memorybot-client.ps1 -Capture
+```
+
+## Security
+
+- bridge bind loopback เท่านั้น
+- ตั้ง `DURANGO_MEMORYBOT_TOKEN` สำหรับ local authentication
+- จำกัด queue และ request line
+- ทุกคำสั่งทำบน Unity main thread
+- อย่าเปิด port นี้ออกอินเทอร์เน็ต
+- `tap` ของ `BotBridge` เดิมไม่ใช่ส่วนหนึ่งของ MemoryBot API

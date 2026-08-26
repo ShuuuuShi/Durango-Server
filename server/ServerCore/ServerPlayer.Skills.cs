@@ -119,6 +119,22 @@ public partial class ServerPlayer
         MarkDirty();              // GP-07
         Send(default(OK), header.Seq);
         SendSkills();
+        // [แก้เอง] 25 ส.ค. 2026 — เรียนสกิลใหม่ = RecipeUnlockData.Collect ได้ของเพิ่มทันที ต้อง push
+        // เมนูคราฟต์ใหม่เหมือนตอนขึ้นเลเวล/ความชำนาญขึ้น (ดู SendUnlockedRecipesAndBlueprints)
+        SendUnlockedRecipesAndBlueprints();
+        // 🐛 เจ้าของสังเกต: "ในเกมมีเอฟเฟคหลายอย่างแต่ของเรายังไม่แสดงผล ตอนนี้แสดงแค่ xp" — เหมือน
+        // LevelUpEffect (ดู GainExp ใน ServerPlayer.Progress.cs) เรียนสกิลก็ต้องส่ง Rewarded{SkillRewardEffect}
+        // ถึงจะเด้งป๊อปอัพ/เล่นเอฟเฟคฝั่ง client (AlarmGroup.cs รอรับข้อความนี้โดยเฉพาะ)
+        Send(new Rewarded
+        {
+            Effect = new SkillRewardEffect
+            {
+                Type = Shared.System.RewardEffect.SkillLearned,
+                LearnedSkill = new Skill { SkillId = msg.SkillId, Level = msg.Level, SubId = msg.SubId }
+            },
+            Reward = default(RewardInfo)
+        });
+        QuestProgress(QuestData.Goal.LearnSkill);
     }
 
     private void HandleUntrainSkill(UntrainSkill msg, PacketHeader header)
@@ -142,6 +158,10 @@ public partial class ServerPlayer
         }
         Send(default(OK), header.Seq);
         SendSkills();
+        // [แก้เอง] 25 ส.ค. 2026 — เจ้าของเจอ: ยกเลิกเรียนสกิลแล้ว "รายการคราฟยังไม่หาย" — ยกเลิกสกิล
+        // เอาสูตรที่สกิลนั้นปลดล็อกออกจาก _knownSkills แล้วจริง (BuildUnlocked() คิดใหม่ทุกครั้งถูกอยู่แล้ว)
+        // แต่ลืม push ให้ client รู้เหมือนตอนเรียนสกิล (จุดเดียวกับที่พลาดตอนแรก แค่ไม่ครบทุก handler)
+        SendUnlockedRecipesAndBlueprints();
     }
 
     /// <summary>
@@ -199,12 +219,34 @@ public partial class ServerPlayer
     /// </summary>
     private void BuildUnlocked(out HashSet<string> recipes, out HashSet<string> blueprints)
     {
-        // ของเริ่มต้นมาจากรายการที่เรากำหนดเองตาม 1.0.0 beta.txt (ดู StarterConfig)
-        // **ไม่ใช่** RecipeUnlockData.AlwaysRecipes ซึ่งเป็นสูตรที่ "หลุดตาราง" 219 อัน
-        // (ของอีเวนต์/ซีซัน 2/โลหะขั้นสูง และไม่มีของพื้นฐานเลย)
-        StarterConfig starter = ServerConfig.Current.Starter;
-        recipes = new HashSet<string>(starter.Recipes ?? new List<string>());
-        blueprints = new HashSet<string>(starter.Blueprints ?? new List<string>());
+        // [แก้เอง] 25 ส.ค. 2026 (รอบ 3 — ของจริง) — เจ้าของสั่งชัดเจน: "รายการคราฟอ้างอิงจากสกิลเท่านั้น"
+        // ไล่โค้ดแล้วเจอว่า `RecipeUnlockData.cs` มีของที่ถูกต้องอยู่แล้วครบ ไม่ต้องคิดเอง:
+        //   · `AlwaysRecipes`/`AlwaysBlueprints` — สูตร "ไม่มีสกิลไหนปลดล็อก = ได้ตั้งแต่แรก" (219/? อัน
+        //     จากข้อมูลเกมจริง คอมเมนต์หัวไฟล์บอกไว้ตรงๆ "720 - ปลดล็อกด้วยสกิล 501 - ได้ตั้งแต่แรก 219")
+        //   · `BySkill`/`Collect()` — ที่เหลือ 501 อันต้อง "เรียนสกิลนั้นถึงเลเวลนั้นจริง" (ผ่าน
+        //     `_knownSkills`/`HandleTrainSkill` หรือ auto-grant จาก `EnsureAutomaticSkills()`) ถึงจะได้
+        // เดิมรอบก่อนหน้าใช้ `ServerConfig.Current.Starter.Recipes` (34/12 อันคัดเองสมัยเบต้า ไม่ผูกกับ
+        // สกิลเลย) เป็นฐาน — ผิดตามที่เจ้าของชี้ว่า "ไอเทม tool หลายอย่างไม่ต้องเรียนสกิลก็โผล่" เพราะฐาน
+        // 34 อันนั้น "ฟรี" ทั้งชุดไม่สนสกิล ตอนนี้เปลี่ยนมาใช้ `AlwaysRecipes`/`AlwaysBlueprints` แทน —
+        // เป็นฐาน "ฟรีจริง" ตามข้อมูลเกม ไม่ใช่ลิสต์ที่เราคัดเอง — ที่เหลือทั้งหมดต้องผ่านสกิลจริง
+        //
+        // เกณฑ์ความสามารถ (RecipeGateData/BlueprintGateData ที่เพิ่มไปรอบก่อน) **เอาออกจากตรงนี้แล้ว**
+        // เพราะเป็นสูตรที่ประมาณเอาเอง (ไม่ใช่ระบบสกิลจริงของเกม) ซ้อนทับกับของจริงที่มีอยู่แล้ว
+        // (`AutomaticSkillData`/`EnsureAutomaticSkills`) เก็บโค้ด/ข้อมูลไว้เผื่ออ้างอิง แต่ไม่เรียกใช้แล้ว
+        // (ดู docs/server/Skill-Gate-Fix.md หัวข้อ "รอบ 3" สำหรับรายละเอียดที่ย้อนกลับ)
+        // [แก้เอง] — เจ้าของสั่ง: "ไอเทมที่ไม่ได้ใช้วัตถุดิบ ซ่อนให้หมด เป็นของแอดมิน"
+        // AlwaysRecipes/AlwaysBlueprints = ของ "ฟรี" (ไม่ต้องเรียนสกิล) — ฝั่ง blueprint ไม่หักวัตถุดิบ
+        // เลย (ข้อจำกัดเบต้า) ซ่อนจาก non-admin เมื่อเปิด config CraftMenu.HideFreeItems (default: on)
+        // non-admin เห็นเฉพาะของที่ปลดล็อกด้วยสกิลจริง · admin ได้ครบเสมอ
+        bool hideFree = !IsAdmin && (ServerConfig.Current.CraftMenu?.HideFreeItems ?? false);
+        recipes = hideFree ? new HashSet<string>() : new HashSet<string>(RecipeUnlockData.AlwaysRecipes);
+        blueprints = hideFree ? new HashSet<string>() : new HashSet<string>(RecipeUnlockData.AlwaysBlueprints);
+        var skillRecipes = new HashSet<string>();
+        var skillBlueprints = new HashSet<string>();
+        // AUTO-tier skill (skill_point=0) ต้องถูก grant เข้า _knownSkills ก่อนจะไล่ Collect() ด้านล่าง
+        // ไม่งั้นรอบแรกที่ยังไม่เคยเรียก SendSkills() เลยจะไม่เห็นของกลุ่มนี้ (EnsureAutomaticSkills ปกติ
+        // ถูกเรียกจาก SendSkills() แต่ BuildUnlocked() ไม่ได้พึ่ง SendSkills() เสมอไป)
+        EnsureAutomaticSkills();
         for (int i = 0; i < _knownSkills.Count; i++)
         {
             SkillBundle b = _knownSkills[i];
@@ -214,15 +256,57 @@ public partial class ServerPlayer
             }
             foreach (KeyValuePair<string, int> lv in b.Levels)
             {
-                RecipeUnlockData.Collect(b.SkillId, lv.Key, lv.Value, recipes, blueprints);
+                RecipeUnlockData.Collect(b.SkillId, lv.Key, lv.Value, skillRecipes, skillBlueprints);
             }
         }
+        recipes.UnionWith(skillRecipes);
+        blueprints.UnionWith(skillBlueprints);
+
+        // Food recipes must come from skills the player has actually unlocked.
+        recipes.RemoveWhere(id => IsCookingRecipe(id) && !skillRecipes.Contains(id));
         // ระบบที่ยังปิดอยู่ต้องไม่โผล่ในเมนูคราฟต์ด้วย — ปฏิเสธที่ handler อย่างเดียวไม่พอ
         // (ผู้เล่นจะเห็นสูตรทำอาหารเต็มไปหมดแล้วกดไม่ได้สักอัน ดู docs/server/Features.md)
         if (!ServerConfig.Current.Features.Cooking)
         {
             recipes.RemoveWhere(IsCookingRecipe);
         }
+        // [แก้เอง] 25 ส.ค. 2026 (รอบ 3) — เอาตัวกรอง MeetsRecipeGate/MeetsBlueprintGate (สูตรความสามารถ
+        // ที่ประมาณเอาเองรอบก่อน) ออกจากตรงนี้แล้ว — ตอนนี้ recipes/blueprints มาจาก AlwaysRecipes +
+        // Collect() ล้วนๆ ซึ่งอ้างอิงสกิลจริงอยู่แล้ว ไม่ต้องกรองซ้ำด้วยสูตรที่ไม่ใช่ของจริง
+        // (ฟังก์ชัน MeetsRecipeGate/MeetsBlueprintGate ยังอยู่ใน ServerPlayer.Abilities.cs เผื่ออ้างอิง
+        // แต่ไม่มีจุดไหนเรียกใช้แล้ว — RecipeGateData.cs/BlueprintGateData ก็เช่นกัน)
+        //
+        // 🐛 [แก้เอง] 25 ส.ค. 2026 — เจ้าของจับได้: "ของอีเว้นเอากลับมาทำไม" — `AlwaysRecipes` (219 อัน
+        // "ไม่มีสกิลไหนปลดล็อก") มีของอีเวนต์ปนอยู่จริง 24 อัน (santa/halloween/valentine/newyear2019/
+        // volc) และ `AlwaysBlueprints` มีอีก 55 อัน (xmas/halloween/army/compi ฯลฯ) — ข้อมูลเกมจริงถือว่า
+        // "ฟรี" (ไม่มีสกิลกำกับ) แต่กติกาที่เจ้าของสั่งไว้ก่อนหน้านี้คือของอีเวนต์ต้องเป็นของ admin เท่านั้น
+        // ไม่ว่าจะมาจากทางไหนก็ตาม — กรองออกด้วยเกณฑ์เดิม (IsEventRecipeCategory/IsEventBlueprint)
+        if (!IsAdmin)
+        {
+            recipes.RemoveWhere(id =>
+            {
+                RecipeMeta.TryGet(id, out RecipeMeta.Info info);
+                // หมวด "system" (ย้อม/ฟอกสีเสื้อผ้า 6 อัน — เจ้าของสั่งซ่อนทั้งแท็บให้ admin เท่านั้น
+                // แม้จะไม่ใช่ของอีเวนต์จริง ๆ ก็ตาม ดู RecipeData.IsSystemRecipeCategory)
+                return RecipeData.IsEventRecipe(id, info?.Category) || RecipeData.IsSystemRecipeCategory(info?.Category);
+            });
+            blueprints.RemoveWhere(RecipeData.IsEventBlueprint);
+            // [แก้เอง] 25 ส.ค. 2026 — เจ้าของสั่ง (จากรูปวงกลมแท็บ): ซ่อนแท็บในเมนูสร้างจากผู้เล่นทั่วไป
+            // ปรับรายแท็บได้จาก config.json → CraftMenu.HiddenCategories (ไม่ต้อง build ใหม่) · ไม่ส่ง
+            // blueprint "ฟรี" ในหมวดที่ซ่อนเข้า unlocked list แท็บฝั่ง client เลยหายเอง · **ของที่ปลดล็อก
+            // ด้วยสกิลไม่โดนซ่อน** (เตา/โต๊ะ/เตียง/กับดัก — progression จริง ดู FreeBlueprintsInCategories)
+            // admin ไม่เข้า block นี้ แท็บจึงยังอยู่ครบสำหรับ admin
+            List<string> hiddenCats = ServerConfig.Current.CraftMenu?.HiddenCategories;
+            if (hiddenCats != null && hiddenCats.Count > 0)
+            {
+                blueprints.ExceptWith(RecipeData.FreeBlueprintsInCategories(hiddenCats));
+            }
+        }
+        // [แก้เอง] 25 ส.ค. 2026 — เจ้าของกดเข้า "Storage" ในเมนูแล้วหน้ารายละเอียดขึ้นตรงๆ ว่า
+        // "(System Building: Player cannot build)" แต่ยังโผล่ให้กดสร้างได้อยู่ดี — กันไว้เสมอ (ไม่เว้น
+        // แม้ admin เพราะไม่ใช่ "ของ admin" แต่เป็นของที่เกมออกแบบมาให้ไม่มีใครสร้างเองได้เลย) ดู
+        // RecipeData.IsSystemOnlyBlueprint (39 อัน สกัดจาก field description ของข้อมูลเกมจริง)
+        blueprints.RemoveWhere(RecipeData.IsSystemOnlyBlueprint);
     }
 
     /// <summary>สูตรนี้เป็นสูตรทำอาหารไหม (หมวด cook / cook_season2 ในข้อมูลเกม)</summary>
@@ -249,6 +333,68 @@ public partial class ServerPlayer
         var arr = new string[blueprints.Count];
         blueprints.CopyTo(arr);
         return arr;
+    }
+
+    /// <summary>
+    /// [แก้เอง] 25 ส.ค. 2026 — ท่าต่อสู้ที่ผู้เล่นคนนี้ปลดล็อกแล้ว = ท่าพื้นฐาน + ท่าจากสกิลที่เรียนไป
+    ///
+    /// เจ้าของย้ำ 2 รอบ: "ท่าต่อสู้ก็ต้องยึดจากสกิลที่เรียน" — เดิม `HandleUseBattleAction`
+    /// ตรวจแค่ tag อาวุธ ไม่เคยเช็ค `_knownSkills` เลย ⇒ modded client ใช้ท่าพิเศษได้ทุกอย่าง
+    /// โดยไม่ต้องเรียนสกิล ตอนนี้กรองเหมือน `UnlockedRecipes` โดยใช้ `ActionUnlockData`
+    /// (สกัดจากข้อมูลเกมจริง: skills → rewards type=8 → action_ids)
+    /// </summary>
+    private HashSet<string> UnlockedActions()
+    {
+        var actions = new HashSet<string>(ActionUnlockData.AlwaysActions);
+        EnsureAutomaticSkills();
+        for (int i = 0; i < _knownSkills.Count; i++)
+        {
+            SkillBundle b = _knownSkills[i];
+            if (b.Levels == null)
+            {
+                continue;
+            }
+            foreach (KeyValuePair<string, int> lv in b.Levels)
+            {
+                ActionUnlockData.Collect(b.SkillId, lv.Key, lv.Value, actions);
+            }
+        }
+        return actions;
+    }
+
+    /// <summary>ผู้เล่นเรียนสกิลที่ปลดล็อกท่านี้แล้วจริงไหม (ใช้ที่ HandleUseBattleAction)</summary>
+    private bool IsActionUnlocked(string actionId)
+    {
+        return UnlockedActions().Contains(actionId);
+    }
+
+    /// <summary>
+    /// [แก้เอง] 25 ส.ค. 2026 — เจ้าของเจอ: หน้าสกิลบอกว่าปลดล็อกแล้ว (AUTO) แต่เมนูคราฟต์ยังไม่เห็น
+    ///
+    /// สาเหตุ: client ขอ `GetRecipes`/`GetArtifactBlueprints` **แค่ครั้งเดียวตอน `OnReady()`**
+    /// (ดู `client/RecipeSystem.cs`) แล้วเก็บผล `Available` ไว้ใช้ทั้งเซสชัน — ขึ้นเลเวล/ความชำนาญขึ้น/
+    /// เรียนสกิลใหม่ทีหลัง หน้าสกิลคำนวณ "AUTO" สดใหม่ทุกครั้งจากเลเวลปัจจุบัน (ดูถูก) แต่เมนูคราฟต์
+    /// ยังใช้ snapshot เก่าอยู่ ไม่เคยรู้ว่ามีของใหม่ปลดล็อกแล้วจนกว่าจะออกเข้าเกมใหม่ทั้งเซสชัน
+    ///
+    /// แก้โดยส่ง `Recipes`/`ArtifactBlueprints` ใหม่ (push แบบเดียวกับ `SendSkills()`) ทุกจุดที่ทำให้
+    /// unlocked set เปลี่ยนได้จริง: ขึ้นเลเวล (`GainExp`), ความชำนาญขึ้น (`ServerPlayer.Proficiency`),
+    /// เรียนสกิลใหม่ (`HandleTrainSkill`) — client ฝั่ง `OnRecipeListMsg`/`OnBlueprintListMsg` อัพเดต
+    /// `Available` list ให้เองอัตโนมัติทุกครั้งที่รับข้อความนี้อยู่แล้ว ไม่ต้องแก้อะไรฝั่ง client เลย
+    /// </summary>
+    private void SendUnlockedRecipesAndBlueprints()
+    {
+        Send(new Recipes
+        {
+            Ids = UnlockedRecipes(),
+            NewRecipeIds = null,
+            LikedRecipeIds = null
+        });
+        Send(new ArtifactBlueprints
+        {
+            Ids = UnlockedBlueprints(),
+            NewBlueprintIds = null,
+            LikedBlueprintIds = null
+        });
     }
 
     private void SendSkills()

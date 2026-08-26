@@ -3,17 +3,24 @@
 **/obj/
 **/publish/
 artifacts/
+dist*/
 
 # Installed game files and extracted packages (not source)
 game/
 game-backup/
+game-broken-*/
 version_control/
+Original_Game/
+android-apk/
 
 # Runtime state
 server/saves/
+saves/
+saves-backup-*/
 server/saves-backup-*/
 server/data/whitelist.txt
 *.log
+*.log.err
 *.pid
 
 # Local credentials
@@ -36,5 +43,18 @@ Desktop.ini
 
 # Local screenshots and scratch files
 shots/
+scratch_patch_work/
+server/saves-*test*/
 New Text Document.txt
+scratch_*.json
+scratch_*.txt
+scratch_*.py
+stuckLoading.md
+
+# Large local rebuilds and asset dumps (not source)
+game-rebuilt-original/
+tools/asset-browser/output/
+
+# Local agent session files
+.zcode/
 

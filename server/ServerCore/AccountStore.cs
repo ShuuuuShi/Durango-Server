@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 
 namespace DurangoServer.Core;
 
@@ -126,6 +127,33 @@ public static class AccountStore
     /// ขอเข้าเกมด้วย entity id นี้จาก IP นี้ — คืน false พร้อมเหตุผลถ้าไม่ให้ผ่าน
     /// ผ่านแล้วจะบันทึก/อัปเดตไฟล์ account ให้เอง
     /// </summary>
+    /// <summary>
+    /// [แก้เอง] 25 ส.ค. 2026 — 🐛 ต้นเหตุ "บังคับสร้างตัวใหม่": client เชื่อมมาทาง loopback ที่ .NET
+    /// มองเป็นคนละสตริงกับที่ account จองไว้ (`127.0.0.1`) — เจอจริง: `POST /accounts` ผ่าน localhost
+    /// (=IPv6 ::1) คืนรายการว่าง แต่ผ่าน 127.0.0.1 คืนตัวละครครบ ⇒ หน้าเลือกตัวว่าง เลยเด้งไปสร้างใหม่
+    /// ทำให้ทุก IP อยู่ในรูปมาตรฐานเดียวก่อนเทียบ: ::1 → 127.0.0.1, ::ffff:a.b.c.d → a.b.c.d
+    /// </summary>
+    public static string NormalizeIp(string ip)
+    {
+        if (string.IsNullOrEmpty(ip) || ip == "?")
+        {
+            return ip;
+        }
+        if (!IPAddress.TryParse(ip, out IPAddress addr))
+        {
+            return ip;
+        }
+        if (IPAddress.IsLoopback(addr))
+        {
+            return "127.0.0.1";                       // ::1 และ 127.0.0.1 = เครื่องเดียวกัน
+        }
+        if (addr.IsIPv4MappedToIPv6)
+        {
+            return addr.MapToIPv4().ToString();       // ::ffff:192.168.1.5 → 192.168.1.5
+        }
+        return addr.ToString();
+    }
+
     public static bool TryClaim(string entityId, string name, string remoteIp, out string reason)
     {
         reason = null;
@@ -133,6 +161,7 @@ public static class AccountStore
         {
             return true;
         }
+        remoteIp = NormalizeIp(remoteIp);
 
         ReloadWhitelistIfChanged();
 
@@ -169,7 +198,7 @@ public static class AccountStore
         // ชั้น 2: ต้องมาจาก IP เดิมที่จองไว้
         if (BindToFirstIp
             && !string.IsNullOrEmpty(acc.ClaimedFromIp)
-            && !string.Equals(acc.ClaimedFromIp, remoteIp, StringComparison.Ordinal))
+            && !string.Equals(NormalizeIp(acc.ClaimedFromIp), remoteIp, StringComparison.Ordinal))
         {
             reason = $"entity id นี้ถูกจองไว้จาก {acc.ClaimedFromIp} แล้ว";
             return false;
@@ -180,6 +209,41 @@ public static class AccountStore
         acc.Logins++;
         SaveStore.Save(path, acc);
         return true;
+    }
+
+    /// <summary>
+    /// GP-15: หา entity id ทั้งหมดที่เคยจองไว้จาก IP นี้ — ใช้ตอบ `/accounts` (หน้าเลือกตัวละครฝั่ง client)
+    ///
+    /// เดิม client ใช้ตัวแปรในหน่วยความจำ (`Durango.Offline.Server._localPlayer`) แทน เพราะ endpoint นี้
+    /// ยังไม่มี — ปัญหาคือตัวแปรนั้นหายไปทุกครั้งที่ปิดเกม ⇒ ตัวละครเก่ายังอยู่ในเซฟจริง แต่หน้าเลือก
+    /// ตัวละครว่างเปล่าทุกครั้งที่เปิดเกมใหม่ บังคับสร้างใหม่ตลอด (ดู HANDOFF.md วันที่แก้)
+    ///
+    /// ไม่มี index แยกต่างหาก — ไฟล์ account มีไม่เยอะ (จำนวนคนเล่นจริง) สแกนทั้งโฟลเดอร์ทุกครั้งที่ถามพอ
+    /// ไม่คุ้มทำ index แยกแล้วต้องคอยดูแลให้ตรงกันเวลาไฟล์ถูกลบ/แก้มือ
+    /// </summary>
+    public static List<Account> FindByIp(string remoteIp)
+    {
+        var result = new List<Account>();
+        string dir = Path.Combine(SaveStore.Root, "accounts");
+        if (string.IsNullOrEmpty(remoteIp) || !Directory.Exists(dir))
+        {
+            return result;
+        }
+        remoteIp = NormalizeIp(remoteIp);                 // ::1 / ::ffff:127.0.0.1 → 127.0.0.1 (ดู NormalizeIp)
+        foreach (string file in Directory.EnumerateFiles(dir, "*.json"))
+        {
+            Account acc = SaveStore.Load<Account>(file);
+            if (acc != null && string.Equals(NormalizeIp(acc.ClaimedFromIp), remoteIp, StringComparison.Ordinal))
+            {
+                result.Add(acc);
+            }
+        }
+        // [แก้เอง] 25 ส.ค. 2026 — เดิมคืนตามลำดับที่ Directory.EnumerateFiles เจอ (สุ่ม/ตามชื่อไฟล์ ไม่ใช่
+        // ตามความเก่าใหม่) — ตอนทดสอบสะสมไฟล์ account ไว้ 80+ อันจาก IP เดียว (127.0.0.1) เจอว่าตัวละคร
+        // ที่เพิ่งเล่นจริงโผล่ปนกับของทดสอบเก่าแบบสุ่มลำดับ — เรียงเอาที่เล่นล่าสุดขึ้นก่อนเสมอ ให้ตัวที่
+        // เจ้าของกำลังเล่นอยู่จริงมีโอกาสถูกเลือก/แสดงก่อนของเก่าที่ทิ้งไว้
+        result.Sort((a, b) => b.LastSeenAt.CompareTo(a.LastSeenAt));
+        return result;
     }
 
     /// <summary>ล้างการจองของ entity id (ให้เจ้าของเครื่องแก้เคสย้าย IP/เปลี่ยนเน็ต)</summary>

@@ -172,6 +172,11 @@ public static class GpCheck
         // พอกระเป๋าเต็ม ข้อที่ต้อง "เก็บของ/แล่ซากได้จริง" จะตกทั้งที่โค้ดถูก
         // เททิ้งก่อนเริ่มเสมอ เพื่อให้ผลการทดสอบไม่ขึ้นกับว่าเคยรันมากี่รอบ
         conn.Send(new Cheat { _Cheat = "clearbag" });
+        // ...และสภาพร่างกายก็สะสมข้ามรอบเหมือนกัน
+        // 🐛 เจอจริง: เซฟค้างที่ **เลือด 0.85 · ความล้า 87.5** (เกิน FatigueDanger 85 = เลือดไม่ฟื้นเอง)
+        //    ⇒ บอทตายกลางเทส แล้วข้อที่ต้องตีสัตว์/แตะซาก/แล่เนื้อ ตกยกแผงแบบสุ่มไปเรื่อย
+        //    (ผลออกมา 45 บ้าง 44 บ้าง 39 บ้าง ทั้งที่โค้ดไม่ได้เปลี่ยน)
+        conn.Send(new Cheat { _Cheat = "heal" });
         Pump(conn, 500);
 
         // ยืนแถวจุดเกิด (tile 40,177) แล้วขอ chunk เพื่อให้รู้ว่าของธรรมชาติอยู่ตรงไหนจริง ๆ
@@ -429,11 +434,31 @@ public static class GpCheck
         // ตีของจริงต้องเข้า (ทำก่อนเทสตาย เพราะฟื้นแล้วจะถูกวาร์ปกลับจุดเกิด)
         if (animalNear != null)
         {
-            // เดินไปยืนบนตัวมันก่อน — สัตว์เดินหนีไปได้ระหว่างที่เทสข้ออื่นอยู่
-            (float x, float y) at = appearAnimals[animalNear];
-            WalkTo(conn, "gp-check-1", ref px, ref py, at.x, at.y);
+            // 🐛 ฟื้นก่อนเข้าช่วงต่อสู้เสมอ — สัตว์ที่เสกมาเทสข้อก่อนหน้าสวนกลับจนบอทตายได้
+            //    (บอทเป็นตัวละครถาวรเลเวลต่ำ ไม่มีเกราะ) แล้วข้อนี้จะได้ abort "ตายอยู่ ตีไม่ได้"
+            //    เห็นเป็นผลสุ่ม 45/44 สลับกันไปทั้งที่โค้ดไม่ได้เปลี่ยน
+            conn.Send(new Cheat { _Cheat = "heal" });
+            Pump(conn, 600);
+
+            // 🐛 อย่าใช้สัตว์ที่เลือกไว้ตั้งแต่ต้นเทส — กว่าจะมาถึงข้อนี้มันมักหายไปแล้ว
+            //    (โดนฆ่าในข้อก่อนหน้า / ซากหมดอายุ 150 วิ) ⇒ server ตอบ "ไม่มีเป้าหมาย ... ในโลก"
+            //    แล้วข้อนี้ตกแบบสุ่มทั้งที่โค้ดถูก — เสกตัวใหม่ตรงหน้าให้แน่ใจว่ามีเป้าจริง
+            lastAppearAnimal = null;
+            conn.Send(new Cheat { _Cheat = "spawn 2042" });     // กิ้งก่า — อ่อนสุด ไม่สวนกลับแรง
+            Pump(conn, 1200);
+            string target = lastAppearAnimal ?? animalNear;
+            if (target != animalNear && appearAnimals.TryGetValue(target, out (float x, float y) spot))
+            {
+                WalkTo(conn, "gp-check-1", ref px, ref py, spot.x, spot.y);
+            }
+            else
+            {
+                // เดินไปยืนบนตัวมันก่อน — สัตว์เดินหนีไปได้ระหว่างที่เทสข้ออื่นอยู่
+                (float x, float y) at = appearAnimals[animalNear];
+                WalkTo(conn, "gp-check-1", ref px, ref py, at.x, at.y);
+            }
             aborts = 0; damaged = 0;
-            conn.Send(new UseBattleAction { ActionId = "barehand_default_a", StartAt = Times.UnixTimeNow(), TargetEntityId = animalNear });
+            conn.Send(new UseBattleAction { ActionId = "barehand_default_a", StartAt = Times.UnixTimeNow(), TargetEntityId = target });
             Pump(conn, 2000);
             Check("ตีสัตว์ใกล้ ๆ ด้วยท่าที่ถูกต้อง ได้ดาเมจจริง", damaged > 0, $"abort={aborts} damaged={damaged}");
         }

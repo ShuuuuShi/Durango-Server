@@ -216,9 +216,15 @@ public partial class ServerPlayer
 
         Equipments result = RebuildEquipments();
         Send(result, header.Seq);          // client รอ reply ของ seq นี้ (.All)
-        if (msg.SlotType == _currentEquipSlotType) _world.Broadcast(_display);
+        if (msg.SlotType == _currentEquipSlotType) _world.BroadcastToViewers(EntityId, _display);
         // อุปกรณ์มีผลกับดาเมจ/ค่าป้องกัน/หลอดแล้ว — หน้าตัวละครกับหลอดต้องอัปเดตทันที
         RefreshAbilities();
+        if (equip)
+        {
+            // นับเฉพาะตอน "ใส่" ไม่นับตอนถอด (ไม่งั้นใส่-ถอดสลับกันก็ผ่านเควสได้)
+            QuestProgress(QuestData.Goal.Equip);
+            QuestProgress(QuestData.Goal.Equip, slot);
+        }
     }
 
     private void HandleGetEquipments(GetEquipments msg, PacketHeader header)
@@ -238,7 +244,7 @@ public partial class ServerPlayer
         RebuildEquipments();
         Send(default(OK), header.Seq);
         Send(RebuildEquipments());
-        _world.Broadcast(_display);
+        _world.BroadcastToViewers(EntityId, _display);
         RefreshAbilities();
     }
 
@@ -254,7 +260,7 @@ public partial class ServerPlayer
         MarkDirty();
         RebuildEquipments();
         Send(default(OK), header.Seq);
-        _world.Broadcast(_display);
+        _world.BroadcastToViewers(EntityId, _display);
     }
 
     private void HandleResetAccessory(ResetAccessory msg, PacketHeader header)
@@ -268,7 +274,7 @@ public partial class ServerPlayer
         MarkDirty();
         RebuildEquipments();
         Send(default(OK), header.Seq);
-        _world.Broadcast(_display);
+        _world.BroadcastToViewers(EntityId, _display);
     }
 
     private EquipmentSlot BuildPresetSlot(EquipSlotType type)

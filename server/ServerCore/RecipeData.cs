@@ -1307,6 +1307,278 @@ public static class RecipeData
         "xmas_warehouse_01",
     };
 
+    // [แก้เอง] 25 ส.ค. 2026 — เจ้าของสั่ง "สิ่งก่อสร้าง event ให้ใช้ได้แค่ admin เท่านั้น"
+    // ตรวจจากชื่อ id (เหมือนเกณฑ์คัด StarterCuratedContent.Blueprints เดิม) — ใช้ทั้งตอนคัด starter list
+    // (ฝั่ง unlock) และตอน validate จริงตอนวาง/คราฟ (ฝั่ง server, กันแก้ client ส่ง id ตรงมาเอง)
+    //
+    // [แก้เอง] 25 ส.ค. 2026 (รอบ 2) — เจ้าของจับได้ "ของอีเว้นเอากลับมาทำไม" ตอนสลับ BuildUnlocked()
+    // ไปใช้ RecipeUnlockData.AlwaysRecipes/AlwaysBlueprints — ไล่เช็คแล้วพบว่า `IsEventRecipeCategory`
+    // (เช็คแค่ Category เช่น recipe_book/season2) **จับได้แค่ 7 จาก 24 สูตรอีเวนต์ที่หลุดเข้ามา** เพราะ
+    // ส่วนใหญ่ (recipe_halloween_*, recipe_valentine_*, recipe_..._event_newyear_2019) แท็ก Category
+    // เป็น "cook"/"weapon_and_tool" ปกติเป๊ะ ไม่มีอะไรบอกว่าเป็นอีเวนต์เลยนอกจาก**ชื่อ id** — ใช้ pattern
+    // เดียวกับ blueprint (ใช้ชื่อ shared ตัวเดียวกันเลย ครอบคลุมทั้งสองฝั่ง) แทนที่จะเช็คแค่ Category
+    private static readonly string[] EventNamePatterns = new[]
+    {
+        "halloween", "xmas", "christmas", "santa", "2018_summer", "2019", "2020", "2021",
+        "compi", "army", "event", "season2", "anniversary", "valentine", "easter",
+        "chuseok", "lunar", "summer_", "winter_event", "npc_", "s02_",
+    };
+
+    // [แก้เอง] 25 ส.ค. 2026 (รอบ 4) — เจ้าของกด "Specialty Crafting" เจอ "Communication Center" โผล่
+    // สว่างอยู่ (แปลว่า Available=true) — ไล่เช็คข้อมูลจริงพบว่า `camp_radio_station_02`/`statue_03_a`
+    // มี category="recipe_book" จริง (ของอีเวนต์แน่ๆ ตรงกับ "Basalt Statue" ที่เจอไปแล้วรอบก่อน) แต่ชื่อ
+    // ไม่มี pattern ไหนใน EventNamePatterns เข้าเลยสักคำ (ไม่ใช่ "s02_"/"xmas"/ฯลฯ) — เพิ่ม "s02_" เข้า
+    // pattern แล้ว (จับ 20/22 ที่หลุดเพิ่ม) ที่เหลือ 2 ตัวนี้ชื่อไม่ส่อเลยจริงๆ ต้องระบุตรง ๆ
+    private static readonly HashSet<string> ExplicitEventIds = new HashSet<string>
+    {
+        "camp_radio_station_02", "statue_03_a",
+    };
+
+    private static bool MatchesEventNamePattern(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return false;
+        }
+        if (ExplicitEventIds.Contains(id))
+        {
+            return true;
+        }
+        string low = id.ToLowerInvariant();
+        for (int i = 0; i < EventNamePatterns.Length; i++)
+        {
+            if (low.Contains(EventNamePatterns[i]))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>ของอีเวนต์/ฤดูกาลไหม (คริสต์มาส/ฮาโลวีน/ปีใหม่ ฯลฯ) — ผู้เล่นทั่วไปวาง/คราฟไม่ได้</summary>
+    public static bool IsEventBlueprint(string blueprintId) => MatchesEventNamePattern(blueprintId);
+
+    // [แก้เอง] 25 ส.ค. 2026 — เจ้าของเจอ: กด "Storage" ในเมนูสร้าง หน้ารายละเอียดขึ้นเองตรงๆ ว่า
+    // "(System Building: Player cannot build)" แต่ดันโผล่เป็นตัวเลือกให้กดสร้างอยู่ดี — สกัดจากข้อมูล
+    // เกมจริง (field `description` มีคำว่า "플레이어 건설 불가능" = "ผู้เล่นสร้างเองไม่ได้") พบ 39 อัน
+    // ทั้งหมดเป็นพร็อพฉากแคมป์ที่ระบบวางเองในโลก (camp_radio_station/camp_warehouse/camp_square_fire
+    // ฯลฯ) — คนละเรื่องกับ "ของอีเวนต์" (อันนี้ผู้เล่นใช้งาน/พักที่กองไฟได้ปกติถ้ามีอยู่ในโลกแล้ว แค่ห้าม
+    // "สร้างใหม่" เอง) เลยกันแยกจาก IsEventBlueprint และห้ามแม้แต่ admin (ไม่ใช่ของหวงไว้ให้ admin ใช้
+    // แบบของอีเวนต์ แต่เป็นของที่ไม่มีใครควรสร้างเองได้เลยตามการออกแบบเกมจริง)
+    private static readonly HashSet<string> SystemOnlyBlueprints = new HashSet<string>
+    {
+        "NPC_agent_male", "camp_bike", "camp_board", "camp_board_be_building", "camp_board_neglected",
+        "camp_board_seol", "camp_board_volcanic", "camp_boxingbag", "camp_dryingrack_01", "camp_dryingrack_02",
+        "camp_fur_table_01", "camp_furnace_01", "camp_hot_air_balloon", "camp_kiln_01", "camp_kiln_02",
+        "camp_kitchen_01", "camp_loom_01", "camp_loom_02", "camp_punch_machine", "camp_radio_station",
+        "camp_radio_station_be_building", "camp_radio_station_be_building_sunset", "camp_radio_station_neglected", "camp_radio_station_seol", "camp_radio_station_volcanic",
+        "camp_square_fire", "camp_training_dummy", "camp_training_set", "camp_training_target", "camp_warehouse",
+        "camp_warehouse_be_building", "camp_warehouse_be_building_sunset", "camp_warehouse_neglected", "camp_warehouse_seol", "camp_warehouse_volcacnic",
+        "camp_warphole", "lighthouse_epic", "neutral_warphole", "statue_kompi_epic",
+        // [แก้เอง] 25 ส.ค. 2026 (รอบ 5) — เจ้าของกด "Other" เจอ "Universal Workbench (Cheat)" โผล่ตรงๆ
+        // เลย — เช็คข้อมูลจริงพบว่าชื่อเต็มคือ "만능작업대(치트용)" = "โต๊ะสารพัดประโยชน์ (ไว้ใช้โกง)"
+        // — field `subcategory` (ไม่ใช่ category หลัก) = "system" เป็นสัญญาณอีกแบบที่ยังไม่เคยเช็ค —
+        // เจออีก 3 อันที่ subcategory เดียวกัน (package/tutorial_boat/tutorial_bonfire — ของช่วงสอนเล่น)
+        "allround", "package", "tutorial_boat", "tutorial_bonfire",
+    };
+
+    /// <summary>สิ่งปลูกสร้างระบบที่เกมออกแบบมาให้วางเองในโลกเท่านั้น — ผู้เล่น (รวม admin) สร้างเองไม่ได้เลย</summary>
+    public static bool IsSystemOnlyBlueprint(string blueprintId)
+        => !string.IsNullOrEmpty(blueprintId) && SystemOnlyBlueprints.Contains(blueprintId);
+
+    // [แก้เอง] 25 ส.ค. 2026 — map blueprint → หมวด (สกัดจาก blueprint data จริง 6a951... 556 อัน 14 หมวด)
+    // ใช้ซ่อนแท็บในเมนู "สร้าง" แบบปรับได้ผ่าน config (config.json → CraftMenu.HiddenCategories) โดย
+    // ไม่ต้อง build ใหม่ — ดู ServerPlayer.BuildUnlocked · ของที่ปลดล็อกด้วยสกิล (RecipeUnlockData.
+    // SkillGatedBlueprints) ไม่โดนซ่อน (เป็น progression จริง เช่น เตา/โต๊ะ/เตียง/กับดัก)
+    public static readonly Dictionary<string, string[]> BlueprintsByCategory = new Dictionary<string, string[]>
+    {
+        { "border", new[] {
+            "carnation_fence", "fence1", "fence2", "fence3", "fence3_bone", "fence3_leather", "fence3_stone",
+            "fence3_wood", "fence_green_wall_01", "fence_green_wall_02", "fence_wood", "gate1", "gate2", "gate3",
+            "gate3_bone", "gate3_leather", "gate3_stone", "gate3_wood", "gate_small", "rope_velvet_01",
+            "rope_velvet_02", "rope_velvet_03", "rose_fence",
+        } },
+        { "building/furniture", new[] {
+            "multiuse_art_asset_4x4_clan_hall",
+        } },
+        { "clan", new[] {
+            "catapult", "clan_advanced_lab", "clan_adventure_lab", "clan_battle_lab", "clan_board",
+            "clan_collect_lab", "clan_craft_lab", "clan_hall_01", "clan_thurible", "clan_warehouse",
+            "clan_warphole_tuner", "defensive_t2", "estate_clan_flag", "test_defensive",
+        } },
+        { "constructing_season2", new[] {
+            "s02_bed", "s02_bonfire", "s02_box", "s02_car", "s02_flag_bohnanza_01", "s02_flag_bohnanza_02",
+            "s02_flag_chlorophyl_01", "s02_flag_chlorophyl_02", "s02_flag_committee_01", "s02_flag_firm_01",
+            "s02_flag_pioneer_01", "s02_flag_pioneer_02", "s02_flag_society_01", "s02_fur_table", "s02_lizard_trap",
+            "s02_shelter_01", "s02_shelter_02", "s02_shelter_03", "s02_thurible", "s02_washbowl",
+        } },
+        { "deco_and_installation", new[] {
+            "2018_summer_pool_01_w", "2018_summer_pool_02_w", "2018_summer_sunbed_01", "2018_summer_tube_02",
+            "2018_summer_tube_04", "barrel_01_army", "barrel_oak_01", "bath_02_wood", "beanbag_01_fabric",
+            "beanbag_01_leather", "beanbag_01_straw", "beanbag_02", "beanbag_compi_blue_mini", "beanbag_compi_green",
+            "beanbag_compi_green_01", "beanbag_compi_green_mini", "beanbag_compi_pink_mini",
+            "beanbag_compi_yellow_mini", "benchpress_01", "blackboard_message_01", "blackboard_message_02",
+            "board_animation_01", "board_animation_02", "board_message_01", "board_message_01_02", "board_message_02",
+            "bottom_animation_01", "bottom_message_01", "bottom_message_02", "bottom_message_03", "box_army",
+            "brazier_01", "cake_tower_carnation_01", "cake_tower_carnation_02", "candlestick_large_01",
+            "candlestick_large_02", "candlestick_small_01", "cargo_warphole_in", "cargo_warphole_out",
+            "cargo_warphole_out2", "cargo_warphole_out3", "cargo_warphole_out4", "carpet_cotton_01", "carpet_red_01",
+            "cat_tower_01", "cat_tower_02", "chair_medieval_01", "chair_medieval_02", "chair_medieval_03",
+            "chandelier_01", "cherryblossom_rest_02", "cherryblossom_rest_03", "cherryblossom_rest_04",
+            "cherryblossom_rest_05", "christmas_snowman", "christmas_tree_01", "christmas_tree_01_web",
+            "christmas_tree_02", "christmas_tree_02_web", "clotheshorse_warp_01", "clotheshorse_warp_02",
+            "coffee_dutch_01", "coffin_dirt_01", "compi_pool", "copymachine_01", "curtain_01_bone",
+            "curtain_01_steel_hospital", "curtain_01_w_halloween", "curtain_02_w_halloween", "curtain_blind_01_wood",
+            "faction_food_bowl_large", "faction_food_bowl_mid", "faction_food_bowl_small", "fan_01",
+            "fireplace_warp_01", "fishtrap", "flag_01_korea", "flower_street_light_01", "flower_street_light_02",
+            "flowerbed_03_deco", "flowerbed_tile_01_bone_01", "flowerbed_tile_01_stone_01",
+            "flowerbed_tile_01_wood_01", "flowerbed_tile_02_bone_01", "flowerbed_tile_02_stone_01",
+            "flowerbed_tile_02_wood_01", "flowerpot_01", "fur_table_01_marble_01", "garden_bench_01", "garden_bin_01",
+            "garden_fence_01", "garden_light_01", "globe_01", "goalnet_basketball_01", "goalnet_soccer_01",
+            "halloween_lantern", "heavy_tech_01", "heavy_tech_02", "heavy_tech_03", "heavy_tech_04", "hurdle_01",
+            "kitchen_table_05", "kotatsu_warp_01", "kotatsu_warp_02", "ladder_warp_01", "ladder_warp_02",
+            "light_01_firefly", "light_tech_01", "light_tech_02", "light_tech_03", "light_tech_04", "lighthouse_epic",
+            "living_tech_01", "living_tech_02", "living_tech_03", "living_tech_04", "mannequin_female_01",
+            "mannequin_female_02", "mannequin_female_03", "mannequin_female_04", "mannequin_female_05",
+            "mannequin_female_06", "mannequin_male_01", "mannequin_male_02", "mannequin_male_03", "mannequin_male_04",
+            "mannequin_male_05", "mannequin_male_06", "mat_cotton_01", "mat_dirt_01", "mat_leather_01",
+            "mat_leather_02", "mat_leather_03", "mat_warp_01", "mat_warp_playground_01", "mat_warp_playground_02",
+            "mini_stage_01", "movil_01", "oil_lantern_01", "parasol_01", "parasol_01_table", "picnic_01_table",
+            "picnic_02_table", "picnic_rest", "pot_flower", "pot_rose", "pot_sunflower", "prime_sunbed_01",
+            "prime_sunbed_02", "prime_sunbed_03", "rattan_sofa_01", "rattan_sofa_02", "rattan_sofa_03",
+            "rattan_table_01", "rice_drink_well_event_newyear_2019", "rocking_horse_01", "rocking_horse_02",
+            "rocking_horse_03", "rocking_horse_04", "rug_andrew", "shelf_01_wood", "shelf_02", "slide_01",
+            "small_flowerbed_01_deco", "small_flowerbed_02_deco", "spa_pool", "spring_horse_01", "spring_horse_02",
+            "statue_01_explorer", "statue_01_hunter", "statue_01_settler", "statue_02_a", "statue_02_b",
+            "statue_02_c", "statue_02_d", "statue_kompi_epic", "summerclub_balloon_01", "summerclub_balloon_02",
+            "summerclub_balloon_03", "summerclub_balloon_04", "summerclub_bed_01", "summerclub_bed_02",
+            "summerclub_fireplate", "summerclub_mirrorball", "summerclub_personal_pool", "summerclub_pool_01",
+            "summerclub_pool_02", "summerclub_pool_03", "summerclub_stage", "summerclub_table_01",
+            "summerclub_table_02", "sunbed_01", "table_01_w_a", "table_01_w_b", "table_02_w_a", "table_02_w_b",
+            "table_03_w_a", "table_04", "table_medieval_01", "toilet_warp_01", "torch_stand_01", "torch_stand_02",
+            "trampoline_01", "trampoline_02", "treadmill_01", "tube_01", "tube_02", "tube_03", "tube_04", "tube_05",
+            "tube_unicon", "vase_large_01", "vase_small_01", "vlautingbox_01", "warphole_personal", "well_01",
+            "well_02", "well_03", "well_04", "well_05", "wheelchair_01", "whiteboard_message_01",
+            "whiteboard_message_02", "worktable_warp_01", "worktable_warp_02", "worktable_warp_03",
+            "worktable_warp_04", "worktable_warp_05", "xmas_tree_2018_large", "xmas_tree_2018_small",
+        } },
+        { "etc", new[] {
+            "allround", "camp_bike", "camp_board", "camp_board_be_building", "camp_board_neglected",
+            "camp_board_seol", "camp_board_volcanic", "camp_boxingbag", "camp_dryingrack_01", "camp_dryingrack_02",
+            "camp_fur_table_01", "camp_furnace_01", "camp_hot_air_balloon", "camp_kiln_01", "camp_kiln_02",
+            "camp_kitchen_01", "camp_loom_01", "camp_loom_02", "camp_punch_machine", "camp_radio_station",
+            "camp_radio_station_be_building", "camp_radio_station_be_building_sunset", "camp_radio_station_neglected",
+            "camp_radio_station_seol", "camp_radio_station_volcanic", "camp_square_fire", "camp_training_dummy",
+            "camp_training_set", "camp_training_target", "camp_warehouse", "camp_warehouse_02",
+            "camp_warehouse_be_building", "camp_warehouse_be_building_sunset", "camp_warehouse_neglected",
+            "camp_warehouse_seol", "camp_warehouse_volcacnic", "camp_warphole", "neutral_warphole", "package",
+            "tutorial_boat", "tutorial_bonfire", "warp_sailo",
+        } },
+        { "furniture_and_workbench", new[] {
+            "NPC_agent_male", "barrel_01", "barrel_02", "basket", "bathtub_01", "bm_log_cabin_chair_01",
+            "bm_log_cabin_fireplace", "bm_volcanic_cabin_fireplace", "box_01_army", "box_02_army", "box_04",
+            "box_weapon", "box_weapon_01", "box_weapon_02", "cabin_wood_chair", "cabin_wood_dresser",
+            "cabin_wood_storage", "cabin_wood_table", "cabinet_01", "cabinet_02", "cabinet_warp_01",
+            "cabinet_warp_02", "cage_01_2", "cage_01_4", "cage_01_6", "cage_02_6", "cage_domestication_2",
+            "cage_domestication_4", "camping_grill", "cherryblossom_bed", "cherryblossom_bedtable",
+            "cherryblossom_vase", "classroom_chair", "classroom_desk", "classroom_deskset", "classroom_deskset_store",
+            "classroom_lecturetable", "classroom_lecturetable_store", "classroom_locker_01", "classroom_locker_02",
+            "classroom_locker_store", "closet", "closet_01", "closet_02", "closet_03", "closet_table_01",
+            "dryingrack_01", "dryingrack_02", "dryingrack_02_t2", "dumpster_01", "dye_01", "dye_02", "dye_03",
+            "dye_rack_01", "fertilizer_maker_01", "fertilizer_maker_02", "fertilizer_maker_03", "fur_box_01",
+            "fur_box_02", "fur_box_02_leaf", "fur_box_02_red", "fur_box_03", "fur_box_03_leaf",
+            "fur_box_medicinebox_01", "fur_box_medicinebox_02", "fur_table", "fur_table_01", "fur_table_02",
+            "fur_table_03", "fur_table_jewel", "furnace_01", "icebox_01", "icebox_02", "icebox_warp_01",
+            "icebox_warp_02", "icepot_01", "icepot_02", "icepot_03", "icepot_04", "kiln_01", "kiln_02", "kiln_04",
+            "kitchen_01", "kitchen_02", "kitchen_03", "kitchen_04", "loom_01", "loom_02", "medicine_table_01",
+            "medicine_table_01_t2", "medicinebox_01_army", "medicinebox_02_army", "multiuse_art_asset_1x1_rest",
+            "multiuse_art_asset_1x2_rest", "multiuse_art_asset_2x1_rest", "multiuse_art_asset_2x2_rest",
+            "multiuse_art_asset_3x3_rest", "multiuse_art_asset_4x4_rest", "operating_office_01", "refrigerator_01",
+            "refrigerator_02", "refrigerator_03", "s02_rubber_icebox", "secured_box", "secured_box_01",
+            "secured_box_02", "warehouse_01", "wastebasket_01", "wastebasket_02", "weapon_table_01", "worktable_05",
+        } },
+        { "plant_collectible", new[] {
+            "artifact_chinaberry", "artifact_feathertree", "artifact_oak", "artifact_sandalwood",
+            "artifact_wildberry",
+        } },
+        { "recipe_book", new[] {
+            "camp_radio_station_02", "halloween_candle", "statue_03_a", "xmas_giftbox_01_2018",
+            "xmas_giftbox_02_2018", "xmas_snowman_01", "xmas_snowman_02", "xmas_snowman_03", "xmas_snowman_04",
+            "xmas_snowman_05", "xmas_snowman_06", "xmas_snowman_07", "xmas_snowman_08", "xmas_snowman_09",
+            "xmas_snowman_10",
+        } },
+        { "region", new[] {
+            "aqua_crack_01", "crack_01", "warp_accelerator",
+        } },
+        { "residence", new[] {
+            "barrel_01_army_fire", "bed_01", "bed_01_airmat", "bed_01_steel", "bed_02", "bed_02_halloween",
+            "bed_02_steel_hospital", "bed_03", "bed_03_halloween", "bed_04", "bench_02", "bm_log_cabin",
+            "bm_volcanic_cabin", "bonfire", "bonfire_01", "chair_01_army", "chair_01_marble_01", "chair_01_recliner",
+            "chair_01_wood_01", "chair_01_wood_02", "chair_01_wood_03", "chair_01_wood_04", "chair_02_wood_01",
+            "chair_03", "chair_bark_01", "chair_bark_02", "chair_stool_medieval_01", "chair_warp_01", "chair_warp_02",
+            "chair_warp_h_01", "chair_warp_h_02", "chair_warp_h_03", "cherryblossom_rest", "crack_activate_flag_01",
+            "estate_private_flag_01", "halloween_rest", "modular", "modular_01", "modular_02", "modular_bm",
+            "modular_classroom", "modular_storm_shelter", "modular_test", "modular_upstair", "parasol_fabric_01",
+            "parasol_leather_01", "parasol_stem_01", "parasol_wood_01", "roof_modular", "roof_modular_01",
+            "roof_modular_02", "sauna_01_rock_volcanic", "sauna_02_rock_volcanic", "sofa_warp_01", "sofa_warp_02",
+            "temptent", "tent",
+        } },
+        { "tile", new[] {
+            "bridge_stone_01", "bridge_test", "direction_sign_01", "farm_tile_01", "farm_tile_02", "farm_tile_03",
+            "farm_tile_04", "road1", "road2", "road3", "road4", "road5_basalt", "road5_granite", "road_01_leaf",
+            "road_01_shell", "road_cherryblossom", "road_flower", "road_leaf", "road_spring", "sprinkler_01",
+            "sprinkler_02", "sprinkler_03", "sprinkler_03_liquid", "sprinkler_04", "sprinkler_04_liquid",
+            "sprinkler_05", "sprinkler_05_liquid",
+        } },
+        { "traffic", new[] {
+            "dock", "lighthouse_01", "raft", "raft_deck",
+        } },
+        { "trap", new[] {
+            "deadfall_trap", "leg_trap", "trap_basket", "trap_pit",
+        } },
+    };
+
+    /// <summary>
+    /// รวม blueprint "ฟรี" (ไม่ต้องเรียนสกิล) ในหมวดที่ระบุ — ใช้ตอนซ่อนแท็บให้นอน-admin
+    /// ของที่ปลดด้วยสกิล (progression) คงไว้เสมอ — หมวดที่ไม่รู้จัก/ไม่มีในแมพข้ามไปเฉย ๆ
+    /// </summary>
+    public static HashSet<string> FreeBlueprintsInCategories(IEnumerable<string> categories)
+    {
+        var result = new HashSet<string>();
+        if (categories == null) return result;
+        foreach (string cat in categories)
+        {
+            if (cat == null || !BlueprintsByCategory.TryGetValue(cat, out string[] ids)) continue;
+            foreach (string id in ids)
+                if (!RecipeUnlockData.SkillGatedBlueprints.Contains(id))
+                    result.Add(id);
+        }
+        return result;
+    }
+
+
+    /// <summary>หมวดสูตรที่เป็นของอีเวนต์/ฤดูกาลแน่ๆ (ดู <see cref="IsEventRecipe"/> — ตัวนี้จับได้แค่บางส่วน)</summary>
+    private static readonly HashSet<string> EventRecipeCategories = new HashSet<string>
+    {
+        "clothing_season2", "tool_season2", "process_season2", "cook_season2", "recipe_book",
+    };
+
+    public static bool IsEventRecipeCategory(string category)
+        => !string.IsNullOrEmpty(category) && EventRecipeCategories.Contains(category);
+
+    /// <summary>
+    /// สูตรนี้เป็นของอีเวนต์/ฤดูกาลไหม — เช็คทั้งหมวด (recipe_book/season2 ฯลฯ) และชื่อ id
+    // (สูตรอีเวนต์ส่วนใหญ่ Category เป็น "cook"/"weapon_and_tool" ปกติเป๊ะ ต้องเช็คชื่อด้วยถึงจะจับครบ)
+    /// </summary>
+    public static bool IsEventRecipe(string recipeId, string category)
+        => IsEventRecipeCategory(category) || MatchesEventNamePattern(recipeId);
+
+    // [แก้เอง] 25 ส.ค. 2026 (รอบ 5) — เจ้าของสั่ง: แท็บ "System/Cheat" (หมวด `system` ในข้อมูลเกม —
+    // ชื่อแท็บทับศัพท์ "시스템/치트" ของ NEXON เอง มีแค่สูตรย้อม/ฟอกสีเสื้อผ้า 6 อัน ไม่ใช่คำสั่งโกงจริง)
+    // "ซ่อนทั้งแท็บ ให้ admin เท่านั้น" — คนละเหตุผลกับของอีเวนต์ (ไม่ใช่ event) แต่ enforcement แบบเดียวกัน
+    public static bool IsSystemRecipeCategory(string category)
+        => category == "system";
+
     public static readonly Dictionary<string, ushort> BlueprintType = new Dictionary<string, ushort>()
     {
         { "cherryblossom_rest_06", 5000 },

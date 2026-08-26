@@ -19,7 +19,8 @@
     "MinTilesInland": 4,
     "InlandTilesPerSize": 3,
     "SpawnRadiusTiles": 30.0,
-    "WanderRadiusTiles": 12.5
+    "WanderRadiusTiles": 12.5,
+    "MinSeparationTiles": 4.0
   },
   "Exp": {
     "KillBase": 4,
@@ -28,6 +29,8 @@
     "Butchery": 3,
     "Craft": 5,
     "Build": 8,
+    "Plant": 3,
+    "Harvest": 4,
     "SkillPointsPerLevel": 3
   },
   "Skills": {
@@ -43,6 +46,26 @@
     "RequiredPlayerLevelPerSkillLevel": 1.0,
     "ProficiencyEnabled": true,
     "ProficiencyRate": 1.0
+  },
+  "StatusEffects": {
+    "BuffStaminaSave": 0.1,
+    "DebuffStaminaPenalty": 0.08,
+    "LifeUpRegenPerSec": 1.0,
+    "PoisonDamagePerSec": 1.0
+  },
+  "CraftMenu": {
+    "HiddenCategories": [
+      "deco_and_installation",
+      "etc",
+      "clan",
+      "residence",
+      "traffic",
+      "furniture_and_workbench",
+      "trap",
+      "plant_collectible",
+      "region",
+      "building/furniture"
+    ]
   },
   "Spawn": [
     {
@@ -205,7 +228,11 @@
     }
   ],
   "World": {
-    "ChunkSendRange": 2
+    "ChunkSendRange": 2,
+    "ViewRangeTiles": 24.0,
+    "ViewMarginTiles": 8.0,
+    "ViewCheckSeconds": 0.4,
+    "ViewCulling": true
   },
   "Tools": {
     "Enabled": true,
@@ -232,7 +259,9 @@
     "Livestock": false,
     "Taming": false,
     "Market": false,
+    "WarpAccelerator": false,
     "Quests": false,
+    "QuestChecklist": true,
     "Pvp": false,
     "LandPermission": false,
     "PartyAndClan": false,
@@ -339,5 +368,38 @@
     "CritChance": 0.12,
     "CritMultiplier": 1.6
   },
+  "Farming": {
+    "GrowthScale": 0.05,
+    "MinGrowSeconds": 20.0,
+    "WaterPerItem": 1.0,
+    "FertilizerYieldScale": 1.0,
+    "SeedYield": 1,
+    "WrongBiomeGrowthPenalty": 1.5,
+    "MaxWaterCarryPerDraw": 5.0,
+    "StaminaCostPlant": 6.0,
+    "StaminaCostTend": 3.0,
+    "StaminaCostDraw": 3.0,
+    "PlantSeconds": 2.0,
+    "TendSeconds": 1.5,
+    "UprootSeconds": 2.0,
+    "HarvestSeconds": 2.0,
+    "DrawWaterSeconds": 2.0,
+    "WaterSearchTiles": 6
+  },
+  "WarpAccelerator": {
+    "WaitSeconds": 20.0,
+    "PhaseSeconds": 90.0,
+    "RewardWindowSeconds": 180.0,
+    "CooldownSeconds": 30.0,
+    "MaxPhase": 3,
+    "AnimalsBase": 4,
+    "AnimalsStep": 2,
+    "SpawnRadiusTiles": 4.0,
+    "JoinCostAmount": 0,
+    "JoinCostCurrency": 2,
+    "WarpMatterPerPhase": 5,
+    "WeeklyWarpMatterCap": 100
+  },
+  "SkipPrologueVideo": true,
   "TotalQuota": 34
 }

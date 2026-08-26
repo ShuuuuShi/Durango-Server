@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    ตัวอย่าง mod — สร้างเพื่อพิสูจน์ว่าระบบ mod ทำงานจริงครบวงจร (โหลด/คำสั่ง/event)
+    ดูวิธีเขียน mod ของตัวเองที่ docs/server/Modding.md
+
+    build:  dotnet build tools\ExampleMod -c Release
+    ติดตั้ง: copy ไฟล์ tools\ExampleMod\bin\Release\net9.0\ExampleMod.dll ไปที่ server\mods\
+    (mod จริงต้องการแค่ ExampleMod.dll — ไม่ต้องพ่วง DurangoModSdk.dll เพราะเซิร์ฟมีอยู่แล้ว
+    แต่ตอน dev local เก็บไว้ในโฟลเดอร์เดียวกันก่อนก็ได้ ไม่มีปัญหา)
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- mod จริงที่แจกให้คนอื่น ควรอ้างอิงแค่ DurangoModSdk.dll ที่ build แล้ว (ไม่ใช่ ProjectReference
+         แบบนี้) — ใช้ ProjectReference ตรงนี้เพราะอยู่ในโปรเจกต์เดียวกัน สะดวกตอน dev เท่านั้น -->
+    <ProjectReference Include="..\..\mod-sdk\DurangoModSdk.csproj" />
+  </ItemGroup>
+
+</Project>

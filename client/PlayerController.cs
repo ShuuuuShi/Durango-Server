@@ -194,13 +194,14 @@ public class PlayerController : Durango.Utils.Singleton<PlayerController>
 		{
 			ProcessInputPickingMove(message, showMoveCursor: false);
 		});
-		if (Platform.Instance.UsePCUI)
+		// [แก้เอง] 23 ส.ค. 2026 — เจ้าของสั่งเพิ่ม "คลิกเพื่อเดิน" ในโหมด UI มือถือด้วย เดิม handler นี้
+		// ผูกไว้เฉพาะ Platform.Instance.UsePCUI (PC เท่านั้น) ทั้งที่ InputMouse.cs ผูกปุ่มขวาคลิก →
+		// InputCommand.MoveToPosition แบบไม่มีเงื่อนไขแพลตฟอร์มอยู่แล้ว (ดู RegisterCommands()) ⇒ ตัด
+		// เงื่อนไข UsePCUI ออก ให้สมัคร handler เสมอ ไม่ต้องพึ่ง UI ชุดไหนก็คลิกขวาเพื่อเดินได้
+		GameSystem<InputSystem>.Instance().On(InputCommand.MoveToPosition, delegate(InputCommandMessage message)
 		{
-			GameSystem<InputSystem>.Instance().On(InputCommand.MoveToPosition, delegate(InputCommandMessage message)
-			{
-				ProcessInputPickingMove(message, showMoveCursor: true);
-			});
-		}
+			ProcessInputPickingMove(message, showMoveCursor: true);
+		});
 		AkAudioListener akAudioListener = UnityEngine.Object.FindObjectOfType<AkAudioListener>();
 		if (akAudioListener != null)
 		{

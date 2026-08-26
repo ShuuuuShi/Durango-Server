@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Durango.System;
@@ -444,6 +444,10 @@ public class UIBase : MonoBehaviour, IUriInvokable
 		{
 			return false;
 		}
+		// [แก้เอง] ส่องผัง UI ตอนเปิดหน้าจอ (เปิดด้วย env DURANGO_UIDUMP=1 เท่านั้น)
+		// layout อยู่ใน prefab ที่แก้ตรง ๆ ไม่ได้ ⇒ ต้องรู้ชื่อ/ตำแหน่งวิดเจ็ตก่อนถึงจะขยับจากโค้ดได้
+		UiDump.Dump(base.gameObject, GetType().Name);
+		UiDump.DumpAssets(base.gameObject);
 		bool flag = _softOpen;
 		IsOpened = true;
 		CheckRectEnabled();

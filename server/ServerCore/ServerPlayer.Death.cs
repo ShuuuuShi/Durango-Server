@@ -74,11 +74,14 @@ public partial class ServerPlayer
         }
         Dead = false;
         _immediateReviveCount++;
-        RestoreSurvival(clearFatigue: false);
+        // [แก้เอง] 25 ส.ค. 2026 — เหมือน ReviveAtSpawn (ServerPlayer.Combat.cs) — เจ้าของสั่งให้ความล้า
+        // รีเซ็ทตอนฟื้นด้วย ไม่ใช่แค่เลือด/สตามินา
+        RestoreSurvival(clearFatigue: true);
         MarkDirty();
         Send(default(Revived), header.Seq);
-        _world.Broadcast(new EntityRevived { EntityId = EntityId, At = Durango.Utils.Times.UnixTimeNow() });
+        _world.BroadcastToViewers(EntityId, new EntityRevived { EntityId = EntityId, At = Durango.Utils.Times.UnixTimeNow() });
         SendSurvivalPublic();
+        QuestProgress(QuestData.Goal.Revive);
     }
 
     private void ApplyDeathSave(PlayerSave save)
@@ -86,6 +89,7 @@ public partial class ServerPlayer
         _hasDeathPoint = save.HasDeathPoint;
         _deathTile = new Point2(save.DeathTileX, save.DeathTileY);
         _immediateReviveCount = Math.Max(0, save.ImmediateReviveCount);
+        Dead = save.Dead;
     }
 
     private void FillDeathSave(PlayerSave save)
@@ -94,5 +98,6 @@ public partial class ServerPlayer
         save.DeathTileX = _deathTile.x;
         save.DeathTileY = _deathTile.y;
         save.ImmediateReviveCount = _immediateReviveCount;
+        save.Dead = Dead;
     }
 }

@@ -167,6 +167,67 @@ class Patcher
         Console.WriteLine("patched AppData.get_BasePath with DURANGO_APPDATA env override");
     }
 
+    /// <summary>
+    /// [ใหม่] บังคับพารามิเตอร์ URL/gatewayUrl ตัวแรกที่เข้าเมธอดนี้ให้ชี้เซิร์ฟเราแทน — ใช้กับ
+    /// เมธอดสั้น ๆ ไม่มี branch ซับซ้อน (Clusters.RequestAccounts, GameManager.SetCluster) เท่านั้น
+    /// ไม่แตะ resources.assets เลย, ไม่แตะ TitleMenuGroup state machine เลย (เสี่ยงน้อยกว่ามาก)
+    /// ทำงานเฉพาะเมื่อตั้ง env DURANGO_AUTOCONNECT=&lt;ip&gt; (ไม่ตั้ง = พฤติกรรมเดิม 100%)
+    /// </summary>
+    static void PatchForceGatewayUrl(string typeName, string methodName, int paramIndex)
+    {
+        TypeDef type = module.Find(typeName, false);
+        MethodDef method = type?.FindMethod(methodName);
+        if (method == null || !method.HasBody)
+        {
+            Console.WriteLine("WARN: " + typeName + "." + methodName + " not found");
+            return;
+        }
+        if (paramIndex >= method.Parameters.Count)
+        {
+            Console.WriteLine("WARN: param index out of range for " + typeName + "." + methodName);
+            return;
+        }
+        Parameter targetParam = method.Parameters[paramIndex];
+
+        AssemblyRef mscorlib = module.CorLibTypes.AssemblyRef;
+        TypeRef envType = new TypeRefUser(module, "System", "Environment", mscorlib);
+        MethodSig getEnvSig = MethodSig.CreateStatic(module.CorLibTypes.String, module.CorLibTypes.String);
+        MemberRef getEnv = new MemberRefUser(module, "GetEnvironmentVariable", getEnvSig, envType);
+
+        TypeRef strType = new TypeRefUser(module, "System", "String", mscorlib);
+        MethodSig isNullSig = MethodSig.CreateStatic(module.CorLibTypes.Boolean, module.CorLibTypes.String);
+        MemberRef isNullOrEmpty = new MemberRefUser(module, "IsNullOrEmpty", isNullSig, strType);
+
+        MethodSig concat3Sig = MethodSig.CreateStatic(module.CorLibTypes.String, module.CorLibTypes.String, module.CorLibTypes.String, module.CorLibTypes.String);
+        MemberRef concat3 = new MemberRefUser(module, "Concat", concat3Sig, strType);
+
+        var body = method.Body;
+        body.InitLocals = true;
+        Local envLocal = new Local(module.CorLibTypes.String);
+        body.Variables.Add(envLocal);
+
+        Instruction first = body.Instructions[0];
+        var ins = new[]
+        {
+            OpCodes.Ldstr.ToInstruction("DURANGO_AUTOCONNECT"),
+            OpCodes.Call.ToInstruction(getEnv),
+            OpCodes.Stloc.ToInstruction(envLocal),
+            OpCodes.Ldloc.ToInstruction(envLocal),
+            OpCodes.Call.ToInstruction(isNullOrEmpty),
+            OpCodes.Brtrue.ToInstruction(first),
+            OpCodes.Ldstr.ToInstruction("http://"),
+            OpCodes.Ldloc.ToInstruction(envLocal),
+            OpCodes.Ldstr.ToInstruction(":8190"),
+            OpCodes.Call.ToInstruction(concat3),
+            OpCodes.Starg.ToInstruction(targetParam),
+        };
+        for (int i = ins.Length - 1; i >= 0; i--)
+        {
+            body.Instructions.Insert(0, ins[i]);
+        }
+        Console.WriteLine("patched " + typeName + "." + methodName + " param[" + paramIndex + "] with DURANGO_AUTOCONNECT gateway override");
+    }
+
     static MethodDef AddIslandPortHelper()
     {
         TypeDef server = module.Find("Durango.Offline.Server", false);
@@ -541,7 +602,26 @@ class Patcher
     static void Main(string[] args)
     {
         string dllPath = args[0];
+        // "--autoconnect-only": แพตช์แค่จุดเดียว (ต่อเซิร์ฟตาม env DURANGO_AUTOCONNECT อัตโนมัติ)
+        // ไม่แตะอย่างอื่นเลย — ใช้ตอนต้องการดีบักว่า DLL ต้นฉบับล้วน ๆ (แค่เปลี่ยนเส้นทาง) มีปัญหาไหม
+        bool minimal = args.Length > 1 && args[1] == "--autoconnect-only";
+
         module = ModuleDefMD.Load(dllPath);
+
+        if (minimal)
+        {
+            // PatchAutoConnect() แทรกที่ Server.BeginServer เฉย ๆ ไม่พอ — BeginServer ถูกเรียกแค่ตอน
+            // เดินทางข้ามเกาะ (หลังเข้าเกมแล้ว) ไม่ใช่ตอน title screen เลย จึงต้อง patch เพิ่มอีก 2 จุด
+            // ที่ title-screen flow ใช้จริง (ยืนยันจาก client/ source ก่อนแล้ว ไม่ได้เดา):
+            //   Clusters.RequestAccounts(gatewayUrl,...)  — เรียกตอนเช็ค account (ปุ่ม "เริ่ม" ต้องรอสิ่งนี้)
+            //   GameManager.SetCluster(key, url, mode)    — url ตรงนี้ถูกใช้ต่อใน /knock ทุกครั้ง
+            PatchAutoConnect();
+            PatchForceGatewayUrl("Durango.Logic.Clusters.Clusters", "RequestAccounts", 0);
+            PatchForceGatewayUrl("GameManager", "SetCluster", 1);
+            module.Write(dllPath + ".autoconnect.dll");
+            Console.WriteLine("done (autoconnect-only) -> " + dllPath + ".autoconnect.dll");
+            return;
+        }
 
         PatchConstField("Durango.Offline.GameServer", "DefaultPort", 8391);
         PatchConstField("Durango.Offline.Gateway", "DefaultPort", 8390);

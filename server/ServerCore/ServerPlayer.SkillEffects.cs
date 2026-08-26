@@ -92,8 +92,16 @@ public partial class ServerPlayer
     /// <summary>ดาเมจที่รับ × ค่านี้</summary>
     public float DamageTakenScale() => 1f - SkillRatio(Category.Defense) * SkillRates.DefenseReduce;
 
-    /// <summary>สตามินาที่เสีย × ค่านี้</summary>
-    public float StaminaCostScale() => 1f - SkillRatio(Category.Survival) * SkillRates.StaminaSave;
+    /// <summary>
+    /// สตามินาที่เสีย × ค่านี้ — รวมทั้งสกิลเอาชีวิตรอด (ถาวร) และบัฟ/ดีบัฟจากอาหาร (ชั่วคราว)
+    /// บัฟทำให้ถูกลง ดีบัฟทำให้แพงขึ้น · กันไม่ให้ต่ำกว่า 0.1 (ทำงานฟรี/คืนสตามินาไม่ได้)
+    /// </summary>
+    public float StaminaCostScale()
+    {
+        float scale = 1f - SkillRatio(Category.Survival) * SkillRates.StaminaSave;
+        scale += StatusStaminaCostDelta();
+        return Math.Max(0.1f, scale);
+    }
 
     /// <summary>เก็บของรอบนี้ได้ของเพิ่มอีกชิ้นไหม (สุ่มตามความเก่งของหมวด)</summary>
     public bool RollGatherBonus() => Roll(SkillRatio(Category.Gathering) * SkillRates.GatherBonus);

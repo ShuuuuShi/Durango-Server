@@ -92,7 +92,17 @@ public sealed class ItemSave
             Prototype = Prototype,
             Level = Level,
             OriginalLevel = Level,
-            ModifiableCount = 0,
+            // 🐛 **ตัวที่ทำให้ "มีเนื้อ 10 ชิ้นแต่คราฟต์ไม่ได้"** — เดิมเป็น 0
+            //
+            // สูตรที่มี `deduct_modifiable_count: true` (สูตรทำอาหาร/แปรรูปแทบทั้งหมด)
+            // ช่อง "base" ของมันจะกลายเป็น `RecipeSlot.Type.ModifyBase` ฝั่ง client
+            // แล้ว `RecipeSlot.IsSuitableItem` เช็คเพิ่มว่า **`itemData.ModifiableCount > 0`**
+            // ⇒ ของที่เราส่งไป ModifiableCount = 0 ถูกกรองทิ้งหมด ช่องเลยขึ้นว่า "ไม่มีของ"
+            // ทั้งที่มีอยู่เต็มกระเป๋า และ **packet ไม่เคยถูกส่งมาถึง server เลย** (client กันไว้ก่อน)
+            //
+            // ช่องที่ใช้ `required_tags` (เช่นช่อง "น้ำ" ของ boiled_meat) เป็น General
+            // จึงผ่านปกติ — นี่คือเหตุผลที่บางช่องมีของบางช่องว่าง
+            ModifiableCount = 1,
             ModifiedCount = 0,
             Size = Size,
             Durability = ToolDurability.MakeGauge(current, max),
@@ -183,6 +193,13 @@ public sealed class PlayerSave : SaveEnvelope
     /// </summary>
     public string LastIsland { get; set; }
 
+    /// <summary>เควส — ความคืบหน้า/ทำเสร็จแล้ว/รับรางวัลแล้ว (ดู ServerPlayer.Quests)</summary>
+    public Dictionary<string, int> QuestProgress { get; set; } = new Dictionary<string, int>();
+    public List<string> QuestDone { get; set; } = new List<string>();
+    public List<string> QuestRewarded { get; set; } = new List<string>();
+    /// <summary>เควสที่เคยเด้งข้อความ "เควสใหม่" ไปแล้ว — กันเด้งซ้ำทุก login</summary>
+    public List<string> QuestAnnounced { get; set; } = new List<string>();
+
     public List<ItemSave> Inventory { get; set; } = new List<ItemSave>();
     public List<string> InventoryOrder { get; set; } = new List<string>();
     public List<string> LockedItemIds { get; set; } = new List<string>();
@@ -201,6 +218,8 @@ public sealed class PlayerSave : SaveEnvelope
     public int DeathTileX { get; set; }
     public int DeathTileY { get; set; }
     public int ImmediateReviveCount { get; set; }
+    /// <summary>ตายอยู่ไหม — ต้อง persist ไม่งั้นรีสตาร์ทเซิร์ฟแล้วคนตายฟื้นเอง (auto-revive)</summary>
+    public bool Dead { get; set; }
 
     /// <summary>เฟส C — ค่าสถานะ (เลือด/สตามินา/ความล้า)</summary>
     public SurvivalSave Survival { get; set; }
@@ -221,6 +240,18 @@ public sealed class PlayerSave : SaveEnvelope
     public List<StatusEffectSave> StatusEffects { get; set; } = new List<StatusEffectSave>();
     public string SelectedTitleId { get; set; }
     public string TargetTitleId { get; set; }
+
+    /// <summary>
+    /// รอยแยก/วาร์ปเรกเซเลอเรเตอร์ — Warp Matter สะสม (ดู ServerPlayer.WarpAccelerator.cs)
+    /// ตัวนับเดี่ยว ๆ ไม่ใช่ Wallet/Currency เต็มระบบ (เซิร์ฟยังไม่มีระบบกระเป๋าเงินจริง)
+    /// </summary>
+    public int WarpMatterBalance { get; set; }
+
+    /// <summary>Warp Matter ที่ได้ไปแล้วในสัปดาห์ปัจจุบัน (เทียบกับ WarpAcceleratorConfig.WeeklyWarpMatterCap)</summary>
+    public int WeeklyWarpMatterAcquired { get; set; }
+
+    /// <summary>เวลาที่ตัวนับรายสัปดาห์จะรีเซ็ตครั้งถัดไป (unix seconds) — 0 = ยังไม่เคยตั้ง</summary>
+    public double WeeklyWarpMatterRefreshAt { get; set; }
 }
 
 public sealed class StatusEffectSave
@@ -306,4 +337,76 @@ public sealed class WorldSave : SaveEnvelope
 
     /// <summary>เฟส C — ของในกล่องเก็บของ: entity id ของกล่อง → รายการไอเทม</summary>
     public Dictionary<string, List<ItemSave>> Boxes { get; set; } = new Dictionary<string, List<ItemSave>>();
+
+    /// <summary>แปลงผักที่ปลูกไว้ (key อยู่ใน FarmSave.ArtifactId)</summary>
+    public List<FarmSave> Farms { get; set; } = new List<FarmSave>();
+}
+
+/// <summary>
+/// แปลงผัก 1 แปลง
+///
+/// เก็บ <see cref="RemainProduct"/>/<see cref="RemainSeed"/> ด้วย เพราะถ้าเก็บแค่ "โตแล้ว"
+/// พอรีสตาร์ทเซิร์ฟ ระบบจะคิดผลผลิตใหม่เต็มจำนวน = ปั๊มของด้วยการรีสตาร์ท
+/// </summary>
+public sealed class FarmSave
+{
+    public string ArtifactId { get; set; }
+    public int TileX { get; set; }
+    public int TileY { get; set; }
+    public string SeedId { get; set; }
+    public int SeedLevel { get; set; } = 1;
+    public double PlantedAt { get; set; }
+    public double GrowsUntil { get; set; }
+    public float Water { get; set; }
+    public float Fertilizer { get; set; }
+    public int Fitness { get; set; }
+    public bool Resolved { get; set; }
+    public bool Dead { get; set; }
+    public string Look { get; set; }
+    public int RemainProduct { get; set; }
+    public int RemainSeed { get; set; }
+
+    public static FarmSave From(ServerWorld.FarmPlot p, int remainProduct, int remainSeed)
+    {
+        return new FarmSave
+        {
+            ArtifactId = p.ArtifactId,
+            TileX = p.TileX,
+            TileY = p.TileY,
+            SeedId = p.SeedId,
+            SeedLevel = p.SeedLevel,
+            PlantedAt = p.PlantedAt,
+            GrowsUntil = p.GrowsUntil,
+            Water = p.Water,
+            Fertilizer = p.Fertilizer,
+            Fitness = (int)p.Fitness,
+            Resolved = p.Resolved,
+            Dead = p.Dead,
+            Look = p.Look,
+            RemainProduct = remainProduct,
+            RemainSeed = remainSeed
+        };
+    }
+
+    public ServerWorld.FarmPlot ToPlot()
+    {
+        return new ServerWorld.FarmPlot
+        {
+            ArtifactId = ArtifactId,
+            TileX = TileX,
+            TileY = TileY,
+            SeedId = SeedId,
+            SeedLevel = SeedLevel < 1 ? 1 : SeedLevel,
+            PlantedAt = PlantedAt,
+            GrowsUntil = GrowsUntil,
+            Water = Water,
+            Fertilizer = Fertilizer,
+            Fitness = (Shared.Etc.Fitness)Fitness,
+            Resolved = Resolved,
+            Dead = Dead,
+            Look = Look,
+            RemainProduct = RemainProduct,
+            RemainSeed = RemainSeed
+        };
+    }
 }

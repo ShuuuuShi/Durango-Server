@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    ตัวควบคุมเซิร์ฟเวอร์แบบ GUI จริง (.exe) — เจ้าของสั่งเมื่อ 24 ส.ค. 2026: "อยากได้ตัวควบคุมเซิร์ฟเวอร์
+    แบบเป็น gui จริงๆ เป็นไฟล์ exe เปิดใช้งานตั้งค่าเซิฟได้เลย"
+
+    ทำไมใช้ WebView2 แทนเขียน UI เองทั้งหมด: server/admin/index.html มีของครบอยู่แล้ว (ผู้เล่น/POI/
+    config/log สด/mod loader/cheat console — ทดสอบผ่านหมดแล้ววันนี้) เขียน native control ซ้ำทุกอย่าง
+    จะเสียเวลามากและเสี่ยงบั๊กใหม่โดยไม่ได้อะไรเพิ่ม ⇒ ให้ .exe ตัวนี้ทำแค่สิ่งที่หน้าเว็บทำเองไม่ได้
+    (สั่ง OS เปิด/ปิด process ของเซิร์ฟ) แล้วฝัง WebView2 แสดงหน้า admin ตัวเดิมสำหรับที่เหลือทั้งหมด
+
+    ต้องมี Microsoft Edge WebView2 Runtime ในเครื่อง (มากับ Windows 11 อยู่แล้ว, Windows 10 ที่ลง Edge
+    ก็มีแล้วเช่นกัน — ถ้าไม่มีจะมีข้อความแจ้งให้โหลด runtime ตอนเปิดโปรแกรม ไม่ทำให้แอปพัง)
+
+    build:   dotnet build tools\ServerController -c Release
+    publish: dotnet publish tools\ServerController -c Release -r win-x64 -p:SelfContained=false
+             (ได้ ServerController.exe ตัวเดียว ที่ tools\ServerController\bin\Release\net9.0-windows\...)
+  -->
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>DurangoServerController</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2957.106" />
+  </ItemGroup>
+
+</Project>

@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -31,7 +32,7 @@ namespace DurangoServer.Core;
 
 // Gateway — ดูรายละเอียดที่ docs/server/Gateway.md
 
-public class Gateway
+public partial class Gateway
 {
     public const int DefaultPort = 8190;
 
@@ -43,6 +44,9 @@ public class Gateway
     private readonly string _assetBundleDir;
     private readonly int _radiotowerPort;
     private readonly string _publicHost;
+    private readonly string _reportsDir;
+    private readonly string _clusterMode;
+    private readonly string _adminToken;
 
     /// <param name="radiotowerPort">พอร์ตจริงของ RadiotowerServer (ไม่ใช่ค่าคงที่)</param>
     /// <param name="publicHost">
@@ -50,13 +54,30 @@ public class Gateway
     /// เช่น "192.168.1.39" หรือ "127.0.0.1" (เมื่อเล่นผ่าน Cloudflare Tunnel ที่เครื่องผู้เล่นเอง)
     /// ถ้าไม่ระบุ จะใช้ host จากคำขอของ client เอง (เหมาะกับเล่นในวงแลน)
     /// </param>
-    public Gateway(GameServer gameServer, ServerWorld world, int port = DefaultPort, string assetBundleDir = null, int radiotowerPort = RadiotowerServer.DefaultPort, string publicHost = null)
+    /// <param name="reportsDir">โฟลเดอร์เก็บรายงานบัค/ข้อเสนอแนะที่ client ส่งมา (/reports)</param>
+    /// <param name="clusterMode">
+    /// ค่า cluster_mode ที่ /entry ตอบกลับไป client — เดิม hardcode "SingleMode" เสมอ
+    /// ทำให้ client ปิดฟีเจอร์ที่เช็ค ClusterMode == Mode.Online ทั้งหมด (แชทส่วนตัว/ตลาด/สารานุกรม ฯลฯ)
+    /// เปิดด้วย --cluster-mode Online (ดู Program.cs) — ค่า default ยังเป็น SingleMode เหมือนเดิม
+    /// เพื่อไม่กระทบเซิร์ฟที่รันอยู่แล้ว (Online mode ยังไม่ได้เทสทุก UI ที่แยกสาขาตามโหมดนี้)
+    /// </param>
+    /// <param name="adminToken">
+    /// [แก้เอง] 24 ส.ค. 2026 — /admin/* เดิมไม่มี auth เลย (คอมเมนต์เดิมสมมติว่า bind แค่ localhost/LAN)
+    /// พอเอาเซิร์ฟไปตั้งบน VPS จริง (เปิดพอร์ต 8190 ออกอินเทอร์เน็ต) ใครก็เปิดเบราว์เซอร์เข้า /admin ได้
+    /// โดยไม่ต้องมีรหัสอะไรเลย ทั้งที่มี endpoint สั่งเตะผู้เล่น/เทเลพอร์ต/สั่ง cheat/แก้ config ได้ —
+    /// ใส่ token ไว้กันตรงนี้ ถ้าไม่ระบุ (ค่าว่าง) = พฤติกรรมเดิมทุกอย่าง (ไม่ auth เหมือนเดิม
+    /// เหมาะกับรันในเครื่อง/LAN เท่านั้น) ระบุด้วย --admin-token ถ้าจะ expose ออกอินเทอร์เน็ต
+    /// </param>
+    public Gateway(GameServer gameServer, ServerWorld world, int port = DefaultPort, string assetBundleDir = null, int radiotowerPort = RadiotowerServer.DefaultPort, string publicHost = null, string reportsDir = null, string clusterMode = "SingleMode", string adminToken = null)
     {
         _gameServer = gameServer;
         _world = world;
         _assetBundleDir = assetBundleDir;
         _radiotowerPort = radiotowerPort;
         _publicHost = publicHost;
+        _reportsDir = reportsDir;
+        _clusterMode = string.IsNullOrEmpty(clusterMode) ? "SingleMode" : clusterMode;
+        _adminToken = adminToken;
         _webServer = new WebServer(port);
 
         // /knock: client ใช้เช็กเวอร์ชัน + ที่อยู่ assetbundle (ตอบ URL ชี้มาที่ server ตัวเอง
@@ -73,7 +94,12 @@ public class Gateway
                 ["server_version"] = "5.2.1",
                 ["compatible"] = true,
                 ["assetbundle_index_url"] = $"http://{host}/assetbundles/Info.5.2.1.json",
-                ["assetbundle_url_root"] = $"http://{host}/assetbundles/"
+                ["assetbundle_url_root"] = $"http://{host}/assetbundles/",
+                // [แก้เอง] 24 ส.ค. 2026 — ผู้เล่นใหม่ (ยังไม่มี PlayerId) เข้า State.FadeOutPrologue ตรงจาก
+                // NPAGetUser เลย **ไม่ผ่าน** GetFrontend/entry ก่อน ⇒ ใส่ค่านี้ที่ /knock ด้วย (เร็วกว่า
+                // /entry ในลำดับ state ทั้งหมด — ทุกคนเจอ /knock ก่อนเสมอไม่ว่าใหม่/เก่า) ให้ client อ่านทัน
+                // ก่อนฉากรถไฟจะเริ่มตั้งค่า — ดู ServerConfig.SkipPrologueVideo / client ที่ case State.Knock
+                ["skip_prologue_video"] = ServerConfig.Current.SkipPrologueVideo
             };
             return new WebServer.JsonResponse(jObject.ToString());
         };
@@ -85,6 +111,8 @@ public class Gateway
         {
             string entityId = Guid.NewGuid().ToString();
             string player = postData.Get("player");
+            // [debug] ดูว่า client ส่ง player field มาไหม — ใช้ไล่ปัญหา token ไม่ตรง id
+            Console.WriteLine($"[gateway] /sessions player field: {(string.IsNullOrEmpty(player) ? "(ไม่มี)" : player.Length + " bytes: " + player.Substring(0, Math.Min(player.Length, 300)))}");
             GameServer.PlayerData data = new GameServer.PlayerData();
             if (!string.IsNullOrEmpty(player))
             {
@@ -150,6 +178,45 @@ public class Gateway
                     Console.WriteLine("[gateway] /sessions player parse failed: " + e.Message);
                 }
             }
+            // client บางเส้นทาง (เช่นเพิ่งสร้างตัวละครเสร็จ) ส่ง player JSON มาแค่ entity id
+            // ⇒ เติมชื่อ/เลเวล/หน้าตาจากไฟล์เซฟให้ครบ ไม่งั้น token ที่ออกไปพก PlayerData เปล่า
+            //   (ตัว ServerPlayer โหลดเซฟเองอยู่แล้ว แต่ AccountStore.TryClaim ข้างล่างใช้ชื่อจากตรงนี้)
+            //
+            // 🐛 [แก้เอง] เดิม gate ทั้ง block (รวม Level) ไว้หลังเงื่อนไข "Name หรือ DisplayJson ว่าง"
+            // เดียว — แต่เส้นทาง "เลือกตัวละครเดิม" (title screen, ไม่ใช่สร้างใหม่) client ส่ง Name/
+            // DisplayJson มาครบอยู่แล้ว (จำได้จากตอนเลือก) ⇒ ทั้ง block ถูกข้ามไปเลย รวมถึง Level ด้วย
+            // ⇒ data.Level ค้างที่ 0 (ค่า default ตอน client ไม่ได้ส่ง Level มาเลย) ⇒ AppearPlayer ส่ง
+            // เลเวล 0 ⇒ RecipeSelectorGroup.IsValidCategoryItem (client) ซ่อนสูตรทุกอันที่ MinLevel > 0
+            // (เช่นขวาน MinLevel=1) ทั้งที่เซฟจริงมีเลเวลถูกต้อง — ผู้เล่นรายงาน "ขวานไม่ขึ้นในเมนูคราฟต์"
+            // แก้โดยแยก Level/EntityType ออกมาเช็ค+เติมเอง ไม่ผูกกับเงื่อนไข Name/DisplayJson อีกต่อไป
+            if (!string.IsNullOrEmpty(data.EntityId))
+            {
+                PlayerSave known = SaveStore.Load<PlayerSave>(SaveStore.PlayerPath(data.EntityId));
+                if (known != null)
+                {
+                    if (string.IsNullOrEmpty(data.Name) && !string.IsNullOrEmpty(known.Name))
+                    {
+                        data.Name = known.Name;
+                        _gameServer.RegisterName(data.EntityId, known.Name);
+                    }
+                    if (string.IsNullOrEmpty(data.DisplayJson) && !string.IsNullOrEmpty(known.DisplayJson))
+                    {
+                        data.DisplayJson = known.DisplayJson;
+                    }
+                    if (data.Level <= 0 && known.Level > 0)
+                    {
+                        data.Level = known.Level;
+                    }
+                    if (data.EntityType == 0 && known.EntityType != 0)
+                    {
+                        data.EntityType = known.EntityType;
+                    }
+                    _gameServer.RegisterPlayerData(data);
+                    Console.WriteLine($"[gateway] เติมข้อมูลตัวละคร {data.EntityId} จากไฟล์เซฟ: " +
+                        $"name={(string.IsNullOrEmpty(data.Name) ? "(ว่าง!)" : data.Name)} level={data.Level} " +
+                        $"display={(string.IsNullOrEmpty(data.DisplayJson) ? "no" : "yes")}");
+                }
+            }
             // H-1: entity id เป็นของสาธารณะ (มากับ AppearPlayer ที่ broadcast ให้ทุกคน)
             // ก่อนออก token ต้องเช็คก่อนว่า "คนขอเป็นเจ้าของ id นี้จริงไหม" (ดู AccountStore)
             string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
@@ -171,6 +238,54 @@ public class Gateway
                 ["session_token"] = sessionToken
             }.ToString());
         };
+        // GP-15: หน้าเลือกตัวละคร (title screen) ถามอันนี้ว่า "IP นี้เคยสร้างตัวละครอะไรไว้บ้าง"
+        // เดิมไม่มี route นี้เลย ⇒ client (ดู ForceSetCluster ใน TitleMenuUserControlBase.cs) ต้องใช้
+        // ตัวแปรในหน่วยความจำแทน ซึ่งหายไปทุกครั้งที่ปิดเกม ⇒ ตัวละครเก่ายังอยู่ในเซฟจริง แต่บังคับสร้างใหม่
+        // ตลอด — ใช้ IP เดียวกับที่ AccountStore ผูก entity id ไว้อยู่แล้ว (ดู AccountStore.FindByIp)
+        _webServer.PostRoute["/accounts"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
+        {
+            string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
+            List<AccountStore.Account> accounts = AccountStore.FindByIp(remoteIp);   // เรียงเล่นล่าสุดก่อนแล้ว
+            // [แก้เอง] 25 ส.ค. 2026 — 🐛 `player_slot_count` **ไม่ใช่** "จำนวนตัวละครที่มีจริง" แต่คือ
+            // "จำนวนช่องที่ account นี้ได้รับ" (ดู client PlayerSelectionSystem.cs: PlayerSlotExceeded =
+            // PlayerSlotCount < size — เทียบกับจำนวนที่ส่งมาจริง) เดิม hardcode 7 คงที่ไม่สนจำนวนจริง —
+            // ตอนเทสสะสม account ไว้ 80+ อันจาก IP เดียว (127.0.0.1) ทำให้ 7 < 80 กลายเป็น "เกินโควตา"
+            // ทุกครั้ง ⇒ หน้าเลือกตัวละครน่าจะพังหรือ fallback ไปสร้างใหม่ (คือปัญหา "ทำไมบังคับสร้างตัวใหม่"
+            // ที่เจ้าของถาม) — ค่าอ้างอิงจริงจากเกม (client/Durango.Offline/Server.cs): MultiMode ให้ 3
+            // ช่อง, Editable (dev) ให้ 7 — ใช้ 3/7 เป็นค่าเริ่มต้น และ**ตัดรายการที่ส่งกลับให้เหลือแค่
+            // เท่าจำนวนช่องจริง** (เอาที่เล่นล่าสุดไว้ก่อน) จะได้ไม่ส่งของเก่าที่เกินโควตาปนไปด้วย
+            const int playerSlotCount = 3;
+            const int maxPlayerSlotCount = 7;
+            var players = new JArray();
+            foreach (AccountStore.Account acc in accounts)
+            {
+                if (players.Count >= playerSlotCount)
+                {
+                    break;
+                }
+                PlayerSave save = SaveStore.Load<PlayerSave>(SaveStore.PlayerPath(acc.EntityId));
+                if (save == null)
+                {
+                    // จองไว้แต่ยังไม่เคยเข้าเกมจริง (เช่น สร้างตัวละครค้างไว้กลางทาง) — ข้าม ไม่ให้โผล่
+                    // เป็นตัวเลือกว่าง ๆ กดแล้วพัง
+                    continue;
+                }
+                players.Add(new JObject
+                {
+                    ["player_entity_id"] = acc.EntityId,
+                    ["player_name"] = string.IsNullOrEmpty(save.Name) ? acc.Name : save.Name,
+                    ["player_level"] = save.Level,
+                    ["disconnected_at"] = acc.LastSeenAt,
+                    ["deletes_at"] = null
+                });
+            }
+            return new WebServer.JsonResponse(new JObject
+            {
+                ["players"] = players,
+                ["max_player_slot_count"] = maxPlayerSlotCount,
+                ["player_slot_count"] = playerSlotCount
+            }.ToString());
+        };
         _webServer.GetRoute["/admission"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
             new WebServer.JsonResponse(new JObject { ["admitted"] = true }.ToString());
         _webServer.GetRoute["/entry"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
@@ -183,16 +298,54 @@ public class Gateway
                 // ถ้าไม่ระบุ ใช้ host ที่ client เรียก gateway มา (กรณีเล่นในวงแลน)
                 ["frontend_addresses"] = new JArray(ResolveTcpHost(request) + ":" + _gameServer.Port),
                 ["radiotower_addresses"] = new JArray(ResolveTcpHost(request) + ":" + _radiotowerPort),
-                ["cluster_mode"] = "SingleMode"
+                ["cluster_mode"] = _clusterMode,
+                // [แก้เอง] 24 ส.ค. 2026 — ให้ "ข้ามฉากรถไฟไหม" เป็นค่าที่เซิร์ฟสั่งได้ (data/config.json
+                // → ServerConfig.SkipPrologueVideo) ไม่ต้อง build/แจก client ใหม่ทุกครั้งที่จะสลับ
+                ["skip_prologue_video"] = ServerConfig.Current.SkipPrologueVideo
             }.ToString());
+        // สร้างตัวละครใหม่ (มาจากหน้าสร้างตัวละครในโปรล็อก — PrologueManager.RequestCreatePlayer)
+        //
+        // 🐛 เดิมที่นี่แค่สุ่ม GUID คืนไป **ทิ้งชื่อ/เพศ/หน้าตาทั้งหมด**
+        // ⇒ ตัวละครที่เพิ่งสร้างเข้าเกมมาแบบไม่มีชื่อ (log: `name=(ว่าง!) level=0 display=no`)
+        //   และหน้าตาเป็นค่า default ของ client ไม่ใช่ที่ผู้เล่นปั้นไว้
+        // ⇒ ตอนนี้เขียนลง `saves/players/<id>.json` ตั้งแต่ตอนสร้าง
+        //   ผู้เล่นจึงเข้าเกมมาพร้อมชื่อ+หน้าตาที่ถูกต้อง แม้ client จะส่ง JSON ขั้นต่ำมาก็ตาม
+        //   (ServerPlayer.LoadPersistedState เป็นคนหยิบไปใช้ ดู ServerPlayer.Persistence.cs)
         _webServer.PostRoute["/players"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
         {
             string entityId = Guid.NewGuid().ToString();
-            string name = postData.Get("name");
+            string name = (postData.Get("name") ?? string.Empty).Trim();
+            bool isMale = !string.Equals(postData.Get("gender"), "female", StringComparison.OrdinalIgnoreCase);
+            ushort entityType = (ushort)(isMale ? 1000 : 1001);
+            string displayJson = BuildCreatedDisplayJson(entityId, isMale, postData.Get("model_info"));
+
+            GameServer.PlayerData data = new GameServer.PlayerData
+            {
+                EntityId = entityId,
+                Name = name,
+                Level = 1,
+                EntityType = entityType,
+                DisplayJson = displayJson
+            };
             if (!string.IsNullOrEmpty(name))
             {
                 _gameServer.RegisterName(entityId, name);
             }
+            _gameServer.RegisterPlayerData(data);
+
+            PlayerSave save = new PlayerSave
+            {
+                EntityId = entityId,
+                Name = name,
+                Level = 1,
+                EntityType = entityType,
+                DisplayJson = displayJson
+            };
+            SaveStore.Save(SaveStore.PlayerPath(entityId), save);
+
+            Console.WriteLine($"[gateway] สร้างตัวละคร {entityId} name={(string.IsNullOrEmpty(name) ? "(ว่าง!)" : name)} " +
+                $"เพศ={(isMale ? "ชาย" : "หญิง")} display={(string.IsNullOrEmpty(displayJson) ? "no" : "yes")} " +
+                $"job={postData.Get("job")} region={postData.Get("region")}");
             return new WebServer.JsonResponse(new JObject { ["entity_id"] = entityId }.ToString());
         };
         _webServer.GetRoute["/terrains/1"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
@@ -202,7 +355,101 @@ public class Gateway
         };
         _webServer.GetRoute["/terrains/1/whole_biomes"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
             new WebServer.BinaryReponse { Content = _world.Terrain.Biomes };
+        // /reports: รับรายงานบัค/ข้อเสนอแนะจากปุ่มรายงานในเกม (SendReportSystem)
+        // เก็บเป็นไฟล์ใน data/reports/ ให้ผู้ดูแลเซิร์ฟอ่าน — client เช็คแค่ HTTP 200
+        _webServer.PostRoute["/reports"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
+        {
+            try
+            {
+                string text = postData.Get("text") ?? "";
+                if (text.Length > 4000)
+                {
+                    text = text.Substring(0, 4000);
+                }
+                if (string.IsNullOrWhiteSpace(text))
+                {
+                    return new WebServer.BadRequestResponse();
+                }
+                string reporter = postData.Get("reporter_id") ?? "?";
+                string safeReporter = new string(reporter.Where(char.IsLetterOrDigit).Take(24).ToArray());
+                if (string.IsNullOrEmpty(safeReporter))
+                {
+                    safeReporter = "unknown";
+                }
+                Directory.CreateDirectory(_reportsDir);
+                string fileName = $"report_{System.DateTime.Now:yyyyMMdd_HHmmss}_{safeReporter}.txt";
+                string content = string.Join(Environment.NewLine,
+                    "[time]     " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    "[type]     " + (postData.Get("type") ?? ""),
+                    "[category] " + (postData.Get("category") ?? ""),
+                    "[reporter] " + reporter,
+                    "[reportee] " + (postData.Get("reportee_id") ?? ""),
+                    "[text]     " + text);
+                File.WriteAllText(Path.Combine(_reportsDir, fileName), content);
+                Console.WriteLine($"[report] เก็บรายงาน {fileName} จาก {reporter} ({postData.Get("type") ?? "?"})");
+                return new WebServer.JsonResponse("{}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[report] เขียนรายงานไม่สำเร็จ: " + e.Message);
+                return new WebServer.JsonResponse("{}", System.Net.HttpStatusCode.InternalServerError);
+            }
+        };
         _webServer.UnhandledUrl += UnhandledUrl;
+
+        // /admin/*: หน้าควบคุม/มอนิเตอร์เซิร์ฟสำหรับเจ้าของเซิร์ฟเท่านั้น (ไม่ใช่ผู้เล่น)
+        // ดูรายละเอียดที่ Gateway.Admin.cs — ตั้งใจแยก prefix ให้ชัดว่าเป็นโซน admin
+        // ไม่มี auth ซับซ้อนเพราะ Gateway บินด์แค่ localhost/วงแลนของเจ้าของเซิร์ฟเอง (ดู WebServer bind fallback)
+        RegisterAdminRoutes();
+    }
+
+    /// <summary>
+    /// แปลง <c>model_info</c> ที่หน้าสร้างตัวละครส่งมา (snake_case ดู PrologueManager.PlayerDisplay)
+    /// ให้เป็น <see cref="PlayerDisplay"/> ของโปรโตคอลเกม แล้วคืนเป็น JSON ที่เก็บลงไฟล์เซฟได้
+    ///
+    /// ตรรกะเดียวกับ offline gateway ของเกมเอง (Durango.Offline.Gateway.UpdateAppearPlayer)
+    /// บวกโมเดลร่างเปล่าตามเพศ ซึ่งฝั่งนั้นได้มาจากค่าตั้งต้นของ PlayerContext
+    /// </summary>
+    private static string BuildCreatedDisplayJson(string entityId, bool isMale, string modelInfoJson)
+    {
+        PlayerDisplay display = default;
+        display.EntityId = entityId;
+        display.DefaultBody = isMale
+            ? "Models/PC/Male/Body/m_body_nothing.FBX"
+            : "Models/PC/Female/Body/f_body_nothing.FBX";
+        display.DefaultInner = isMale
+            ? "Models/PC/Male/Inner/m_inner_basic.FBX"
+            : "Models/PC/Female/Inner/f_inner_basic.FBX";
+        display.Body = display.DefaultBody;
+        display.BodySize = 1f;
+
+        if (!string.IsNullOrWhiteSpace(modelInfoJson))
+        {
+            try
+            {
+                JObject m = JObject.Parse(modelInfoJson);
+                display.Hair = m.Value<string>("hair");
+                display.Beard = m.Value<string>("beard");
+                display.SkinColor = m.Value<string>("skin_color");
+                display.HairColor = m.Value<string>("hair_color");
+                display.EyeColor = m.Value<string>("eye_color");
+                display.LipColor = m.Value<string>("lip_color");
+                display.PortraitBgColor = m.Value<string>("portrait_bg_color");
+                display.BodyColor = m["body_color"]?.ToObject<string[]>();
+                display.HeadColor = m["head_color"]?.ToObject<string[]>();
+                display.Portrait = m.Value<int?>("portrait") ?? 0;
+                display.PortraitBg = m.Value<int?>("portrait_bg") ?? 0;
+                display.VoiceType = m.Value<int?>("voice_type") ?? 0;
+                // ปั้นตัวเล็ก/ใหญ่ได้ในหน้าสร้าง — 0 แปลว่าไม่ได้ส่งมา ไม่ใช่ "ตัวหายไป"
+                float size = m.Value<float?>("body_size") ?? 0f;
+                display.BodySize = size > 0f ? size : 1f;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[gateway] /players model_info อ่านไม่ออก: " + e.Message);
+            }
+        }
+        return JsonConvert.SerializeObject(display);
     }
 
     /// <summary>

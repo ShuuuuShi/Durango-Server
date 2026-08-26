@@ -86,6 +86,9 @@ public partial class ServerPlayer
             Console.WriteLine("[proficiency] {0}: {1} เลเวล {2} → {3}", Name, category, levelBefore, levelAfter);
             Send(new Info { Text = $"ความชำนาญ{ProficiencyNameOf(category)}ขึ้นเป็นเลเวล {levelAfter}" });
             SendSkills();       // หน้าสกิลต้องอัปเดตทันที ไม่ใช่รอเปิดเมนูใหม่
+            // ความชำนาญป้อนค่า Derived ability ด้วย (ServerPlayer.Abilities.DerivedAbilityValue) ⇒
+            // เกณฑ์ RecipeGateData/BlueprintGateData เปลี่ยน ต้อง push เมนูคราฟต์ใหม่เหมือนตอนขึ้นเลเวล
+            SendUnlockedRecipesAndBlueprints();
             // ความชำนาญเป็นตัวป้อนค่าสถานะ 8 ตัว ⇒ หลอดเลือด/สตามินาและหน้าตัวละครต้องขยับตาม
             RefreshAbilities();
         }

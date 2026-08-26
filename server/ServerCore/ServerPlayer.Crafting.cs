@@ -404,7 +404,17 @@ public partial class ServerPlayer
             Prototype = prototype,
             Level = 1,
             OriginalLevel = 1,
-            ModifiableCount = 0,
+            // 🐛 **ตัวที่ทำให้ "มีเนื้อ 10 ชิ้นแต่คราฟต์ไม่ได้"** — เดิมเป็น 0
+            //
+            // สูตรที่มี `deduct_modifiable_count: true` (สูตรทำอาหาร/แปรรูปแทบทั้งหมด)
+            // ช่อง "base" ของมันจะกลายเป็น `RecipeSlot.Type.ModifyBase` ฝั่ง client
+            // แล้ว `RecipeSlot.IsSuitableItem` เช็คเพิ่มว่า **`itemData.ModifiableCount > 0`**
+            // ⇒ ของที่เราส่งไป ModifiableCount = 0 ถูกกรองทิ้งหมด ช่องเลยขึ้นว่า "ไม่มีของ"
+            // ทั้งที่มีอยู่เต็มกระเป๋า และ **packet ไม่เคยถูกส่งมาถึง server เลย** (client กันไว้ก่อน)
+            //
+            // ช่องที่ใช้ `required_tags` (เช่นช่อง "น้ำ" ของ boiled_meat) เป็น General
+            // จึงผ่านปกติ — นี่คือเหตุผลที่บางช่องมีของบางช่องว่าง
+            ModifiableCount = 1,
             ModifiedCount = 0,
             Size = 1,
             // คราฟต์เสร็จ = เครื่องมือเต็มหลอด (ของที่ไม่ใช่เครื่องมือได้หลอด 1/1 ที่ไม่มีผลอะไร)
@@ -492,6 +502,171 @@ public partial class ServerPlayer
         return null;
     }
 
+    /// <summary>
+    /// `cheat why <สูตร>` — ไล่เช็คทุกเงื่อนไขของสูตรแล้วบอกว่าขาดอะไร
+    ///
+    /// มีไว้เพราะเวลาเล่นในเกมจริงแล้วสูตรขึ้นเป็นสีเทา **client ไม่บอกเหตุผล**
+    /// และ packet ก็ไม่เคยถูกส่งมาถึง server ⇒ ดู log ฝั่งเซิร์ฟก็ไม่เจออะไรเลย
+    /// (เจอปัญหานี้ตอนเทสจริง: "ทำเนื้อเสียบไม้ไม่ได้" แต่ log ฝั่งเซิร์ฟว่างเปล่า)
+    /// </summary>
+    public string ExplainRecipe(string recipeId)
+    {
+        if (string.IsNullOrWhiteSpace(recipeId))
+        {
+            return "ใช้: cheat why <ชื่อสูตร> เช่น `cheat why skewer` (เนื้อเสียบไม้)";
+        }
+        recipeId = recipeId.Trim();
+        if (!RecipeRequirements.TryGet(recipeId, out RecipeRequirements.Slot[] slots))
+        {
+            return $"ไม่มีสูตร '{recipeId}' ในเกม";
+        }
+        RecipeMeta.TryGet(recipeId, out RecipeMeta.Info meta);
+
+        var sb = new System.Text.StringBuilder();
+        sb.Append("สูตร ").Append(recipeId);
+        if (meta != null)
+        {
+            sb.Append(" (หมวด ").Append(meta.Category ?? "-").Append(")");
+        }
+        sb.Append(NEWLINE);
+
+        // 1) ระบบเปิดอยู่ไหม + เลเวล
+        string blocked = BlockedByFeature(meta);
+        sb.Append(blocked == null ? "[/] ระบบเปิดอยู่" : "[x] " + blocked).Append(NEWLINE);
+        if (meta != null)
+        {
+            bool lvOk = Level >= meta.MinLevel;
+            sb.AppendFormat("{0} เลเวล {1} (ต้องการ {2}){3}",
+                lvOk ? "[/]" : "[x]", Level, meta.MinLevel, NEWLINE);
+        }
+
+        // 2) วัตถุดิบ — บอกทีละช่องว่าในกระเป๋ามีของที่ใช้ได้ไหม
+        for (int i = 0; i < slots.Length; i++)
+        {
+            RecipeRequirements.Slot slot = slots[i];
+            List<string> have = FindItemsForSlot(slot);
+            bool ok = have.Count >= slot.Min;
+            sb.AppendFormat("{0} ช่อง '{1}' ต้องการ {2} ชิ้น — ในกระเป๋ามีที่ใช้ได้ {3} ชิ้น",
+                ok ? "[/]" : "[x]", slot.Id, slot.Min, have.Count);
+            if (!ok)
+            {
+                sb.Append(" · รับ: ").Append(DescribeSlotWants(slot));
+            }
+            sb.Append(NEWLINE);
+        }
+
+        // 3) โต๊ะ/เตา
+        if (meta != null && meta.Workbench != null && meta.Workbench.Length > 0)
+        {
+            sb.AppendFormat("[?] ต้องยืนที่ {0} (client เป็นคนเลือกให้ตอนกดคราฟต์){1}",
+                DescribeTags(meta.Workbench), NEWLINE);
+        }
+        else
+        {
+            sb.Append("[/] ไม่ต้องใช้โต๊ะ/เตา").Append(NEWLINE);
+        }
+
+        // 4) เครื่องมือ — อันนี้แหละที่มักเป็นตัวบล็อกจริง
+        if (meta != null && meta.Tools != null && meta.Tools.Length > 0)
+        {
+            string held = FindHeldToolFor(meta.Tools);
+            sb.AppendFormat("{0} ต้องมีเครื่องมือ {1}{2}{3}",
+                held == null ? "[x]" : "[/]",
+                DescribeTags(meta.Tools),
+                held == null ? " — ไม่มีในกระเป๋า" : " — มี " + ItemNameData.NameOf(held, held),
+                NEWLINE);
+        }
+        else
+        {
+            sb.Append("[/] ไม่ต้องใช้เครื่องมือ").Append(NEWLINE);
+        }
+        return sb.ToString();
+    }
+
+    private const string NEWLINE = "\n";
+
+    /// <summary>ของในกระเป๋าที่ใส่ช่องนี้ได้ (ดูทั้ง tag และชื่อ prototype ตามที่สูตรกำหนด)</summary>
+    private List<string> FindItemsForSlot(RecipeRequirements.Slot slot)
+    {
+        var found = new List<string>();
+        lock (_inventory)
+        {
+            for (int i = 0; i < _inventory.Count; i++)
+            {
+                Item it = _inventory[i];
+                if (SlotAccepts(slot, it))
+                {
+                    found.Add(it.Id);
+                }
+            }
+        }
+        return found;
+    }
+
+    /// <summary>
+    /// ของชิ้นนี้ใส่ช่องนี้ได้ไหม — **ต้องใช้กติกาเดียวกับ ValidateMaterials เป๊ะ ๆ**
+    ///
+    /// 🐛 รอบแรกเขียนผิด: เทียบ slot.Materials กับ item.Prototype ตรง ๆ
+    ///    แต่ในข้อมูลเกม **ทั้ง Tags และ Materials เป็นชื่อ tag เหมือนกัน** ต่างแค่บทบาทในสูตร
+    ///    (สูตร boiled_meat ขอ materials = ["meat"] ซึ่งคือ tag "meat" ไม่ใช่ prototype "meat")
+    ///    ⇒ เนื้อกิ้งก่า/เนื้อสันใน ที่มี tag meat จะถูกนับว่า "ไม่มี" ทั้งที่ใช้ได้จริง
+    /// </summary>
+    private static bool SlotAccepts(RecipeRequirements.Slot slot, Item item)
+    {
+        return MatchesAny(item.Prototype, slot.Tags) && MatchesAny(item.Prototype, slot.Materials);
+    }
+
+    private static string DescribeSlotWants(RecipeRequirements.Slot slot)
+    {
+        var parts = new List<string>();
+        if (slot.Tags != null)
+        {
+            parts.AddRange(slot.Tags);
+        }
+        if (slot.Materials != null)
+        {
+            parts.AddRange(slot.Materials);
+        }
+        return parts.Count == 0 ? "อะไรก็ได้" : string.Join(" / ", parts);
+    }
+
+    private static string DescribeTags(RecipeMeta.Tag[] tags)
+    {
+        var parts = new List<string>(tags.Length);
+        for (int i = 0; i < tags.Length; i++)
+        {
+            parts.Add(tags[i].Id + " lv" + tags[i].Level);
+        }
+        return string.Join(" / ", parts);
+    }
+
+    /// <summary>หาไอเทมในกระเป๋าที่มี tag ตรงกับที่สูตรขอ — คืน prototype ตัวแรกที่เจอ</summary>
+    private string FindHeldToolFor(RecipeMeta.Tag[] wants)
+    {
+        lock (_inventory)
+        {
+            for (int i = 0; i < _inventory.Count; i++)
+            {
+                Item it = _inventory[i];
+                if (it.Tags == null)
+                {
+                    continue;
+                }
+                for (int t = 0; t < it.Tags.Length; t++)
+                {
+                    for (int w = 0; w < wants.Length; w++)
+                    {
+                        if (it.Tags[t].Id == wants[w].Id && it.Tags[t].Level >= wants[w].Level)
+                        {
+                            return it.Prototype;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     private void HandleCraft(Craft msg, PacketHeader header)
     {
         if (!ServerConfig.Current.Features.Crafting)
@@ -516,6 +691,19 @@ public partial class ServerPlayer
         }
         RecipeMeta.TryGet(msg.RecipeId, out RecipeMeta.Info meta);
 
+        // [แก้เอง] 25 ส.ค. 2026 — ของอีเวนต์/ฤดูกาล (คริสต์มาส/ฮาโลวีน/ปีใหม่ ฯลฯ) ห้ามผู้เล่นทั่วไปคราฟ
+        // handler นี้ไม่เคยเช็คว่าสูตรที่ส่งมาอยู่ใน unlocked set ไหมมาก่อน ⇒ แก้ client/ยัด packet ตรง ๆ
+        // ก็ยังคราฟต์ได้ ต้องกันที่นี่ด้วยถึงจะจริง — ใช้ `IsEventRecipe` (เช็คทั้งหมวดกับชื่อ id เพราะ
+        // สูตรอีเวนต์ส่วนใหญ่ Category เป็น "cook"/"weapon_and_tool" ปกติเป๊ะ ดู RecipeData.cs)
+        // หมวด "system" (ย้อม/ฟอกสี 6 อัน) เจ้าของสั่งซ่อนให้ admin เท่านั้นด้วย แม้ไม่ใช่ของอีเวนต์จริง
+        if ((RecipeData.IsEventRecipe(msg.RecipeId, meta?.Category) || RecipeData.IsSystemRecipeCategory(meta?.Category)) && !IsAdmin)
+        {
+            Console.WriteLine("[craft] ปฏิเสธ {0} สูตร {1}: เป็นของอีเวนต์/ระบบ — admin เท่านั้น", Name, msg.RecipeId);
+            Send(new Info { Text = "สูตรนี้ใช้ได้แค่แอดมิน" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+
         string blocked = BlockedByFeature(meta);
         if (blocked != null)
         {
@@ -529,6 +717,18 @@ public partial class ServerPlayer
             Console.WriteLine("[craft] ปฏิเสธ {0} สูตร {1}: ต้องเลเวล {2} (ตอนนี้ {3})",
                 Name, msg.RecipeId, meta.MinLevel, Level);
             Send(new Info { Text = $"สูตรนี้ต้องเลเวล {meta.MinLevel}" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        // [แก้เอง] 25 ส.ค. 2026 (รอบ 3) — เอาเกณฑ์ความสามารถที่ประมาณเอาเอง (RecipeGateData) ออก
+        // เปลี่ยนมาเช็คของจริงแทน: สูตรนี้ต้องอยู่ใน unlocked set จริง (AlwaysRecipes หรือเรียนสกิลมาแล้ว)
+        // — เดิม handler นี้ไม่เคยเช็คเรื่องปลดล็อกเลย พึ่งแค่ Available flag ฝั่ง client (เชื่อ client
+        // ไม่ได้) ตอนนี้เช็คจริงที่นี่ด้วย ให้ตรงกับ "รายการคราฟอ้างอิงจากสกิลเท่านั้น"
+        if (Array.IndexOf(UnlockedRecipes(), msg.RecipeId) < 0)
+        {
+            Console.WriteLine("[craft] ปฏิเสธ {0} สูตร {1}: ยังไม่ปลดล็อก (ต้องเรียนสกิลที่เกี่ยวข้องก่อน)",
+                Name, msg.RecipeId);
+            Send(new Info { Text = "สูตรนี้ยังไม่ปลดล็อก — เรียนสกิลที่เกี่ยวข้องก่อน" }, header.Seq);
             Send(default(Abort), header.Seq);
             return;
         }
@@ -572,6 +772,13 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        if (_deferred.Count >= MaxPendingActions)
+        {
+            Console.WriteLine("[craft] ปฏิเสธ {0}: คิวการกระทำเต็ม ({1})", Name, _deferred.Count);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+
         // เฟส C — สตามินาที่เสียเป็นค่าจริงของสูตร (ต้มน้ำซุปเหนื่อยกว่าฟั่นเชือก)
         float staminaCost = meta != null && meta.Energy > 0f ? meta.Energy : StaminaCostCraft;
         if (!TrySpendStamina(staminaCost))
@@ -609,6 +816,7 @@ public partial class ServerPlayer
                     if (idx < 0 || indices.Contains(idx))
                     {
                         Console.WriteLine("[craft] {0}: วัตถุดิบ {1} หายไประหว่างคราฟต์ — ยกเลิก", Name, id);
+                        RestoreStamina(staminaCost, 0f);
                         Send(default(Abort), header.Seq);
                         return;
                     }

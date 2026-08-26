@@ -115,6 +115,7 @@ public partial class ServerPlayer
                 ProtectedItems = CurrentProtectedItems()
             });
             SendInventory();
+            QuestProgress(QuestData.Goal.Repair);
             Console.WriteLine("[repair] {0} repaired {1} with {2} kit(s)", Name, repaired.Prototype, removedIds.Count);
         }));
     }
@@ -141,7 +142,7 @@ public partial class ServerPlayer
         MarkDirty();
         SendInventory();
         SendEquipments();
-        _world.Broadcast(CurrentDisplay);
+        _world.BroadcastToViewers(EntityId, CurrentDisplay);
         RefreshAbilities();
     }
 
@@ -193,7 +194,7 @@ public partial class ServerPlayer
         MarkDirty();
         SendInventory();
         SendEquipments();
-        _world.Broadcast(CurrentDisplay);
+        _world.BroadcastToViewers(EntityId, CurrentDisplay);
         RefreshAbilities();
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Text;
 
@@ -48,6 +48,30 @@ public static class SessionClient
         catch (Exception e)
         {
             Console.WriteLine($"[session] ขอ token จาก gateway {host}:{gatewayPort} ไม่ได้: {e.Message}");
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// ขอ token โดยส่ง player JSON ดิบ ๆ ที่เตรียมเองมา — ใช้เลียนแบบ client ที่เพิ่งสร้างตัวละคร
+    /// ซึ่งส่งมาแค่ entity id (ชื่อ/หน้าตาต้องมาจากไฟล์เซฟฝั่ง server)
+    /// </summary>
+    public static string FetchRaw(string host, int gatewayPort, string playerJson)
+    {
+        try
+        {
+            using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
+            var body = new StringContent(
+                "player=" + Uri.EscapeDataString(playerJson),
+                Encoding.UTF8,
+                "application/x-www-form-urlencoded");
+            string reply = http.PostAsync($"http://{host}:{gatewayPort}/sessions", body)
+                .GetAwaiter().GetResult().Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            return ReadJsonString(reply, "session_token");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"[session] ขอ token (raw) ไม่ได้: {e.Message}");
             return null;
         }
     }

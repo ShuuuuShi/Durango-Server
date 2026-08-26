@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -37,6 +37,17 @@ public partial class ServerPlayer
     /// <summary>คนสั่งเป็น admin ไหม (H-2) — คำสั่งที่ยุ่งกับผู้เล่นคนอื่นต้องผ่านด่านนี้</summary>
     private bool IsAdmin => GameServer.IsAdmin(EntityId, Name);
 
+    /// <summary>
+    /// admin web panel (Gateway /admin/cheat) เรียกทางนี้เพื่อสั่งคำสั่งทดสอบตัวเดียวกับที่พิมพ์ในแชท
+    /// "ในนามของ" ผู้เล่นคนนี้ (มีผลกับตัวละครนี้ เช่น spawn/heal/tp ที่ตำแหน่งของมัน)
+    /// ผลลัพธ์ที่เป็นข้อความจะถูกส่งกลับไปที่ตัวเกมของผู้เล่นคนนั้นด้วย (Info packet) เหมือนพิมพ์เอง
+    /// ไม่ต้องมี PacketHeader จริงเพราะไม่มี client ฝั่งนี้ส่งคำขอมา — ใช้ header ว่าง (Seq=0) แทน
+    /// </summary>
+    public void RunAdminCheat(string rawCommand)
+    {
+        HandleCheat(new Cheat { _Cheat = rawCommand ?? "" }, default);
+    }
+
     private void HandleCheat(Cheat msg, PacketHeader header)
     {
         string raw = (msg._Cheat ?? "").Trim();
@@ -68,7 +79,9 @@ public partial class ServerPlayer
             {
                 ServerAnimal one = _world.Animals.SpawnAt(CurrentPosition, wantType, CurrentHeight);
                 string known = AnimalData.TryGet(wantType, out AnimalData.AnimalInfo ai) ? ai.ModelPath : "(ไม่รู้จักชนิดนี้)";
-                Send(new Info { Text = $"เกิดสัตว์ type {one.EntityType} lv{one.Level} ข้างตัว — โมเดล {known}" }, header.Seq);
+                // แนบ entity id มาด้วย — เทสจะได้ยิงใส่ "ตัวที่เพิ่งเสก" ได้แน่นอน ไม่ต้องเดาจาก AppearAnimal
+                // (พอมีระบบระยะมองเห็น สัตว์เดินเข้า/ออกจอตลอด ตัวที่ appear ล่าสุดมักไม่ใช่ตัวที่เสก)
+                Send(new Info { Text = $"เกิดสัตว์ type {one.EntityType} lv{one.Level} ข้างตัว [id={one.EntityId}] — โมเดล {known}" }, header.Seq);
                 return;
             }
             if (sp.Length >= 3 && int.TryParse(sp[1], out int sx) && int.TryParse(sp[2], out int sy))
@@ -124,6 +137,23 @@ public partial class ServerPlayer
             }
         }
 
+        // tp <tileX> <tileY> — วาร์ปตัวเองไปพิกัดที่ระบุ
+        // ไว้เทสระยะการมองเห็น (เดินจริงติดเพดานความเร็ว M-2 ต้องเดินหลายรอบกว่าจะพ้นระยะ)
+        if (cmd.StartsWith("tp ", StringComparison.Ordinal) && cmd != "tp spawn")
+        {
+            string[] t = cmd.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (t.Length >= 3 && int.TryParse(t[1], out int tx) && int.TryParse(t[2], out int ty))
+            {
+                ControlTeleport(tx, ty);
+                Send(new Info { Text = $"วาร์ปไป tile {tx},{ty}" }, header.Seq);
+            }
+            else
+            {
+                Send(new Info { Text = "ใช้: cheat tp <tileX> <tileY>" }, header.Seq);
+            }
+            return;
+        }
+
         // exp <จำนวน> — ยัด exp ให้เลย ไว้เทสว่าขึ้นเลเวลแล้วค่าสถานะ/หลอดโตจริงไหม
         if (cmd.StartsWith("exp ", StringComparison.Ordinal))
         {
@@ -139,11 +169,52 @@ public partial class ServerPlayer
             return;
         }
 
+        // give <prototype> [จำนวน] — เสกของให้ตัวเอง (เดิมมีแต่ทาง `control <ชื่อ> give` ซึ่งต้องเป็น admin)
+        if (cmd.StartsWith("give ", StringComparison.Ordinal))
+        {
+            string[] g = cmd.Substring(5).Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (g.Length == 0)
+            {
+                Send(new Info { Text = "ใช้: cheat give <prototype> [จำนวน] เช่น `cheat give meat 10`" }, header.Seq);
+                return;
+            }
+            int n = g.Length >= 2 && int.TryParse(g[1], out int parsed) ? Math.Clamp(parsed, 1, 50) : 1;
+            Send(new Info { Text = ControlGive(g[0].ToLower(), n) }, header.Seq);
+            return;
+        }
+
+        // why <ชื่อสูตร> — ทำไมคราฟต์สูตรนี้ไม่ได้ (ไล่เช็คทีละข้อแล้วบอกว่าขาดอะไร)
+        if (cmd.StartsWith("why ", StringComparison.Ordinal))
+        {
+            Send(new Info { Text = ExplainRecipe(cmd.Substring(4).Trim()) }, header.Seq);
+            return;
+        }
+
+        // poi ... — จัดการจุดสนใจสด ๆ (ดู ServerPlayer.CheatPOI.cs)
+        // แยกไปคนละไฟล์เพราะมีหลายคำสั่งย่อยและต้องมีตัวตรวจว่าวางถูกที่ไหม
+        if (cmd == "poi" || cmd.StartsWith("poi ", StringComparison.Ordinal))
+        {
+            string poiArgs = cmd.Length <= 4 ? string.Empty : cmd.Substring(4).Trim();
+            Send(new Info { Text = CheatPOI(poiArgs) }, header.Seq);
+            return;
+        }
+
         // travel <รหัสเกาะ> — เดินทางข้ามเกาะ (Beta 1.1)
         if (cmd.StartsWith("travel ", StringComparison.Ordinal))
         {
             string want = cmd.Substring("travel ".Length).Trim();
             Send(new Info { Text = TravelTo(want) }, header.Seq);
+            return;
+        }
+
+        // effect <id> [วินาที] — เทสบัฟ/ดีบัฟจากอาหารให้มีผลจริง โดยไม่ต้องหาไอเทมที่ให้บัฟนั้น
+        //   cheat effect poisoning       → ติดพิษ 60 วิ (เลือดไหลลง)
+        //   cheat effect life_up 30      → ฟื้นเลือด 30 วิ
+        //   cheat effect energetic       → บัฟสตามินา (ทำงานเปลืองน้อยลง)
+        //   cheat effect clear           → ล้างบัฟทั้งหมด
+        if (cmd == "effect" || cmd.StartsWith("effect ", StringComparison.Ordinal))
+        {
+            Send(new Info { Text = CheatApplyEffect(cmd.Length <= 6 ? string.Empty : cmd.Substring(6).Trim()) }, header.Seq);
             return;
         }
 
@@ -184,6 +255,69 @@ public partial class ServerPlayer
             case "stats":
                 SendStatistics();
                 break;
+            case "heal":
+                // ฟื้นเต็ม + ล้างความล้า — ไว้ตั้งต้นบอทเทสให้สภาพเหมือนกันทุกรอบ
+                //
+                // 🐛 ที่ต้องมี: บอทเทสใช้ **ไฟล์เซฟเดิมทุกรอบ** (id คงที่อย่าง gp-check-1)
+                //    เจอมาแล้วว่าเซฟค้างที่เลือด 0.85 + ความล้า 87.5 (เกินขีดอันตราย = เลือดไม่ฟื้น)
+                //    ⇒ บอทตายกลางเทส แล้วเทสที่ต้องตีสัตว์/แตะซากตกยกแผงแบบสุ่ม ๆ
+                RestoreSurvival(clearFatigue: true);
+                if (Dead)
+                {
+                    ReviveAtSpawn();
+                }
+                Send(new Info { Text = "ฟื้นเต็ม เลือด/สตามินาเต็ม ความล้าเป็น 0" }, header.Seq);
+                break;
+            case "checklist":
+                Send(new Info { Text = DescribeChecklist() }, header.Seq);
+                break;
+            case "quests":
+                Send(new Info { Text = DescribeQuests() }, header.Seq);
+                break;
+            // เดิม gather/attack มีแต่ในสาย `control <ชื่อ>` ซึ่งต้องเป็น admin
+            // ทำให้บอทเทสสั่งตัวเองไม่ได้ — เพิ่มแบบสั่งตัวเองไว้ด้วย
+            case "gather":
+            {
+                // ถ้าไม่มีของธรรมชาติในระยะเอื้อม ให้วาร์ปไปหาจุดที่ใกล้ที่สุดก่อน
+                // (บอทเทสไม่ได้เดินไปไหน ยืนอยู่จุดเกิดเฉย ๆ — ถ้าไม่ช่วยหาให้ก็เก็บอะไรไม่ได้เลย)
+                string result = ControlGather();
+                if (result.StartsWith("ไม่มีของธรรมชาติ", StringComparison.Ordinal)
+                    && _world.Terrain.TryFindNaturalNear(CurrentPosition, 400, out Point2 far, out ushort _))
+                {
+                    ControlTeleport(far.x, far.y);
+                    result = ControlGather() + $" (วาร์ปไป tile {far.x},{far.y} ให้ก่อน)";
+                }
+                Send(new Info { Text = result }, header.Seq);
+                break;
+            }
+            case "attack":
+                Send(new Info { Text = ControlAttackNearest() }, header.Seq);
+                break;
+            case "questskip":
+                // ตัวช่วยเทส: ทำทุกขั้นให้เสร็จยกเว้นขั้นสุดท้าย เพื่อกระโดดไปเทสปลายสายได้เร็ว
+                // (ไม่ให้รางวัล — แค่ปลดล็อกสายให้เดินต่อ)
+                Send(new Info { Text = SkipQuestsForTest() }, header.Seq);
+                break;
+            // ---------------------------------------------------------------- ปลูกผัก
+            case "farm":
+                // วางแปลงผักสำเร็จรูปตรงที่ยืน + แจกเมล็ด/น้ำ/ปุ๋ยให้ครบชุด
+                Send(new Info { Text = MakeTestFarm() }, header.Seq);
+                break;
+            case "seeds":
+                Send(new Info { Text = GiveFarmSupplies() }, header.Seq);
+                break;
+            case "grow":
+                // เร่งทุกแปลงของตัวเองให้โตทันที (ข้ามการรอ)
+                Send(new Info { Text = RushMyFarms() }, header.Seq);
+                break;
+            case "farms":
+                Send(new Info { Text = DescribeMyFarms() }, header.Seq);
+                break;
+            case "save":
+                // บังคับเซฟโลกเดี๋ยวนี้ — ปกติ autosave ทุก 60 วิ
+                // (เทสเรื่อง "รีสตาร์ทแล้วผลผลิตต้องไม่เกิดใหม่" ต้องใช้อันนี้)
+                Send(new Info { Text = $"เซฟโลกแล้ว {_world.SaveAll(force: true)} ไฟล์" }, header.Seq);
+                break;
             case "abilities":
                 // ดูค่าสถานะ 8 ตัว + เลือด/สตามินาสูงสุด + พลังอาวุธที่ถืออยู่ (ไว้เทียบก่อน/หลังใส่ของ)
                 Send(new Info { Text = DescribeAbilities() }, header.Seq);
@@ -196,6 +330,46 @@ public partial class ServerPlayer
                            + DescribeSkillBonuses()
                 }, header.Seq);
                 break;
+            case "maxskills":
+            case "max skills":
+                // [แก้เอง] 24 ส.ค. 2026 — เจ้าของขอ "อัพเลเวลสกิลให้เต็ม" สำหรับเทสเฉยๆ (โหมด
+                // --enable-cheat เท่านั้น) — เดินเลเวลผู้เล่นขึ้นสุด + ปลดทุกสกิลในเกมที่ MaxSkillLevel
+                // ตรงๆ ไม่ผ่านระบบแต้ม/ลำดับปกติ (เหมือน HandleLearnSkill แต่ไม่มีการเช็ค/หักแต้ม)
+                {
+                    Level = MaxSkillLevel;
+                    SyncExpToLevel();
+                    int granted = 0;
+                    foreach (KeyValuePair<string, int> kv in SkillData.SkillCategory)
+                    {
+                        string skillId = kv.Key;
+                        Shared.Skill.Category category = (Shared.Skill.Category)kv.Value;
+                        int idx = _knownSkills.FindIndex(s => s.SkillId == skillId);
+                        if (idx >= 0)
+                        {
+                            SkillBundle bundle = _knownSkills[idx];
+                            if (bundle.Levels == null)
+                            {
+                                bundle.Levels = new Dictionary<string, int>();
+                            }
+                            bundle.Levels["__base__"] = MaxSkillLevel;
+                            _knownSkills[idx] = bundle;
+                        }
+                        else
+                        {
+                            _knownSkills.Add(new SkillBundle
+                            {
+                                Category = category,
+                                SkillId = skillId,
+                                Levels = new Dictionary<string, int> { { "__base__", MaxSkillLevel } }
+                            });
+                        }
+                        granted++;
+                    }
+                    MarkDirty();
+                    SendSkills();
+                    Send(new Info { Text = $"อัพเลเวล {Level} + ปลดสกิลเต็ม {granted} ตัวแล้ว (โหมดเทสเท่านั้น)" }, header.Seq);
+                }
+                break;
             case "add bonfire":
             case "add_bonfire":
                 lock (_inventory)
@@ -205,6 +379,28 @@ public partial class ServerPlayer
                 SendInventory();
                 Send(new Info { Text = "ได้รับกองไฟ x1", }, header.Seq);
                 break;
+            // [แก้เอง] 25 ส.ค. 2026 — ไว้เทส TryStartResting/IsRestBlueprint จริงโดยไม่ต้องเดินไปหา
+            // กองไฟที่มีอยู่ในโลก (วางที่ตำแหน่งปัจจุบันตรงๆ ข้ามขั้นตอนคลิกวางของผู้เล่น)
+            case "place real fire":
+            case "place_real_fire":
+            {
+                const string blueprintId = "camp_square_fire";
+                if (!RecipeData.BlueprintType.TryGetValue(blueprintId, out ushort entityType))
+                {
+                    Send(new Info { Text = $"ไม่มีข้อมูล blueprint '{blueprintId}'" }, header.Seq);
+                    break;
+                }
+                Point2 tile = new Point2((int)(CurrentPosition.x / 200f), (int)(CurrentPosition.y / 200f));
+                Point2 size = RecipeData.BlueprintSize.TryGetValue(blueprintId, out var bpSize)
+                    ? new Point2(bpSize.x, bpSize.y) : new Point2(1, 1);
+                string entityId = Guid.NewGuid().ToString();
+                AppearArtifact placed = ArtifactFactory.Make(EntityId, entityId, entityType, tile, size,
+                    default, null, 1, blueprintId, BuildingState.Completed);
+                _world.AddArtifact(placed, blueprintId);
+                _world.AnnounceArtifact(placed);
+                Send(new Info { Text = $"วางกองไฟทดสอบที่ tile {tile.x},{tile.y} แล้ว" }, header.Seq);
+                break;
+            }
             // เฟส C — ของสำหรับทดสอบระบบสวมใส่
             case "add axe":
             case "add_axe":
@@ -251,6 +447,12 @@ public partial class ServerPlayer
                 RestoreSurvival(clearFatigue: true);
                 Send(new Info { Text = "พักผ่อนแล้ว — เลือด/สตามินาเต็ม ความล้าเป็น 0" }, header.Seq);
                 break;
+            // [แก้เอง] 25 ส.ค. 2026 — ทดสอบ TryStartResting จริง (ต้องมีกองไฟ/เต็นท์จริงในระยะเอื้อม
+            // ไม่ได้ตั้งค่าตรงๆ เหมือน "rest" — ไว้เช็คว่า IsRestBlueprint จับ blueprint จริงในโลกได้ไหม)
+            case "test rest":
+            case "test_rest":
+                Send(new Info { Text = TryStartResting(null) }, header.Seq);
+                break;
             case "tired":
                 SetGaugeValue("stamina", 0f);
                 Send(new Info { Text = "ตั้งสตามินาเป็น 0 (ลองเก็บของทันทีดูว่าโดนปฏิเสธไหม — ฟื้น 4/วิ)" }, header.Seq);
@@ -268,7 +470,7 @@ public partial class ServerPlayer
             {
                 // เรียกสัตว์มาเกิดตรงที่ยืนอยู่ — สัตว์ปกติกระจายในรัศมี 30 tile ซึ่งมักอยู่นอกจอ
                 ServerAnimal born = _world.Animals.SpawnAt(CurrentPosition);
-                Send(new Info { Text = $"เรียกสัตว์ type {born.EntityType} lv{born.Level} มาเกิดข้างตัวแล้ว" }, header.Seq);
+                Send(new Info { Text = $"เรียกสัตว์ type {born.EntityType} lv{born.Level} มาเกิดข้างตัวแล้ว [id={born.EntityId}]" }, header.Seq);
                 break;
             }
             case "die":
@@ -368,8 +570,22 @@ public partial class ServerPlayer
                 Send(new Info { Text = "ตั้งความล้า 90 (เกิน danger 85 → ค่าใช้จ่ายสตามินา x2)" }, header.Seq);
                 break;
             default:
-                Send(new Info { Text = "unknown cheat: " + cmd }, header.Seq);
+            {
+                // [แก้เอง] 24 ส.ค. 2026 — ระบบ mod: verb ที่ไม่ตรงกับคำสั่งในตัวสักอัน ให้ลองส่งต่อ
+                // ให้ mod ที่ลงทะเบียนไว้ก่อนค่อยยอมแพ้เป็น "unknown cheat" (ดู PluginManager.cs)
+                string[] parts = raw.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                string verb = parts.Length > 0 ? parts[0] : string.Empty;
+                string[] modArgs = parts.Length > 1 ? parts[1..] : Array.Empty<string>();
+                if (PluginManager.Instance != null && PluginManager.Instance.TryRunCommand(verb, this, modArgs, out string modReply))
+                {
+                    Send(new Info { Text = modReply }, header.Seq);
+                }
+                else
+                {
+                    Send(new Info { Text = "unknown cheat: " + cmd }, header.Seq);
+                }
                 break;
+            }
         }
     }
 
@@ -454,6 +670,9 @@ public partial class ServerPlayer
             case "stats":
                 reply = target.DescribeAbilities();
                 break;
+            case "quests":
+                reply = target.DescribeQuests();
+                break;
             case "travel":
                 reply = a.Length >= 4 ? target.TravelTo(a[3]) : "ใช้: control <ชื่อ> travel <รหัสเกาะ>";
                 break;
@@ -523,5 +742,42 @@ public partial class ServerPlayer
         SendInventory();
         bool known = EquipData.Weapons.ContainsKey(prototype) || EquipData.Armors.ContainsKey(prototype);
         Send(new Info { Text = $"ได้ {name} x1 (prototype={prototype}, รู้จักโมเดล: {(known ? "ใช่" : "ไม่")})" }, replyOf);
+    }
+
+    /// <summary>
+    /// เทสบัฟ/ดีบัฟจากอาหาร (status effect) ให้มีผลจริง — ติดบัฟตรง ๆ โดยไม่ต้องหาไอเทมที่ให้บัฟนั้น
+    /// (ดู ServerPlayer.Group2 ว่าบัฟไหนกระทบอะไร) · "clear" = ล้างบัฟทั้งหมด
+    /// </summary>
+    private string CheatApplyEffect(string arg)
+    {
+        string effId = arg.Trim();
+        float seconds = 60f;
+        int sp = effId.IndexOf(' ');
+        if (sp > 0)
+        {
+            if (float.TryParse(effId.Substring(sp + 1).Trim(), out float s) && s > 0f) seconds = s;
+            effId = effId.Substring(0, sp).Trim();
+        }
+        if (effId.Length == 0 || effId == "clear")
+        {
+            _statusEffects.Clear();
+            MarkDirty();
+            SendStatusEffects();
+            return "ล้างบัฟทั้งหมดแล้ว";
+        }
+        double now = Durango.Utils.Times.UnixTimeNow();
+        _statusEffects.RemoveAll(x => x.Id == "food:" + effId || x.EffectId == effId);
+        _statusEffects.Add(new StatusEffectSave
+        {
+            Id = "food:" + effId,
+            EffectId = effId,
+            Level = 1,
+            Since = now,
+            Until = now + seconds,
+            Enabled = true
+        });
+        MarkDirty();
+        SendStatusEffects();
+        return $"ติดบัฟ '{effId}' {seconds:F0} วิแล้ว";
     }
 }

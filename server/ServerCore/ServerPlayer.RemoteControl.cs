@@ -36,9 +36,10 @@ public partial class ServerPlayer
     {
         var pos = new WorldPosition(tileX * 200f + 100f, tileY * 200f + 100f);
         Send(new Teleported { Tile = new Point2(tileX, tileY), Type = TeleportType.Unknown });
+        StopResting();
         RememberPosition(pos, _lastYaw);
         // คนอื่นไม่ได้รับ Teleported ของเรา ต้องยิง Move ให้เห็นว่าเราย้ายที่
-        _world.BroadcastExcept(this, MakeStepMove(pos, 0.2));
+        _world.BroadcastToViewers(EntityId, MakeStepMove(pos, 0.2), except: this);
         Console.WriteLine("[control] {0} → tile {1},{2}", Name, tileX, tileY);
     }
 
@@ -78,7 +79,7 @@ public partial class ServerPlayer
             var next = new WorldPosition(me.x + dx / dist * StepDistance, me.y + dy / dist * StepDistance);
             Send(new Teleported { Tile = new Point2((int)(next.x / 200f), (int)(next.y / 200f)), Type = TeleportType.Unknown });
             RememberPosition(next, MathF.Atan2(dx, dy) * (180f / MathF.PI));
-            _world.BroadcastExcept(this, MakeStepMove(next, StepInterval));
+            _world.BroadcastToViewers(EntityId, MakeStepMove(next, StepInterval), except: this);
             ScheduleStep(token, dest, stepIndex + 1);
         }));
     }
@@ -230,7 +231,7 @@ public partial class ServerPlayer
     }
 
     /// <summary>เสกของทดสอบให้ผู้เล่นคนนั้น</summary>
-    public string ControlGive(string what)
+    public string ControlGive(string what, int count = 1)
     {
         switch (what)
         {
@@ -284,9 +285,9 @@ public partial class ServerPlayer
                 return $"ให้ชุดทำอาหารกับ {Name} — เนื้อ 3 · กิ่งไม้ 2 · น้ำ 2 · หม้อ · เตาย่าง · กองไฟ + กองไฟใหญ่";
             default:
                 // ชื่อ prototype ตรง ๆ ก็ให้ได้ (`control <ชื่อ> give meat`) — เทสสูตรไหนก็เสกของนั้น
-                if (GiveByPrototype(what, 1))
+                if (GiveByPrototype(what, count))
                 {
-                    return $"ให้ {ItemNameData.NameOf(what, what)} กับ {Name}";
+                    return $"ให้ {ItemNameData.NameOf(what, what)} x{count} กับ {Name}";
                 }
                 return "ให้ได้: axe · clothes · bonfire · box · stone · knife · cook (ชุดทำอาหาร) หรือชื่อ prototype ตรง ๆ";
         }

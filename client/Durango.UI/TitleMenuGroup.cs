@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -194,6 +194,22 @@ public class TitleMenuGroup : MonoBehaviour
 				break;
 			case State.GetClusterList:
 			{
+				// [แก้เอง] ใช้เซิร์ฟของเราเสมอ — ข้ามรายการคลัสเตอร์จากไฟล์ (offline/clusters)
+				if (!string.IsNullOrEmpty(Durango.Offline.Server.AutoConnectTarget))
+				{
+					UserControl.ForceSetClusters(Durango.Offline.Server.AutoConnectTarget);
+					state = State.SelectCluster;
+					break;
+				}
+				// ⚠️ [แก้เอง] 24 ส.ค. 2026 (รอบแรก) — ลองแก้ตรงนี้แล้ว "ยังไม่สำเร็จ" ตอนนั้น เพราะ
+				// AutoConnectTarget ยังติดบั๊ก _defaultAutoConnectTarget="192.168.1.34" อยู่ (ดู Server.cs)
+				// เลยไม่มีทางเข้าถึง branch นี้ได้จริงเลย ⇒ ตอนนั้นสรุปผิดว่า "ต้นเหตุลึกกว่านี้"
+				// **แก้จริงแล้ว** — ต้นเหตุคือ 2 จุดรวมกัน: (1) _defaultAutoConnectTarget เดิมชี้ IP ตาย
+				// (แก้ใน Server.cs ไปแล้ว) และ (2) แม้ตั้ง AutoConnectTarget ถูกแล้ว TitleMenuUserControlBase
+				// .ShowCluster() (เรียกจาก case SelectCluster ถัดจากนี้) ยังทับ GatewayUrl กลับไปเป็นของ
+				// LastSelectedClusterKey เดิมที่ค้างอยู่ใน Preferences (เช่นเคยกด "Online Server (For Test)"
+				// จากหน้าเลือกเซิร์ฟเวอร์มาก่อน) — แก้ที่ ForceSetClusters() ให้อัปเดต LastSelectedClusterKey
+				// ด้วยเสมอ ดูรายละเอียดที่นั่น branch นี้ (ForceSetClusters) ใช้งานได้จริงแล้วตอนนี้
 				TextAsset textAsset = Resources.Load("offline/clusters") as TextAsset;
 				state = ((!(textAsset != null) || !UserControl.TryUpdateClusters(textAsset.text)) ? State.Error : State.SelectCluster);
 				break;
@@ -237,6 +253,41 @@ public class TitleMenuGroup : MonoBehaviour
 				};
 				if (IsLoginProcess)
 				{
+					// [แก้เอง] ใช้เซิร์ฟของเรา: ไม่โชว์หน้าเลือกคลัสเตอร์
+					// - ยังไม่เคยสร้างตัวละคร → เข้าสร้างตัวละคร (Prologue) เลย
+					// - เคยสร้างแล้ว → หน้าเลือกตัวละคร (มีปุ่มสร้างด้วย)
+					if (!string.IsNullOrEmpty(Durango.Offline.Server.AutoConnectTarget))
+					{
+						// [แก้เอง] 24 ส.ค. 2026 (รอบ 2) — ต้อง "รอ" คำตอบจาก /accounts จริง ๆ ก่อนตัดสินใจ
+						// (เดิมอ่าน GetSelectedAccount() ทันทีบรรทัดถัดมา ใช้ได้ตอน /accounts ยังเป็นแค่
+						// ตัวแปรในหน่วยความจำที่ตอบแบบ sync — พอเปลี่ยนเป็นเรียก endpoint จริงทาง HTTP
+						// (async) ต้องรอ callback ไม่งั้นเห็นค่าง่างเสมอ ⇒ คิดว่าไม่มีตัวละครทั้งที่มี ดู
+						// RequestAccountAsync ใน TitleMenuUserControlBase.cs)
+						UserControl.RequestAccountAsync(delegate(Account autoAccount)
+						{
+							// มีตัวละครให้เลือก (จาก account ของเครื่องนี้) → หน้าเลือกตัวละคร
+							bool hasPlayer = autoAccount != null && autoAccount.Players != null && autoAccount.Players.Count > 0;
+							if (hasPlayer)
+							{
+								CurState = State.SelectPlayer;
+							}
+							else
+							{
+								// ยังไม่มีตัวละคร → เดิน path เดิมไปสร้างตัวละคร (Prologue)
+								// แต่ action() ต้องการ PlayerId ไม่เป็น null — ใส่ค่าว่างแทน
+								if (GameManager.PlayerId == null)
+								{
+									Pair<string, int> rec = (autoAccount != null)
+										? autoAccount.GetRecommendedPlayer()
+										: new Pair<string, int>(string.Empty, 0);
+									GameManager.PlayerId = rec.Item1 ?? string.Empty;
+									GameManager.PlayerSlotIndex = rec.Item2;
+								}
+								action();
+							}
+						});
+						break;
+					}
 					UserControl.ShowCluster(action, onPlayerSelection, delegate
 					{
 						if (CurState == State.SelectCluster)
@@ -296,12 +347,32 @@ public class TitleMenuGroup : MonoBehaviour
 					account.ApplyRecommendedPlayer(new Pair<string, int>(id, slotIdx));
 					UserControl.SetContentActive(isActive: true);
 					_autoSelectCluster = false;
+					// [แก้เอง] เลือกตัวละครแล้ว → เข้าเซิร์ฟของเราทันที (เริ่มที่ Knock)
+					// ⚠️ ห้าม MoveToTitle — มันรีโหลดหน้า title แล้ววนกลับมาหน้าเลือกตัวละครไม่รู้จบ
+					if (!string.IsNullOrEmpty(Durango.Offline.Server.AutoConnectTarget))
+					{
+						GameManager.IsPlayerIdSelected = true;
+						GameManager.PlayerId = id;
+						GameManager.PlayerSlotIndex = slotIdx;
+						CurState = State.Knock;
+						return;
+					}
 					CurState = State.SelectCluster;
 				}, delegate(int slotIdx)
 				{
 					account.ApplyRecommendedPlayer(new Pair<string, int>(string.Empty, slotIdx));
 					UserControl.SetContentActive(isActive: true);
 					_autoSelectCluster = true;
+					// [แก้เอง] โหมด auto: กดช่องว่าง = สร้างตัวละครใหม่ → เดิน flow knock ต่อเลย
+					// (ไป SelectCluster จะโดน path auto พากลับมาหน้านี้ = วนไม่จบ)
+					if (!string.IsNullOrEmpty(Durango.Offline.Server.AutoConnectTarget))
+					{
+						GameManager.IsPlayerIdSelected = false;
+						GameManager.PlayerId = string.Empty;
+						GameManager.PlayerSlotIndex = slotIdx;
+						CurState = State.Knock;
+						return;
+					}
 					CurState = State.SelectCluster;
 				}, deleteClicked);
 				titlePlayerSelectionGroupBase.SetBackButtonEvent(delegate
@@ -329,9 +400,33 @@ public class TitleMenuGroup : MonoBehaviour
 			case State.NPAGetUser:
 			{
 				Dictionary<string, string> dictionary = Platform.Instance.BuildSessionForm();
-				if (GameManager.ConnectCluster != null)
+				// [แก้เอง] ส่ง player JSON ที่มี id ตัวละครทุกครั้ง — เซิร์ฟผูก token กับ id ที่ประกาศ
+				// ตอน /sessions ถ้าไม่ตรงกับที่ /entry อ้าง = โดน auth เตะกลับหน้าหลัก
+				if (Durango.Offline.Server._localPlayer != null)
 				{
-					dictionary.Add("player", GameManager.ConnectCluster.LocalPlayer);
+					Durango.Offline.PlayerContext lp = Durango.Offline.Server._localPlayer;
+					if (!string.IsNullOrEmpty(GameManager.PlayerId))
+					{
+						lp.AppearPlayer.EntityId = GameManager.PlayerId;
+						if (lp.PlayerInfo != null)
+						{
+							lp.PlayerInfo.PlayerEntityId = GameManager.PlayerId;
+						}
+					}
+					dictionary.Add("player", Json.Write(lp));
+				}
+				else
+				{
+					// [แก้เอง] ไม่มี context บนเครื่อง (ยังไม่เคยลงโลก) — ส่ง JSON ขั้นต่ำแค่ id
+					// ⚠️ ห้ามใช้ ConnectCluster.LocalPlayer — เป็น JSON ค้างตอนบูต (id/ชื่อว่างเป๊ะ)
+					JObject minimalPlayer = new JObject();
+					JObject appear = new JObject();
+					if (!string.IsNullOrEmpty(GameManager.PlayerId))
+					{
+						appear["entity_id"] = GameManager.PlayerId;
+					}
+					minimalPlayer["appear_player"] = appear;
+					dictionary.Add("player", minimalPlayer.ToString());
 				}
 				RequestUrl("/sessions", dictionary, auth: false, HTTPMethods.Post);
 				break;
@@ -815,6 +910,15 @@ public class TitleMenuGroup : MonoBehaviour
 			string urlRoot = jObject.Get<string>("assetbundle_url_root");
 			string infoHolderPath = jObject.Get<string>("assetbundle_index_url");
 			Durango.Utils.Singleton<AssetBundleManager>.Instance().Initialize(infoHolderPath, urlRoot);
+			// [แก้เอง] 24 ส.ค. 2026 — อ่านตรงนี้ (ไม่ใช่แค่ GetFrontend/entry) เพราะผู้เล่นใหม่ที่ยังไม่มี
+			// PlayerId จะข้าม GetFrontend ไปเลย (NPAGetUser → FadeOutPrologue ตรง ๆ ก่อนจะได้ต่อเซิร์ฟ
+			// จริงด้วยซ้ำ) /knock คือจุดแรกสุดที่ทุกคน (ใหม่/เก่า) เจอเหมือนกันเสมอ ต้องตั้งค่าที่นี่ให้ทัน
+			// ก่อนฉากรถไฟเริ่ม (ดู PrologueManager.OnEnter... ที่เช็ค ToBeSkipped)
+			bool? skipPrologueAtKnock = jObject.Get<bool?>("skip_prologue_video");
+			if (skipPrologueAtKnock.HasValue)
+			{
+				Durango.Prologue.PrologueManager.ToBeSkipped = skipPrologueAtKnock.Value;
+			}
 			CurState = State.CheckDataLoaded;
 			break;
 		}
@@ -860,9 +964,33 @@ public class TitleMenuGroup : MonoBehaviour
 				}
 				int value = list[0].Value;
 				list[0] = new KeyValuePair<string, int>(text3, value);
-				string source = jObject.Get<string>("cluster_mode");
-				GameManager.SetCluster(GameManager.ClusterKey, GameManager.GatewayUrl, source.ToEnum(Mode.Offline));
 				GameManager.ConnectCluster = null;
+			}
+			// [แก้เอง] 🐛 **เมนูสกิล/คราฟต์/เควสหายทั้งชุด**
+			//
+			// เดิมบรรทัด SetCluster อยู่ใน if (ConnectCluster != null) ⇒ ตั้ง cluster_mode ได้แค่รอบแรก
+			// แต่ ConnectCluster ถูกล้างเป็น null ตรงนี้เอง และ ForceSetClusters (ทางเข้าแบบ
+			// autoconnect) ตั้ง Mode.Offline ทับไว้ก่อนหน้า ⇒ รอบถัดไป ClusterMode ค้างที่ Offline
+			//
+			// MenuSystem.ShowInOffline มีแค่ 10 เมนู (ไม่มี Skill/Craft/Quest)
+			// ส่วน ShowInSingleMode มี 28 เมนู ⇒ ผู้เล่นเลยเห็นเมนูวงกลมแหว่งไปครึ่ง
+			//
+			// cluster_mode เป็นของที่ server บอกมา ต้องเชื่อทุกครั้ง ไม่ใช่เฉพาะรอบแรก
+			string source = jObject.Get<string>("cluster_mode");
+			if (!string.IsNullOrEmpty(source))
+			{
+				Mode entryMode = source.ToEnum(Mode.Offline);
+				GameManager.SetCluster(GameManager.ClusterKey, GameManager.GatewayUrl, entryMode);
+				UnityEngine.Debug.Log("[durango] cluster_mode จาก /entry = " + source + " -> ClusterMode=" + entryMode);
+			}
+			// [แก้เอง] 24 ส.ค. 2026 — เซิร์ฟสั่งได้ว่าจะข้ามฉากรถไฟ/หนังเปิดตอนสร้างตัวละครใหม่ไหม
+			// (ดู ServerConfig.SkipPrologueVideo ฝั่งเซิร์ฟ) จุดประสงค์: สลับได้จาก data/config.json
+			// อย่างเดียว ไม่ต้อง build/แจก client ใหม่ทุกครั้ง — ค่าไม่มีมาใน JSON (เซิร์ฟรุ่นเก่า) ก็
+			// ไม่แตะค่าเดิมของ ToBeSkipped (JToken เป็น null → Get<bool?> คืน null)
+			bool? skipPrologue = jObject.Get<bool?>("skip_prologue_video");
+			if (skipPrologue.HasValue)
+			{
+				Durango.Prologue.PrologueManager.ToBeSkipped = skipPrologue.Value;
 			}
 			List<KeyValuePair<string, int>> endpoints = ParseAddresses(jObject.Get("radiotower_addresses") as JArray);
 			Durango.Utils.Singleton<GameManager>.Instance().SetEndpoints(list);
@@ -1122,6 +1250,14 @@ public class TitleMenuGroup : MonoBehaviour
 
 	private IEnumerator CheckUpdate()
 	{
+		// [แก้เอง] โหมดเซิร์ฟส่วนตัว — ข้ามเช็คอัปเดตทั้งหมด
+		// (UpdateManager + db.kyllox.pe.kr เป็นของเจ้าเก่า ตายแล้ว → ค้าง/throw กลาง coroutine
+		//  แล้ว /knock ไม่ถูกยิง = หน้า title ค้างที่ State.Knock)
+		if (!string.IsNullOrEmpty(Durango.Offline.Server.AutoConnectTarget))
+		{
+			KnockSystem();
+			yield break;
+		}
 		string text3 = Directory.GetCurrentDirectory() + "\\" + Process.GetCurrentProcess().ProcessName + "_Data\\Programs\\UpdateManager\\DurangoV2_UpdateManager.exe";
 		if (!new FileInfo(text3).Exists)
 		{

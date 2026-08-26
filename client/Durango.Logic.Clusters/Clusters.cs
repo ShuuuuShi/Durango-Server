@@ -160,8 +160,16 @@ public class Clusters
 	{
 		_clusters.Clear();
 		Cluster cluster = new Cluster();
-		cluster.GatewayUrlRoot = gateway;
+		string url = gateway.StartsWith("http://") ? gateway : "http://" + gateway + ":" + 8190;
+		cluster.GatewayUrlRoot = url;
 		cluster.Names = new Dictionary<string, string> { { "en_US", "custom" } };
+		// [แก้เอง] 24 ส.ค. 2026 (รอบ 2) — เดิมตรงนี้ตั้ง OnRequestAccount ให้ตอบจากตัวแปรในหน่วยความจำ
+		// (Durango.Offline.Server._localPlayer) แทนเพราะตอนนั้นเซิร์ฟยังไม่มี endpoint `/accounts` จริง
+		// ปัญหา: ตัวแปรนั้นอยู่ได้แค่ตอนเกมยังไม่ปิด ⇒ ปิดเกมแล้วเปิดใหม่ หน้าเลือกตัวละครว่างเปล่าทุกครั้ง
+		// บังคับสร้างตัวละครใหม่ตลอด ทั้งที่ตัวเก่ายังอยู่ในเซฟเซิร์ฟจริงครบ (ไม่ได้หายไปไหน)
+		// ตอนนี้เซิร์ฟมี `/accounts` แล้ว (ดู Gateway.cs, ค้นจาก IP ที่เคยจอง entity id ไว้) — ไม่ต้อง
+		// override ตรงนี้อีกต่อไป ปล่อยให้ GetOrRequestAccounts ไหลไปเรียก RequestAccounts (POST /accounts)
+		// ของจริงแทน (เห็นตัวละครที่เคยสร้างไว้ถูกต้องแม้ปิด-เปิดเกมใหม่)
 		_clusters.Add("custom", cluster);
 	}
 

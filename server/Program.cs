@@ -25,6 +25,9 @@ public static class Program
     /// <summary>พิมพ์สถิติ tps ทุกกี่วินาที (0 = ปิด)</summary>
     private const int StatsIntervalSeconds = 30;
 
+    /// <summary>อัปเดต ServerStats (ให้ admin panel อ่าน) ทุกกี่วินาที — ถี่กว่า console print เพราะไม่ได้พิมพ์อะไร</summary>
+    private const int PanelStatsIntervalSeconds = 2;
+
     /// <summary>GP-07: เซฟอัตโนมัติทุกกี่วินาที (0 = ปิด) — เซฟเฉพาะที่มีอะไรเปลี่ยน</summary>
     private const int AutoSaveIntervalSeconds = 60;
 
@@ -51,6 +54,9 @@ public static class Program
 
     public static void Main(string[] args)
     {
+        // admin web panel: เก็บสำเนา console log ล่าสุดไว้ใน memory ให้ /admin/log อ่านได้ (ดู LiveLog.cs)
+        Console.SetOut(new LiveLogTextWriter(Console.Out));
+
         string dataDir = "data";
         string terrainId = "ri35te";
         string serverName = "Multi Play Server";
@@ -62,6 +68,9 @@ public static class Program
         string publicHost = null;
         string islandId = null;         // Beta 1.1: โหมดหลายเกาะ
         bool recipeCheck = false;       // --recipe-check: ตรวจข้อมูลคราฟต์/ทำอาหารแล้วออก
+        string modsDir = "mods";        // ระบบ mod: โฟลเดอร์ .dll (ดู ServerCore/Modding/PluginManager.cs)
+        string clusterMode = "SingleMode";  // /entry ตอบ cluster_mode อะไร — --cluster-mode Online เพื่อเทสโหมดออนไลน์
+        string adminToken = null;       // กัน /admin/* — ว่าง = ไม่ auth (ค่าเดิม เหมาะกับรันในเครื่อง/LAN เท่านั้น)
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -149,11 +158,28 @@ public static class Program
                 case "--recipe-check":
                     recipeCheck = true;
                     break;
+                case "--mods":
+                    // ระบบ mod: ระบุโฟลเดอร์ .dll เอง (default "mods" ข้าง ๆ exe) — ใส่ "" หรือโฟลเดอร์
+                    // ที่ไม่มีจริงเพื่อปิด mod ทั้งหมดชั่วคราวโดยไม่ต้องย้ายไฟล์ออก
+                    modsDir = args[++i];
+                    break;
                 case "--public-host":
                     // ที่อยู่ที่ client ใช้ต่อ TCP (พอร์ตเกม/แชท) — เช่น 127.0.0.1 เมื่อเล่น
                     // ผ่าน Cloudflare Tunnel (client ต่อผ่าน cloudflared access tcp บนเครื่องตัวเอง)
                     // ไม่ระบุ = ใช้ host ที่ client เรียก gateway มา (เล่นในวงแลน)
                     publicHost = args[++i];
+                    break;
+                case "--cluster-mode":
+                    // /entry ตอบ cluster_mode เท่านี้ (SingleMode เดิม, Online เพื่อเทสตลาด/สารานุกรม/แชทส่วนตัว)
+                    // client มีจุดเช็ค ClusterMode == Mode.Online เกือบ 30 จุด — Online ยังไม่ได้เทสครบทุกจุด
+                    // ใช้ค่า default "SingleMode" ถ้าไม่ระบุ (เซิร์ฟที่รันอยู่แล้วไม่กระทบ)
+                    clusterMode = args[++i];
+                    break;
+                case "--admin-token":
+                    // กัน /admin/* (สถานะเซิร์ฟ/log สด/เตะผู้เล่น/สั่ง cheat/แก้ config) — ไม่ระบุ = ไม่ auth
+                    // เหมือนเดิม (เหมาะกับรันในเครื่อง/LAN เท่านั้น) **ต้องตั้งถ้าเปิดพอร์ตออกอินเทอร์เน็ต**
+                    // เข้าหน้า admin ด้วย http://host:port/admin?token=<ค่านี้> ครั้งแรก เบราว์เซอร์จะจำให้เอง
+                    adminToken = args[++i];
                     break;
             }
         }
@@ -231,6 +257,10 @@ public static class Program
         Console.WriteLine($"[save] โฟลเดอร์เซฟ: {System.IO.Path.GetFullPath(SaveStore.Root)}");
         world.Load();
         world.Animals.SpawnInitial();      // เฟส C — สัตว์ไม่ถูกเซฟ เกิดใหม่ทุกครั้งที่เปิดเซิร์ฟ
+
+        // ระบบ mod: โหลดหลัง world พร้อมแล้ว แต่ก่อนเปิดพอร์ตรับผู้เล่น (ดู ServerCore/Modding/)
+        PluginManager.LoadAll(world, modsDir);
+
         GameServer gameServer = new GameServer(world);
         gameServer.RequireSessionToken = !insecureAuth;      // GP-12
         Console.WriteLine($"[gameserver] เพดาน connection {GameServer.MaxConnections} เส้น (จาก IP เดียวกัน {GameServer.MaxConnectionsPerIp})");
@@ -281,10 +311,19 @@ public static class Program
             Console.WriteLine("[radiotower] ปิดอยู่ (M-5: ไม่มี auth) — เปิดด้วย --radiotower");
         }
 
+        if (!string.Equals(clusterMode, "SingleMode", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine($"[gateway] cluster_mode = {clusterMode} (ทดลอง — client มีจุดเช็ค ClusterMode == Online หลายสิบจุดที่ยังไม่ได้เทสครบ)");
+            if (clusterMode.Equals("Online", StringComparison.OrdinalIgnoreCase) && !enableRadiotower)
+            {
+                Console.WriteLine("[gateway] แนะนำเปิด --radiotower ด้วย — โหมด Online client จะโชว์แท็บแชทส่วนตัว");
+            }
+        }
+
         Gateway gateway;
         try
         {
-            gateway = new Gateway(gameServer, world, gatewayPort, assetBundleDir, radiotower.Port, publicHost);
+            gateway = new Gateway(gameServer, world, gatewayPort, assetBundleDir, radiotower.Port, publicHost, Path.Combine(dataDir, "reports"), clusterMode, adminToken);
             Console.WriteLine($"[gateway] listening on {gateway.BindPrefix} (UDP knock: {gatewayPort + 1})");
         }
         catch (Exception e)
@@ -321,6 +360,13 @@ public static class Program
             Environment.Exit(0);
         };
 
+        // ตรวจตารางเควสตอนเปิดเซิร์ฟ — พิมพ์ผิดใน QuestData จะทำให้เควสเงียบหายไปเฉย ๆ
+        // ถ้าไม่จับตรงนี้ จะไปเจอตอนผู้เล่นเล่นค้างอยู่ครึ่งสาย (ดู docs/server/Quests.md)
+        if (!DurangoServer.Core.QuestData.ValidateAndReport())
+        {
+            Console.WriteLine("[quest] ⚠️ เควสบางอันจะไม่ทำงาน — แก้ QuestData.cs แล้ว build ใหม่");
+        }
+
         Console.WriteLine("server running. Ctrl+C to stop.");
 
         double tickMs = 1000.0 / TargetTps;
@@ -329,6 +375,9 @@ public static class Program
         int ticksSinceReport = 0;
         double lastReportAt = 0.0;
         double lastSaveAt = 0.0;
+        int ticksSincePanelUpdate = 0;
+        double lastPanelUpdateAt = 0.0;
+        double lastModsTickAt = 0.0;    // ระบบ mod: ไว้คำนวณ deltaSeconds ให้ OnTick
         try
         {
             while (true)
@@ -343,6 +392,7 @@ public static class Program
                 }
 
                 ticksSinceReport++;
+                ticksSincePanelUpdate++;
                 nextTickAt += tickMs;
                 double now = clock.Elapsed.TotalMilliseconds;
                 double delay = nextTickAt - now;
@@ -362,6 +412,11 @@ public static class Program
 
                 // แก้ config.json ระหว่างเซิร์ฟรันแล้วมีผลทันที (ตรวจไฟล์ทุก 5 วินาที)
                 ServerConfig.Tick(now / 1000.0);
+
+                // ระบบ mod: เรียกทุก tick จริง (~120/วิ) — mod เขียนงานหนักเองระวังด้วย
+                double modsDt = (now - lastModsTickAt) / 1000.0;
+                lastModsTickAt = now;
+                SafeProcess("mods-tick", () => PluginManager.Instance?.FireTick(modsDt));
 
                 // เลือด/สตามินา/ความล้า — ต้องเดินต่อแม้ผู้เล่นไม่ได้ทำอะไร
                 // (ล้าเต็มแล้วเลือดไหลลงจนตายได้ ต้องมีคนคอยนับให้)
@@ -385,6 +440,17 @@ public static class Program
                     Console.WriteLine($"[loop] {tps:F0} tps, ผู้เล่นออนไลน์ {world.Count}, สัตว์ {alive} ตัว{(corpses > 0 ? $" (+ซาก {corpses})" : "")}, RAM {GC.GetTotalMemory(false) / 1048576} MB");
                     ticksSinceReport = 0;
                     lastReportAt = now;
+                }
+
+                // admin web panel: อัปเดต ServerStats ถี่กว่า console print (ดู ServerStats.cs, Gateway /admin/status)
+                if (now - lastPanelUpdateAt >= PanelStatsIntervalSeconds * 1000.0)
+                {
+                    double tps = ticksSincePanelUpdate * 1000.0 / Math.Max(1.0, now - lastPanelUpdateAt);
+                    int alive = world.Animals.AliveCount;
+                    int corpses = world.Animals.Count - alive;
+                    ServerStats.Update(tps, world.Count, alive, corpses);
+                    ticksSincePanelUpdate = 0;
+                    lastPanelUpdateAt = now;
                 }
             }
         }

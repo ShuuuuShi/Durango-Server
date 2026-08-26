@@ -21,6 +21,10 @@ $client  = Join-Path $root 'client'
 $built   = Join-Path $client 'bin\Release\net35\Assembly-CSharp.dll'
 $target  = Join-Path $root 'game\DurangoV2_Data\Managed\Assembly-CSharp.dll'
 $backups = Join-Path $root 'game-backup'
+# ระบบ mod ฝั่งเกม (24 ส.ค. 2026) — Assembly-CSharp.dll อ้างอิง DurangoClientModSdk.dll (ProjectReference)
+# ต้องวางคู่กันใน Managed\ ด้วยเสมอ ไม่งั้น Mono resolve ไม่เจอตอนเกมรัน
+$builtSdk  = Join-Path $client 'bin\Release\net35\DurangoClientModSdk.dll'
+$targetSdk = Join-Path $root 'game\DurangoV2_Data\Managed\DurangoClientModSdk.dll'
 
 function Say($t, $c = 'Gray') { Write-Host $t -ForegroundColor $c }
 
@@ -61,5 +65,6 @@ Get-ChildItem $backups -Filter 'Assembly-CSharp.2*.dll' | Sort-Object LastWriteT
   Select-Object -Skip 10 | Remove-Item -Force -ErrorAction SilentlyContinue
 
 Copy-Item $built $target -Force
+if (Test-Path $builtSdk) { Copy-Item $builtSdk $targetSdk -Force }
 Say "วางลงเกมแล้ว: $target" 'Green'
 Say 'เปิดเกมได้เลย (เมนูข้อ 1 หรือ 3) — ถ้าพังให้ย้อนกลับด้วย -Restore' 'DarkGray'

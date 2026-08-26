@@ -41,7 +41,7 @@ public class WebServer
 	public class JsonResponse : TextResponse
 	{
 		public JsonResponse(string content, HttpStatusCode statusCode = HttpStatusCode.OK)
-			: base("json", content, statusCode)
+			: base("application/json", content, statusCode)
 		{
 		}
 	}
@@ -273,7 +273,17 @@ public class WebServer
 			{
 				key.Response.StatusCode = (int)value3.StatusCode;
 				key.Response.ContentType = value3.ContentType;
-				value3.Write(key.Response.OutputStream);
+				// [แก้เอง] เขียนลง MemoryStream ก่อนแล้วค่อยตั้ง ContentLength64 — ถ้าไม่ตั้ง
+				// HttpListenerResponse จะ fallback เป็น Transfer-Encoding: chunked เสมอ
+				// ซึ่ง BestHTTP (เวอร์ชันเก่าที่เกมใช้) parse ไม่ผ่าน ทำให้ IsSuccess เป็น false
+				// ทั้งที่ status 200 จริง (เกมค้างที่ title พร้อม error "(Knock)" เสมอ)
+				using (MemoryStream buffer = new MemoryStream())
+				{
+					value3.Write(buffer);
+					byte[] bytes = buffer.ToArray();
+					key.Response.ContentLength64 = bytes.Length;
+					key.Response.OutputStream.Write(bytes, 0, bytes.Length);
+				}
 				Console.WriteLine("[web] {0} {1} -> {2}", key.Request.HttpMethod, key.Request.Url.PathAndQuery, (int)value3.StatusCode);
 				key.Response.Close();
 			}

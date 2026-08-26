@@ -103,20 +103,21 @@ public class SendReportSystem : GameSystem<SendReportSystem>
 
 	public void SendServerStatus(string text, string title, Action<bool> callback)
 	{
-		HTTPRequest hTTPRequest = new HTTPRequest(new Uri("https://hooks.slack.com/services/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"), HTTPMethods.Post, delegate(HTTPRequest req, HTTPResponse response)
+		// เดิมส่งเข้า Slack webhook ของ Nexon (ตายแล้ว) — ส่งเข้ารายงานของเซิร์ฟเราแทน
+		// server เก็บเป็นไฟล์ใน data/reports/ แล้วตอบ 200 = รับเรื่องแล้ว
+		Dictionary<string, string> dictionary = new Dictionary<string, string>();
+		dictionary.Add("type", "ServerStatus");
+		dictionary.Add("reporter_id", PlayerBehavior.LocalPlayer.EntityId);
+		dictionary.Add("reportee_id", string.Empty);
+		dictionary.Add("category", title);
+		dictionary.Add("text", text);
+		string url = GameManager.GatewayUrl + "/reports";
+		Http.Request(url, delegate(byte[] bytes, HTTPResponse response)
 		{
 			if (callback != null)
 			{
 				callback(response?.IsSuccess ?? false);
 			}
-		});
-		string systemLanguage = LocalizeSystem.SystemLanguage;
-		PlayerBehavior localPlayer = PlayerBehavior.LocalPlayer;
-		string lastErrors = Singleton<GameManager>.Instance().GetLastErrors();
-		Payload data = default(Payload);
-		data.Text = $"```[{title}] {GameManager.ClusterKey}/{systemLanguage}/{localPlayer.PlayerName}/{localPlayer.EntityId}\n{lastErrors}{text}```";
-		byte[] rawData = Json.WriteToBytes(data);
-		hTTPRequest.RawData = rawData;
-		hTTPRequest.Send();
+		}, disableCache: true, addSession: true, dictionary, HTTPMethods.Post);
 	}
 }

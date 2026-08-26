@@ -236,6 +236,67 @@ public partial class ServerPlayer
         SendStatistics();
     }
 
+    // ───────────────────────── เงื่อนไขปลดล็อกสูตร/แบบก่อสร้าง (Derived ability) ─────────────────────────
+    //
+    // [แก้เอง] 25 ส.ค. 2026 — เจ้าของยืนยันว่า "สกิลไม่มีผลกับการคราฟจริง ของบางอย่างไม่ต้องปลดสกิลก็
+    // คราฟได้" — ไล่เจอว่า RecipeGateData.cs (ข้อมูล required_ability จริงจากเกม) มีอยู่แล้วแต่ไม่เคยถูก
+    // เรียกใช้เลย ส่วนนี้คือของที่ขาดไป: คำนวณ "ค่าความสามารถ" (Shared.Ability.Derived — Weaponcraft/
+    // Cook/Construction/... ตัวเลข 210+ จากข้อมูลเกมจริง) ของผู้เล่น แล้วเทียบกับเกณฑ์ที่สูตรต้องการ
+    //
+    // สูตรในเกมจริงคือ "N × เลเวลตัวละคร" เสมอ (เช่นขวานเทียร์ 1 ต้องการ 0.5 × เลเวล) — ทดสอบจริงแล้วว่า
+    // ขวานเริ่มคราฟได้ตอนเลเวล 2 พอดี (เจ้าของสังเกตเจอ) ⇒ ค่าความสามารถพื้นฐาน (ยังไม่ฝึกอะไรเลย) ต้อง
+    // เท่ากับ (เลเวล - 1) ถึงจะพอดี: Lv.1 → 0 (0 < 0.5 ยังคราฟไม่ได้) · Lv.2 → 1 (1 ≥ 0.5×2=1.0 คราฟได้)
+    // บวกโบนัสจากความชำนาญ (หมวดสกิลที่โตจากการทำงานซ้ำ ๆ) ให้ฝึกแล้วปลดเร็วกว่ารอเลเวลอย่างเดียวได้จริง
+    // — โครงเดียวกับ AbilityValue(Basic) ด้านบน แค่ไม่มี Base คงที่ (ของพวกนี้เริ่มที่ 0 ไม่ใช่ 20)
+
+    /// <summary>Derived ability (สกัดจาก required_ability ของสูตร) → หมวดความชำนาญที่ป้อนค่าให้</summary>
+    private static Shared.Skill.Category CategoryForDerivedAbility(int derivedAbility) => derivedAbility switch
+    {
+        210 => Shared.Skill.Category.Weaponcrafting,  // Weaponcraft
+        216 => Shared.Skill.Category.Weaponcrafting,  // Smith (หลอม/รีไฟน์โลหะ) — ไม่มีหมวดแยก ใช้ตัวใกล้สุด
+        211 => Shared.Skill.Category.Armorcrafting,   // Armorcraft
+        215 => Shared.Skill.Category.Armorcrafting,   // Tailor (ผ้า/ด้าย) — ไม่มีหมวดแยก ใช้ตัวใกล้สุด
+        217 => Shared.Skill.Category.Cooking,         // Cook
+        218 => Shared.Skill.Category.Constructing,    // Furnishing (ประตู/หน้าต่าง)
+        219 => Shared.Skill.Category.Constructing,    // Construction
+        220 => Shared.Skill.Category.Farming,         // Farming
+        239 => Shared.Skill.Category.Process,         // Handicraft (แปรรูปวัตถุดิบทั่วไป)
+        _ => Shared.Skill.Category.Invalid
+    };
+
+    /// <summary>ค่าความสามารถ (Derived) ของผู้เล่น ณ ตอนนี้ — ใช้เทียบกับเกณฑ์ใน RecipeGateData/BlueprintGateData</summary>
+    public float DerivedAbilityValue(int derivedAbility)
+    {
+        Shared.Skill.Category category = CategoryForDerivedAbility(derivedAbility);
+        float fromLevel = Math.Max(0, Level - 1);
+        float fromProficiency = category == Shared.Skill.Category.Invalid
+            ? 0f
+            : Math.Max(0, ProficiencyLevel(category) - 1);
+        return fromLevel + fromProficiency;
+    }
+
+    /// <summary>สูตรนี้ต้องการความสามารถถึงไหม (true = ปลดแล้ว/ไม่มีเงื่อนไข)</summary>
+    public bool MeetsRecipeGate(string recipeId)
+    {
+        if (!RecipeGateData.TryGet(recipeId, out int ability, out float levelMultiplier))
+        {
+            return true;
+        }
+        float required = levelMultiplier * Level;
+        return DerivedAbilityValue(ability) >= required;
+    }
+
+    /// <summary>แบบก่อสร้างนี้ต้องการความสามารถถึงไหม (true = ปลดแล้ว/ไม่มีเงื่อนไข)</summary>
+    public bool MeetsBlueprintGate(string blueprintId)
+    {
+        if (!BlueprintGateData.TryGet(blueprintId, out int ability, out float levelMultiplier))
+        {
+            return true;
+        }
+        float required = levelMultiplier * Level;
+        return DerivedAbilityValue(ability) >= required;
+    }
+
     /// <summary>สรุปค่าสถานะไว้ตอบคำสั่ง `cheat stats` / `control &lt;ชื่อ&gt; stats`</summary>
     public string DescribeAbilities()
     {

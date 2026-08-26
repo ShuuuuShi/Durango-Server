@@ -230,6 +230,9 @@ public class GameManager : Singleton<GameManager>
 
 	private void Start()
 	{
+		// [แก้เอง] ระบบ mod ฝั่งเกม — โหลดครั้งเดียวตอนเกมบูต (ดู ClientModLoader.cs)
+		ClientModLoader.LoadAll();
+
 		_started = true;
 		SessionToken = string.Empty;
 		Connections.Frontend.On(delegate(Evicted msg, PacketHeader header)
@@ -500,6 +503,7 @@ public class GameManager : Singleton<GameManager>
 			PendingIslandAddress = null;
 			Emigrated = EmigratedType.None;
 			Server._autoConnected = true;      // กัน BeginServer ต่อกลับเกาะแรกทับ
+			Server._skipNextAutoConnect = true;
 			Server.ConnectTo(target);
 			return;
 		}
@@ -514,6 +518,14 @@ public class GameManager : Singleton<GameManager>
 				StartCoroutine(Reconnect(reconnectLoadingCurtain));
 				return;
 			}
+		}
+		// [แก้เอง] บังคับต่อเซิร์ฟของเราเองแทนการกลับหน้า title — เซิร์ฟ restart/ปิด
+		// connection แล้วผู้เล่นไม่ต้องเข้าเมนู "เยี่ยมบ้านเพื่อน" ใหม่ทุกครั้ง
+		if (!string.IsNullOrEmpty(Server.AutoConnectTarget))
+		{
+			Server._autoConnected = false;
+			Server.ConnectTo(Server.AutoConnectTarget);
+			return;
 		}
 		MoveToTitleLevel();
 	}

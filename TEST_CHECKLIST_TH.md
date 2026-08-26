@@ -1,4 +1,4 @@
-# เช็กลิสต์ทดสอบระบบตัวละคร — 19 ส.ค. 2026
+﻿# เช็กลิสต์ทดสอบระบบตัวละคร — 19 ส.ค. 2026
 
 เซิร์ฟเวอร์ Linux รุ่นล่าสุดเปิดอยู่ที่ `192.168.1.34` พอร์ต gateway `8190` และเกม `8191`
 
@@ -88,6 +88,7 @@
 ## ผล automated tests รอบนี้
 
 - Character systems: 17/17
+- สร้างตัวละครใหม่ (ชื่อ/เพศ/หน้าตาถึงเซิร์ฟครบ): 12/12 — `--create-check`
 - Group 2: 20/20
 - Cooking: 11/11
 - Skill/proficiency: 13/13
@@ -102,6 +103,7 @@
 
 ```powershell
 dotnet .\test-client\bin\Release\net9.0\DurangoTestClient.dll --character-check 127.0.0.1 8291 8290
+dotnet .\test-client\bin\Release\net9.0\DurangoTestClient.dll --create-check 127.0.0.1 8191 8190
 dotnet .\test-client\bin\Release\net9.0\DurangoTestClient.dll --smoke-check 192.168.1.34 8191 8190
 dotnet .\server\bin\Release\net9.0\DurangoServer.dll --data .\server\data --recipe-check
 ```

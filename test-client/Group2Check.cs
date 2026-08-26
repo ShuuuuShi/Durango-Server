@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -28,6 +29,9 @@ public static class Group2Check
     private static Item[] _inventory = Array.Empty<Item>();
     private static Actions? _actions;
     private static string _lastAnimalId;
+    /// <summary>ตัวแรกที่โผล่หลังสั่ง `cheat spawn` — คือตัวที่เสกจริง (เกิดตรงตำแหน่งเรา)</summary>
+    private static string _spawnedAnimalId;
+    private static readonly List<string> _infos = new List<string>();
     private static Skills? _skills;
 
     private static void Pump(Connection connection, int milliseconds)
@@ -72,7 +76,15 @@ public static class Group2Check
         connection.Recv<Recipes>((m, h) => { });
         connection.Recv<ArtifactBlueprints>((m, h) => { });
         connection.Recv<Chunk>((m, h) => { });
-        connection.Recv<AppearAnimal>((m, h) => _lastAnimalId = m.EntityId);
+        // 🐛 เดิมเก็บ "ตัวล่าสุดที่ appear" ⇒ พอ server มีระบบระยะมองเห็นแล้ว สัตว์เดินเข้า/ออกจอ
+        //    ตลอดเวลา AppearAnimal จึงมาเรื่อย ๆ และตัวล่าสุดมักเป็น **ตัวที่เพิ่งเดินผ่านมาไกล ๆ**
+        //    ไม่ใช่ตัวที่เราเพิ่งเสก ⇒ ยิงธนูแล้วได้ "เป้าหมายไกลไป (4745 > 1900)" แบบสุ่ม
+        //    ตอนนี้เก็บ "ตัวแรกที่ appear หลังสั่งเสก" แทน
+        connection.Recv<AppearAnimal>((m, h) =>
+        {
+            _lastAnimalId = m.EntityId;
+            if (_spawnedAnimalId == null) _spawnedAnimalId = m.EntityId;
+        });
         connection.Recv<AppearArtifact>((m, h) => { });
         connection.Recv<Move>((m, h) => { });
         connection.Recv<DefoggedChunks>((m, h) => { });
@@ -83,7 +95,7 @@ public static class Group2Check
         connection.Recv<Actions>((m, h) => _actions = m);
         connection.Recv<InventoryUpdated>((m, h) => { });
         connection.Recv<ItemUsed>((m, h) => { });
-        connection.Recv<Info>((m, h) => { });
+        connection.Recv<Info>((m, h) => { if (m.Text != null) _infos.Add(m.Text); });
         connection.Recv<Damaged>((m, h) => { });
         connection.Recv<BattleBegun>((m, h) => { });
         connection.Recv<BattleEnded>((m, h) => { });
@@ -150,17 +162,27 @@ public static class Group2Check
             connection.Send(new Equip { SlotName = "both", SlotType = EquipSlotType.Slot1, ItemId = bow.Id, Action = "equip" });
             Pump(connection, 500);
         }
+        _spawnedAnimalId = null;
+        _infos.Clear();
         connection.Send(new Cheat { _Cheat = "spawn 2001" });
-        Pump(connection, 500);
+        Pump(connection, 800);
+        // server แนบ [id=...] มากับข้อความตอบ — ใช้ id นั้นตรง ๆ หมดปัญหาเดาผิดตัว
+        foreach (string line in _infos)
+        {
+            int at = line.IndexOf("[id=", StringComparison.Ordinal);
+            if (at < 0) continue;
+            int end = line.IndexOf(']', at);
+            if (end > at) { _spawnedAnimalId = line.Substring(at + 4, end - at - 4); break; }
+        }
         connection.Send(default(GetActions));
         Pump(connection, 400);
         string actionId = _actions?.BattleActions?.FirstOrDefault().Id;
         int noAmmoAborts = _aborts;
-        if (!string.IsNullOrEmpty(actionId) && !string.IsNullOrEmpty(_lastAnimalId))
+        if (!string.IsNullOrEmpty(actionId) && !string.IsNullOrEmpty(_spawnedAnimalId ?? _lastAnimalId))
         {
             connection.Send(new UseBattleAction
             {
-                ActionId = actionId, StartAt = Times.UnixTimeNow(), TargetEntityId = _lastAnimalId, TargetTile = null
+                ActionId = actionId, StartAt = Times.UnixTimeNow(), TargetEntityId = _spawnedAnimalId ?? _lastAnimalId, TargetTile = null
             });
             Pump(connection, 500);
         }
@@ -169,11 +191,11 @@ public static class Group2Check
         connection.Send(new Cheat { _Cheat = "give gunpowder_arrow" });
         Pump(connection, 400);
         int withAmmoAborts = _aborts;
-        if (!string.IsNullOrEmpty(actionId) && !string.IsNullOrEmpty(_lastAnimalId))
+        if (!string.IsNullOrEmpty(actionId) && !string.IsNullOrEmpty(_spawnedAnimalId ?? _lastAnimalId))
         {
             connection.Send(new UseBattleAction
             {
-                ActionId = actionId, StartAt = Times.UnixTimeNow(), TargetEntityId = _lastAnimalId, TargetTile = null
+                ActionId = actionId, StartAt = Times.UnixTimeNow(), TargetEntityId = _spawnedAnimalId ?? _lastAnimalId, TargetTile = null
             });
             Pump(connection, 1800);
         }

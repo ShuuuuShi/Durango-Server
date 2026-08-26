@@ -138,6 +138,9 @@ public class SkillGroup : UIBase, INotificationable
 	private void OnOpened()
 	{
 		_skillInfo.gameObject.SetActive(value: true);
+		// ตอน Init() (OnAwake) Region/Template ยังไม่พร้อม ⇒ รายการหมวดสกิลอาจไม่ถูกสร้าง
+		// เปิด UI แล้วค่อยสร้างใหม่ตรงนี้ (Region มาแล้วแน่นอน) — กันแท็บสกิลว่าง/เหลือช่องเดียว
+		_skillCategory.Rebuild();
 		_skillCategory.Unselect();
 		_skillCategoryInfo.Set(Shared.Skill.Category.Invalid);
 		_skillCategoryInfo.ShowButtonContainer(show: true);

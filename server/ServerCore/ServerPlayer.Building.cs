@@ -33,6 +33,9 @@ namespace DurangoServer.Core;
 
 public partial class ServerPlayer
 {
+    /// <summary>สิ่งปลูกสร้างที่กำลังนับเวลาสร้างอยู่ — กันยิง BuildArtifact ซ้ำระหว่างรอ</summary>
+    private readonly HashSet<string> _buildingNow = new HashSet<string>(StringComparer.Ordinal);
+
 
     private static Item MakeCapsuleItem(string prototype, string name, string icon)
     {
@@ -47,7 +50,17 @@ public partial class ServerPlayer
             Prototype = prototype,
             Level = 1,
             OriginalLevel = 1,
-            ModifiableCount = 0,
+            // 🐛 **ตัวที่ทำให้ "มีเนื้อ 10 ชิ้นแต่คราฟต์ไม่ได้"** — เดิมเป็น 0
+            //
+            // สูตรที่มี `deduct_modifiable_count: true` (สูตรทำอาหาร/แปรรูปแทบทั้งหมด)
+            // ช่อง "base" ของมันจะกลายเป็น `RecipeSlot.Type.ModifyBase` ฝั่ง client
+            // แล้ว `RecipeSlot.IsSuitableItem` เช็คเพิ่มว่า **`itemData.ModifiableCount > 0`**
+            // ⇒ ของที่เราส่งไป ModifiableCount = 0 ถูกกรองทิ้งหมด ช่องเลยขึ้นว่า "ไม่มีของ"
+            // ทั้งที่มีอยู่เต็มกระเป๋า และ **packet ไม่เคยถูกส่งมาถึง server เลย** (client กันไว้ก่อน)
+            //
+            // ช่องที่ใช้ `required_tags` (เช่นช่อง "น้ำ" ของ boiled_meat) เป็น General
+            // จึงผ่านปกติ — นี่คือเหตุผลที่บางช่องมีของบางช่องว่าง
+            ModifiableCount = 1,
             ModifiedCount = 0,
             Size = 1,
             Durability = new Gauge(1f, 0f, new[] { new GaugeNode { Time = 0.0, Value = 1f } }),
@@ -105,12 +118,7 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
-        if (_world.HasArtifactAt(msg.Tile))
-        {
-            Console.WriteLine("[build] ปฏิเสธ {0}: tile {1},{2} มีสิ่งปลูกสร้างอยู่แล้ว", Name, msg.Tile.x, msg.Tile.y);
-            Send(default(Abort), header.Seq);
-            return;
-        }
+        // ⚠️ ต้องรู้ขนาดจริงก่อนถึงจะเช็คพื้นที่ทับซ้อนได้ — ดูหมายเหตุที่ ResolveBlueprintSize
         int mine = _world.CountArtifactsOf(EntityId);
         if (mine >= MaxArtifactsPerPlayer)
         {
@@ -126,24 +134,55 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        // [แก้เอง] 25 ส.ค. 2026 — สิ่งก่อสร้าง event (คริสต์มาส/ฮาโลวีน ฯลฯ) วางได้เฉพาะ admin
+        // handler นี้เป็นเส้นทาง "จองที่สร้าง" ที่ไม่เคยเช็ค unlock/recipe อะไรเลย (client ส่ง
+        // BlueprintId มาตรง ๆ ก็วางได้ทันทีถ้ามีอยู่ใน BlueprintType) ต้องกันตรงนี้ถึงจะจริง
+        if (RecipeData.IsEventBlueprint(msg.BlueprintId) && !IsAdmin)
+        {
+            Console.WriteLine("[build] ปฏิเสธ {0}: '{1}' เป็นของอีเวนต์ — admin เท่านั้น", Name, msg.BlueprintId);
+            RestoreStamina(StaminaCostBuild, 0f);
+            Send(new Info { Text = "สิ่งก่อสร้างนี้เป็นของอีเวนต์ — ใช้ได้แค่แอดมิน" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        // [แก้เอง] 25 ส.ค. 2026 (รอบ 3) — เอาเกณฑ์ความสามารถที่ประมาณเอาเอง (BlueprintGateData) ออก
+        // เปลี่ยนมาเช็คของจริง: BlueprintId นี้ต้องอยู่ใน unlocked set จริง (AlwaysBlueprints หรือ
+        // เรียนสกิลมาแล้ว) — เหมือนที่แก้ HandleCraft
+        if (Array.IndexOf(UnlockedBlueprints(), msg.BlueprintId) < 0)
+        {
+            Console.WriteLine("[build] ปฏิเสธ {0}: '{1}' ยังไม่ปลดล็อก (ต้องเรียนสกิลที่เกี่ยวข้องก่อน)", Name, msg.BlueprintId);
+            RestoreStamina(StaminaCostBuild, 0f);
+            Send(new Info { Text = "สิ่งก่อสร้างนี้ยังไม่ปลดล็อก — เรียนสกิลที่เกี่ยวข้องก่อน" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
         string entityId = Guid.NewGuid().ToString();
         ushort entityType = 0;
         if (!RecipeData.BlueprintType.TryGetValue(msg.BlueprintId ?? "", out entityType))
         {
             Console.WriteLine("[build] occupy FAILED: unknown blueprint '{0}'", msg.BlueprintId);
+            RestoreStamina(StaminaCostBuild, 0f);
             Send(default(Abort), header.Seq);
             return;
         }
-        Point2 size = msg.Size;
-        if ((size.x <= 0 || size.y <= 0) && RecipeData.BlueprintSize.TryGetValue(msg.BlueprintId ?? "", out var bpSize))
+        Point2 size = ResolveBlueprintSize(msg.BlueprintId, msg.Size);
+
+        // 🐛 เดิมเช็คแค่ `HasArtifactAt(msg.Tile)` = **tile มุมเดียว** ⇒ ของ 2×2 วางเยื้อง 1 ช่อง
+        //    จะผ่านทั้งที่ทับของเดิมอยู่ครึ่งหนึ่ง — วางบ้านซ้อนกันได้จริง
+        if (_world.HasArtifactOverlapping(msg.Tile, size))
         {
-            size = new Point2(bpSize.x, bpSize.y);
+            Console.WriteLine("[build] ปฏิเสธ {0}: พื้นที่ {1},{2} ขนาด {3}x{4} ทับสิ่งปลูกสร้างเดิม",
+                Name, msg.Tile.x, msg.Tile.y, size.x, size.y);
+            RestoreStamina(StaminaCostBuild, 0f);
+            Send(new Info { Text = "ตรงนี้มีสิ่งปลูกสร้างอยู่แล้ว" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
         }
         Console.WriteLine("[build] occupy {0} type={1} blueprint={2} tile={3},{4} size={5},{6}", entityId, entityType, msg.BlueprintId, msg.Tile.x, msg.Tile.y, size.x, size.y);
         AppearArtifact artifact = MakeArtifact(entityId, entityType, msg.Tile, size, msg.Rotation, msg.Floor, msg.Stories ?? 1, msg.BlueprintId);
         // GP-04: จำไว้ในโลกก่อน แล้วค่อย broadcast — คนที่เข้ามาทีหลังจะได้เห็นด้วย
         _world.AddArtifact(artifact, msg.BlueprintId);
-        _world.Broadcast(artifact);
+        _world.AnnounceArtifact(artifact);
         Send(new Messages.Timer { Duration = 2f }, header.Seq);
         Send(new Occupied
         {
@@ -153,6 +192,29 @@ public partial class ServerPlayer
             Floor = msg.Floor
         }, header.Seq);
     }
+
+    /// <summary>
+    /// ขนาดของสิ่งปลูกสร้าง — **เชื่อข้อมูลเกมก่อนเสมอ ไม่เชื่อ client**
+    ///
+    /// 🐛 เดิมใช้ `msg.Size` ที่ client ส่งมาตรง ๆ (fallback ไปตารางเฉพาะตอนเป็น 0)
+    ///    ⇒ ยิง `Size = 200,200` มาได้ · ของชิ้นเดียวจะ **จองพื้นที่ 40,000 tile**
+    ///    ทำให้คนอื่นสร้างอะไรไม่ได้ทั้งย่าน โดยเสียโควตาตัวเองแค่ 1 จาก 40 ชิ้น
+    ///
+    /// ตอนนี้: มีในตารางข้อมูลเกม → ใช้ของตาราง · ไม่มี → ใช้ของ client แต่ตัดไม่ให้เกิน MaxArtifactSize
+    /// </summary>
+    private static Point2 ResolveBlueprintSize(string blueprintId, Point2 requested)
+    {
+        if (RecipeData.BlueprintSize.TryGetValue(blueprintId ?? string.Empty, out var bp) && bp.x > 0 && bp.y > 0)
+        {
+            return new Point2(bp.x, bp.y);
+        }
+        int x = requested.x <= 0 ? 1 : Math.Min(requested.x, MaxArtifactSize);
+        int y = requested.y <= 0 ? 1 : Math.Min(requested.y, MaxArtifactSize);
+        return new Point2(x, y);
+    }
+
+    /// <summary>ขนาดสูงสุดที่ยอมให้ client กำหนดเอง (ใช้เฉพาะ blueprint ที่ไม่มีในตาราง)</summary>
+    private const int MaxArtifactSize = 8;
 
     // GP-07: ตัวสร้างจริงย้ายไป ArtifactFactory (static) เพราะตอนโหลดเซฟกลับมา
     // ServerWorld ต้องสร้าง artifact เองโดยไม่มี ServerPlayer ให้อ้างอิง
@@ -189,6 +251,15 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        // [แก้เอง] 25 ส.ค. 2026 — กันซ้ำอีกชั้นเผื่อมีทางได้แคปซูล event มาโดยไม่ผ่านการคราฟ (เช่น
+        // เก็บจากพื้น/รับจากคนอื่น) ตัวจริงกันไว้ที่ HandleCraft แล้ว แต่จุดวางก็ควรกันด้วยเหมือนกัน
+        if (RecipeData.IsEventBlueprint(blueprintId) && !IsAdmin)
+        {
+            Console.WriteLine("[build] ปฏิเสธ {0}: แคปซูล '{1}' เป็นของอีเวนต์ — admin เท่านั้น", Name, blueprintId);
+            Send(new Info { Text = "สิ่งก่อสร้างนี้เป็นของอีเวนต์ — ใช้ได้แค่แอดมิน" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
         lock (_inventory)
         {
             int idx = _inventory.FindIndex(it => it.Id == msg.ItemId && it.Prototype == proto);
@@ -213,7 +284,7 @@ public partial class ServerPlayer
             msg.Rotation, msg.Floor, 1, blueprintId, BuildingState.Completed);
         // GP-04
         _world.AddArtifact(placed, blueprintId);
-        _world.Broadcast(placed);
+        _world.AnnounceArtifact(placed);
         MarkDirty();              // GP-07 — ของออกจากกระเป๋าไปแล้ว
         Send(new Messages.Timer { Duration = 2f }, header.Seq);
         SendInventory();
@@ -243,6 +314,25 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        // 🐛 **ช่องปั๊มที่หนักที่สุดของระบบนี้** — เดิมไม่เช็คสถานะเลย
+        //    สร้างกองไฟ 1 อันแล้วยิง BuildArtifact ใส่ตัวเดิมรัว ๆ ได้ไม่จำกัด
+        //    แต่ละครั้งได้ exp ก่อสร้าง + ความชำนาญ + **ความคืบหน้าเควส "สร้าง N อย่าง"**
+        //    (เควสต่อแพก็ปั๊มได้ด้วยวิธีเดียวกัน) — ต้องสร้างได้เฉพาะของที่ยัง "จองที่ไว้เฉย ๆ"
+        if (target.States.BuildingState != BuildingState.Occupied)
+        {
+            Console.WriteLine("[build] ปฏิเสธ {0}: {1} สร้างเสร็จไปแล้ว (สถานะ {2})",
+                Name, msg.EntityId, target.States.BuildingState);
+            Send(new Info { Text = "สิ่งปลูกสร้างนี้สร้างเสร็จแล้ว" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        // กันยิงซ้ำระหว่างที่ตัวเดิมยังนับเวลา 2 วิอยู่ (สถานะยังไม่เปลี่ยนจนกว่าจะครบเวลา)
+        if (!_buildingNow.Add(msg.EntityId))
+        {
+            Console.WriteLine("[build] ปฏิเสธ {0}: {1} กำลังสร้างอยู่แล้ว", Name, msg.EntityId);
+            Send(default(Abort), header.Seq);
+            return;
+        }
         if (_deferred.Count >= MaxPendingActions)
         {
             Console.WriteLine("[build] ปฏิเสธ {0}: มีงานค้างอยู่ {1} รายการแล้ว", Name, _deferred.Count);
@@ -258,11 +348,13 @@ public partial class ServerPlayer
         Send(new Messages.Timer { Duration = 2f }, header.Seq);
         _deferred.Add((Times.UnixTimeNow() + 2.1, () =>
         {
+            _buildingNow.Remove(msg.EntityId);
             // GP-04: อัปเดตสถานะที่เก็บไว้ด้วย ไม่งั้นคนที่เข้ามาทีหลังจะเห็นเป็น Occupied ตลอด
             _world.SetArtifactBuildingState(msg.EntityId, BuildingState.Built);
-            _world.Broadcast(new ArtifactBuilt { EntityId = msg.EntityId, BuilderId = EntityId });
-            _world.Broadcast(new ArtifactCompleted { EntityId = msg.EntityId });
-            GainExpForBuild();
+            _world.BroadcastToViewers(msg.EntityId, new ArtifactBuilt { EntityId = msg.EntityId, BuilderId = EntityId });
+            _world.BroadcastToViewers(msg.EntityId, new ArtifactCompleted { EntityId = msg.EntityId });
+            _world.TryGetArtifactBlueprint(msg.EntityId, out string builtBlueprint);
+            GainExpForBuild(builtBlueprint);
         }));
     }
 
@@ -292,9 +384,19 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        // 🐛 เดิมไม่เช็คระยะ — ยิง packet ทุบของตัวเองจากอีกมุมเกาะได้
+        //    (ตอนจองที่เช็ค IsWithinReach อยู่แล้ว ตอนทุบกลับไม่เช็ค — ไม่สมมาตร)
+        //    สำคัญขึ้นเมื่อมีสถาปนิกร่วม เพราะจะทุบของกองกลางจากที่ไหนก็ได้
+        if (!IsWithinReach(artifact.Tile))
+        {
+            Console.WriteLine("[build] destruct ปฏิเสธ {0}: {1} ไกลเกินเอื้อม", Name, msg.EntityId);
+            Send(new Info { Text = "ต้องเข้าไปใกล้ ๆ ก่อนถึงจะทุบได้" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
 
         _world.RemoveArtifact(msg.EntityId);
-        _world.Broadcast(new DisappearEntity { EntityId = msg.EntityId });
+        _world.AnnounceGone(msg.EntityId);
     }
 
     /// <summary>ผู้เล่นคนนี้มีสิทธิ์แก้/ทุบสิ่งปลูกสร้างนี้ไหม (เป็นผู้สร้าง หรืออยู่ในรายชื่อสถาปนิก)</summary>

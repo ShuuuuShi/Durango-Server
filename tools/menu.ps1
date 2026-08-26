@@ -609,6 +609,9 @@ function Show-Menu {
     Say '   6  เทสกันโกง 45 ข้อ  (--gp-check)'
     Say '   20 เทสระบบทำอาหาร 11 ข้อ  (--cook-check)' 'White'
     Say '   21 ตรวจข้อมูลสูตร/อาหาร (ไม่ต้องเปิดเซิร์ฟ)'
+    Say '   23 เทสระยะการมองเห็น 12 ข้อ  (--vision-check)' 'White'
+    Say '   24 เทสระบบเควส 33 ข้อ  (--quest-check)' 'White'
+    Say '   25 เทสระบบปลูกผัก 39 ข้อ  (--farm-check)' 'White'
     Say '   7  เทส 3 คนพร้อมกัน  (--multi-check)'
     Say '   8  บอทฟาร์ม 5 นาที'
     Say '   9  โซกเทส 30 นาที (บอท 3 ตัว) — เกณฑ์ข้อ 2'
@@ -650,6 +653,9 @@ while ($true) {
             Say ''
             Read-Host '  กด Enter เพื่อกลับเมนู' | Out-Null
         }
+        '23' { if (Start-TestServer) { Invoke-Tester @('--vision-check') 'เทสระยะการมองเห็น 12 ข้อ' } }
+        '24' { if (Start-TestServer) { Invoke-Tester @('--quest-check') 'เทสระบบเควส 33 ข้อ' } }
+        '25' { if (Start-TestServer) { Invoke-Tester @('--farm-check') 'เทสระบบปลูกผัก 39 ข้อ' } }
         '7'  { if (Start-TestServer) { Invoke-Tester @('--multi-check') 'เทส 3 คนพร้อมกัน' } }
         '8'  { if (Start-TestServer) { Invoke-Tester @('--bot','127.0.0.1',"$GamePort",'5','farmbot-1') 'บอทฟาร์ม 5 นาที' } }
         '9'  { if (Start-TestServer) { Start-SoakTest } }

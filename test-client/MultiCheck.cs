@@ -37,6 +37,7 @@ public static class MultiCheck
         public bool Welcomed;
         public int Aborts;
         public int CollectedItems;
+        public int CollectSuccesses;
         public int Disappears;
         public readonly HashSet<string> SawPlayers = new HashSet<string>();
         public readonly Dictionary<(int x, int y), ushort> Naturals = new Dictionary<(int x, int y), ushort>();
@@ -84,6 +85,9 @@ public static class MultiCheck
             });
             c.Conn.Recv<Collected>((m, h) =>
             {
+                // 1 Collected = จอง generator ได้ 1 หน่วย (นี่คือตัวที่ห้ามเกินจำนวนที่มีจริง)
+                // แต่ Items อาจมี 2 ชิ้นได้ถ้าสกิลหมวดเก็บของสุ่มโบนัสติด — โบนัสไม่กินหน่วย
+                if (m.Result == Shared.Item.Result.Success) c.CollectSuccesses++;
                 if (m.Items != null) c.CollectedItems += m.Items.Length;
             });
             c.Conn.Recv<CollectibleChanged>((m, h) => { });
@@ -219,10 +223,18 @@ public static class MultiCheck
                 PumpAll(clients, 5000);
 
                 int total = 0;
-                foreach (Client c in clients) total += c.CollectedItems;
-                Check("ของไม่ถูกปั๊ม (ได้รวมไม่เกินที่มีจริง)", total <= available,
-                    $"มี {available} หน่วย แต่ได้รวม {total} ชิ้น ({string.Join(" ", clients.ConvertAll(c => $"{c.Id}={c.CollectedItems}"))})");
-                Check("มีคนเก็บได้จริงอย่างน้อย 1 ชิ้น", total > 0,
+                int units = 0;
+                foreach (Client c in clients) { total += c.CollectedItems; units += c.CollectSuccesses; }
+                // เทียบ "จำนวนครั้งที่เก็บสำเร็จ" กับหน่วยที่มี ไม่ใช่จำนวนชิ้นที่ได้ —
+                // สกิลหมวดเก็บของมีโอกาสสุ่มแถมของเพิ่ม 1 ชิ้นโดยไม่กินหน่วย (RollGatherBonus)
+                // ถ้าวัดจากจำนวนชิ้น เทสจะตกเองเวลาโบนัสติด ทั้งที่ของไม่ได้ถูกปั๊ม
+                Check("ของไม่ถูกปั๊ม (เก็บสำเร็จไม่เกินหน่วยที่มีจริง)", units <= available,
+                    $"มี {available} หน่วย แต่เก็บสำเร็จ {units} ครั้ง ({string.Join(" ", clients.ConvertAll(c => $"{c.Id}={c.CollectSuccesses}"))})");
+                if (total > units)
+                {
+                    Console.WriteLine($"  (ได้ของรวม {total} ชิ้นจาก {units} หน่วย — โบนัสสกิลติด {total - units} ครั้ง)");
+                }
+                Check("มีคนเก็บได้จริงอย่างน้อย 1 ชิ้น", total >= 1,
                     string.Join(" ", clients.ConvertAll(c => $"{c.Id}={c.CollectedItems}")));
                 Check("คนที่แย่งไม่ทันโดนปฏิเสธ", clients.Exists(c => c.Aborts > 0),
                     string.Join(" ", clients.ConvertAll(c => $"{c.Id} abort={c.Aborts}")));

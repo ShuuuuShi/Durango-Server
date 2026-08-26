@@ -4,6 +4,7 @@ using Durango.Logic;
 using Durango.Logic.Quest;
 using Durango.Network;
 using Durango.UI.Control;
+using Durango.UI.Popup;
 using Durango.Utils;
 using L10N;
 using Messages;
@@ -247,6 +248,27 @@ public class QuestNodeWidget : MonoBehaviour
 		{
 			string cheat = $"aqp {_quest.Id} 1";
 			Durango.Utils.Singleton<Commands>.Instance().Cheat(cheat);
+			return;
 		}
+		ShowQuestDetailTooltip();
+	}
+
+	private void ShowQuestDetailTooltip()
+	{
+		QuestYml questYml = SingletonDict<string, QuestYml>.Instance.Get(_quest.Id);
+		if (questYml == null)
+		{
+			return;
+		}
+		string title = questYml.Subject;
+		string description = questYml.Description;
+		int progress = _quest.Progress;
+		int goalCount = _quest.GoalCount;
+		string progressText = $"{progress}/{goalCount}";
+		string statusText = _quest.Finished ? T._("완료") : (progress >= goalCount ? T._("보상 수령 가능") : T._("진행 중"));
+		string text = $"{description}\n\n[247332]{progressText}[-]  {statusText}";
+		Durango.UI.Popup.WidgetTooltipControl tooltip = UIManager.Popup.Tooltip<Durango.UI.Popup.WidgetTooltipControl>();
+		tooltip.Set(title, text, 600, 300);
+		tooltip.Show();
 	}
 }

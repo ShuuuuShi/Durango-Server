@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -31,7 +31,7 @@ namespace DurangoServer.Core;
 
 // ServerWorld — ดูรายละเอียดที่ docs/server/ServerWorld.md
 
-public class ServerWorld
+public partial class ServerWorld
 {
     public TerrainStore Terrain { get; }
     public string ServerName { get; }
@@ -77,11 +77,15 @@ public class ServerWorld
     /// <summary>เฟส C — ตัวจัดการสัตว์ในโลก</summary>
     public AnimalSpawner Animals { get; }
 
+    /// <summary>รอยแยก/วาร์ปเรกเซเลอเรเตอร์ — state machine ของกิจกรรมป้องกันคลื่นสัตว์ (ดู WarpAcceleratorManager)</summary>
+    public WarpAcceleratorManager WarpAccelerators { get; }
+
     public ServerWorld(TerrainStore terrain, string serverName)
     {
         Terrain = terrain;
         ServerName = serverName;
         Animals = new AnimalSpawner(this);
+        WarpAccelerators = new WarpAcceleratorManager(this);
     }
 
     // จุดเกิด = entry point ของ terrain (1 tile = 200 หน่วย client)
@@ -93,27 +97,26 @@ public class ServerWorld
     // ผู้เล่นใหม่เข้ามา: ส่งสิ่งปลูกสร้าง + AppearPlayer ของคนเก่าให้คนใหม่ แล้ว broadcast ตัวคนใหม่ให้คนอื่น
     public void AddPlayer(ServerPlayer player)
     {
-        // GP-04: ส่งสิ่งปลูกสร้างที่มีอยู่แล้วทั้งหมดให้คนใหม่
-        // ทำนอก _lock เพราะใช้ล็อกคนละตัว และไม่ต้องถือ _lock ตอนทำ I/O
+        // GP-04: สิ่งปลูกสร้างที่มีอยู่แล้ว — ทำนอก _lock เพราะใช้ล็อกคนละตัว และไม่ต้องถือ _lock ตอนทำ I/O
         AppearArtifact[] artifacts = SnapshotArtifacts();
-        for (int i = 0; i < artifacts.Length; i++)
-        {
-            player.Send(artifacts[i]);
-        }
+        ServerAnimal[] animals = Animals.Snapshot();
 
-        // เฟส C: ส่งสัตว์ที่มีอยู่ในโลกให้คนใหม่ด้วย
-        Animals.SendAllTo(player);
-
+        ServerPlayer[] others;
         lock (_lock)
         {
-            foreach (ServerPlayer other in _players)
-            {
-                player.Send(other.MakeAppearPlayer());
-            }
+            others = _players.ToArray();
             _players.Add(player);
         }
-        BroadcastExcept(player, player.MakeAppearPlayer());
+
+        // ส่งเฉพาะสิ่งที่อยู่ในระยะมองเห็น (ที่เหลือ TickVisibility จะทยอยส่งตอนเดินไปถึง)
+        // เดิมส่งทั้งเกาะให้ทุกคนที่เข้ามา — ที่ 100 คนคือ ~4,000 AppearArtifact ในชุดเดียว
+        player.SendInitialVision(others, animals, artifacts);
+
+        // ให้คนที่อยู่ในระยะเห็นคนใหม่ทันที (คนไกลจะเห็นเองตอน TickVisibility รอบถัดไป)
+        AnnouncePlayer(player);
         Console.WriteLine($"[world] player joined: {player.EntityId} ({player.Name}), total={Count}, artifacts={artifacts.Length}, สัตว์={Animals.Count}");
+        // [แก้เอง] ระบบ mod: แจ้ง mod ที่ลงทะเบียน OnPlayerJoined ไว้
+        PluginManager.Instance?.FirePlayerJoined(player);
     }
 
     public void RemovePlayer(ServerPlayer player)
@@ -122,8 +125,10 @@ public class ServerWorld
         {
             _players.Remove(player);
         }
-        Broadcast(new DisappearEntity { EntityId = player.EntityId });
+        AnnounceGone(player.EntityId);
         Console.WriteLine($"[world] player left: {player.EntityId} ({player.Name}), total={Count}");
+        // [แก้เอง] ระบบ mod: แจ้ง mod ที่ลงทะเบียน OnPlayerLeft ไว้
+        PluginManager.Instance?.FirePlayerLeft(player);
     }
 
     /// <summary>
@@ -224,6 +229,40 @@ public class ServerWorld
     }
 
     /// <summary>มีสิ่งปลูกสร้างวางทับ tile นี้อยู่แล้วไหม (H-7)</summary>
+    /// <summary>
+    /// พื้นที่ที่จะสร้าง **ทับของเดิมไหม** — เช็คทุก tile ที่ของใหม่จะกิน ไม่ใช่แค่ tile มุม
+    ///
+    /// 🐛 เดิมใช้ <see cref="HasArtifactAt"/> ซึ่งเช็คแค่ **tile เดียว (มุมของของใหม่)**
+    /// ⇒ ของ 2×2 วางเยื้องไป 1 ช่องจะ "ผ่าน" ทั้งที่ทับของเดิมอยู่ครึ่งหนึ่ง
+    /// (มุมว่างก็พอแล้ว) — วางบ้านซ้อนกันได้จริงในเกม
+    /// </summary>
+    /// <param name="ignoreEntityId">ข้ามชิ้นนี้ตอนตรวจ — ใช้ตอน "ย้ายที่" ไม่งั้นมันชนตัวเอง</param>
+    public bool HasArtifactOverlapping(Point2 tile, Point2 size, string ignoreEntityId = null)
+    {
+        int nx = size.x <= 0 ? 1 : size.x;
+        int ny = size.y <= 0 ? 1 : size.y;
+        lock (_artifactLock)
+        {
+            foreach (AppearArtifact a in _artifacts.Values)
+            {
+                if (ignoreEntityId != null && a.EntityId == ignoreEntityId)
+                {
+                    continue;
+                }
+                int sx = a.Size.x <= 0 ? 1 : a.Size.x;
+                int sy = a.Size.y <= 0 ? 1 : a.Size.y;
+                // สองสี่เหลี่ยมทับกันเมื่อ "ไม่ได้แยกกันในแกนไหนเลย"
+                bool apart = tile.x + nx <= a.Tile.x || a.Tile.x + sx <= tile.x
+                          || tile.y + ny <= a.Tile.y || a.Tile.y + sy <= tile.y;
+                if (!apart)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public bool HasArtifactAt(Point2 tile)
     {
         lock (_artifactLock)
@@ -283,6 +322,198 @@ public class ServerWorld
     }
 
     private double _nextSurvivalTickAt;
+
+    /// <summary>
+    /// ส่งให้ **เฉพาะคนที่อยู่ในระยะมองเห็นของจุดนี้** (interest management)
+    ///
+    /// ใช้แทน <see cref="Broadcast{T}"/> กับทุกอย่างที่ "เกิดขึ้นที่ใดที่หนึ่งในโลก" —
+    /// คนเดิน · สัตว์เดิน · ดาเมจ · สิ่งปลูกสร้าง · หลอดเลือด
+    /// (แชท/ประกาศยังต้องใช้ <c>Broadcast</c> เพราะไม่ได้ผูกกับตำแหน่ง)
+    ///
+    /// ระยะที่ใช้คือ **ระยะหาย** (ViewExitUnits) ไม่ใช่ระยะเริ่มเห็น —
+    /// ของที่คนหนึ่งเห็นอยู่แล้วต้องอัปเดตต่อจนกว่าจะหลุดระยะหายจริง ๆ ไม่งั้นจะค้างกลางอากาศ
+    /// </summary>
+    public void BroadcastNear<T>(WorldPosition at, T msg, ServerPlayer except = null) where T : struct
+    {
+        WorldConfig cfg = ServerConfig.Current.World;
+        ServerPlayer[] snapshot;
+        lock (_lock)
+        {
+            snapshot = _players.ToArray();
+        }
+        if (!cfg.ViewCulling)
+        {
+            // ปิดการกรองระยะ = พฤติกรรมเดิมเป๊ะ
+            foreach (ServerPlayer p in snapshot)
+            {
+                if (p != except)
+                {
+                    p.Send(msg);
+                }
+            }
+            return;
+        }
+        float limit = cfg.ViewExitUnits;
+        float limitSq = limit * limit;
+        foreach (ServerPlayer p in snapshot)
+        {
+            if (p == except)
+            {
+                continue;
+            }
+            WorldPosition me = p.CurrentPosition;
+            float dx = me.x - at.x;
+            float dy = me.y - at.y;
+            if (dx * dx + dy * dy <= limitSq)
+            {
+                p.Send(msg);
+            }
+        }
+    }
+
+    /// <summary>
+    /// ส่งข่าว **เกี่ยวกับ entity ตัวหนึ่ง** ให้เฉพาะคนที่กำลังมองเห็นมันอยู่
+    /// (เดิน · โดนตี · ตาย · เปลี่ยนชุด · หลอดเลือด)
+    ///
+    /// ถูกต้องกว่าการวัดระยะดิบ ๆ เพราะคนที่ยังไม่ได้รับ Appear ของ entity นี้
+    /// **ไม่ควรได้รับข่าวของมันเลย** — client จะได้ Move ของ entity ที่ตัวเองไม่รู้จัก
+    /// </summary>
+    public void BroadcastToViewers<T>(string entityId, T msg, ServerPlayer except = null) where T : struct
+    {
+        if (string.IsNullOrEmpty(entityId))
+        {
+            return;
+        }
+        ServerPlayer[] snapshot;
+        lock (_lock)
+        {
+            snapshot = _players.ToArray();
+        }
+        foreach (ServerPlayer p in snapshot)
+        {
+            if (p != except && p.CanSee(entityId))
+            {
+                p.Send(msg);
+            }
+        }
+    }
+
+    /// <summary>
+    /// entity เกิดใหม่ในโลก — ให้คนที่อยู่ในระยะเห็นทันที ไม่ต้องรอรอบตรวจถัดไป
+    ///
+    /// ⚠️ ต้องผ่าน <c>Observe*</c> ของแต่ละคน ห้าม broadcast <c>MakeAppear()</c> ตรง ๆ
+    /// ไม่งั้นรอบตรวจถัดไปจะเห็นว่า id นี้ยังไม่อยู่ในเซ็ตแล้ว **ส่ง Appear ซ้ำอีกที**
+    /// </summary>
+    public void AnnounceAnimal(ServerAnimal animal)
+    {
+        if (animal == null)
+        {
+            return;
+        }
+        ForEachNear(animal.Position, p => p.ObserveAnimal(animal));
+    }
+
+    public void AnnounceArtifact(AppearArtifact artifact)
+    {
+        WorldPosition at = new WorldPosition(artifact.Tile.x * 200f + 100f, artifact.Tile.y * 200f + 100f);
+        ForEachNear(at, p => p.ObserveArtifact(artifact));
+    }
+
+    public void AnnouncePlayer(ServerPlayer player)
+    {
+        ForEachNear(player.CurrentPosition, p =>
+        {
+            if (p != player)
+            {
+                p.ObservePlayer(player);
+            }
+        });
+    }
+
+    /// <summary>entity ถูกลบออกจากโลก — บอกทุกคนให้ลบทิ้ง แล้วล้างออกจากเซ็ต "ที่เห็นอยู่" ของทุกคน</summary>
+    public void AnnounceGone(string entityId)
+    {
+        if (string.IsNullOrEmpty(entityId))
+        {
+            return;
+        }
+        ServerPlayer[] snapshot;
+        lock (_lock)
+        {
+            snapshot = _players.ToArray();
+        }
+        foreach (ServerPlayer p in snapshot)
+        {
+            // ส่งให้ทุกคนไม่ว่าอยู่ใกล้ไหม — ถ้าเขาเคยเห็นแล้วเดินหนีไป client อาจยังถือ entity ค้างอยู่
+            // packet เล็กและเหตุการณ์นี้ไม่ถี่ จึงไม่คุ้มที่จะไปไล่เช็คว่าใครเคยเห็นบ้าง
+            p.Send(new DisappearEntity { EntityId = entityId });
+            p.ForgetEntity(entityId);
+        }
+    }
+
+    /// <summary>วนเฉพาะคนที่อยู่ในระยะมองเห็นของจุดหนึ่ง</summary>
+    private void ForEachNear(WorldPosition at, Action<ServerPlayer> action)
+    {
+        WorldConfig cfg = ServerConfig.Current.World;
+        ServerPlayer[] snapshot;
+        lock (_lock)
+        {
+            snapshot = _players.ToArray();
+        }
+        bool culling = cfg.ViewCulling;
+        float limitSq = cfg.ViewEnterUnits * cfg.ViewEnterUnits;
+        foreach (ServerPlayer p in snapshot)
+        {
+            if (!culling)
+            {
+                action(p);
+                continue;
+            }
+            WorldPosition me = p.CurrentPosition;
+            float dx = me.x - at.x;
+            float dy = me.y - at.y;
+            if (dx * dx + dy * dy <= limitSq)
+            {
+                action(p);
+            }
+        }
+    }
+
+    /// <summary>
+    /// เรียกทุก tick — ตรวจว่าใคร/ตัวไหนเพิ่งเข้ามาในระยะหรือหลุดออกไป
+    /// แล้วส่ง Appear/Disappear ให้ถูกจังหวะ (ดู ServerPlayer.Vision)
+    ///
+    /// ต้องมีตัวนี้ เพราะการกรองระยะตอน broadcast อย่างเดียวทำให้คนที่เดินเข้ามาใหม่
+    /// **ไม่มีวันรู้ว่ามีใครอยู่ตรงนั้น** — เขาได้แต่ packet ของคนที่ตัวเองรู้จักอยู่แล้ว
+    /// </summary>
+    public void TickVisibility(double now)
+    {
+        if (!ServerConfig.Current.World.ViewCulling || now < _nextVisibilityTickAt)
+        {
+            return;
+        }
+        _nextVisibilityTickAt = now + ServerConfig.Current.World.ViewCheckSeconds;
+        ServerPlayer[] snapshot;
+        lock (_lock)
+        {
+            snapshot = _players.ToArray();
+        }
+        ServerAnimal[] animals = Animals.Snapshot();
+        AppearArtifact[] artifacts = SnapshotArtifacts();
+        for (int i = 0; i < snapshot.Length; i++)
+        {
+            try
+            {
+                snapshot[i].TickVisibility(snapshot, animals, artifacts, now);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[vision] {0}: {1}", snapshot[i].Name, e.Message);
+            }
+        }
+    }
+
+    private double _nextVisibilityTickAt;
 
     public void Broadcast<T>(T msg) where T : struct
     {
@@ -381,15 +612,28 @@ public class ServerWorld
         return false;
     }
 
-    /// <summary>สิ่งปลูกสร้างชนิดนี้ใช้พักผ่อนได้ไหม (ตามรายการ beta: กองไฟ · เต็นท์ · ที่หลับนอน)</summary>
+    /// <summary>
+    /// สิ่งปลูกสร้างชนิดนี้ใช้พักผ่อนได้ไหม — ต้องใช้ component `Shelter` จากข้อมูลเกมจริง
+    /// เช่นเดียวกับเกณฑ์ที่ client ใช้เพิ่ม Interaction.Rest ใน Player.cs
+    /// ห้ามเดาจากชื่อ blueprint เพราะเก้าอี้/โซฟา/เสื่อ/สระน้ำจำนวนมากใช้พักได้แต่ชื่อไม่มีคำว่า
+    /// fire/tent/bed/rest ขณะที่ของประดับบางชิ้นมีคำเหล่านี้แต่ไม่ใช่ที่พัก
+    /// </summary>
     private static bool IsRestBlueprint(string blueprintId)
     {
-        if (string.IsNullOrEmpty(blueprintId))
+        if (string.IsNullOrEmpty(blueprintId)
+            || !RecipeData.BlueprintComponents.TryGetValue(blueprintId, out string[] components)
+            || components == null)
         {
             return false;
         }
-        string b = blueprintId.ToLowerInvariant();
-        return b.Contains("bonfire") || b.Contains("campfire") || b.Contains("tent") || b.Contains("hammock");
+        for (int i = 0; i < components.Length; i++)
+        {
+            if (string.Equals(components[i], "Shelter", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public bool TryGetArtifact(string entityId, out AppearArtifact artifact)
@@ -413,11 +657,58 @@ public class ServerWorld
         {
             _boxes.Remove(entityId ?? string.Empty);
         }
+        // ทุบแปลงผัก = ต้นที่ปลูกไว้หายไปด้วย (ไม่งั้นแปลงค้างในตารางตลอดกาล)
+        lock (_farmLock)
+        {
+            _farms.Remove(entityId ?? string.Empty);
+        }
+        lock (_genLock)
+        {
+            _generators.Remove(entityId ?? string.Empty);
+        }
         if (removed)
         {
             MarkDirty();
         }
         return removed;
+    }
+
+    /// <summary>
+    /// ย้ายสิ่งปลูกสร้าง/POI ไป tile ใหม่ตอนเซิร์ฟกำลังรัน (ใช้จาก `cheat poi move`)
+    ///
+    /// ทำไมต้องมี: เดิมแก้ตำแหน่ง POI ได้ทางเดียวคือหยุดเซิร์ฟ → แก้ world.json มือ → เปิดใหม่
+    /// ซึ่งช้ามากตอนไล่หาว่า "หลุมควรอยู่ตรงไหนถึงจะไม่โดนหินทับ"
+    ///
+    /// เคลียร์ของธรรมชาติใต้ที่ใหม่ให้ด้วย ไม่งั้นย้ายไปโดนหินบังเหมือนเดิม
+    /// </summary>
+    public bool MoveArtifact(string entityId, Point2 tile)
+    {
+        AppearArtifact moved;
+        lock (_artifactLock)
+        {
+            if (!_artifacts.TryGetValue(entityId ?? string.Empty, out AppearArtifact a))
+            {
+                return false;
+            }
+            a.Tile = tile;
+            _artifacts[entityId] = a;
+            moved = a;
+        }
+        int sx = moved.Size.x <= 0 ? 1 : moved.Size.x;
+        int sy = moved.Size.y <= 0 ? 1 : moved.Size.y;
+        for (int x = 0; x < sx; x++)
+        {
+            for (int y = 0; y < sy; y++)
+            {
+                Terrain.RemoveNatural(tile.x + x, tile.y + y);
+            }
+        }
+        // client จำตำแหน่งเดิมไว้ — ต้องสั่งลบก่อนแล้วค่อยประกาศตัวใหม่
+        // ไม่งั้นในจอผู้เล่นจะเห็นของชิ้นเดียวกันสองที่
+        AnnounceGone(entityId);
+        AnnounceArtifact(moved);
+        MarkDirty();
+        return true;
     }
 
     /// <summary>เปลี่ยนสถานะการสร้าง (Occupied → Built) ให้คนที่เข้ามาทีหลังเห็นสถานะถูกต้อง</summary>
@@ -434,6 +725,37 @@ public class ServerWorld
             }
         }
         MarkDirty();
+    }
+
+    /// <summary>
+    /// อัปเดตสถานะกิจกรรม "รอยแยก/วาร์ปเรกเซเลอเรเตอร์" ของ artifact ชิ้นหนึ่ง แล้ว broadcast ให้คนที่เห็นอยู่รู้ทันที
+    ///
+    /// ใช้ทางเดียวกับ <see cref="MoveArtifact"/> คือส่ง <see cref="AppearArtifact"/> เต็มใบซ้ำผ่าน
+    /// <see cref="AnnounceArtifact"/> — เพราะฝั่ง client (ArtifactManager.OnAppearArtifactMsg →
+    /// Artifact.SetArtifactState → event ArtifactStateChanged) รับรู้การเปลี่ยน ArtifactState จาก
+    /// AppearArtifact เท่านั้น ไม่มี message เฉพาะสำหรับอัปเดตบางส่วน (WarpAcceleratorInfo/…ในเกม
+    /// เป็นแค่ cache ฝั่ง client ที่คำนวณต่อจาก event นี้อีกที ไม่ใช่สิ่งที่ server ต้อง push เอง)
+    ///
+    /// ⚠️ ไม่เรียก MarkDirty() — สถานะนี้ไม่ได้ถูกเซฟ (ArtifactSave ไม่มีฟิลด์ Warpaccelerator เหมือนที่
+    /// AnimalSpawner ตั้งใจไม่เซฟสัตว์) และ WarpAcceleratorManager.Process() เรียกฟังก์ชันนี้ได้บ่อยมาก
+    /// (ทุก tick ที่สถานะเปลี่ยน) — เรียก MarkDirty ทุกครั้งจะยิง disk I/O ถี่เกินจำเป็นโดยไม่มีประโยชน์
+    /// </summary>
+    public void SetArtifactWarpAccelerator(string entityId, Messages.WarpAccelerator state)
+    {
+        AppearArtifact updated;
+        lock (_artifactLock)
+        {
+            if (!_artifacts.TryGetValue(entityId ?? string.Empty, out AppearArtifact a))
+            {
+                return;
+            }
+            ArtifactState states = a.States;
+            states.Warpaccelerator = state;
+            a.States = states;
+            _artifacts[entityId] = a;
+            updated = a;
+        }
+        AnnounceArtifact(updated);
     }
 
     // ---------------------------------------------------------------- GP-07: เซฟ/โหลดโลก
@@ -465,6 +787,33 @@ public class ServerWorld
             save.Boxes[pair.Key] = list;
         }
 
+        // แปลงผัก — เก็บ "จำนวนที่เหลือจริง" จาก generator ไปด้วย ไม่งั้นรีสตาร์ทแล้วผลผลิตเกิดใหม่
+        FarmPlot[] plots = SnapshotFarms();
+        for (int i = 0; i < plots.Length; i++)
+        {
+            FarmPlot p = plots[i];
+            int product = 0, seed = 0;
+            if (CropData.TryGet(p.SeedId, out CropData.CropInfo crop))
+            {
+                Generator[] gens = PeekGenerators(p.ArtifactId);
+                if (gens != null)
+                {
+                    for (int g = 0; g < gens.Length; g++)
+                    {
+                        if (gens[g].Id == crop.ProductId)
+                        {
+                            product = gens[g].Amount;
+                        }
+                        else if (gens[g].Id == crop.SeedProductId)
+                        {
+                            seed = gens[g].Amount;
+                        }
+                    }
+                }
+            }
+            save.Farms.Add(FarmSave.From(p, product, seed));
+        }
+
         bool ok = SaveStore.Save(SaveStore.WorldPath, save);
         if (ok)
         {
@@ -480,6 +829,7 @@ public class ServerWorld
         if (save == null)
         {
             Console.WriteLine("[save] ยังไม่มีไฟล์เซฟโลก — เริ่มจากแมพเปล่า");
+            EnsureNaturalPOIs();
             return;
         }
         if (!string.IsNullOrEmpty(save.TerrainId) && save.TerrainId != Terrain.TerrainId)
@@ -538,8 +888,334 @@ public class ServerWorld
             }
         }
 
+        // แปลงผัก — ต้องหลัง artifact เพราะ ApplyFarmToArtifact ต้องเจอ artifact ในตารางแล้ว
+        LoadFarms(save.Farms);
+
         _dirty = false;
-        Console.WriteLine($"[save] โหลดโลกแล้ว: สิ่งปลูกสร้าง {loaded} ชิ้น, ธรรมชาติที่ถูกเก็บไปแล้ว {naturals} จุด, กล่องที่มีของ {boxes} ใบ");
+        Console.WriteLine($"[save] โหลดโลกแล้ว: สิ่งปลูกสร้าง {loaded} ชิ้น, ธรรมชาติที่ถูกเก็บไปแล้ว {naturals} จุด, กล่องที่มีของ {boxes} ใบ, แปลงผัก {FarmCount} แปลง");
+        EnsureNaturalPOIs();
+    }
+
+    /// <summary>
+    /// วาง POI ธรรมชาติ (รอยแยก/หลุมวาร์ป/ท่าเรือ) ลงบนเกาะครั้งเดียวตอนเริ่มโลก
+    ///
+    /// 🐛 เดิมเกาะว่างเปล่า — POI ทั้งหมดมาจาก artifact ที่ผู้เล่นสร้างเองเท่านั้น
+    /// ⇒ ผู้เล่นใหม่ไม่เห็นรอยแยก (crack) หรือหลุมวาร์ปเลย แผนที่โลกแถบว่าง
+    ///
+    /// วางเป็น artifact ปกติ (blueprint warp_accelerator/camp_warphole/neutral_warphole/dock)
+    /// → client วาดเป็นวัตถุจริงบนเกาะ + POIUpdater เจอเป็น POI (ค้นหา/วาร์ป/แผนที่) + บันทึกในเซฟโลก
+    ///
+    /// 🐛 เดิมสุ่มทั้งแผนที่ + ห่างจากจุดเกิด 20-30 tile ⇒ POI ทั้งหมดอาจไปตกอยู่ฝั่งไกล
+    /// (โลกนี้ entry=(40,177) แต่ POI ตก (115,52)-(205,131) — ห่าง ~150 tile) ⇒ กดสแกนหลุม
+    /// (รัศมี 50 tile) เจอ 0 จุดเสมอ — จึงแบ่งเป็น 2 ชุด: ชุดใกล้จุดเกิด + ชุดกระจายทั่วเกาะ
+    /// </summary>
+    private void EnsureNaturalPOIs()
+    {
+        // 🐛 หลุมวาร์ปโดนหินทับ — ตัวที่วางรอบนี้ถูกเคลียร์ให้แล้วใน PlacePOISpots
+        // แต่ **ตัวที่อยู่ใน world.json มาก่อนหน้านั้นไม่เคยถูกเคลียร์** (เจอจริง 4 ชิ้น
+        // มีต้นไม้/หินทับ 2-6 จุด) เพราะโค้ดเคลียร์ทำงานตอน "วางใหม่" เท่านั้น
+        // ⇒ กวาดซ้ำทุกครั้งที่เปิดเซิร์ฟ โลกเก่าจะได้ซ่อมตัวเอง
+        bool cleared = ClearNaturalsUnderPOIs();
+        bool placed = EnsureNearEntryPOIs();
+        placed |= PlacePOISpots(spots: new[]
+        {
+            // [แก้เอง] เจ้าของสั่ง: หลุมวาร์ป/รอยแยกต้องอยู่บนเกาะ ไม่ใช่ริมน้ำ — minInland เดิม 2-3
+            // ปล่อยให้วางติดชายฝั่งได้ (เจอจริงตอนเทส 23 ส.ค.) ⇒ ยกขึ้นเป็น 10 กันไม่ให้ใกล้น้ำอีก
+            ("warp_accelerator", (ushort)6282, new Point2(4, 4), 10, 30, false),
+            ("warp_accelerator", (ushort)6282, new Point2(4, 4), 10, 30, false),
+            ("camp_warphole", (ushort)9101, new Point2(6, 6), 10, 25, false),
+            ("camp_warphole", (ushort)9101, new Point2(6, 6), 10, 25, false),
+            ("neutral_warphole", (ushort)9450, new Point2(6, 6), 10, 20, false),
+            // ท่าเรือ: ติดแม่น้ำเท่านั้น (ดู TouchesRiver)
+            ("dock", (ushort)7001, new Point2(3, 3), 0, 20, true),
+        }, prefix: "poi_", nearEntry: false);
+        if (placed || cleared)
+        {
+            MarkDirty();
+        }
+    }
+
+    /// <summary>
+    /// เอาต้นไม้/หินที่ทับตัว POI ออก — เดินเข้าไปใช้งานไม่ได้ถ้ามีของบัง
+    ///
+    /// ทำกับ POI ที่มีอยู่แล้วในเซฟด้วย ไม่ใช่เฉพาะตอนวางใหม่
+    /// (ของธรรมชาติมาจาก natural layer ของ terrain ซึ่งไม่รู้เรื่อง artifact ที่วางทับ)
+    /// </summary>
+    private bool ClearNaturalsUnderPOIs()
+    {
+        AppearArtifact[] all = SnapshotArtifacts();
+        int cleared = 0;
+        for (int i = 0; i < all.Length; i++)
+        {
+            AppearArtifact a = all[i];
+            if (!TryGetArtifactBlueprint(a.EntityId, out string bp) || bp == null)
+            {
+                continue;
+            }
+            if (!IsPOIBlueprint(bp))
+            {
+                continue;
+            }
+            int sx = a.Size.x <= 0 ? 1 : a.Size.x;
+            int sy = a.Size.y <= 0 ? 1 : a.Size.y;
+            int here = 0;
+            for (int x = 0; x < sx; x++)
+            {
+                for (int y = 0; y < sy; y++)
+                {
+                    if (Terrain.RemoveNatural(a.Tile.x + x, a.Tile.y + y))
+                    {
+                        here++;
+                    }
+                }
+            }
+            if (here > 0)
+            {
+                Console.WriteLine("[world] เคลียร์ต้นไม้/หิน {0} จุดที่ทับ {1} (tile {2},{3})",
+                    here, a.EntityId, a.Tile.x, a.Tile.y);
+                cleared += here;
+            }
+        }
+        return cleared > 0;
+    }
+
+    /// <summary>blueprint นี้เป็นจุดสนใจ (ท่าเรือ/หลุมวาร์ป) ไหม</summary>
+    private static bool IsPOIBlueprint(string blueprintId)
+    {
+        switch (blueprintId)
+        {
+            case "dock":
+            case "camp_warphole":
+            case "neutral_warphole":
+            case "cargo_warphole_in":
+            case "warp_accelerator":
+            case "warphole_personal":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>ชุด POI รอบจุดเกิด (id ขึ้นต้น poi_near_) — วางที่ยังขาด</summary>
+    private bool EnsureNearEntryPOIs()
+    {
+        bool placed = PlacePOISpots(spots: new[]
+        {
+            // [แก้เอง] เดียวกับชุดไกลจุดเกิด — ยก minInland ให้พ้นชายฝั่งจริง ๆ (6 ไม่ใช่ 10 เพราะวงแหวน
+            // หาที่วางแคบแค่ 12-35 tile รอบจุดเกิด ซึ่งใกล้ชายหาด ยกเท่าชุดไกลจะหาที่วางไม่เจอเลย)
+            ("warp_accelerator", (ushort)6282, new Point2(4, 4), 6, 12, false),
+            ("camp_warphole", (ushort)9101, new Point2(6, 6), 6, 12, false),
+            // ท่าเรือ: ต้องอยู่ใกล้จุดเกิดและติดแม่น้ำเท่านั้น (ดู TouchesRiver)
+            ("dock", (ushort)7001, new Point2(3, 3), 0, 12, true),
+        }, prefix: "poi_near_", nearEntry: true);
+        if (placed)
+        {
+            Console.WriteLine("[world] วาง POI ชุดใกล้จุดเกิดแล้ว — สแกนหลุมรอบจุดเกิดควรเจอแน่นอน");
+        }
+        return placed;
+    }
+
+    /// <summary>วาง POI ตามรายการ spots ลงบนบก ไม่ทับของเดิม (nearEntry=true → ระยะ 12-35 tile จากจุดเกิด)
+    /// WaterEdge=true → ต้องติดน้ำ (มี tile น้ำล้อมรอบ footprint ≥2 จุด) — สำหรับท่าเรือ</summary>
+    private bool PlacePOISpots((string Bp, ushort Type, Point2 Size, int MinInland, int MinDistFromEntry, bool WaterEdge)[] spots, string prefix, bool nearEntry)
+    {
+        Point2 entry = Terrain.EntryPoint;
+        var rng = new Random();
+        int placed = 0;
+
+        // 🐛 เดิมเช็คแค่ "blueprint นี้มีอยู่แล้วไหม" ⇒ รายการที่ขอ **ชนิดเดียวกันสองอัน**
+        //    (warp_accelerator ×2, camp_warphole ×2) ได้วางจริงแค่อันเดียว
+        //    โลกใหม่เลยมีหลุมน้อยกว่าที่ตั้งใจ 2 จุด
+        // ⇒ นับของที่มีอยู่แล้วแยกตามชนิด แล้วหักออกทีละอันตามรายการที่ขอ
+        var have = new Dictionary<string, int>(StringComparer.Ordinal);
+        var usedIds = new HashSet<string>(StringComparer.Ordinal);
+        lock (_artifactLock)
+        {
+            foreach (string id in _artifacts.Keys)
+            {
+                usedIds.Add(id);
+                if (!id.StartsWith(prefix, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+                for (int s = 0; s < spots.Length; s++)
+                {
+                    string key = prefix + spots[s].Bp + "_";
+                    if (id.StartsWith(key, StringComparison.Ordinal))
+                    {
+                        have[spots[s].Bp] = have.TryGetValue(spots[s].Bp, out int c) ? c + 1 : 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        int nextSuffix = 0;
+        for (int i = 0; i < spots.Length; i++)
+        {
+            var (bp, type, size, minInland, minDist, waterEdge) = spots[i];
+            // มีของชนิดนี้อยู่แล้ว 1 อัน = ตัดโควตาไป 1 อัน ที่เหลือยังต้องวาง
+            if (have.TryGetValue(bp, out int already) && already > 0)
+            {
+                have[bp] = already - 1;
+                continue;
+            }
+            bool found = false;
+            for (int attempt = 0; attempt < 400; attempt++)
+            {
+                int tx, ty;
+                if (nearEntry)
+                {
+                    // วงแหวน 12-35 tile รอบจุดเกิด (วนหาจนได้ระยะขั้นต่ำ)
+                    int d;
+                    do
+                    {
+                        tx = entry.x + rng.Next(-60, 61);
+                        ty = entry.y + rng.Next(-60, 61);
+                        d = distSq(tx - entry.x, ty - entry.y);
+                    }
+                    while (d < minDist * minDist);
+                    if (d > 35 * 35)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    tx = rng.Next(4, Math.Max(5, Terrain.Width - 4 - size.x));
+                    ty = rng.Next(4, Math.Max(5, Terrain.Height - 4 - size.y));
+                }
+                if (waterEdge)
+                {
+                    // [แก้เอง] เจ้าของสั่ง: ท่าเรือต้องอยู่ริมแม่น้ำเท่านั้น (ไม่ใช่ทะเล/ทะเลสาบทั่วไป)
+                    // ⇒ เช็ค biome River ตรง ๆ แทน LandDistance (oceans.dm วัดระยะจากทะเลเท่านั้น ไม่รู้จักแม่น้ำ)
+                    if (!TouchesRiver(tx, ty, size))
+                    {
+                        continue;
+                    }
+                }
+                else if (Terrain.LandDistance(tx, ty) < minInland)
+                {
+                    continue;
+                }
+                bool allLand = true;
+                for (int x = 0; x < size.x && allLand; x++)
+                {
+                    for (int y = 0; y < size.y && allLand; y++)
+                    {
+                        // [แก้เอง] ใช้ oceans.dm — IsLand/WaterDepthAt พัง (ดู TouchesWater)
+                        if (Terrain.LandDistance(tx + x, ty + y) < 1)
+                        {
+                            allLand = false;
+                        }
+                        // [แก้เอง] oceans.dm วัดระยะจาก "ทะเล" เท่านั้น ไม่เห็นแม่น้ำ ⇒ กันพลาดสร้างทับแม่น้ำเอง
+                        if (Terrain.BiomeAt(tx + x, ty + y) == Shared.Region.Biome.River)
+                        {
+                            allLand = false;
+                        }
+                    }
+                }
+                if (!allLand || HasArtifactOverlapping(new Point2(tx, ty), size))
+                {
+                    continue;
+                }
+                // [แก้เอง] ไม่วางกลางก้อนหิน/ป่าทึบ — ขอบรอบตัวมีของธรรมชาติได้ไม่เกิน 3 จุด
+                // (เข้มกว่านี้หาที่วางไม่เจอเพราะป่าล้อมจุดเกิด)
+                int ringNaturals = 0;
+                for (int x = tx - 1; x <= tx + size.x; x++)
+                {
+                    if (Terrain.TryGetNatural(x, ty - 1, out _) && ++ringNaturals > 3) break;
+                    if (Terrain.TryGetNatural(x, ty + size.y, out _) && ++ringNaturals > 3) break;
+                }
+                if (ringNaturals <= 3)
+                {
+                    for (int y = ty; y < ty + size.y && ringNaturals <= 3; y++)
+                    {
+                        if (Terrain.TryGetNatural(tx - 1, y, out _)) ringNaturals++;
+                        if (Terrain.TryGetNatural(tx + size.x, y, out _)) ringNaturals++;
+                    }
+                }
+                if (ringNaturals > 3)
+                {
+                    continue;
+                }
+                // เลขต่อท้ายต้องไม่ชนของที่มีอยู่ในเซฟ (วางเพิ่มทีหลังได้โดยไม่ทับของเดิม)
+                string entityId;
+                do
+                {
+                    entityId = prefix + bp + "_" + nextSuffix;
+                    nextSuffix++;
+                }
+                while (usedIds.Contains(entityId));
+                usedIds.Add(entityId);
+                // [แก้เอง] เคลียร์ natural (ต้นไม้/หิน) ที่ทับ footprint — ไม่งั้นหลุมวาร์ปโดนหินบัง
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        Terrain.RemoveNatural(tx + x, ty + y);
+                    }
+                }
+                AppearArtifact artifact = ArtifactFactory.Make(
+                    null, entityId, type, new Point2(tx, ty), size,
+                    Rotation.None, 0, 1, bp);
+                AddArtifact(artifact, bp);
+                Console.WriteLine("[world] วาง POI ธรรมชาติ {0} (tile {1},{2})", bp, tx, ty);
+                placed++;
+                found = true;
+                break;
+            }
+            if (!found)
+            {
+                Console.WriteLine("[world] หาที่วาง {0} ไม่เจอ (พื้นที่ไม่พอ?) — ข้าม", bp);
+            }
+        }
+        return placed > 0;
+
+        static int distSq(int dx, int dy)
+        {
+            return dx * dx + dy * dy;
+        }
+    }
+
+    /// <summary>ตรวจว่า footprint ที่ (tx,ty) ขนาด size ติดน้ำไหม
+    /// ⚠️ ใช้ LandDistance (oceans.dm — พิสูจน์แล้ว) เท่านั้น ห้ามใช้ IsLand/WaterDepthAt
+    /// (whole.ocean ตีความไม่ได้ ทำให้ IsLand คืนค่ามั่ว → เคยวางท่าเรือกลางบก)
+    /// เกณฑ์: ตัวท่าทุก tile เป็นบก (≥1) + ขอบรอบตัวมีน้ำ/ฝั่ง (≤0) ≥2 จุด</summary>
+    public bool TouchesWater(int tx, int ty, Point2 size)
+    {
+        int shore = 0;
+        for (int x = tx - 1; x <= tx + size.x; x++)
+        {
+            if (Terrain.LandDistance(x, ty - 1) <= 0 && ++shore >= 2) return true;
+            if (Terrain.LandDistance(x, ty + size.y) <= 0 && ++shore >= 2) return true;
+        }
+        for (int y = ty; y < ty + size.y; y++)
+        {
+            if (Terrain.LandDistance(tx - 1, y) <= 0 && ++shore >= 2) return true;
+            if (Terrain.LandDistance(tx + size.x, y) <= 0 && ++shore >= 2) return true;
+        }
+        return false;
+    }
+
+    /// <summary>ตรวจว่า footprint ที่ (tx,ty) ขนาด size ติด "แม่น้ำ" โดยเฉพาะไหม (คนละอันกับ TouchesWater)
+    /// [แก้เอง] เจ้าของสั่ง: ท่าเรือต้องอยู่ริมแม่น้ำเท่านั้น ไม่นับทะเล/ทะเลสาบ — oceans.dm (ที่ TouchesWater
+    /// ใช้) วัดระยะจากทะเลเท่านั้น ไม่รู้จักแม่น้ำ ⇒ เช็ค biome River ตรง ๆ จาก whole.biomes แทน
+    /// เกณฑ์เดียวกับ TouchesWater: ขอบรอบ footprint ต้องมี tile แม่น้ำอย่างน้อย 2 จุด</summary>
+    public bool TouchesRiver(int tx, int ty, Point2 size)
+    {
+        int shore = 0;
+        for (int x = tx - 1; x <= tx + size.x; x++)
+        {
+            if (Terrain.BiomeAt(x, ty - 1) == Shared.Region.Biome.River && ++shore >= 2) return true;
+            if (Terrain.BiomeAt(x, ty + size.y) == Shared.Region.Biome.River && ++shore >= 2) return true;
+        }
+        for (int y = ty; y < ty + size.y; y++)
+        {
+            if (Terrain.BiomeAt(tx - 1, y) == Shared.Region.Biome.River && ++shore >= 2) return true;
+            if (Terrain.BiomeAt(tx + size.x, y) == Shared.Region.Biome.River && ++shore >= 2) return true;
+        }
+        return false;
     }
 
     /// <summary>สิ่งปลูกสร้างทั้งหมด ณ ตอนนี้ — ใช้ส่งให้ผู้เล่นที่เพิ่งเข้ามา</summary>
@@ -551,6 +1227,51 @@ public class ServerWorld
             _artifacts.Values.CopyTo(all, 0);
             return all;
         }
+    }
+
+    /// <summary>blueprint id ของ artifact ทั้งหมด (เรียงตรงกับ SnapshotArtifacts)</summary>
+    public string[] SnapshotArtifactBlueprints()
+    {
+        lock (_artifactLock)
+        {
+            string[] all = new string[_artifacts.Count];
+            int i = 0;
+            foreach (var key in _artifacts.Keys)
+            {
+                _artifactBlueprints.TryGetValue(key, out string bp);
+                all[i++] = bp;
+            }
+            return all;
+        }
+    }
+
+    /// <summary>
+    /// ตำแหน่งกึ่งกลาง (พิกัดโลก หน่วย tile*200) ของ POI "รอยแยก" (blueprint warp_accelerator) ทุกจุดบนเกาะนี้
+    ///
+    /// ในเกมต้นฉบับ ไดโนเสาร์เกิดเฉพาะบริเวณใกล้ "รอยแยก" เท่านั้น — รอยแยกในเกมนี้คือ visual ของ POI
+    /// blueprint `warp_accelerator` (RecipeData.cs: warp_accelerator → model crack_02) AnimalSpawner ใช้ตำแหน่งนี้
+    /// เป็นจุดยึดโซนแทนโซนคงที่จากไฟล์ config
+    ///
+    /// ⚠️ ต้องเรียก**หลัง** Load() วาง POI เสร็จแล้ว (EnsureNaturalPOIs รันท้าย Load()) — Program.cs
+    /// เรียก world.Load() ก่อน world.Animals.SpawnInitial() อยู่แล้ว ลำดับถูกต้องโดยไม่ต้องแก้อะไรเพิ่ม
+    /// ตำแหน่งไม่คงที่ข้ามเกาะ/ข้ามรอบบูต (terrain สุ่มใหม่ทุกครั้ง) จึงต้องอ่านสด ห้าม cache ข้ามเซิร์ฟ
+    /// </summary>
+    public WorldPosition[] GetCrackPositions()
+    {
+        AppearArtifact[] all = SnapshotArtifacts();
+        var list = new List<WorldPosition>();
+        for (int i = 0; i < all.Length; i++)
+        {
+            AppearArtifact a = all[i];
+            if (!TryGetArtifactBlueprint(a.EntityId, out string bp) || bp != "warp_accelerator")
+            {
+                continue;
+            }
+            int sx = a.Size.x <= 0 ? 1 : a.Size.x;
+            int sy = a.Size.y <= 0 ? 1 : a.Size.y;
+            list.Add(new WorldPosition((a.Tile.x + sx / 2f) * 200f, (a.Tile.y + sy / 2f) * 200f));
+        }
+        return list.ToArray();
     }
 
     public int ArtifactCount
@@ -762,7 +1483,7 @@ public class ServerWorld
     /// GP-03: จอง 1 หน่วยจาก generator แบบอะตอมมิก — หักจำนวนทันทีที่ขอ ไม่ใช่ตอนเก็บเสร็จ
     /// ทำให้สองคนที่กดพร้อมกันบนหน่วยสุดท้าย มีแค่คนเดียวที่ผ่าน
     /// </summary>
-    /// <param name="ranOut">true ถ้าหน่วยนี้เป็นหน่วยสุดท้าย (จุดนี้หมดแล้ว)</param>
+    /// <param name="ranOut">true ถ้า**ทุก**ชนิดของจุดนี้หมดแล้ว (เช่น ทั้งกิ่งไม้และท่อนไม้) — ไม่ใช่แค่ชนิดที่เพิ่งจอง</param>
     public bool TryReserveGenerator(string naturalId, string generatorId, out Generator generator, out bool ranOut)
     {
         generator = default;
@@ -784,15 +1505,24 @@ public class ServerWorld
                 return false;
             }
             generator = g;
-            ranOut = g.Amount <= 1;
-            if (ranOut)
+            // 🐛 เดิมพอ generator ชนิดที่จองถึงหน่วยสุดท้าย (เช่น "กิ่งไม้") จะ Remove(naturalId)
+            // ทั้งก้อนทันที ⇒ ต้นไม้ที่มีทั้งกิ่งไม้+ท่อนไม้ (ดู NaturalData.cs) หายไปทั้งต้นทั้งที่
+            // ท่อนไม้ยังไม่ได้เก็บเลย ผู้เล่นรายงาน "เก็บแค่กิ่งไม้ แต่ต้นไม้หายไปก่อน" ตรงนี้เป๊ะ
+            // แก้ให้เหมือน TryReserveCorpsePart ด้านล่าง: เอาออกแค่ชนิดที่หมด (RemoveAt) แล้วค่อยเช็คว่า
+            // "ทุกชนิด" ในจุดนี้หมดหรือยัง (gens.Count == 0) ถึงจะถือว่า naturalId นี้หมดจริง
+            g.Amount -= 1;
+            if (g.Amount <= 0)
             {
-                _generators.Remove(naturalId);
+                gens.RemoveAt(idx);
             }
             else
             {
-                g.Amount -= 1;
                 gens[idx] = g;
+            }
+            if (gens.Count == 0)
+            {
+                _generators.Remove(naturalId);
+                ranOut = true;
             }
             return true;
         }
@@ -925,5 +1655,13 @@ public class ServerWorld
             snapshot[i].Process();
         }
         Animals.Process();     // เฟส C
+        double now = Durango.Utils.Times.UnixTimeNow();
+        if (ServerConfig.Current.Features.WarpAccelerator)
+        {
+            WarpAccelerators.Process(now);   // รอยแยก/วาร์ปเรกเซเลอเรเตอร์ — คลื่นสัตว์/เฟส
+        }
+        TickFarms(now);        // ต้นไหนโตครบแล้วบ้าง
+        // ใครเข้า/ออกระยะมองเห็นบ้าง — ต้องทำหลัง Process เพราะตำแหน่งเพิ่งขยับ
+        TickVisibility(now);
     }
 }

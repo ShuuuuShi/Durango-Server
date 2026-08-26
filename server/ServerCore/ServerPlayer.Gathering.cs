@@ -59,6 +59,7 @@ public partial class ServerPlayer
     private const int InteractionAttack = 1;        // "공격!" — ปุ่มโจมตี
     private const int InteractionCollect = 506;
     private const int InteractionRemoveNatural = 10268;
+    private const int InteractionWarp = 515;         // "워프" — เปิดแผนที่โหมดวาป (WorldMapGroup.OpenForWarp)
 
     private void HandleTouch(Touch msg, PacketHeader header)
     {
@@ -129,6 +130,12 @@ public partial class ServerPlayer
         else if (RecipeData.BlueprintByType.TryGetValue(msg.EntityType, out string blueprintId))
         {
             var interactions = new List<int> { 103 };
+            // แปลงผัก — เมนู ปลูก/ใส่ปุ๋ย/รดน้ำ/ถอน มาจาก component "Growable"
+            // และถ้าโตแล้วให้เมนู "เก็บ" ชุดเดียวกับของธรรมชาติ (client ไม่มีเมนูเก็บเกี่ยวแยก)
+            if (ServerConfig.Current.Features.Farming && ServerWorld.IsFarmBlueprint(blueprintId))
+            {
+                AddFarmInteractions(msg.EntityId, interactions, ref reply);
+            }
             if (RecipeData.BlueprintName.TryGetValue(blueprintId, out string bpName))
             {
                 reply.EntityName = bpName;
@@ -151,8 +158,22 @@ public partial class ServerPlayer
                         case "Bandstand":
                             interactions.Add(552);
                             break;
+                        case "WarpAccelerator":
+                            // เมนูของ warp_accelerator ขึ้นกับสถานะกิจกรรมสด ๆ (ว่าง/กำลังไป/รอรับรางวัล)
+                            // ไม่ใช่ค่าคงที่ตัวเดียวเหมือน component อื่น ๆ ข้างบน — ดู ServerPlayer.WarpAccelerator.cs
+                            AddWarpAcceleratorInteractions(msg.EntityId, interactions);
+                            break;
                         case "Inventory":
                             interactions.Add(404);
+                            break;
+                        case "Warphole":
+                            // [แก้เอง] 23 ส.ค. 2026 — เจ้าของรายงาน "ไม่มีเมนูกดวาป" ที่หลุมวาร์ป
+                            // ต้นเหตุ: component นี้ (camp_warphole/neutral_warphole ทั้งคู่มี tag "Warphole"
+                            // ติดมาด้วยเสมอ — ดู RecipeData.BlueprintComponents) ไม่เคยถูกจับใน switch นี้เลย
+                            // เมนู "วาป" (Interaction.Warp=515) เลยไม่โผล่ตอนแตะหลุมวาร์ปสักครั้ง — เพิ่มเข้าไป
+                            // client กดแล้วจะส่ง IsWarpholeAvailable ตามมา (ดู HandleIsWarpholeAvailable ใน
+                            // ServerPlayer.POI.cs) ก่อนเปิดแผนที่โหมดวาปจริง
+                            interactions.Add(InteractionWarp);
                             break;
                     }
                 }
@@ -226,12 +247,17 @@ public partial class ServerPlayer
     /// ไม่มีในตาราง = มือเปล่าเก็บได้ (ผลไม้ · ใบไม้ · ลำต้น · ปลา · ดินเหนียว)
     /// เครื่องมือดูจาก **tag ของไอเทม** ไม่ใช่ชื่อไอเทม — ขวานอันไหนก็ได้ที่มี tag `axe`
     /// (ดู ItemTagData ว่า prototype ไหนมี tag อะไร)
+    ///
+    /// [แก้เอง] 24 ส.ค. 2026 — เปลี่ยนไม้ทุกชนิดจากต้องใช้ "ขวาน" เป็น "มีด" แทนชั่วคราว เพราะสูตร
+    /// คราฟต์ขวาน (assembled_axe_one_01) มีบั๊กไม่โผล่ในเมนูคราฟต์ (ดู HANDOFF.md — known-issue
+    /// resources.assets เสียหาย) ผู้เล่นเลยไม่มีทางได้ขวานมาตัดไม้เลย — สลับมาใช้มีดแทนกันผู้เล่นเก็บไม้
+    /// ไม่ได้เลยทั้งระบบ พอแก้ปัญหาขวานจริงแล้วค่อยเปลี่ยนกลับ
     /// </summary>
     private static readonly Dictionary<string, string> ToolForPrototype = new Dictionary<string, string>
     {
-        { "wood_log",   "axe" },        // ตัดท่อนซุงต้องมีขวาน
-        { "wood_bough", "axe" },
-        { "wood_bush",  "axe" },
+        { "wood_log",   "knife" },      // เดิมต้องใช้ขวาน — สลับมาใช้มีดชั่วคราว (ดูคอมเมนต์ข้างบน)
+        { "wood_bough", "knife" },
+        { "wood_bush",  "knife" },
         { "stone_big",  "pickaxe" },    // หินก้อนใหญ่/แร่ ต้องมีอีเต้อ
         { "metal_brass","pickaxe" },
     };
@@ -465,6 +491,12 @@ public partial class ServerPlayer
             HandleButchery(corpse, msg, header);
             return;
         }
+        // แปลงผักที่โตแล้ว — เก็บเกี่ยวใช้ทางเดียวกับแล่ซาก (หลาย generator หมดทีละอัน)
+        if (_world.TryGetFarm(msg.EntityId, out ServerWorld.FarmPlot plot))
+        {
+            HandleHarvest(plot, msg, header);
+            return;
+        }
         // GP-09: tile มาจากที่ server จำไว้ตอน Touch ไม่ใช่จาก msg.Tile
         // เดิม client ส่ง Tile อะไรมาก็ได้ → เก็บของที่นี่แต่สั่งลบต้นไม้อีกฟากแมพ
         if (!_world.TryGetNaturalTile(msg.EntityId, out Point2 tile))
@@ -487,21 +519,32 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
-        // เฟส C: เก็บของกินสตามินา ความล้าสูงยิ่งเปลืองมากขึ้น
+        // H-6: เพดานงานที่รอเวลาอยู่ต่อผู้เล่น — ไม่เช็คแล้วสแปม packet ยัดคิวโตไม่จำกัดจน main loop ค้าง
+        if (_deferred.Count >= MaxPendingActions)
+        {
+            Console.WriteLine("[collect] ปฏิเสธ {0}: มีงานค้างอยู่ {1} รายการแล้ว", Name, _deferred.Count);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        // GP-08b: ต้องมีเครื่องมือที่ generator ขอจริง ๆ (ตัดไม้ต้องมีขวาน · ทุบหินต้องมีอีเต้อ)
+        // เช็ค**ก่อน**จอง ไม่งั้นคนที่ไม่มีขวานจะกินหน่วยของคนอื่นทิ้งไปเปล่า ๆ
+        // [แก้เอง] 24 ส.ค. 2026 — เช็คก่อนหักสตามินาด้วย (เดิมหักสตามินาไปก่อนเช็คมี/ไม่มีเครื่องมือ —
+        // กดเก็บของทั้งที่ไม่มีขวาน/อีเต้อ เสียสตามินาฟรีทุกครั้ง)
+        if (!CheckToolBeforeCollect(msg.EntityId, msg.GeneratorId, msg.ToolItemId, header, out string usedTool))
+        {
+            return;
+        }
+        // เฟส C: เก็บของกินสตามินา ความล้าสูงยิ่งเปลืองมากขึ้น — หักหลังผ่านเช็คเครื่องมือแล้ว
         if (!TrySpendStamina(StaminaCostCollect))
         {
             Console.WriteLine("[survival] {0} สตามินาไม่พอสำหรับเก็บของ", Name);
             Send(default(Abort), header.Seq);
             return;
         }
-        // GP-08b: ต้องมีเครื่องมือที่ generator ขอจริง ๆ (ตัดไม้ต้องมีขวาน · ทุบหินต้องมีอีเต้อ)
-        // เช็ค**ก่อน**จอง ไม่งั้นคนที่ไม่มีขวานจะกินหน่วยของคนอื่นทิ้งไปเปล่า ๆ
-        if (!CheckToolBeforeCollect(msg.EntityId, msg.GeneratorId, msg.ToolItemId, header, out string usedTool))
-        {
-            return;
-        }
         if (!_world.TryReserveGenerator(msg.EntityId, msg.GeneratorId, out Generator generator, out bool ranOut))
         {
+            // [แก้เอง] อีกคนชิงหน่วยสุดท้ายไปก่อนในติ๊กเดียวกัน — คืนสตามินาที่เพิ่งหักไป ไม่งั้นเสียฟรี
+            RestoreStamina(StaminaCostCollect, 0f);
             Send(default(Abort), header.Seq);
             return;
         }
@@ -529,14 +572,14 @@ public partial class ServerPlayer
                 RanOut = ranOut
             }, header.Seq);
             // GP-03: state เป็นของกลางแล้ว คนอื่นที่เปิดจุดนี้ค้างไว้ต้องรู้ด้วยว่าจำนวนเปลี่ยน
-            _world.Broadcast(new CollectibleChanged { EntityId = msg.EntityId });
+            _world.BroadcastNear(CurrentPosition, new CollectibleChanged { EntityId = msg.EntityId });
             if (ranOut)
             {
                 _world.ForgetNaturalTile(msg.EntityId);      // GP-09
                 if (_world.Terrain.RemoveNatural(tile.x, tile.y))
                 {
                     _world.MarkDirty();   // GP-07
-                    _world.Broadcast(new DisappearEntityOnTile { EntityId = msg.EntityId, Tile = tile });
+                    _world.BroadcastNear(new WorldPosition(tile.x * 200f + 100f, tile.y * 200f + 100f), new DisappearEntityOnTile { EntityId = msg.EntityId, Tile = tile });
                     Console.WriteLine("[natural] ran out: tile={0},{1}", tile.x, tile.y);
                 }
             }
@@ -551,6 +594,11 @@ public partial class ServerPlayer
             MarkDirty();          // GP-07
             SendInventory();
             GainExpForGather();
+            NoteGatheredItem(item.Prototype);          // เควสที่เจาะจงของ เช่น "เก็บท่อนซุง 10 อัน"
+            if (bonusItem)
+            {
+                NoteGatheredItem(extra.Prototype);     // สกิลเก็บของทำให้ได้ 2 ชิ้น — นับทั้งคู่
+            }
             WearTool(usedTool);   // ขวาน/อีเต้อสึกก็ต่อเมื่อได้ของจริง
         }));
     }
@@ -590,20 +638,30 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        // H-6: เพดานงานที่รอเวลาอยู่ต่อผู้เล่น — กันสแปม packet ยัดคิวโตไม่จำกัด
+        if (_deferred.Count >= MaxPendingActions)
+        {
+            Console.WriteLine("[butchery] ปฏิเสธ {0}: มีงานค้างอยู่ {1} รายการแล้ว", Name, _deferred.Count);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        // ต้องมีมีดถึงจะแล่ได้ (เช็คก่อนจอง ไม่งั้นคนไม่มีมีดกินชิ้นส่วนของคนอื่นทิ้งเปล่า ๆ)
+        // [แก้เอง] 24 ส.ค. 2026 — เช็คก่อนหักสตามินาด้วย (เดิมหักไปก่อนเช็คมีมีดไหม เสียสตามินาฟรี)
+        if (!CheckToolBeforeCollect(corpse.EntityId, msg.GeneratorId, msg.ToolItemId, header, out string usedKnife))
+        {
+            return;
+        }
         if (!TrySpendStamina(StaminaCostCollect))
         {
             Console.WriteLine("[survival] {0} สตามินาไม่พอสำหรับแล่เนื้อ", Name);
             Send(default(Abort), header.Seq);
             return;
         }
-        // ต้องมีมีดถึงจะแล่ได้ (เช็คก่อนจอง ไม่งั้นคนไม่มีมีดกินชิ้นส่วนของคนอื่นทิ้งเปล่า ๆ)
-        if (!CheckToolBeforeCollect(corpse.EntityId, msg.GeneratorId, msg.ToolItemId, header, out string usedKnife))
-        {
-            return;
-        }
         // จองก่อนเสมอ (GP-03) — สองคนแล่ซากเดียวกันพร้อมกันจะได้ไม่ได้ของซ้ำ
         if (!_world.TryReserveCorpsePart(corpse.EntityId, msg.GeneratorId, out Generator part, out bool emptied))
         {
+            // [แก้เอง] อีกคนชิงชิ้นส่วนสุดท้ายไปก่อน — คืนสตามินาที่เพิ่งหักไป
+            RestoreStamina(StaminaCostCollect, 0f);
             Send(default(Abort), header.Seq);
             return;
         }
@@ -629,7 +687,7 @@ public partial class ServerPlayer
                 },
                 RanOut = emptied
             }, header.Seq);
-            _world.Broadcast(new CollectibleChanged { EntityId = corpse.EntityId });
+            _world.BroadcastToViewers(corpse.EntityId, new CollectibleChanged { EntityId = corpse.EntityId });
             if (emptied)
             {
                 // แล่จนไม่เหลืออะไร — เอาซากออกเลย ดูสมเหตุสมผลกว่าปล่อยให้ซากเปล่านอนรอหมดเวลา
@@ -664,7 +722,17 @@ public partial class ServerPlayer
             Prototype = generator.Id,
             Level = 1,
             OriginalLevel = 1,
-            ModifiableCount = 0,
+            // 🐛 **ตัวที่ทำให้ "มีเนื้อ 10 ชิ้นแต่คราฟต์ไม่ได้"** — เดิมเป็น 0
+            //
+            // สูตรที่มี `deduct_modifiable_count: true` (สูตรทำอาหาร/แปรรูปแทบทั้งหมด)
+            // ช่อง "base" ของมันจะกลายเป็น `RecipeSlot.Type.ModifyBase` ฝั่ง client
+            // แล้ว `RecipeSlot.IsSuitableItem` เช็คเพิ่มว่า **`itemData.ModifiableCount > 0`**
+            // ⇒ ของที่เราส่งไป ModifiableCount = 0 ถูกกรองทิ้งหมด ช่องเลยขึ้นว่า "ไม่มีของ"
+            // ทั้งที่มีอยู่เต็มกระเป๋า และ **packet ไม่เคยถูกส่งมาถึง server เลย** (client กันไว้ก่อน)
+            //
+            // ช่องที่ใช้ `required_tags` (เช่นช่อง "น้ำ" ของ boiled_meat) เป็น General
+            // จึงผ่านปกติ — นี่คือเหตุผลที่บางช่องมีของบางช่องว่าง
+            ModifiableCount = 1,
             ModifiedCount = 0,
             Size = 1,
             // ปกติของที่เก็บได้ไม่ใช่เครื่องมือ (MaxFor คืน 0 ⇒ หลอด 1/1 เหมือนเดิม)

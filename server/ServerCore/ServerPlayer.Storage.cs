@@ -146,6 +146,7 @@ public partial class ServerPlayer
 
         Console.WriteLine("[storage] {0} ใส่ของ {1} ชิ้นลงกล่อง {2}", Name, moving.Count, boxId);
         MarkDirty();
+        QuestProgress(QuestData.Goal.Store, null, moving.Count);
 
         var movedIds = new string[moving.Count];
         for (int i = 0; i < moving.Count; i++)
@@ -218,7 +219,7 @@ public partial class ServerPlayer
     /// </summary>
     private void BroadcastBoxUpdate(string boxId, Item[] added, string[] removedIds)
     {
-        _world.Broadcast(new InventoryUpdated
+        _world.BroadcastToViewers(boxId, new InventoryUpdated
         {
             EntityId = boxId,
             Items = added,

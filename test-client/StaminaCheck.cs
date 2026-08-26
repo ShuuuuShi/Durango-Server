@@ -50,6 +50,14 @@ public static class StaminaCheck
     private static int _aborts;
     private static int _collected;
     private static string _lastInfo;
+    private static bool _restBuffEnabled;
+    private static bool _restBuffDisabled;
+
+    private static bool HasRestBuff(Messages.StatusEffects msg)
+    {
+        return msg._StatusEffects != null && Array.Exists(msg._StatusEffects,
+            effect => effect.Id == "away_from_keyboard" || effect.EffectId == "away_from_keyboard");
+    }
 
 
     /// <summary>
@@ -140,6 +148,12 @@ public static class StaminaCheck
         {
             if (m.EntityId != id) return;
             Take(m.Updated);
+        });
+        conn.Recv<Messages.StatusEffects>((m, h) =>
+        {
+            if (m.EntityId != id) return;
+            if (HasRestBuff(m)) _restBuffEnabled = true;
+            else _restBuffDisabled = true;
         });
         conn.Recv<Touched>((m, h) =>
         {
@@ -313,11 +327,35 @@ public static class StaminaCheck
                 $"ความชันของหลอดเลือด {drain:F2}/วิ");
             float deathIn = drain < 0f ? _life / -drain : -1f;
             Console.WriteLine($"         → ปล่อยไว้อีก {deathIn:F0} วินาทีก็ตาย (พอให้วิ่งกลับกองไฟ)");
-            Check("ผู้เล่นได้รับคำเตือนตอนเลือดเริ่มไหล", _lastInfo != null && _lastInfo.Contains("กองไฟ"),
+            Check("ผู้เล่นได้รับคำเตือนตอนเลือดเริ่มไหล",
+                _lastInfo != null && (_lastInfo.Contains("พัก") || _lastInfo.Contains("สิ่งก่อสร้าง")),
                 _lastInfo ?? "(ไม่มีข้อความ)");
         }
 
-        Console.WriteLine("รอบ 7 — พักแล้วกลับมาเต็ม");
+        Console.WriteLine("รอบ 7 — พักจริงที่กองไฟ: ความล้าลด + ไอคอนบัพ");
+        _restBuffEnabled = false;
+        _restBuffDisabled = false;
+        conn.Send(new Cheat { _Cheat = "place real fire" });
+        Pump(conn, 800);
+        conn.Send(new Cheat { _Cheat = "exhaust" });
+        Pump(conn, 800);
+        float tiredBeforeRest = _fatigue;
+        conn.Send(new Cheat { _Cheat = "test rest" });
+        Pump(conn, 1200);
+        float tiredAfterRest = _fatigue;
+        Check("พักจริงแล้วความล้าลดลง", tiredBeforeRest > 0f && tiredAfterRest < tiredBeforeRest - 1f,
+            $"ก่อน {tiredBeforeRest:F1} → หลัง {tiredAfterRest:F1}");
+        Check("พักจริงเปิดไอคอนบัพ away_from_keyboard", _restBuffEnabled,
+            _restBuffEnabled ? "ได้รับ StatusEffects แล้ว" : (_lastInfo ?? "ไม่ได้รับ StatusEffects"));
+        conn.Send(new Cheat { _Cheat = "survival" });
+        Pump(conn, 500);
+        // ใช้ teleport control ให้ server เรียก RememberPosition จริงและหยุดพัก
+        conn.Send(new Cheat { _Cheat = "tp 42 177" });
+        Pump(conn, 700);
+        Check("ลุก/หยุดพักแล้วปิดไอคอนบัพ", _restBuffDisabled,
+            _restBuffDisabled ? "ได้รับ StatusEffects ที่ไม่มีบัพแล้ว" : "ยังไม่พบ packet ปิดบัพ");
+
+        Console.WriteLine("รอบ 8 — cheat rest แล้วกลับมาเต็ม");
         conn.Send(new Cheat { _Cheat = "rest" });
         Pump(conn, 1000);
         float finalStaminaMax = _staminaG?.Max(Times.UnixTimeNow()) ?? staminaMax;

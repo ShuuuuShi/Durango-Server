@@ -83,6 +83,11 @@ public partial class ServerPlayer
             _skillPoints = save.SkillPoints;
         }
 
+        // รอยแยก/วาร์ปเรกเซเลอเรเตอร์ — Warp Matter สะสม (ดู ServerPlayer.WarpAccelerator.cs)
+        _warpMatterBalance = save.WarpMatterBalance;
+        _weeklyWarpMatterAcquired = save.WeeklyWarpMatterAcquired;
+        _weeklyWarpMatterRefreshAt = save.WeeklyWarpMatterRefreshAt;
+
         // GP-14: เลเวลที่ server เซฟไว้ชนะค่าที่ client อ้างมาทาง /sessions
         // (ค่าจาก client ใช้ได้ครั้งเดียวตอน login แรก ซึ่งเป็นตอนที่ยังไม่มีไฟล์เซฟ)
         if (save.Level > 0 && save.Level != Level)
@@ -183,6 +188,7 @@ public partial class ServerPlayer
         ApplyDeathSave(save);
         ApplyDeathSave(save);
         ApplyGroup2Save(save);
+        ApplyQuestSave(save);
 
         _starterGiven = save.StarterGiven;
         if (!_starterGiven)
@@ -233,6 +239,9 @@ public partial class ServerPlayer
             EntityType = EntityType,
             SkillPoints = _skillPoints,
             TotalExp = TotalExp,
+            WarpMatterBalance = _warpMatterBalance,
+            WeeklyWarpMatterAcquired = _weeklyWarpMatterAcquired,
+            WeeklyWarpMatterRefreshAt = _weeklyWarpMatterRefreshAt,
             LastIsland = IslandRegistry.Current?.Id,
             StarterGiven = _starterGiven,
             HasPosition = _hasPosition,
@@ -269,6 +278,7 @@ public partial class ServerPlayer
         FillDeathSave(save);
         FillDeathSave(save);
         FillGroup2Save(save);
+        FillQuestSave(save);
         for (int i = 0; i < _knownSkills.Count; i++)
         {
             save.KnownSkills.Add(SkillBundleSave.From(_knownSkills[i]));

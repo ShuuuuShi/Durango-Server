@@ -64,7 +64,10 @@ public class QuestSystem : GameSystem<QuestSystem>
 		Connections.Frontend.On<QuestRewardResults>(OnQuestRewardResults);
 		GameSystem<StatisticsSystem>.Instance().LevelChanged += delegate(int prev, int cur)
 		{
-			GameSystem<MenuSystem>.Instance().EnableMenu(MenuType.Story, cur >= 20);
+			// [แก้เอง] เดิมเปิดเมนู Story ตอนเลเวล ≥ 20 — แต่เควสสายหลัก (Epic) อยู่ในเมนูนี้
+			// ผู้เล่นใหม่เลเวล 1 จึงเห็นเมนู Story ไม่ได้เลย ทั้งที่เควสแรกเปิดอยู่แล้ว
+			// เปิดตั้งแต่เลเวล 1 ให้เห็นเควสสายหลักได้เลย
+			GameSystem<MenuSystem>.Instance().EnableMenu(MenuType.Story, cur >= 1);
 		};
 	}
 
@@ -251,6 +254,7 @@ public class QuestSystem : GameSystem<QuestSystem>
 			return;
 		}
 		category.UpdateQuests(msg.Quests);
+		EnsureStoryChapters(msg.Category, msg.Quests);
 		int i = 0;
 		for (int size = KUtility.GetSize(msg.Quests); i < size; i++)
 		{
@@ -312,7 +316,7 @@ public class QuestSystem : GameSystem<QuestSystem>
 		});
 	}
 
-	private void OnUpdateQuests(string category, Quests? msg)
+private void OnUpdateQuests(string category, Quests? msg)
 	{
 		Category category2 = _questCategories.Get(category);
 		if (category2 == null)
@@ -320,6 +324,7 @@ public class QuestSystem : GameSystem<QuestSystem>
 			return;
 		}
 		category2.SetQuests(msg);
+		EnsureStoryChapters(category, msg);
 		if (msg.HasValue && msg.Value.Todos != null)
 		{
 			QuestToDo[] todos = msg.Value.Todos;
@@ -334,6 +339,69 @@ public class QuestSystem : GameSystem<QuestSystem>
 	private void UpdateQuestTodoProceed(QuestToDo quest)
 	{
 		UpdateQuestTodoProceed(quest.Id, quest.Progress, quest.GoalCount, quest.Finished);
+	}
+
+	private void EnsureStoryChapters(string category, Quests? msg)
+	{
+		if (!msg.HasValue || msg.Value.Todos == null)
+		{
+			return;
+		}
+		EnsureStoryChapters(category, msg.Value.Todos);
+	}
+
+	private void EnsureStoryChapters(string category, QuestToDo[] quests)
+	{
+		// [แก้เอง] หน้า Story (Epic) ใช้ Chapters จากข้อมูลเกม ซึ่งอ้าง id mainstory_*
+		// แต่เซิร์ฟของเราส่งเควสสายเนื้อเรื่องเป็น id story_* (QuestData.Story)
+		// ถ้าไม่ override Chapters จะเห็นทุกบทล็อก (หาควสไม่เจอ)
+		// สร้าง Chapters จากเควสที่เซิร์ฟส่ง (เรียงตามลำดับที่เซิร์ฟกำหนด) แล้วทับลง SingletonDict
+		if (category != EpicCategory || KUtility.GetSize(quests) == 0)
+		{
+			return;
+		}
+		Chapters chapters = SingletonDict<string, Chapters>.Instance.Get(category);
+		if (chapters != null)
+		{
+			bool allMatch = true;
+			HashSet<string> serverQuests = new HashSet<string>(quests.Select((QuestToDo q) => q.Id));
+			for (int i = 0; i < KUtility.GetSize(chapters.ChapterList); i++)
+			{
+				string[] arr = chapters.ChapterList[i].Quests;
+				for (int j = 0; j < KUtility.GetSize(arr); j++)
+				{
+					if (!serverQuests.Contains(arr[j]))
+					{
+						allMatch = false;
+						break;
+					}
+				}
+				if (!allMatch)
+				{
+					break;
+				}
+			}
+			if (allMatch)
+			{
+				return;
+			}
+		}
+		List<Chapter> list = new List<Chapter>();
+		int num = 1;
+		foreach (QuestToDo quest in quests)
+		{
+			QuestYml questYml = SingletonDict<string, QuestYml>.Instance.Get(quest.Id);
+			Gettext subject = questYml != null ? questYml.Subject : (Gettext)quest.Id;
+			Chapter chapter = new Chapter();
+			chapter.ChapterNum = num++;
+			chapter.Title = subject;
+			chapter.Description = subject;
+			chapter.Quests = new string[1] { quest.Id };
+			list.Add(chapter);
+		}
+		Chapters chapters2 = new Chapters();
+		chapters2.ChapterList = list.ToArray();
+		SingletonDict<string, Chapters>.Instance[category] = chapters2;
 	}
 
 	private void UpdateQuestTodoProceed(NotifyQuestProceed msg)

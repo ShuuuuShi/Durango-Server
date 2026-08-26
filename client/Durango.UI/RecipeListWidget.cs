@@ -104,9 +104,18 @@ public class RecipeListWidget : MonoBehaviour, IUIInitializable
 				RecipeSubListWidget.Data copy = data;
 				CraftBlocker blocker = GameSystem<RecipeSystem>.Instance().WhyCannotCraft(copy.Item);
 				copy.CanCraft = blocker == CraftBlocker.None;
-				if (!IsFavorites && blocker == CraftBlocker.Materials)
+				// [แก้เอง] 24 ส.ค. 2026 — เจ้าของสั่งเอา "ซ่อนของที่วัตถุดิบไม่พอ" ออก อยากให้เห็นสูตร
+				// ครบทุกอันเหมือนโหมดออฟไลน์ (ผู้เล่นจะได้รู้ว่ามีสูตรอะไรอยู่บ้าง แม้ยังไม่มีของ) — เดิมมี
+				// `if (!IsFavorites && blocker == CraftBlocker.Materials) continue;` ซ่อนไปเงียบ ๆ ตรงนี้
+				// (นี่คือสาเหตุจริงที่ "ขวาน" ไม่เคยโผล่ในเมนู — ไม่ใช่บั๊ก แค่ไม่มีวัตถุดิบ 3 อย่างที่ต้องใช้
+				// จริง ๆ (blade+เชือก+ด้าม) ในกระเป๋าเลย ดู HANDOFF.md)
+				//
+				// [แก้เอง] 24 ส.ค. 2026 (รอบ 2) — เจ้าของสั่งกลับด้าน "โต๊ะคราฟ": ของที่ต้องใช้โต๊ะ/เตาแต่
+				// ไม่ได้ยืนอยู่ตรงนั้น ให้ **ซ่อน** ไปเลย (ต่างจาก Materials ที่ยังโชว์แบบจาง ๆ) — จะได้ไม่เห็น
+				// สูตรระดับสูงที่ต้องมีโต๊ะเทียร์สูงเกลื่อนเมนูตอนยังไม่มีโต๊ะนั้น พอเดินไปยืนที่โต๊ะที่ใช่ค่อยโผล่
+				if (!IsFavorites && blocker == CraftBlocker.Workbench)
 				{
-					continue;                 // วัตถุดิบไม่พอ = ไม่ต้องโชว์ (รายการโปรดโชว์ครบเพราะผู้เล่นปักเอง)
+					continue;
 				}
 				ordered.Add(copy);
 				blockers.Add(blocker);
@@ -137,11 +146,34 @@ public class RecipeListWidget : MonoBehaviour, IUIInitializable
 			return result;
 		}
 
+		/// <summary>[แก้เอง] 23 ส.ค. 2026 — มีไอเทมที่ทำได้ตอนนี้เลยอยู่ในกลุ่มย่อยนี้บ้างไหม
+		/// ใช้จัดลำดับ "กลุ่ม" (คนละเรื่องกับการจัดลำดับ "ไอเทมในกลุ่ม" ที่ EnumerateItems ทำอยู่แล้ว —
+		/// อันนั้นจัดของทำได้ขึ้นก่อนแค่ภายในกลุ่มเดียวกัน แต่ลำดับกลุ่มเองยังเรียงตามตัวอักษรเฉย ๆ
+		/// ⇒ เจ้าของสั่งให้ "ของที่คราฟได้อยู่บนสุด" ของทั้งช่องกลาง ไม่ใช่แค่ในกลุ่มตัวเอง)</summary>
+		public bool HasCraftableNow()
+		{
+			foreach (RecipeSubListWidget.Data data in _list)
+			{
+				if (GameSystem<RecipeSystem>.Instance().WhyCannotCraft(data.Item) == CraftBlocker.None)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		public static int SortComparison(KeyValuePair<string, SubList> x, KeyValuePair<string, SubList> y)
 		{
 			if (y.Value.IsFavorites != x.Value.IsFavorites)
 			{
 				return (y.Value.IsFavorites ? 1 : 0) - (x.Value.IsFavorites ? 1 : 0);
+			}
+			// [แก้เอง] เจ้าของสั่ง: กลุ่มที่มีของคราฟต์ได้ตอนนี้อย่างน้อย 1 ชิ้น ขึ้นก่อนกลุ่มที่ทำไม่ได้เลย
+			bool xHas = x.Value.HasCraftableNow();
+			bool yHas = y.Value.HasCraftableNow();
+			if (xHas != yHas)
+			{
+				return xHas ? -1 : 1;
 			}
 			return string.Compare(x.Key, y.Key, StringComparison.OrdinalIgnoreCase);
 		}

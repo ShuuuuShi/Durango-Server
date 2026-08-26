@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    ตัวอัปเดตเกมอัตโนมัติ — เจ้าของสั่งเมื่อ 24 ส.ค. 2026: "ระบบตัวเกม ออโต้อัพเดทได้จริง"
+    (แนวทาง C จากแผนที่วางไว้ — ดู docs/server/AutoUpdate-Plan.md)
+
+    วางไว้ในโฟลเดอร์เกม ข้าง ๆ DurangoV2.exe — เล่นเกม.bat เรียกตัวนี้แทนที่จะเรียก DurangoV2.exe ตรง ๆ
+    ทำหน้าที่: เช็คเวอร์ชันกับ manifest.json บน GitHub Release → ถ้าใหม่กว่า โหลด+ตรวจ SHA256+แตกไฟล์
+    ลง "โฟลเดอร์ชั่วคราว" ก่อนเสมอ → สลับเข้าโฟลเดอร์เกมจริงด้วย robocopy /MIR เฉพาะตอนที่ครบสมบูรณ์
+    และ hash ตรงแล้วเท่านั้น → เปิด DurangoV2.exe ต่อ
+
+    หลักการความปลอดภัย (สำคัญที่สุดของงานนี้): **ไม่แตะไฟล์เกมจริงเลยจนกว่าจะดาวน์โหลด+ตรวจสอบไฟล์ใหม่
+    ครบ 100% แล้ว** — เน็ตหลุดกลางทาง/ไฟล์เพี้ยน = แค่ไม่อัปเดต ไม่ใช่เกมพังเปิดไม่ขึ้น
+    ไม่มีเน็ต/manifest โหลดไม่ได้ = ข้ามการเช็คไปเงียบ ๆ เปิดเกมเวอร์ชันเดิมต่อ ไม่บล็อกใครเล่น
+
+    build:   dotnet build tools\Updater -c Release
+    publish: dotnet publish tools\Updater -c Release -r win-x64 -p:SelfContained=true
+             (ได้ DurangoUpdater.exe ตัวเดียว ไม่ต้องมี .NET runtime ในเครื่องผู้เล่น)
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>DurangoUpdater</AssemblyName>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+</Project>

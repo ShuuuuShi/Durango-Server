@@ -98,6 +98,14 @@ public class TitleMenuUserControl_PC : TitleMenuUserControlBase
 		{
 			return;
 		}
+		// [แก้เอง] flow อัตโนมัติของเรา: ข้าม ShowCluster/IsAccountReady — ให้ปุ่มเริ่มกดได้เสมอ
+		// (กดแล้ว OnConfirm → ConnectTo(เซิร์ฟเรา) ทันที)
+		if (!string.IsNullOrEmpty(Durango.Offline.Server.AutoConnectTarget))
+		{
+			_startButton.Disabled = false;
+			_startButton.Text = ManualTranslator.Start;
+			return;
+		}
 		_startButton.Disabled = LastState != TitleMenuGroup.State.SelectCluster && LastState != TitleMenuGroup.State.Error;
 		if (_startButton.Disabled)
 		{

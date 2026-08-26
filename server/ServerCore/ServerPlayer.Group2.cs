@@ -24,6 +24,51 @@ public partial class ServerPlayer
         Derived.VolcanicHeatResistant, Derived.BlowResistance
     };
 
+    private const string RestStatusEffectId = "away_from_keyboard";
+
+    /// <summary>อัปเดตไอคอนสถานะพักให้ตรงกับสถานะพักจริงของ server</summary>
+    private void SetRestStatusEffect(bool enabled)
+    {
+        PruneStatusEffects();
+        StatusEffectSave effect = _statusEffects.FirstOrDefault(x =>
+            x.Id == RestStatusEffectId || x.EffectId == RestStatusEffectId);
+        bool changed = false;
+        if (enabled)
+        {
+            if (effect == null)
+            {
+                double now = Times.UnixTimeNow();
+                _statusEffects.Add(new StatusEffectSave
+                {
+                    Id = RestStatusEffectId,
+                    EffectId = RestStatusEffectId,
+                    Level = 1,
+                    Since = now,
+                    Until = 0,
+                    Enabled = true
+                });
+                changed = true;
+            }
+            else if (!effect.Enabled)
+            {
+                effect.Enabled = true;
+                effect.Since = Times.UnixTimeNow();
+                effect.Until = 0;
+                changed = true;
+            }
+        }
+        else if (effect != null && effect.Enabled)
+        {
+            effect.Enabled = false;
+            changed = true;
+        }
+        if (changed)
+        {
+            MarkDirty();
+        }
+        SendStatusEffects();
+    }
+
     private void RegisterGroup2Handlers()
     {
         _conn.Recv<GetStatusEffects>((msg, header) => SendStatusEffects());
@@ -87,7 +132,17 @@ public partial class ServerPlayer
         }
         else if (effect != null)
         {
-            effect.Enabled = msg.Toggle;
+            // SleepChecker ใช้ away_from_keyboard ร่วมกับบัพนั่งพัก
+            // wake-up packet ของ idle sleep ห้ามปิดไอคอนขณะ server ยังพักอยู่จริง
+            if (!msg.Toggle && _resting &&
+                string.Equals(msg.Id, RestStatusEffectId, StringComparison.OrdinalIgnoreCase))
+            {
+                effect.Enabled = true;
+            }
+            else
+            {
+                effect.Enabled = msg.Toggle;
+            }
         }
         MarkDirty();
         Send(default(OK), header.Seq);
@@ -149,6 +204,76 @@ public partial class ServerPlayer
         return _statusEffects.Where(x => x.Enabled)
             .GroupBy(x => x.EffectId ?? x.Id)
             .ToDictionary(x => x.Key, x => (float)x.Max(v => Math.Max(1, v.Level)));
+    }
+
+    // ── บัฟ/ดีบัฟจากอาหารมีผลจริง (Beta) ────────────────────────────
+    // เดิม _statusEffects ขึ้นแค่ไอคอน ไม่มีจุดไหนอ่านไปคำนวณจริง (ดู Status-Effects-Report.md)
+    // ตอนนี้จับ 18 บัฟจากข้อมูลเกมจริงเป็น 4 กลไก: บัฟ/ดีบัฟสตามินา + ฟื้นเลือด/เลือดไหล
+    // ทิศทาง (บัฟหรือดีบัฟ) อ้างจากไอเทมจริงที่ให้บัฟนั้นใน FoodData.cs — ไม่ได้เดา
+
+    private enum StatusEffectKind { None, StaminaBuff, StaminaDebuff, LifeRegen, LifeDrain }
+
+    private static readonly Dictionary<string, StatusEffectKind> StatusEffectKinds =
+        new Dictionary<string, StatusEffectKind>(StringComparer.Ordinal)
+    {
+        // บัฟสตามินา — อาหาร/เครื่องดื่มที่ให้พลัง ทำอะไรก็เปลืองน้อยลง
+        ["energetic"] = StatusEffectKind.StaminaBuff,
+        ["stamina_up"] = StatusEffectKind.StaminaBuff,
+        ["drink_water"] = StatusEffectKind.StaminaBuff,
+        ["fruit_water"] = StatusEffectKind.StaminaBuff,
+        ["hot_food"] = StatusEffectKind.StaminaBuff,
+        ["cold_food"] = StatusEffectKind.StaminaBuff,
+        ["effect_coffee_drip"] = StatusEffectKind.StaminaBuff,
+        ["effect_coffee_dutch"] = StatusEffectKind.StaminaBuff,
+        ["fruit_sandwich_effects"] = StatusEffectKind.StaminaBuff,
+        ["effect_jasmine"] = StatusEffectKind.StaminaBuff,
+        ["effect_cactus_juice"] = StatusEffectKind.StaminaBuff,
+        ["tea_effect_01"] = StatusEffectKind.StaminaBuff,
+        ["tea_effect_02"] = StatusEffectKind.StaminaBuff,
+        // ดีบัฟสตามินา — กระหายน้ำ/กินของแปลก ๆ/เมา ทำอะไรก็เปลืองแรงกว่าปกติ
+        ["thirsty"] = StatusEffectKind.StaminaDebuff,
+        ["eat_bizarre_food"] = StatusEffectKind.StaminaDebuff,
+        ["drunk"] = StatusEffectKind.StaminaDebuff,
+        // ฟื้นเลือด / เลือดไหล
+        ["life_up"] = StatusEffectKind.LifeRegen,
+        ["poisoning"] = StatusEffectKind.LifeDrain
+    };
+
+    /// <summary>บัฟ/ดีบัฟที่ติดอยู่ตอนนี้เป็นชนิดไหนบ้าง (นับเฉพาะเปิดอยู่ + ยังไม่หมดอายุ)</summary>
+    private bool HasActiveStatusKind(StatusEffectKind kind)
+    {
+        double now = Times.UnixTimeNow();
+        for (int i = 0; i < _statusEffects.Count; i++)
+        {
+            StatusEffectSave e = _statusEffects[i];
+            if (!e.Enabled) continue;
+            if (e.Until > 0 && e.Until <= now) continue;
+            if (StatusEffectKinds.TryGetValue(e.EffectId ?? e.Id, out StatusEffectKind k) && k == kind)
+                return true;
+        }
+        return false;
+    }
+
+    /// <summary>ผลรวมของบัฟ/ดีบัฟสตามินาที่บวกเข้ากับ StaminaCostScale (ลบ = ถูกลง, บวก = แพงขึ้น)</summary>
+    public float StatusStaminaCostDelta()
+    {
+        StatusEffectConfig cfg = ServerConfig.Current.StatusEffects;
+        if (cfg == null) return 0f;
+        float delta = 0f;
+        if (HasActiveStatusKind(StatusEffectKind.StaminaBuff)) delta -= cfg.BuffStaminaSave;
+        if (HasActiveStatusKind(StatusEffectKind.StaminaDebuff)) delta += cfg.DebuffStaminaPenalty;
+        return delta;
+    }
+
+    /// <summary>ผลรวมความเร็วเลือดที่บวกเข้ากับการฟื้น/ไหลปกติ (บวก = ฟื้น, ลบ = ไหล)</summary>
+    public float StatusLifeVelocityDelta()
+    {
+        StatusEffectConfig cfg = ServerConfig.Current.StatusEffects;
+        if (cfg == null) return 0f;
+        float delta = 0f;
+        if (HasActiveStatusKind(StatusEffectKind.LifeRegen)) delta += cfg.LifeUpRegenPerSec;
+        if (HasActiveStatusKind(StatusEffectKind.LifeDrain)) delta -= cfg.PoisonDamagePerSec;
+        return delta;
     }
 
     private Dictionary<Derived, int> BuildResistanceExps()
@@ -228,7 +353,7 @@ public partial class ServerPlayer
         Send(default(OK), header.Seq);
         var update = new Title { EntityId = EntityId, TitleId = chosen, _Title = "" };
         Send(update);
-        _world.BroadcastExcept(this, update);
+        _world.BroadcastToViewers(EntityId, update, except: this);
     }
 
     private void HandleSelectTargetTitle(SelectTargetTitle msg, PacketHeader header)
@@ -256,7 +381,7 @@ public partial class ServerPlayer
         Name = name;
         MarkDirty();
         Send(default(OK), header.Seq);
-        _world.Broadcast(MakeAppearPlayer());
+        _world.BroadcastToViewers(EntityId, MakeAppearPlayer());
         Console.WriteLine("[rename] {0} -> {1} ({2})", old, name, EntityId);
     }
 

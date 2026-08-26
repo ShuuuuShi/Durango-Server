@@ -17,7 +17,11 @@ public class Platform_PC : Platform
 
 	public override bool IsAvailableOfferwall => false;
 
-	public override bool UsePCUI => true;
+	// [แก้เอง] 23 ส.ค. 2026 — เจ้าของสั่งใช้ UI มือถือเป็นหลัก (ทดลองแล้วโหลดสมบูรณ์ ไม่มี error ใหม่
+	// ดู docs/CAPABILITY-REPORT.md หัวข้อ 3) เดิมต้องตั้ง env DURANGO_MOBILEUI=1 ถึงจะเห็น UI มือถือ
+	// ⇒ สลับ default: ตอนนี้ UI มือถือเป็นค่าเริ่มต้นเสมอ ถ้าอยากย้อนกลับไป UI PC ชั่วคราว (เช่นเทียบผล)
+	// ตั้ง env DURANGO_FORCE_PCUI=1
+	public override bool UsePCUI => global::System.Environment.GetEnvironmentVariable("DURANGO_FORCE_PCUI") == "1";
 
 	public override int DefaultUISize => 1280;
 

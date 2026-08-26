@@ -22,6 +22,31 @@ public class SkillCategoryWidget : MonoBehaviour, IUIInitializable
 
 	void IUIInitializable.Init()
 	{
+		BuildCategoryList();
+		UIManager.AddOnScreenResized(delegate
+		{
+			_categories.ResetPosition();
+		});
+	}
+
+	/// <summary>
+	/// สร้าง (หรือสร้างใหม่) รายการหมวดสกิลจาก Region template + Season filter
+	///
+	/// 🐛 เดิมสร้างแค่ครั้งเดียวใน Init() ซึ่งรันตอน UI เริ่มต้น (UIManager.OnAwake) —
+	///    ตอนนั้น `GameManager.Region.TemplateId` ยังเป็น UnknownRegion/null (Welcome ยังมาไม่ถึง)
+	///    ⇒ `regionTemplate == null` ⇒ return เร็ว ⇒ ไม่เคยเรียก `nodes.Set()`
+	///    ⇒ grid แสดงแค่ template เปล่าหนึ่งช่อง ("tile") ที่เหลือหายทั้งแถว
+	///    ตอนนี้เปิด UI ทีไร (`SkillGroup.OnOpened`) จะเรียก Rebuild() ใหม่
+	///    ตอนนั้น Region/Yaml พร้อมแล้ว จึงได้หมวดสกิลครบตามที่ควร
+	/// </summary>
+	public void Rebuild()
+	{
+		BuildCategoryList();
+	}
+
+	private void BuildCategoryList()
+	{
+		_categoryList.Clear();
 		string templateId = GameManager.Region.TemplateId;
 		RegionTemplate regionTemplate = SingletonDict<string, RegionTemplate>.Get(templateId);
 		if (regionTemplate == null)
@@ -47,10 +72,8 @@ public class SkillCategoryWidget : MonoBehaviour, IUIInitializable
 		ListObjectPool nodes = _categories.Nodes;
 		nodes.Init(OnInitCategoryNode);
 		nodes.Set(_categoryList.Count);
-		UIManager.AddOnScreenResized(delegate
-		{
-			_categories.ResetPosition();
-		});
+		_categoryList.Sort(CategoryComparison);
+		UpdateData();
 	}
 
 	private void OnEnable()

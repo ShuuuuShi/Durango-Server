@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Building;
 using Crafting;
@@ -125,9 +125,47 @@ public class RecipeSelectorGroup : UIBase, INotificationable
 			_recipeListWidget.ClearSearchText();
 			ResetCategories(scrollToSelected: true);
 			GameSystem<RecipeSystem>.Instance().RefreshNearWorkbenches(_selectedWorkbench);
+			// [แก้เอง] หน้าคราฟต์ใหม่ที่วาดเองจากโค้ด (ปิดด้วย env DURANGO_NEWUI=0)
+			// ปุ่ม "สร้าง" ของหน้าใหม่วิ่งเข้าเส้นทางเดิมของเกม ไม่ได้เขียน logic คราฟต์ใหม่
+			CraftScreen.Show(base.gameObject, delegate
+			{
+				Close();
+			}, delegate(RecipeSystem.RecipeType type, string id)
+			{
+				MenuListGroupBase menu = UIManager.FindScript<MenuListGroupBase>();
+				if (type == RecipeSystem.RecipeType.Crafting)
+				{
+					// [แก้เอง] ปุ่ม "สร้าง" ของหน้าใหม่กดแล้วเจอหน้าจอ CraftGroupBase (ของเดิม)
+					// โผล่ทับมาสั้น ๆ — เพราะ OpenItemCraftingUI เปิดหน้านั้นจริง ๆ แล้วรอผู้เล่น
+					// กดยืนยันอีกที ⇒ เจ้าของบอกว่ายังเห็น "UI เก่า" อยู่ ไม่อยากให้โผล่เลย
+					//
+					// ⇒ ทำหัวใจของ OpenItemCraftingUI เอง แต่ปิด/เปิด CraftGroupBase แบบ
+					//   headless ในสแตกเดียวกัน (เปิด → คราฟ → ปิด ไม่มีเฟรมไหนที่ Unity
+					//   วาดหน้าจอนั้นออกมาให้เห็นเลย) — เรียก Open()/Craft()/Close() ของเกมเอง
+					//   ทุกฟังก์ชัน ไม่ได้เขียน logic คราฟใหม่แม้แต่บรรทัดเดียว
+					Crafting.Recipe made = HeadlessCraft(id);
+					if (made != null && menu != null)
+					{
+						menu.SetLastOpenCraft(made.Icon, type, id);
+					}
+				}
+				else
+				{
+					Building.Blueprint bp = OpenBuildingUI(id);
+					if (bp != null && menu != null)
+					{
+						menu.SetLastOpenCraft(bp.Icon, type, id);
+					}
+				}
+			});
 		};
+		// [แก้เอง] เลเวลอัปขณะหน้าเปิดอยู่ → กรองรายการสูตรใหม่ (ของที่เพิ่งถึงเลเวลจะโผล่ทันที)
+		GameSystem<StatisticsSystem>.Instance().LevelChanged += StatisticsSystem_LevelChanged;
 		base.OnCloseSucceed += delegate
 		{
+			GameSystem<StatisticsSystem>.Instance().LevelChanged -= StatisticsSystem_LevelChanged;
+			// [แก้เอง] เก็บหน้าใหม่ทิ้งแล้วคืนวิดเจ็ตเดิม ไม่งั้นเปิดรอบหน้าจะซ้อนกัน
+			CraftScreen.Hide(base.gameObject);
 			HideDetailPanel();
 			_selectedWorkbench = null;
 		};
@@ -378,6 +416,14 @@ public class RecipeSelectorGroup : UIBase, INotificationable
 		Refresh(scrollToSelected);
 	}
 
+	private void StatisticsSystem_LevelChanged(int prev, int cur)
+	{
+		if (base.IsOpened)
+		{
+			ResetCategories(scrollToSelected: false);
+		}
+	}
+
 	private void Refresh(bool scrollToSelected = false)
 	{
 		_scrollToLastSelectedRecipe = scrollToSelected;
@@ -400,11 +446,25 @@ public class RecipeSelectorGroup : UIBase, INotificationable
 		{
 			return false;
 		}
+		// [แก้เอง] ซ่อนสูตร/แบบก่อสร้างที่เลเวลยังไม่ถึง — ผู้เล่นใหม่จะเห็นเฉพาะของที่คราฟได้จริง
+		// (ข้อมูลเกมมี min_level กำกับของแต่ละสูตรอยู่แล้ว · MaxLevel ไม่แตะ = ของไม่หายเมื่อเกิน)
+		if (PlayerBehavior.LocalPlayer != null)
+		{
+			int playerLevel = PlayerBehavior.LocalPlayer.Level;
+			if (item is Crafting.Recipe recipe && recipe.MinLevel > playerLevel)
+			{
+				return false;
+			}
+			if (item is Building.Blueprint blueprint && blueprint.MinLevel > playerLevel)
+			{
+				return false;
+			}
+		}
 		if (_selectedWorkbench == null)
 		{
 			return true;
 		}
-		return item is Crafting.Recipe recipe && recipe.IsValidWorkbench(_selectedWorkbench);
+		return item is Crafting.Recipe recipe2 && recipe2.IsValidWorkbench(_selectedWorkbench);
 	}
 
 	private bool HasValidCategoryItems(Crafting.Category category)
@@ -575,6 +635,62 @@ public class RecipeSelectorGroup : UIBase, INotificationable
 			buildGridGroupBase.Open(blueprint, GameSystem<BuildSystem>.Instance().OccupyArtifactSite);
 		}
 		return blueprint;
+	}
+
+	/// <summary>
+	/// คราฟแบบไม่โชว์หน้าจอ CraftGroupBase เลย — เดินไปโต๊ะทำงานถ้าต้องใช้ (เหมือนเดิมทุกอย่าง)
+	/// แล้วเปิด/เติมของ/คราฟ/ปิด ในจังหวะเดียวกัน ก่อนที่ Unity จะวาดเฟรมถัดไป
+	///
+	/// ถ้าเติมของอัตโนมัติแล้วยังคราฟไม่ได้ (เช่นเครื่องมือหาย ของหมดกลางทาง) จะ**ปล่อยหน้าจอ
+	/// ค้างไว้ให้ผู้เล่นแก้เอง** ไม่ปิดทิ้งดื้อ ๆ — กันเคสของหายไปเงียบ ๆ
+	/// </summary>
+	private Crafting.Recipe HeadlessCraft(string recipeId)
+	{
+		Crafting.Recipe recipe = GameSystem<RecipeSystem>.Instance().GetRecipe(recipeId);
+		if (recipe == null)
+		{
+			return null;
+		}
+		if (!recipe.HasRequiredRecipe())
+		{
+			Crafting.Recipe need = GameSystem<RecipeSystem>.Instance().GetRecipe(recipe.RequiredRecipe);
+			UIManager.SystemMsg(T._("<em>{0}</em> 제작법이 필요합니다.", (need != null) ? need.Name : recipe.RequiredRecipe));
+			return null;
+		}
+		CraftGroupBase craftingGroup = UIManager.FindScript<CraftGroupBase>();
+		if (recipe.HasRequiredWorkbench)
+		{
+			Artifact workbench = GetValidWorkbench(recipe);
+			if (workbench == null)
+			{
+				UIManager.SystemMsg(T._("주변에 제작대가 필요합니다.\n<alert>{0}</alert>", Durango.Logic.Item.Util.LocalizedTagRequiredMsg(recipe.AllowedWorkbench)));
+				return null;
+			}
+			UIBase.CloseAllUI();
+			Durango.Utils.Singleton<PlayerController>.Instance().MoveToPosition(workbench.InteractionPosition, delegate
+			{
+				// เดินถึงแล้ว (callback นี้ก็รันแบบ synchronous ในเฟรมเดียวเหมือนกัน)
+				craftingGroup.Open(recipe, workbench, quickFill: true);
+				TryCraftAndClose(craftingGroup);
+			}, 100f * ((float)Mathf.Max(workbench.Size.x, workbench.Size.y) + 0.5f));
+		}
+		else
+		{
+			craftingGroup.Open(recipe, null, quickFill: true);
+			TryCraftAndClose(craftingGroup);
+		}
+		return recipe;
+	}
+
+	/// <summary>คราฟทันทีถ้าของครบแล้วปิดหน้าจอ — เติมของไม่ครบก็ปล่อยหน้าจอไว้ให้ผู้เล่นจัดการเอง</summary>
+	private static void TryCraftAndClose(CraftGroupBase craftingGroup)
+	{
+		CraftSlotContainer slots = GameSystem<CraftSystem>.Instance().SlotContainer;
+		if (slots.State == CraftSlotContainer.CraftState.ReadyToCraft)
+		{
+			GameSystem<CraftSystem>.Instance().Craft();
+			craftingGroup.Close();
+		}
 	}
 
 	private Artifact GetValidWorkbench(Crafting.Recipe recipe)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using BestHTTP;
@@ -427,6 +427,12 @@ public class PrologueManager : Durango.Utils.Singleton<PrologueManager>
 	{
 		if (_curState == State.None)
 		{
+			// [ย้อนกลับ] เคยลองข้ามฉากรถไฟไปหน้าสร้างตัวละครเลย (เรียก SkipPrologue() ตรงนี้)
+			// แต่พังจริง: HUD/ระบบต่อสู้ (PlayerHudGroupBase, BattleActionButtons, ArtifactManager)
+			// เริ่มทำงานเร็วเกินไป**ก่อน Terrain โหลดเสร็จ** ⇒ NullReferenceException รัวทุกเฟรม
+			// UI หลักหายหมดทั้งเกม (ไม่ใช่แค่ปุ่มข้ามที่พัง) — ฉากรถไฟเป็นตัวถ่วงเวลาโดยอ้อม
+			// ให้ระบบพวกนี้พร้อมก่อนเข้าเกมจริง ข้ามไม่ได้แบบนี้
+			// ⇒ กลับไปเข้า State.CharacterSelect (ฉากรถไฟ) ตามเดิม
 			SetNextState(State.CharacterSelect);
 		}
 	}
@@ -562,7 +568,14 @@ public class PrologueManager : Durango.Utils.Singleton<PrologueManager>
 			.ZoomRatio(1f, 0.3f)
 			.Zoom(0.7f, 0.3f);
 		Durango.Utils.Singleton<CameraController>.Instance().LockZoomControl(isLock: false);
-		SetNextState(State.TrainPlayBegin);
+		// [แก้เอง] ข้ามฉาก cutscene สอนเล่นบนรถไฟ (TrainPlayBegin/PlayMovie) ไปสร้างตัวละครเลย
+		// ต่างจากที่เคยลองพังก่อนหน้า (ดู comment ที่ LoadingCurtainGroup_FadeOutFinished): ครั้งนั้น
+		// skip ทันทีตอน curtain fade out (ก่อน CharacterSelect scene ได้เริ่มด้วยซ้ำ) ⇒ Terrain/HUD/
+		// Combat ยังไม่พร้อมเลย ครั้งนี้ skip ทีหลัง — หลังจากผู้เล่นดู scene รถไฟ, เลือกตัวละครจริง ๆ
+		// (ผ่านการโหลด/คลิก UI ใช้เวลาหลายวินาที) ระบบพื้นฐานมีเวลาโหลดตามธรรมชาติแล้ว ไม่ auto-skip
+		// ตั้งแต่ต้นแบบเดิม — ตัวแปรที่ State.CreatePlayer ต้องใช้ (_selectedGender/_selectedDisplay/
+		// _selectedJob) ถูกตั้งค่าครบก่อนหน้านี้แล้วทั้งหมด ไม่ขาดอะไร
+		SetNextState(State.CreatePlayer);
 	}
 
 	public void AddStatusEffects()
@@ -859,24 +872,22 @@ public class PrologueManager : Durango.Utils.Singleton<PrologueManager>
 		VisibleController.Hide(VisibleType.Base, hide: true);
 		PlayGuideHelper.ClearTarget();
 		UIManager.FindScript<PrologueLeftMenuListGroupBase>().gameObject.SetActive(value: false);
-		PlayerBehavior.LocalPlayer.gameObject.SetActive(value: false);
-		if (ToBeSkipped)
+		// [แก้เอง] 🐛 "กดข้ามบทนำแล้วไม่มีอะไรเกิดขึ้น"
+		//    ถ้ายังไม่ได้เลือกตัวละครในฉากรถไฟ จะยังไม่มีตัวละครในฉาก ⇒ LocalPlayer เป็น null
+		//    บรรทัดนี้เลยโยน NullReference กลางทาง SkipPrologue() แล้วตายเงียบ ๆ
+		//    ผู้เล่นเห็นเป็น "ปุ่มกดไม่ติด" ทั้งที่จริงคือ exception
+		if (PlayerBehavior.LocalPlayer != null)
 		{
-			FullScreenMovie_Finished();
-			return;
+			PlayerBehavior.LocalPlayer.gameObject.SetActive(value: false);
 		}
-		SetNextState(State.PlayMovie);
-		Camera nGUICamera = GetNGUICamera();
-		nGUICamera.clearFlags = CameraClearFlags.Color;
-		nGUICamera.backgroundColor = Color.black;
-		Camera prologueCamera = GetPrologueCamera();
-		prologueCamera.enabled = false;
-		DelayedCall(delegate
-		{
-			string prologueMovieUrl = Platform.Instance.PrologueMovieUrl;
-			FullScreenMovieGroupBase.Play(prologueMovieUrl, once: true, FullScreenMovie_Finished);
-		}, 1f);
 		Durango.Utils.Singleton<PlayerController>.Instance().CutScenePlayMode = false;
+		// [แก้เอง] 🐛 **ผู้เล่นใหม่ค้างจอดำถาวร**
+		//    จบบทนำแล้วเกมสตรีมหนังเปิดเรื่องจาก db.kyllox.pe.kr ซึ่ง **เว็บนั้นตายแล้ว**
+		//    ⇒ callback onFinished ไม่มีวันถูกเรียก ไม่มีทางไปต่อ
+		//    (เส้นทาง ToBeSkipped เดิมข้ามหนังอยู่แล้ว = พิสูจน์แล้วว่าข้ามได้ไม่มีปัญหา)
+		// ⇒ ข้ามหนังเสมอ ไปหน้าสร้างตัวละครตรง ๆ
+		//    อยากได้หนังคืน: เอาไฟล์มาวางเองแล้วชี้ Platform.PrologueMovieUrl ไปที่ไฟล์นั้น
+		FullScreenMovie_Finished();
 	}
 
 	private static Camera GetNGUICamera()
@@ -1061,8 +1072,46 @@ public class PrologueManager : Durango.Utils.Singleton<PrologueManager>
 				SetNextState(State.CreatePlayer);
 				break;
 			}
+			// [แก้เอง] สร้างตัวละครสำเร็จ — จำไว้ว่าเครื่องนี้มีตัวละครแล้ว
+			// (ครั้งหน้าเปิดเกมจะเข้าหน้าเลือกตัวละครแทนหน้าสร้าง)
+			Preferences.SetString("durango_char_created", "1");
 			NotifyRequestCreatePlayerFinished();
 			GameManager.PlayerId = text;
+			// [แก้เอง] อัปเดต PlayerContext ให้เป็นตัวละครที่เพิ่งสร้าง
+			// (ไม่งั้น /sessions ครั้งต่อไปยังส่งตัวละครเดิมไปให้ server)
+			Durango.Offline.PlayerContext local = Durango.Offline.Server._localPlayer;
+			if (local != null)
+			{
+				// [แก้เอง] set ทับเสมอ (เดิมเช็ค "ของเดิมต้องไม่ว่าง" ทำให้ id ค้างของเก่า)
+				local.AppearPlayer.EntityId = text;
+				local.AppearPlayer.Name = _createCharacterInfo.Name;
+				// [แก้เอง] เดิมจำแค่ id กับชื่อ — **หน้าตาที่ปั้นไว้หายทั้งดุ้น**
+				// ตัวละครเลยเข้าเกมมาด้วย display ตั้งต้นของ context เก่า (ทุกคนหน้าตาเหมือนกันหมด)
+				local.AppearPlayer.EntityType = (ushort)(_createCharacterInfo.IsMale ? 1000 : 1001);
+				Messages.PlayerDisplay created = _createCharacterInfo.Display;
+				created.EntityId = text;
+				created.DefaultBody = (_createCharacterInfo.IsMale
+					? "Models/PC/Male/Body/m_body_nothing.FBX"
+					: "Models/PC/Female/Body/f_body_nothing.FBX");
+				created.DefaultInner = (_createCharacterInfo.IsMale
+					? "Models/PC/Male/Inner/m_inner_basic.FBX"
+					: "Models/PC/Female/Inner/f_inner_basic.FBX");
+				created.Body = created.DefaultBody;
+				local.AppearPlayer.Display = created;
+				// id ย่อยพวกนี้ถูกตั้งไว้ตอน Initialize ด้วย id เดิม ต้องตามไปเปลี่ยนด้วย
+				local.AppearPlayer.Title.EntityId = text;
+				local.AppearPlayer.Member.EntityId = text;
+				local.AppearPlayer.Move.EntityId = text;
+				local.AppearPlayer.Survival.EntityId = text;
+				if (local.PlayerInfo != null)
+				{
+					local.PlayerInfo.PlayerEntityId = text;
+					local.PlayerInfo.PlayerName = _createCharacterInfo.Name;
+				}
+				// [แก้เอง] เขียนลงดิสก์ทันที — เปิดเกมรอบหน้าจะได้ส่ง JSON เต็มให้ /sessions
+				// (เดิมแก้แต่ในหน่วยความจำ พอปิดเกมข้อมูลตัวละครก็หาย server เห็นชื่อว่าง)
+				local.Save();
+			}
 			PlayerPrefs.SetString("new_object", string.Empty);
 			LoadingCurtainGroup.IsFirstPlayAfterCreatePlayer = true;
 			SetNextState(State.Loading);

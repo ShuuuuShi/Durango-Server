@@ -11,6 +11,9 @@ namespace Durango.UI;
 
 public class QuestMenuTabs : NestedPrefabLinker<IconTabList>
 {
+	/// <summary>key พิเศษของแท็บ "รายงานบัค" — ไม่ใช่หมวดเควสจริง (ปิดหน้า QuestGroup ต่างหาก)</summary>
+	public const string ReportTabKey = "__report";
+
 	private bool _isDirty = true;
 
 	private readonly List<Category> _categories = new List<Category>();
@@ -49,6 +52,8 @@ public class QuestMenuTabs : NestedPrefabLinker<IconTabList>
 			_categories.Add(visibleCategory);
 			base.Object.Add(null, visibleCategory.Name);
 		}
+		// แท็บท้ายสุด = รายงานบัค (เป็นปุ่ม ไม่ใช่หมวด — QuestGroup จัดการเอง)
+		base.Object.Add(null, new SyncString("รายงานบัค"));
 		base.Object.EndLoad();
 		UpdateNotification();
 	}
@@ -56,6 +61,12 @@ public class QuestMenuTabs : NestedPrefabLinker<IconTabList>
 	public void SelectTab(string category)
 	{
 		RefreshTabList();
+		if (category == ReportTabKey)
+		{
+			// แท็บรายงานไม่ใช่หมวด — อย่า highlight ทิ้งไว้
+			base.Object.ClearSelection();
+			return;
+		}
 		int index = -1;
 		for (int i = 0; i < _categories.Count; i++)
 		{
@@ -94,7 +105,7 @@ public class QuestMenuTabs : NestedPrefabLinker<IconTabList>
 	{
 		if (!Selectable.Current.Selected && this.TabClicked != null)
 		{
-			string obj = ((index >= 0 && index < _categories.Count) ? _categories[index].Key : null);
+			string obj = (index >= 0 && index < _categories.Count) ? _categories[index].Key : ((index == _categories.Count) ? ReportTabKey : null);
 			this.TabClicked(obj);
 		}
 	}

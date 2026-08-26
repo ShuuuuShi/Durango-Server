@@ -75,7 +75,7 @@ public partial class ServerPlayer
             var dumpedIds = new string[dumped.Count];
             for (int i = 0; i < dumped.Count; i++) dumpedIds[i] = dumped[i].Id;
             Console.WriteLine("[item] {0} ทิ้งของ {1} ชิ้นจากกล่อง {2}", Name, dumped.Count, boxId);
-            _world.Broadcast(new InventoryUpdated { EntityId = boxId, RemovedItemIds = dumpedIds });
+            _world.BroadcastToViewers(boxId, new InventoryUpdated { EntityId = boxId, RemovedItemIds = dumpedIds });
             MarkDirty();
             Send(default(OK), header.Seq);
             return;
@@ -164,6 +164,7 @@ public partial class ServerPlayer
 
         ApplyFoodEffect(item, out float stamina, out float fatigueRelief, out float life, out string motion, out int digestSeconds);
         GainProficiency(Shared.Skill.Category.Survival);   // ดูแลตัวเองเป็น = ชำนาญการเอาชีวิตรอด
+        QuestProgress(QuestData.Goal.Eat);
         _canEatAt = now + digestSeconds;
         MarkDirty();
 

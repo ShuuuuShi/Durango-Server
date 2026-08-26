@@ -117,6 +117,7 @@ public partial class ServerPlayer
         SendSurvival();                       // เฟส C
         SendDefoggedChunks();
         SendQuestCategories();
+        SendQuestsOnSpawn();
         Send(new WalletUpdated
         {
             EntityId = EntityId,
@@ -189,16 +190,39 @@ public partial class ServerPlayer
 
     private void SendQuestCategories()
     {
+        // 💡 `Name` ของหมวดมาจาก **server** ไม่ใช่ตารางในตัวเกม ⇒ ใส่ภาษาไทยได้เลยตั้งแต่วันนี้
+        //    (ต่างจากชื่อ/คำอธิบายของเควสรายอัน ที่ client หยิบจากตาราง `quests_for_client` เป็นเกาหลี
+        //     จนกว่าจะเปิดแค็ตตาล็อกไทยได้ — ดู docs/client/TUNING.md §2.1)
+        //
+        // Epic = หมวดเนื้อเรื่อง (sunset) — ตรงกับของแท้ (Offline/Player.cs ส่ง Epic = "sunset")
+        //         คลิกแล้ว client เปิดหน้า Story (chapters ของข้อมูลเกม — มี 8 บทของสาย K อยู่แล้ว)
+        // Categories = แท็บย่อย — ของเราเพิ่ม "เควสประจำวัน" (Features.QuestChecklist) เปลี่ยนจาก
+        // "รายการตรวจเซิร์ฟ" ตามที่ผู้เล่นใช้เป็นช่องทางเทสเซิร์ฟช่วยเหลือ
+        // **ห้ามใส่ sunset ลง Categories ด้วย** — client กรองหมวดที่ == EpicCategory ออกจากแท็บ
+        // แล้วตอน Epic เปิดหน้า Story มันจะสร้าง tab "เนื้อเรื่อง" ซ้ำกันในหน้าเควส
+        QuestCategory[] tabs = ServerConfig.Current.Features.QuestChecklist
+            ? new[]
+            {
+                new QuestCategory
+                {
+                    Category = QuestData.ChecklistCategory,
+                    Name = "เควสประจำวัน",
+                    Faction = null,
+                    Season = null,
+                    UnreceivedCount = CountUnclaimedQuests(QuestData.ChecklistCategory)
+                }
+            }
+            : null;
         Send(new QuestCategories
         {
-            Categories = null,
+            Categories = tabs,
             Epic = new QuestCategory
             {
-                Category = "sunset",
-                Name = "",
+                Category = QuestData.MainCategory,
+                Name = "เนื้อเรื่อง",
                 Faction = null,
                 Season = null,
-                UnreceivedCount = 0
+                UnreceivedCount = CountUnclaimedQuests(QuestData.MainCategory)
             }
         });
     }
@@ -212,7 +236,7 @@ public partial class ServerPlayer
         {
             EntityId = EntityId,
             EntityType = EntityType,
-            IsAlive = true,
+            IsAlive = !Dead,
             Name = Name,
             Freq = 0,
             Level = Level,

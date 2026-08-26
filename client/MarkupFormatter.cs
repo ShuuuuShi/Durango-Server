@@ -11,13 +11,15 @@ public class MarkupFormatter : IFormatter
 	{
 		{
 			"lv",
+			// [แก้เอง] เดิมไม่มี "th" เลย ทั้งที่เกมรันเป็นภาษาไทย — เพิ่มเข้าไปให้ตรง locale จริง
 			new Dictionary<string, string>
 			{
 				{ "en", "Lv.\u00a0{0}" },
 				{ "es", "Nv.\u00a0{0}" },
 				{ "pt", "Nvl.\u00a0{0}" },
 				{ "ru", "Ур.\u00a0{0}" },
-				{ "de", "St.\u00a0{0}" }
+				{ "de", "St.\u00a0{0}" },
+				{ "th", "Lv.\u00a0{0}" }
 			}
 		},
 		{

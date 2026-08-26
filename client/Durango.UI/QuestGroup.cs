@@ -176,6 +176,14 @@ public class QuestGroup : UIBase, INotificationable
 
 	private void OnClickQuestTab(string category)
 	{
+		if (category == QuestMenuTabs.ReportTabKey)
+		{
+			// แท็บ "รายงานบัค" — เด้งหน้าต่างพิมพ์ข้อความ แล้ว server เก็บเป็นไฟล์ (POST /reports)
+			SendReportPopup sendReportPopup = UIManager.Popup.Tooltip<SendReportPopup>();
+			sendReportPopup.SetForSuggestion();
+			sendReportPopup.Show();
+			return;
+		}
 		SelectTab(category);
 	}
 

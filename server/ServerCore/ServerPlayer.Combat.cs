@@ -47,10 +47,13 @@ public partial class ServerPlayer
     private void HandleGetActions(GetActions msg, PacketHeader header)
     {
         string[] ids = ActionData.ForWeaponTag(CurrentWeaponTag());
+        // [แก้เอง] 25 ส.ค. 2026 — ส่งเฉพาะท่าที่ผู้เล่นปลดล็อกแล้วจริง (ท่าพื้นฐาน + ท่าจากสกิลที่เรียน)
+        // เดิมส่งครบทุกท่าของอาวุธ ⇒ หน้าต่างท่าแสดงท่าที่ยังไม่ได้เรียนสกิลด้วย
+        HashSet<string> unlocked = UnlockedActions();
         var list = new List<ActionStatus>(ids.Length);
         for (int i = 0; i < ids.Length; i++)
         {
-            if (ActionData.TryGet(ids[i], out ActionData.Action a))
+            if (ActionData.TryGet(ids[i], out ActionData.Action a) && unlocked.Contains(a.Id))
             {
                 list.Add(new ActionStatus
                 {
@@ -92,6 +95,17 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        // [แก้เอง] 25 ส.ค. 2026 — เจ้าของย้ำ 2 รอบ: "ท่าต่อสู้ก็ต้องยึดจากสกิลที่เรียน"
+        // เดิมตรวจแค่ tag อาวุธ ⇒ modded client ใช้ท่าพิเศษ (smash/stab/flurry/aimedshot ฯลฯ)
+        // ได้ทุกอย่างโดยไม่เรียนสกิลเลย ตอนนี้เช็ค `UnlockedActions()` เหมือน `UnlockedRecipes`
+        // ท่าพื้นฐาน (default/dodge — auto-grant จาก `EnsureAutomaticSkills`) ผ่านเสมอ
+        if (!IsActionUnlocked(action.Id))
+        {
+            Console.WriteLine("[combat] ปฏิเสธ {0}: ยังไม่ได้เรียนสกิลที่ปลดล็อกท่า {1}", Name, action.Id);
+            Send(new Info { Text = "ต้องเรียนสกิลก่อนจึงจะใช้ท่านี้ได้" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
 
         double now = Times.UnixTimeNow();
         if (_actionReadyAt.TryGetValue(action.Id, out double readyAt) && now < readyAt)
@@ -128,6 +142,13 @@ public partial class ServerPlayer
                 Send(default(Abort), header.Seq);
                 return;
             }
+        }
+
+        if (_deferred.Count >= MaxPendingActions)
+        {
+            Console.WriteLine("[combat] ปฏิเสธ {0}: คิวการกระทำเต็ม ({1})", Name, _deferred.Count);
+            Send(default(Abort), header.Seq);
+            return;
         }
 
         float staminaCost = Math.Max(action.Stamina, StaminaCostAttackMin);
@@ -183,7 +204,7 @@ public partial class ServerPlayer
             Effects = crit ? DamageEffects.Critical : DamageEffects.None
         };
 
-        _world.Broadcast(new Damaged
+        _world.BroadcastToViewers(victimId, new Damaged
         {
             AttackerId = EntityId,
             VictimId = victimId,
@@ -277,11 +298,22 @@ public partial class ServerPlayer
             return;
         }
         Dead = true;
+        // [แก้เอง] 26 ส.ค. 2026 — ถ้าตายตอนกำลังนั่งพัก ต้องเลิกพักให้เรียบร้อยก่อน
+        // ไม่งั้น _resting ค้าง true + บัพ away_from_keyboard ค้าง + หลังฟื้น client ยังแตะ
+        // กองไฟเดิมซ้ำ → เริ่มพักเองวน ๆ (server log เห็น "[rest] ... ล้า 0/1/3" หลังฟื้น)
+        StopResting();
+        // [แก้เอง] 26 ส.ค. 2026 — ตายแล้วหลอดเลือดต้องค้างที่ 0 จริง ไม่ให้ velocity regen
+        // ดันกลับขึ้นมาเป็น ~0.5 (ทำให้ IsDead == CurrentLife <= 0 เป็น false ทั้งที่ Dead เป็น true)
+        EnsureSurvival();
+        double now = Times.UnixTimeNow();
+        _life.Settle(now);
+        _life.Value = 0f;
+        _life.Velocity = 0f;
         RememberDeathPoint();
         WearEquippedOnDeath();
         EndBattle();               // ตายแล้วต้องออกจากโหมดต่อสู้ ไม่งั้น client ค้างในโหมดนั้น
         Console.WriteLine("[combat] ☠ {0} ตายแล้ว", Name);
-        _world.Broadcast(new EntityDied { EntityId = EntityId, At = Times.UnixTimeNow() });
+        _world.BroadcastToViewers(EntityId, new EntityDied { EntityId = EntityId, At = Times.UnixTimeNow() });
     }
 
     private void HandleRevive(Revive msg, PacketHeader header)
@@ -293,6 +325,7 @@ public partial class ServerPlayer
         }
         ReviveAtSpawn();
         Send(default(Revived), header.Seq);     // ปิด UI "รอฟื้น" ของคนที่กดปุ่มเอง
+        QuestProgress(QuestData.Goal.Revive);
     }
 
     /// <summary>
@@ -303,12 +336,19 @@ public partial class ServerPlayer
     public void ReviveAtSpawn()
     {
         Dead = false;
-        RestoreSurvival(clearFatigue: false);          // เลือด/สตามินาเต็ม ความล้ายังอยู่
+        // [แก้เอง] 25 ส.ค. 2026 — เจ้าของสั่ง "เวลาเกิดใหม่ต้องรีเซ็ท [ความล้า]" — เดิมตั้งใจให้ความล้า
+        // ค้างไว้หลังฟื้น (คอมเมนต์เดิม "เลือด/สตามินาเต็ม ความล้ายังอยู่") แต่ทำให้ถ้าตายเพราะความล้า
+        // เต็มหลอด ฟื้นมาแล้วก็ยังล้าเต็มอยู่ดี ตายซ้ำได้ทันทีโดยไม่ได้ทำอะไรเลย — เปลี่ยนเป็นรีเซ็ทจริง
+        RestoreSurvival(clearFatigue: true);
         WorldPosition spawn = _world.GetEntryPosition();
         SendTeleport(spawn, Shared.Teleport.TeleportType.Revive);
         RememberPosition(spawn, 0f);
+        // [แก้เอง] 26 ส.ค. 2026 — หลังวาร์ปฟื้น client บางกรณีไม่ยอมอัปหลอดเลือดของตัวเอง
+        // (SurvivalUpdated ตัวที่ส่งก่อน Teleported หายไประหว่าง client สร้าง player ใหม่)
+        // ⇒ ส่งซ้ำให้ตัวเองหลังวาร์ป เพื่อให้ UI เลือด/สตามินา/ความล้าตรงกับเซิร์ฟ ไม่ค้าง 0
+        PushGauges("life", "stamina", "fatigue");
         Console.WriteLine("[combat] {0} ฟื้นที่จุดเกิด", Name);
-        _world.Broadcast(new EntityRevived { EntityId = EntityId, At = Times.UnixTimeNow() });
+        _world.BroadcastToViewers(EntityId, new EntityRevived { EntityId = EntityId, At = Times.UnixTimeNow() });
         SendSurvivalPublic();
     }
 
@@ -320,7 +360,7 @@ public partial class ServerPlayer
             EntityId = EntityId,
             Life = BuildLifeGauge()
         };
-        _world.Broadcast(survival);
+        _world.BroadcastToViewers(EntityId, survival);
     }
 
     // ───────────────────────── helper ─────────────────────────

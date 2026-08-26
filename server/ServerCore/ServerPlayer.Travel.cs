@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Durango.Network;
 using Messages;
 
 namespace DurangoServer.Core;
@@ -90,5 +91,52 @@ public partial class ServerPlayer
         Send(new Info { Text = $"กำลังเดินทางไป {dest.Name}..." });
         Send(new Emigrated { Type = Shared.Teleport.TeleportType.Unknown });
         return $"ส่ง {Name} ไป {dest.Name} ({dest.Address}) แล้ว";
+    }
+
+    // ───────────────────────── โหมดสอน → เกาะจริง ─────────────────────────
+    //
+    // ปัญหา: server เดิมไม่มี handler รับ DepartTutorial เลย — ถ้าผู้เล่นต่อแพ tutorial_boat
+    // แล้วกด "ออกเรือ" client จะรอ DepartTutorialReady ค้างไปตลอด (ดู client/TutorialIslandSystem.cs:189)
+    //
+    // flow ของเกมจริง:
+    //   client → DepartTutorial          (สั่งออกเรือ)
+    //   server → DepartTutorialReady     (บอกปลายทาง — เราส่งชื่อเกาะเดิมเพราะเปิดเซิร์ฟเดียว)
+    //   client → DepartTutorialFor      (ยืนยันปลายทาง หลัง fade จอดำ)
+    //   server → Emigrated              (สั่งปิด connection กลับหน้า title)
+    //   ผู้เล่นกด Start → เข้าเซิร์ฟเราใหม่ (ตัวละครเดิม เพราะเซฟร่วมกัน)
+    //
+    // ⚠️ ค่า RegionRole ต้องเป็น Rural/Tutorial ถึงจะมีปุ่ม "ออกเรือ" โผล่ (Sandbox ปิด PlayGuide)
+    //    ถ้าเปิด Sandbox ผู้เล่นจะต่อแพได้แต่กดออกเรือไม่ได้ — ใช้คำสั่ง cheat goto แทน
+
+    /// <summary>
+    /// ผู้เล่นกด "ออกเรือ" ที่แพ tutorial_boat — ตอบปลายทางให้ client ก่อน
+    ///
+    /// เราเปิดเซิร์ฟเดียว (ไม่มี --island) ปลายทางจึงเป็นเกาะเดิม — ส่ง TargetRegionId อะไรก็ได้
+    /// ที่ไม่ใช่ null ไม่งั้น client จะ null-check แล้วไม่ส่ง DepartTutorialFor ต่อ
+    /// (ดู client/TutorialIslandSystem.cs:205 — ส่ง msg.TargetRegionId ต่อให้ server)
+    /// </summary>
+    private void HandleDepartTutorial(DepartTutorial msg, PacketHeader header)
+    {
+        Console.WriteLine("[tutorial] {0} สั่งออกเรือ (entity {1})", Name, msg.EntityId);
+        Send(new DepartTutorialReady
+        {
+            TargetRegionId = "mainland",
+            EntryPointOffset = -1
+        }, header.Seq);
+    }
+
+    /// <summary>
+    /// ผู้เล่นยืนยันปลายทางแล้ว (หลัง fade จอดำ) — ส่ง Emigrated ให้ client ปิด connection
+    /// กลับหน้า title แล้วต่อเข้าเซิร์ฟเราใหม่ (ตัวละครเดิมเพราะเซฟร่วมกัน)
+    ///
+    /// Type = Unknown ⇒ client ตั้ง Emigrated = Explore (ถ้าไม่ใช่ Safehouse)
+    /// แล้วเรียก Connections.Frontend.Close() (ดู client/GameManager.cs:345-349)
+    /// </summary>
+    private void HandleDepartTutorialFor(DepartTutorialFor msg, PacketHeader header)
+    {
+        Console.WriteLine("[tutorial] {0} ออกเรือไป {1} — ส่ง Emigrated ให้กลับหน้า title", Name, msg.TargetRegionId);
+        Save();
+        Send(new Info { Text = "ออกเรือสำเร็จ — กลับหน้า title เพื่อเข้าเกาะจริง" }, header.Seq);
+        Send(new Emigrated { Type = Shared.Teleport.TeleportType.Unknown }, header.Seq);
     }
 }

@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<title>Durango Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #0f1216;
+    --panel: #161b22;
+    --panel-2: #1c222b;
+    --border: #2a313c;
+    --text: #e6e9ef;
+    --text-dim: #93a0b3;
+    --accent: #4f9dff;
+    --good: #3ecf8e;
+    --warn: #f5b942;
+    --bad: #ef5a6f;
+    --mono: "Consolas", "Cascadia Mono", "SFMono-Regular", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", "Tahoma", "Noto Sans Thai", sans-serif;
+    font-size: 14px;
+  }
+  body { padding: 16px 20px 60px; }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  h2 { font-size: 15px; margin: 0 0 10px; color: var(--text); display:flex; align-items:center; gap:8px; }
+  a { color: var(--accent); }
+
+  header.top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+  }
+  .sub { color: var(--text-dim); font-size: 12.5px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .dot.ok { background: var(--good); box-shadow: 0 0 6px var(--good); }
+  .dot.bad { background: var(--bad); box-shadow: 0 0 6px var(--bad); }
+  #connStatus { font-size: 12.5px; color: var(--text-dim); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .stat {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .stat .label { color: var(--text-dim); font-size: 12px; margin-bottom: 6px; }
+  .stat .value { font-family: var(--mono); font-size: 22px; font-weight: 600; }
+  .stat .value.small { font-size: 15px; }
+  .stat .value.good { color: var(--good); }
+  .stat .value.warn { color: var(--warn); }
+  .stat .value.bad { color: var(--bad); }
+
+  section {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 18px;
+  }
+  .badge {
+    font-size: 11px; padding: 1px 7px; border-radius: 999px; font-weight: 600;
+    background: var(--panel-2); color: var(--text-dim); border: 1px solid var(--border);
+  }
+  .badge.on { color: var(--good); border-color: var(--good); }
+  .badge.off { color: var(--bad); border-color: var(--bad); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { color: var(--text-dim); font-weight: 600; font-size: 12px; }
+  tbody tr:hover { background: var(--panel-2); }
+  td.num { font-family: var(--mono); }
+  .tablewrap { overflow-x: auto; }
+  .empty-row td { color: var(--text-dim); text-align: center; padding: 16px; }
+
+  .hpbar { width: 90px; height: 8px; background: var(--panel-2); border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+  .hpbar > i { display: block; height: 100%; background: var(--good); }
+  .hpbar.low > i { background: var(--warn); }
+  .hpbar.crit > i { background: var(--bad); }
+
+  button, input[type=text], input[type=number], select, textarea {
+    font-family: inherit; font-size: 12.5px; color: var(--text);
+    background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 5px 8px;
+  }
+  button {
+    cursor: pointer; color: var(--text); background: #232b36; padding: 5px 12px;
+  }
+  button:hover { background: #2b3542; }
+  button:active { transform: translateY(1px); }
+  button.primary { background: var(--accent); color: #06131f; border-color: var(--accent); font-weight: 600; }
+  button.primary:hover { filter: brightness(1.08); }
+  button.danger { background: transparent; color: var(--bad); border-color: var(--bad); }
+  button.danger:hover { background: rgba(239,90,111,.12); }
+  button.small { padding: 3px 8px; font-size: 12px; }
+  input[type=number] { width: 64px; }
+  .row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .row.top-gap { margin-top: 10px; }
+
+  #logBox {
+    background: #0a0d11; border: 1px solid var(--border); border-radius: 8px;
+    height: 320px; overflow-y: auto; padding: 8px 10px;
+    font-family: var(--mono); font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-break: break-all;
+  }
+  #logBox div.line { border-bottom: 1px solid rgba(255,255,255,.03); padding: 1px 0; }
+  #logBox div.line:hover { background: rgba(255,255,255,.03); }
+
+  #cfgTextarea, #cfgBox textarea {
+    width: 100%; min-height: 340px; font-family: var(--mono); font-size: 12.5px;
+    resize: vertical; white-space: pre;
+  }
+  .msg { font-size: 12.5px; margin-top: 8px; padding: 6px 10px; border-radius: 6px; display: none; }
+  .msg.show { display: block; }
+  .msg.ok { background: rgba(62,207,142,.12); color: var(--good); border: 1px solid rgba(62,207,142,.3); }
+  .msg.err { background: rgba(239,90,111,.12); color: var(--bad); border: 1px solid rgba(239,90,111,.3); }
+
+  .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .grow { flex: 1; }
+  .foot-note { color: var(--text-dim); font-size: 11.5px; margin-top: 6px; }
+  code { font-family: var(--mono); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div>
+    <h1>🛠 Durango Admin Panel</h1>
+    <div class="sub" id="serverTitle">กำลังเชื่อมต่อเซิร์ฟ...</div>
+  </div>
+  <div id="connStatus"><span class="dot bad" id="connDot"></span><span id="connText">ยังไม่เชื่อมต่อ</span></div>
+</header>
+
+<div class="grid" id="statGrid">
+  <div class="stat"><div class="label">TPS</div><div class="value" id="stTps">–</div></div>
+  <div class="stat"><div class="label">ผู้เล่นออนไลน์</div><div class="value" id="stPlayers">–</div></div>
+  <div class="stat"><div class="label">RAM</div><div class="value small" id="stRam">–</div></div>
+  <div class="stat"><div class="label">Uptime</div><div class="value small" id="stUptime">–</div></div>
+  <div class="stat"><div class="label">สัตว์ (มีชีวิต / ซาก)</div><div class="value small" id="stAnimals">–</div></div>
+  <div class="stat"><div class="label">คำสั่งทดสอบ (cheat)</div><div class="value small" id="stCheat">–</div></div>
+</div>
+
+<section>
+  <h2>👤 ผู้เล่นออนไลน์ <span class="badge" id="playerCountBadge">0</span></h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>ชื่อ</th><th>เลเวล</th><th>ตำแหน่ง (tile)</th><th>เลือด</th><th>สถานะ</th><th>คำสั่ง</th>
+      </tr></thead>
+      <tbody id="playersBody"><tr class="empty-row"><td colspan="6">กำลังโหลด...</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">📍 จุดสนใจ (POI) <span class="badge" id="poiCountBadge">0</span></h2>
+    <div class="row">
+      <label class="row"><input type="checkbox" id="poiOnlyProblems" /> โชว์เฉพาะที่มีปัญหา</label>
+      <button class="small" onclick="loadPOI()">รีเฟรช</button>
+    </div>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>id</th><th>blueprint</th><th>tile</th><th>ห่างจุดเกิด</th><th>สถานะ</th><th>คำสั่ง</th>
+      </tr></thead>
+      <tbody id="poiBody"><tr class="empty-row"><td colspan="6">กำลังโหลด...</td></tr></tbody>
+    </table>
+  </div>
+  <div class="row top-gap">
+    <b style="color:var(--text-dim); font-size:12.5px;">วางใหม่:</b>
+    <select id="poiAddBlueprint"></select>
+    <label>x <input type="number" id="poiAddX" value="0" /></label>
+    <label>y <input type="number" id="poiAddY" value="0" /></label>
+    <button class="primary small" onclick="addPOI()">วาง POI</button>
+  </div>
+  <div class="msg" id="poiMsg"></div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">⚙️ config.json (แก้สด — hot-reload มีผลทันที)</h2>
+    <div class="row">
+      <button class="small" onclick="loadConfig()">โหลดค่าปัจจุบัน</button>
+      <button class="primary small" onclick="saveConfig()">บันทึก + ใช้ทันที</button>
+    </div>
+  </div>
+  <div class="sub" id="cfgPath" style="margin-bottom:8px;"></div>
+  <textarea id="cfgTextarea" spellcheck="false" placeholder="กำลังโหลด..."></textarea>
+  <div class="msg" id="cfgMsg"></div>
+  <div class="foot-note">แก้ค่าตัวเลข (เรทเกิด/เลือด/ดาเมจ/exp) แล้วกดบันทึก — มีผลทันทีไม่ต้อง restart เซิร์ฟ (ตารางสัตว์มีผลตอนเปิดเซิร์ฟใหม่เท่านั้น)</div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">📢 บรอดแคสต์</h2>
+    <div class="row">
+      <button class="primary small" onclick="sendBroadcast()">ส่งให้ทุกคน</button>
+    </div>
+  </div>
+  <input type="text" id="broadcastText" placeholder="พิมพ์ข้อความ เช่น เซิร์ฟจะรีสตาร์ทใน 5 นาที" style="width:100%; box-sizing:border-box;" onkeydown="if(event.key==='Enter') sendBroadcast()" />
+  <div class="msg" id="broadcastMsg"></div>
+  <div class="foot-note">ข้อความจะโผล่เป็น popup ในเกมของทุกคนที่ออนไลน์อยู่ตอนนี้ทันที</div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">📜 Log สด</h2>
+    <div class="row">
+      <label class="row"><input type="checkbox" id="logAutoScroll" checked /> เลื่อนตามอัตโนมัติ</label>
+      <button class="small" onclick="clearLogView()">ล้างจอ</button>
+    </div>
+  </div>
+  <div id="logBox"></div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">🧩 Mod Loader <span class="badge" id="modsCountBadge">0</span></h2>
+    <button class="small" onclick="loadMods()">รีเฟรช</button>
+  </div>
+  <div class="sub" id="modsDirLine" style="margin-bottom:8px;"></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>สถานะ</th><th>ชื่อ</th><th>เวอร์ชัน</th><th>ไฟล์</th><th>คำสั่งที่เพิ่ม</th><th>hook</th><th>error</th>
+      </tr></thead>
+      <tbody id="modsBody"><tr class="empty-row"><td colspan="7">กำลังโหลด...</td></tr></tbody>
+    </table>
+  </div>
+  <div class="foot-note">โหลดตอนเซิร์ฟบูตครั้งเดียวเท่านั้น (ไม่ hot-reload) — เพิ่ม/แก้ mod แล้วต้อง restart เซิร์ฟถึงจะเห็นผลตรงนี้ ดูวิธีเขียน mod ที่ docs/server/Modding.md</div>
+</section>
+
+<section>
+  <h2>⌨️ สั่งคำสั่งทดสอบ (cheat) แบบอิสระ</h2>
+  <div class="foot-note" style="margin-bottom:8px;">
+    คำสั่งจะถูกสั่ง "ในนามของ" ผู้เล่นที่เลือก (ต้องออนไลน์อยู่) — เหมือนผู้เล่นคนนั้นพิมพ์ในแชทเอง
+    ผลลัพธ์จะโชว์ในหน้าจอเกมของผู้เล่นคนนั้น ไม่ใช่ที่นี่ เช่น <code>heal</code>, <code>poi list</code>, <code>spawn</code>
+  </div>
+  <div class="row">
+    <select id="cheatPlayer" style="min-width:180px;"></select>
+    <input type="text" id="cheatCmd" placeholder="เช่น heal" style="flex:1; min-width:200px;" />
+    <button class="primary small" onclick="sendCheat()">ส่งคำสั่ง</button>
+  </div>
+  <div class="msg" id="cheatMsg"></div>
+</section>
+
+<script>
+"use strict";
+
+// ── token กัน /admin/* ────────────────────────────────────────────────
+// [แก้เอง] 24 ส.ค. 2026 — เซิร์ฟเพิ่ม --admin-token แล้ว (ดู Gateway.Admin.cs) เข้าครั้งแรกด้วย
+// /admin?token=xxx แล้วจำไว้ใน localStorage เอง ครั้งต่อไปเข้าแค่ /admin เฉย ๆ ก็ยังใช้ได้
+// (ถ้าเซิร์ฟไม่ได้ตั้ง --admin-token ไว้ ค่านี้จะว่าง — ทุก endpoint ก็ยังไม่ auth เหมือนเดิม)
+const ADMIN_TOKEN = (function () {
+  const fromUrl = new URLSearchParams(location.search).get("token");
+  if (fromUrl) {
+    try { localStorage.setItem("durango_admin_token", fromUrl); } catch (e) { /* ไม่มี localStorage ก็ไม่เป็นไร */ }
+    return fromUrl;
+  }
+  try { return localStorage.getItem("durango_admin_token") || ""; } catch (e) { return ""; }
+})();
+
+// ── ตัวช่วยเรียก HTTP ─────────────────────────────────────────────────
+// WebServer.cs (ฝั่งเซิร์ฟ) parse body แบบ x-www-form-urlencoded เท่านั้น — POST ทุกอันจึงส่งแบบนี้
+async function postForm(url, params) {
+  const body = new URLSearchParams(params || {});
+  if (ADMIN_TOKEN) body.set("token", ADMIN_TOKEN);
+  const res = await fetch(url, { method: "POST", body });
+  let data = null;
+  try { data = await res.json(); } catch (e) { /* ไม่ใช่ JSON ก็ไม่เป็นไร */ }
+  if (!res.ok || (data && data.ok === false)) {
+    throw new Error((data && data.error) || ("HTTP " + res.status));
+  }
+  return data;
+}
+async function getJSON(url) {
+  if (ADMIN_TOKEN) {
+    const sep = url.includes("?") ? "&" : "?";
+    url = url + sep + "token=" + encodeURIComponent(ADMIN_TOKEN);
+  }
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  return res.json();
+}
+function showMsg(el, text, ok) {
+  el.textContent = text;
+  el.className = "msg show " + (ok ? "ok" : "err");
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove("show"), 5000);
+}
+function fmtSeconds(s) {
+  s = Math.floor(s);
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  if (h > 0) return `${h} ชม. ${m} นาที`;
+  if (m > 0) return `${m} นาที ${sec} วิ`;
+  return `${sec} วิ`;
+}
+function setConn(ok) {
+  document.getElementById("connDot").className = "dot " + (ok ? "ok" : "bad");
+  document.getElementById("connText").textContent = ok ? "เชื่อมต่ออยู่" : "ขาดการเชื่อมต่อ";
+}
+
+// ── สถานะภาพรวม ──────────────────────────────────────────────────────
+async function loadStatus() {
+  try {
+    const s = await getJSON("/admin/status");
+    setConn(true);
+    document.getElementById("serverTitle").textContent =
+      `${s.server_name} · เกมพอร์ต ${s.game_port} · gateway ${s.gateway_prefix}`;
+    document.getElementById("stTps").textContent = s.tps.toFixed(0);
+    document.getElementById("stTps").className = "value " + (s.tps < 30 ? "bad" : s.tps < 80 ? "warn" : "good");
+    document.getElementById("stPlayers").textContent = s.online_players;
+    document.getElementById("stRam").textContent = s.ram_mb + " MB";
+    document.getElementById("stUptime").textContent = fmtSeconds(s.uptime_sec);
+    document.getElementById("stAnimals").textContent = `${s.alive_animals} / ${s.corpse_animals}`;
+    const cheatEl = document.getElementById("stCheat");
+    cheatEl.textContent = s.cheats_enabled ? `เปิดอยู่ (admin ${s.admin_count})` : "ปิดอยู่";
+    cheatEl.className = "value small " + (s.cheats_enabled ? "good" : "");
+  } catch (e) {
+    setConn(false);
+  }
+}
+
+// ── ผู้เล่นออนไลน์ ────────────────────────────────────────────────────
+async function loadPlayers() {
+  let players = [];
+  try {
+    players = await getJSON("/admin/players");
+  } catch (e) { return; }
+  document.getElementById("playerCountBadge").textContent = players.length;
+  const body = document.getElementById("playersBody");
+  if (players.length === 0) {
+    body.innerHTML = '<tr class="empty-row"><td colspan="6">ไม่มีใครออนไลน์</td></tr>';
+  } else {
+    body.innerHTML = players.map(p => {
+      const pct = p.hp_max > 0 ? Math.max(0, Math.min(100, 100 * p.hp / p.hp_max)) : 0;
+      const barClass = pct < 25 ? "crit" : pct < 50 ? "low" : "";
+      const status = p.dead
+        ? '<span style="color:var(--bad)">☠ ตาย</span>'
+        : '<span style="color:var(--good)">● ออนไลน์</span>';
+      const eid = encodeURIComponent(p.entity_id);
+      return `<tr>
+        <td>${escapeHtml(p.name || "(ไม่มีชื่อ)")}</td>
+        <td class="num">${p.level}</td>
+        <td class="num">${p.tile_x}, ${p.tile_y}</td>
+        <td><div class="hpbar ${barClass}"><i style="width:${pct}%"></i></div>
+            <span class="num" style="font-size:11px;color:var(--text-dim)">${p.hp}/${p.hp_max}</span></td>
+        <td>${status}</td>
+        <td class="row">
+          <button class="small" onclick="teleportPlayer('${eid}')">วาร์ป</button>
+          <button class="small danger" onclick="kickPlayer('${eid}', '${escapeHtml(p.name)}')">เตะ</button>
+        </td>
+      </tr>`;
+    }).join("");
+  }
+  // อัปเดต dropdown ของช่องสั่ง cheat
+  const sel = document.getElementById("cheatPlayer");
+  const prev = sel.value;
+  sel.innerHTML = players.length
+    ? players.map(p => `<option value="${escapeHtml(p.entity_id)}">${escapeHtml(p.name || p.entity_id)}</option>`).join("")
+    : '<option value="">(ไม่มีผู้เล่นออนไลน์)</option>';
+  if (players.some(p => p.entity_id === prev)) sel.value = prev;
+}
+function escapeHtml(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+async function sendBroadcast() {
+  const el = document.getElementById("broadcastText");
+  const text = el.value.trim();
+  if (!text) return;
+  try {
+    const r = await postForm("/admin/broadcast", { text });
+    showMsg(document.getElementById("broadcastMsg"), `ส่งแล้วถึง ${r.sent_to} คน`, true);
+    el.value = "";
+  } catch (e) {
+    showMsg(document.getElementById("broadcastMsg"), "ส่งไม่สำเร็จ: " + e.message, false);
+  }
+}
+async function kickPlayer(entityId, name) {
+  if (!confirm(`เตะ "${name}" ออกจากเกมไหม?`)) return;
+  try {
+    await postForm("/admin/players/kick", { entity_id: entityId });
+    loadPlayers();
+  } catch (e) { alert("เตะไม่สำเร็จ: " + e.message); }
+}
+async function teleportPlayer(entityId) {
+  const x = prompt("วาร์ปไป tile X เท่าไหร่?");
+  if (x === null) return;
+  const y = prompt("วาร์ปไป tile Y เท่าไหร่?");
+  if (y === null) return;
+  try {
+    await postForm("/admin/players/teleport", { entity_id: entityId, x, y });
+    loadPlayers();
+  } catch (e) { alert("วาร์ปไม่สำเร็จ: " + e.message); }
+}
+
+// ── POI ──────────────────────────────────────────────────────────────
+async function loadPOI() {
+  const onlyProblems = document.getElementById("poiOnlyProblems").checked;
+  let data;
+  try {
+    data = await getJSON("/admin/poi" + (onlyProblems ? "?problems=1" : ""));
+  } catch (e) { return; }
+  document.getElementById("poiCountBadge").textContent = data.items.length;
+  const body = document.getElementById("poiBody");
+  body.innerHTML = data.items.length === 0
+    ? '<tr class="empty-row"><td colspan="6">ไม่มี POI (หรือไม่มีที่มีปัญหา)</td></tr>'
+    : data.items.map(e => {
+        const id = encodeURIComponent(e.id);
+        const status = e.problem
+          ? `<span style="color:var(--bad)">⚠ ${escapeHtml(e.problem)}</span>`
+          : '<span style="color:var(--good)">✓ ok</span>';
+        return `<tr>
+          <td>${escapeHtml(e.short_id)}</td>
+          <td>${escapeHtml(e.blueprint)}</td>
+          <td class="num">${e.tile_x}, ${e.tile_y}</td>
+          <td class="num">${e.dist_from_entry}</td>
+          <td>${status}</td>
+          <td class="row">
+            <button class="small" onclick="movePOI('${id}')">ย้าย</button>
+            <button class="small danger" onclick="removePOI('${id}', '${escapeHtml(e.short_id)}')">ลบ</button>
+          </td>
+        </tr>`;
+      }).join("");
+  // dropdown blueprint สำหรับวางใหม่
+  const sel = document.getElementById("poiAddBlueprint");
+  if (sel.options.length === 0) {
+    sel.innerHTML = data.blueprints.map(b => `<option value="${b}">${b}</option>`).join("");
+  }
+}
+async function movePOI(id) {
+  const x = prompt("ย้ายไป tile X เท่าไหร่?");
+  if (x === null) return;
+  const y = prompt("ย้ายไป tile Y เท่าไหร่?");
+  if (y === null) return;
+  try {
+    const r = await postForm("/admin/poi/move", { id, x, y });
+    showMsg(document.getElementById("poiMsg"), r.message, true);
+    loadPOI();
+  } catch (e) { showMsg(document.getElementById("poiMsg"), e.message, false); }
+}
+async function removePOI(id, shortId) {
+  if (!confirm(`ลบ "${shortId}" ทิ้งไหม?`)) return;
+  try {
+    const r = await postForm("/admin/poi/remove", { id });
+    showMsg(document.getElementById("poiMsg"), r.message, true);
+    loadPOI();
+  } catch (e) { showMsg(document.getElementById("poiMsg"), e.message, false); }
+}
+async function addPOI() {
+  const blueprint = document.getElementById("poiAddBlueprint").value;
+  const x = document.getElementById("poiAddX").value;
+  const y = document.getElementById("poiAddY").value;
+  try {
+    const r = await postForm("/admin/poi/add", { blueprint, x, y });
+    showMsg(document.getElementById("poiMsg"), r.message, true);
+    loadPOI();
+  } catch (e) { showMsg(document.getElementById("poiMsg"), e.message, false); }
+}
+
+// ── config.json ──────────────────────────────────────────────────────
+async function loadConfig() {
+  try {
+    const c = await getJSON("/admin/config");
+    document.getElementById("cfgPath").textContent = "ไฟล์: " + c.path;
+    document.getElementById("cfgTextarea").value = c.json;
+  } catch (e) {
+    showMsg(document.getElementById("cfgMsg"), "โหลด config ไม่สำเร็จ: " + e.message, false);
+  }
+}
+async function saveConfig() {
+  const json = document.getElementById("cfgTextarea").value;
+  try {
+    JSON.parse(json); // เช็คไวยากรณ์ฝั่งเบราว์เซอร์ก่อน ลด round-trip เวลาพิมพ์ผิด
+  } catch (e) {
+    showMsg(document.getElementById("cfgMsg"), "JSON ไม่ถูกต้อง: " + e.message, false);
+    return;
+  }
+  try {
+    await postForm("/admin/config", { json });
+    showMsg(document.getElementById("cfgMsg"), "บันทึกแล้ว มีผลทันที", true);
+  } catch (e) {
+    showMsg(document.getElementById("cfgMsg"), "บันทึกไม่สำเร็จ: " + e.message, false);
+  }
+}
+
+// ── log สด ───────────────────────────────────────────────────────────
+let logCursor = 0;
+function clearLogView() { document.getElementById("logBox").innerHTML = ""; }
+async function pollLog() {
+  try {
+    const r = await getJSON("/admin/log?after=" + logCursor);
+    logCursor = r.cursor;
+    if (r.lines.length > 0) {
+      const box = document.getElementById("logBox");
+      const frag = document.createDocumentFragment();
+      for (const line of r.lines) {
+        const div = document.createElement("div");
+        div.className = "line";
+        div.textContent = line;
+        frag.appendChild(div);
+      }
+      box.appendChild(frag);
+      // กันบวมไม่รู้จบถ้าเปิดจอค้างไว้นาน ๆ
+      while (box.childNodes.length > 1000) box.removeChild(box.firstChild);
+      if (document.getElementById("logAutoScroll").checked) {
+        box.scrollTop = box.scrollHeight;
+      }
+    }
+  } catch (e) { /* เดี๋ยว loadStatus จะอัปเดตจุดเชื่อมต่อเอง */ }
+}
+
+// ── Mod Loader ────────────────────────────────────────────────────────
+async function loadMods() {
+  let data;
+  try {
+    data = await getJSON("/admin/mods");
+  } catch (e) { return; }
+  const items = data.items || [];
+  document.getElementById("modsCountBadge").textContent = items.filter(m => m.loaded).length + "/" + items.length;
+  document.getElementById("modsDirLine").textContent = data.mods_dir_exists
+    ? `โฟลเดอร์ mod: ${data.mods_dir}`
+    : `โฟลเดอร์ mod: ${data.mods_dir || "(ยังไม่ตั้งค่า)"} — ไม่มีอยู่จริง (ไม่ error แค่ไม่มี mod ให้โหลด)`;
+  const body = document.getElementById("modsBody");
+  if (items.length === 0) {
+    body.innerHTML = '<tr class="empty-row"><td colspan="7">ไม่มี mod ถูกโหลด (โฟลเดอร์ว่างหรือไม่มีไฟล์ .dll)</td></tr>';
+    return;
+  }
+  body.innerHTML = items.map(m => {
+    const statusBadge = m.loaded
+      ? '<span class="badge on">✅ โหลดสำเร็จ</span>'
+      : '<span class="badge off">❌ พัง</span>';
+    const hooks = [
+      m.has_join_hook ? "join" : null,
+      m.has_leave_hook ? "leave" : null,
+      m.has_tick_hook ? "tick" : null
+    ].filter(Boolean).join(", ") || "–";
+    const cmds = (m.commands || []).length ? (m.commands || []).map(c => `<code>${escapeHtml(c)}</code>`).join(" ") : "–";
+    return `<tr>
+      <td>${statusBadge}</td>
+      <td>${escapeHtml(m.name || "(ไม่รู้ชื่อ)")}</td>
+      <td class="num">${escapeHtml(m.version || "-")}</td>
+      <td>${escapeHtml(m.source_file || "-")}</td>
+      <td>${cmds}</td>
+      <td>${hooks}</td>
+      <td style="color:var(--bad); white-space:normal; max-width:260px;">${m.error ? escapeHtml(m.error) : ""}</td>
+    </tr>`;
+  }).join("");
+}
+
+// ── สั่ง cheat อิสระ ─────────────────────────────────────────────────
+async function sendCheat() {
+  const entityId = document.getElementById("cheatPlayer").value;
+  const command = document.getElementById("cheatCmd").value.trim();
+  const msgEl = document.getElementById("cheatMsg");
+  if (!entityId) { showMsg(msgEl, "ไม่มีผู้เล่นออนไลน์ให้เลือก", false); return; }
+  if (!command) { showMsg(msgEl, "พิมพ์คำสั่งก่อน", false); return; }
+  try {
+    const r = await postForm("/admin/cheat", { entity_id: entityId, command });
+    showMsg(msgEl, r.message, true);
+    document.getElementById("cheatCmd").value = "";
+  } catch (e) {
+    showMsg(msgEl, e.message, false);
+  }
+}
+document.getElementById("cheatCmd").addEventListener("keydown", e => {
+  if (e.key === "Enter") sendCheat();
+});
+document.getElementById("poiOnlyProblems").addEventListener("change", loadPOI);
+
+// ── เริ่มโพลทุกอย่าง ─────────────────────────────────────────────────
+loadStatus(); loadPlayers(); loadPOI(); loadConfig(); loadMods();
+setInterval(loadStatus, 1500);
+setInterval(loadPlayers, 2000);
+setInterval(pollLog, 1500);
+</script>
+</body>
+</html>

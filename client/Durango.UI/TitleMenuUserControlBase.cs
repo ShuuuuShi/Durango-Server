@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Durango.Logic.Clusters;
 using Durango.System;
 using Durango.UI.Control;
+using Durango.UI.Popup;
 using JetBrains.Annotations;
 using L10N;
 using UnityEngine;
@@ -170,6 +171,25 @@ public class TitleMenuUserControlBase : MonoBehaviour
 
 	protected virtual void OnConfirm()
 	{
+		// [แก้เอง] 24 ส.ค. 2026 — เอา "โชว์กล่องกรอก IP ทันที" ออกจากตรงนี้แล้ว (เคยดักปุ่มยืนยันของ
+		// **ทุกโหมด** ไว้หมด ตราบใดที่ Emigrated == None ⇒ เลือกโหมดจากหน้า "เลือกเซิร์ฟเวอร์" ไม่ได้จริง)
+		// เจ้าของสั่งชัดว่า "mainUI ต้องเลือกได้ว่าจะเล่นโหมดไหน ไม่ใช่บังคับออนไลน์แบบนี้" — ตอนนี้ปุ่ม
+		// "Online Server (For Test)" คือจุดที่ต่อเซิร์ฟจริงแทน (ดู Cluster.OnConfirm key "online" ใน
+		// Durango.Offline/Server.cs) ส่วน free/solo/multi ยังเป็นเซิร์ฟจำลองในเครื่องเหมือนเดิม
+		//
+		// ⚠️ แต่ AutoConnectTarget (ตัวแปรที่ operator ตั้งเอง ผ่าน env DURANGO_AUTOCONNECT หรือ
+		// server.txt ในชุดแจก tools/dist-template) **ต้อง intercept ตรงนี้เหมือนเดิม** — คนละเรื่องกับ
+		// "โหมดที่ผู้เล่นเลือกเอง" ข้างบน นี่คือ operator บังคับ build นี้ให้ต่อเซิร์ฟเดียวเสมอ (ใช้แจกเพื่อน
+		// ผ่าน เล่นเกม.bat ให้กดแค่แตะจอเดียวเข้าเกมเลย ไม่ต้องเลือกเมนู) ลืม intercept ตรงนี้ไปตอนแรก ⇒ คน
+		// ที่รับชุดแจกไปต้องกดผ่านหน้า "เลือกเซิร์ฟเวอร์" เองก่อนเป็นอย่างน้อย 3 ครั้ง กว่า BeginServer()
+		// (ที่เช็ค AutoConnectTarget เหมือนกัน) จะมีโอกาสทำงาน — ดูเหมือนเกม "ค้างหน้า main" เฉยๆ
+		if (!string.IsNullOrEmpty(Durango.Offline.Server.AutoConnectTarget)
+			&& GameManager.Emigrated == GameManager.EmigratedType.None)
+		{
+			Durango.Offline.Server._autoConnected = false;
+			Durango.Offline.Server.ConnectTo(Durango.Offline.Server.AutoConnectTarget);
+			return;
+		}
 		if (LastState != TitleMenuGroup.State.SelectCluster || !IsAccountReady)
 		{
 			return;
@@ -296,6 +316,20 @@ public class TitleMenuUserControlBase : MonoBehaviour
 		Clusters.GetOrRequestAccounts(lastSelectedClusterKey, OnClusterAccountUpdated, forceUpdate);
 	}
 
+	/// <summary>
+	/// [แก้เอง] 24 ส.ค. 2026 (รอบ 2) — ให้เรียกจากภายนอก (TitleMenuGroup, โหมด IsLoginProcess) แบบ
+	/// async-safe จริง ๆ คือรอผลตอบจากเซิร์ฟก่อนค่อยเรียก callback
+	///
+	/// 🐛 เดิม TitleMenuGroup เรียก UpdateServerAndPlayerInfo(forceUpdate: true) แล้วอ่าน
+	/// GetSelectedAccount() ทันทีบรรทัดถัดมาเลย — ตอนที่ /accounts ยังเป็นแค่ตัวแปรในหน่วยความจำ
+	/// (ตอบทันทีแบบ sync) ก็ใช้ได้ แต่พอเปลี่ยนเป็นเรียก endpoint จริงทาง HTTP (async) คำตอบยังไม่ทันมาถึง
+	/// ตอนอ่านค่า ⇒ เห็นเป็นค่าง่างเสมอ ⇒ คิดว่า "ไม่มีตัวละคร" ทั้งที่จริงมี บังคับสร้างใหม่ทุกครั้ง
+	/// </summary>
+	public void RequestAccountAsync(Action<Account> callback)
+	{
+		Clusters.GetOrRequestAccounts(LastSelectedClusterKey, callback, forceUpdate: true);
+	}
+
 	protected virtual void OnClusterAccountUpdated(Account account)
 	{
 		Cluster selectedCluster = GetSelectedCluster();
@@ -365,6 +399,23 @@ public class TitleMenuUserControlBase : MonoBehaviour
 	public void ForceSetClusters(string gateway)
 	{
 		Clusters.ForceSetCluster(gateway);
+		// [แก้เอง] ตั้ง GatewayUrl ทันที (path ปกติตั้งใน ShowCluster ซึ่งเราข้ามไปแล้ว)
+		// ต้องแปลง ip → http://ip:8190 เหมือน Server.ConnectTo ไม่งั้น /knock ต่อท้าย URL พัง
+		string url = gateway.StartsWith("http://") ? gateway : "http://" + gateway + ":" + 8190;
+		string recommendedKey = Clusters.GetRecommendableCluster();
+		GameManager.SetCluster(recommendedKey, url, Mode.Offline);
+		// [แก้เอง] 24 ส.ค. 2026 — ต้องอัปเดต LastSelectedClusterKey (คีย์นี้ผ่าน Preferences จริง ๆ)
+		// ด้วย ไม่งั้นถ้าผู้เล่นเคยเลือกคลัสเตอร์อื่นค้างไว้ก่อนหน้า (เช่นกด "Online Server (For Test)"
+		// ในหน้าเลือกเซิร์ฟเวอร์ ซึ่งเซฟคีย์ "online" ลง Preferences) — TitleMenuGroup.State.SelectCluster
+		// จะเรียก ShowCluster() ต่อทันทีหลังจากนี้ ซึ่งอ่าน LastSelectedClusterKey (คีย์เก่าที่ค้างไว้) มา
+		// เรียก GetSelectedCluster() ซ้ำ แล้วทับ GatewayUrl กลับไปเป็นของคลัสเตอร์เก่า (เซิร์ฟจำลองในเครื่อง
+		// พอร์ต 8390) เงียบ ๆ — client เลยยิง /knock,/sessions ไปเซิร์ฟจำลองแทนเซิร์ฟจริงที่เราตั้งไว้ตรงนี้
+		// (WebServer.cs ฝั่งนั้นตอบ 400 ให้ POST ที่ไม่ใช่ form-urlencoded ⇒ "[400] Bad Request" ที่เห็น)
+		LastSelectedClusterKey = recommendedKey;
+		// [แก้เอง] ต้องดึง account ทันที — เดิมเรียกใน ShowCluster ซึ่ง flow autoconnect ข้าม
+		// ไม่งั้น State.SelectPlayer เจอ account null → State.Error "เชื่อมต่อไม่ได้ (SelectPlayer)"
+		// (OnRequestAccount ของเราทำงาน sync → ออกจากบรรทัดนี้ account พร้อมใช้เลย)
+		UpdateServerAndPlayerInfo();
 	}
 
 	private void OnScreenResized()

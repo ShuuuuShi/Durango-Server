@@ -19,4 +19,11 @@
     <PackageReference Include="Snappier" Version="1.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- ต้องมีตัวเดียวกับ server/DurangoServer.csproj — ระบบ mod (24 ส.ค. 2026) เพิ่ม ProjectReference
+         นี้ใน server แต่ลืมเพิ่มที่นี่ด้วย ทำให้ test-client build ไม่ผ่าน (IModPlayer หาไม่เจอ) เพราะ
+         project นี้ compile ไฟล์ ServerCore\**\*.cs ทั้งโฟลเดอร์ตรง ๆ (ไม่ได้ reference server.dll) -->
+    <ProjectReference Include="..\mod-sdk\DurangoModSdk.csproj" />
+  </ItemGroup>
+
 </Project>

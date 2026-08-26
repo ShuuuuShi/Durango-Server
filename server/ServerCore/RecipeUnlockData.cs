@@ -1068,4 +1068,30 @@ public static class RecipeUnlockData
             }
         }
     }
+
+    // [แก้เอง] 25 ส.ค. 2026 — แปลนทั้งหมดที่ "ปลดล็อกด้วยการเรียนสกิล" (รวมจาก BySkill ทุกหมวด)
+    // ใช้ตอนซ่อนแท็บเมนูสร้าง: ของสกิลเป็น progression จริง (เตา/โต๊ะ/เตียง/กับดัก) ห้ามซ่อน
+    // ต่อให้หมวดของมันอยู่ในลิสต์ที่สั่งซ่อน — ดู RecipeData.FreeBlueprintsInCategories
+    private static HashSet<string> _skillGatedBlueprints;
+    public static HashSet<string> SkillGatedBlueprints
+    {
+        get
+        {
+            if (_skillGatedBlueprints == null)
+            {
+                var set = new HashSet<string>();
+                foreach (Unlock[] levels in BySkill.Values)
+                {
+                    if (levels == null) continue;
+                    foreach (Unlock u in levels)
+                    {
+                        if (u.Blueprints == null) continue;
+                        foreach (string bp in u.Blueprints) set.Add(bp);
+                    }
+                }
+                _skillGatedBlueprints = set;
+            }
+            return _skillGatedBlueprints;
+        }
+    }
 }

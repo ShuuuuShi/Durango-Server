@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Durango.System;
 using Durango.Utils;
 using Durango.Utils.Extensions;
@@ -56,6 +56,13 @@ public class UISpriteManager : ResourceSingleton<UISpriteManager>
 		LoadingStatus = Status.Loading;
 		_loadingCount = KUtility.GetSize(_defaultAtlases) + KUtility.GetSize(_assetAtlases);
 		_spriteDictionary = new Dictionary<string, Item>();
+		// ENV-01: resources.assets corrupt -> SerializeField atlases null -> count 0
+		// without this, LoadingStatus stays Loading forever (title stuck)
+		if (_loadingCount <= 0)
+		{
+			LoadingStatus = Status.Ready;
+			return;
+		}
 		int i = 0;
 		for (int size = KUtility.GetSize(_defaultAtlases); i < size; i++)
 		{
@@ -66,12 +73,13 @@ public class UISpriteManager : ResourceSingleton<UISpriteManager>
 		int j = 0;
 		for (int size2 = KUtility.GetSize(_assetAtlases); j < size2; j++)
 		{
-			if (IsUnnecessaryAtlas(Platform.Instance.UIType, _assetAtlases[j].Path))
+			GameObjectType entry = _assetAtlases[j];
+			if (entry == null || string.IsNullOrEmpty(entry.Path) || IsUnnecessaryAtlas(Platform.Instance.UIType, entry.Path))
 			{
 				_loadingCount--;
 				continue;
 			}
-			Singleton<AssetBundleManager>.Instance().RequestAsset(_assetAtlases[j].Path, typeof(GameObject), delegate(Object asset)
+			Singleton<AssetBundleManager>.Instance().RequestAsset(entry.Path, typeof(GameObject), delegate(Object asset)
 			{
 				if (requested == _version && LoadingStatus == Status.Loading)
 				{
@@ -79,6 +87,10 @@ public class UISpriteManager : ResourceSingleton<UISpriteManager>
 					LoadAtlas((!(gameObject != null)) ? null : gameObject.GetComponent<UIAtlas>());
 				}
 			});
+		}
+		if (_loadingCount <= 0 && LoadingStatus != Status.Failed)
+		{
+			LoadingStatus = Status.Ready;
 		}
 	}
 
@@ -108,6 +120,22 @@ public class UISpriteManager : ResourceSingleton<UISpriteManager>
 		if (_loadingCount <= 0 && LoadingStatus != Status.Failed)
 		{
 			LoadingStatus = Status.Ready;
+		}
+	}
+
+	/// <summary>
+	/// [แก้เอง] รายชื่อสไปรต์ทั้งหมดที่โหลดไว้ — ใช้ตอนประกอบ UI ใหม่จากโค้ด
+	/// (ต้องรู้ว่ามีชิ้นส่วนอะไรให้หยิบ ถึงจะทำให้หน้าใหม่ดูเป็นเนื้อเดียวกับเกม)
+	/// </summary>
+	public System.Collections.Generic.IEnumerable<string> AllSpriteNames()
+	{
+		if (_spriteDictionary == null)
+		{
+			yield break;
+		}
+		foreach (System.Collections.Generic.KeyValuePair<string, Item> pair in _spriteDictionary)
+		{
+			yield return pair.Key;
 		}
 	}
 

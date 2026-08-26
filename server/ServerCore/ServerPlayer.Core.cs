@@ -395,10 +395,33 @@ public partial class ServerPlayer
             Send(new Info { Text = TryStartResting(msg.EntityId) }, header.Seq);
             Send(default(OK), header.Seq);
         });
-        _conn.Recv<GetQuests>(delegate(GetQuests msg, PacketHeader header)
-        {
-            Send(new Quests { Category = "sunset", Todos = null }, header.Seq);
-        });
+        _conn.Recv<GetQuests>(HandleGetQuests);
+        _conn.Recv<GetQuestState>(HandleGetQuestState);
+        _conn.Recv<RequestQuestReward>(HandleRequestQuestReward);
+        _conn.Recv<GetQuestScoreInfos>(HandleGetQuestScoreInfos);
+        // โหมดสอน: ตอนผู้เล่นต่อแพแล้วกด "ออกเรือ" → client ส่ง DepartTutorial มา
+        // (ดู client/TutorialIslandSystem.cs:82) — ถ้าไม่ตอบ client จะรอ DepartTutorialReady ค้าง
+        // flow: DepartTutorial → ส่ง DepartTutorialReady → client ส่ง DepartTutorialFor
+        //      → ส่ง Emigrated → client ปิด connection กลับหน้า title เพื่อเข้าเซิร์ฟใหม่
+        _conn.Recv<DepartTutorial>(HandleDepartTutorial);
+        _conn.Recv<DepartTutorialFor>(HandleDepartTutorialFor);
+        // POI — ระบบค้นหาหลุม warp/rift + วาร์ปข้ามเกาะ (ดู ServerPlayer.POI.cs)
+        _conn.Recv<SearchPOIs>(HandleSearchPOIs);
+        _conn.Recv<GetPOICount>(HandleGetPOICount);
+        _conn.Recv<GetExploredPOIs>(HandleGetExploredPOIs);
+        _conn.Recv<GetLastSearchedTime>(HandleGetLastSearchedTime);
+        _conn.Recv<ExplorePOI>(HandleExplorePOI);
+        _conn.Recv<Warp>(HandleWarp);
+        _conn.Recv<WarpBack>(HandleWarpBack);
+        _conn.Recv<WarpToPort>(HandleWarpToPort);
+        // [แก้เอง] 23 ส.ค. 2026 — เจ้าของรายงาน "ไม่มีเมนูกดวาป" ที่หลุมวาร์ป ต้นเหตุคือ 2 คำสั่งนี้ไม่มี
+        // handler เลยมาตั้งแต่แรก (WorldMapGroup.cs ฝั่ง client ส่ง GetWarpCosts ก่อนแสดงปุ่ม/ป้ายราคาบนแผนที่
+        // เสมอตอนเปิดโหมด "วาป" — ไม่ตอบกลับ = ป้ายราคา/สถานะกดได้ไม่ขึ้นเลย ดูเหมือนไม่มีเมนู) ดู HandleGetWarpCosts
+        _conn.Recv<GetWarpCosts>(HandleGetWarpCosts);
+        _conn.Recv<GetWarpBackCost>(HandleGetWarpBackCost);
+        // [แก้เอง] คู่กับเมนู "วาป" ที่เพิ่งเพิ่มใน HandleTouch (component "Warphole" — ServerPlayer.Gathering.cs)
+        // client กดเมนูนี้แล้วส่งอันนี้มาก่อนเสมอ ก่อนจะเปิดแผนที่โหมดวาป
+        _conn.Recv<IsWarpholeAvailable>(HandleIsWarpholeAvailable);
         _conn.Recv<GetAvailableEmotions>(delegate(GetAvailableEmotions msg, PacketHeader header)
         {
             // ปิดอยู่ = ตอบรายการว่าง (ห้ามไม่ตอบเลย client จะรอค้าง)
@@ -449,7 +472,7 @@ public partial class ServerPlayer
             // M-1: บังคับ EntityId เป็นของจริง ไม่งั้นสั่งให้ตัวละครคนอื่นเล่นท่าทางได้
             msg.EntityId = EntityId;
             Console.WriteLine("[emote] {0} -> {1}", EntityId, msg.EmoticonId);
-            _world.Broadcast(msg);
+            _world.BroadcastToViewers(EntityId, msg);
         });
         _conn.Recv<SayInExclusiveChannel>(delegate(SayInExclusiveChannel msg, PacketHeader header)
         {
@@ -491,9 +514,11 @@ public partial class ServerPlayer
             {
                 _world.ForgetNaturalTile(msg.EntityId);
                 _world.MarkDirty();   // GP-07
-                _world.Broadcast(new DisappearEntityOnTile { EntityId = msg.EntityId, Tile = tile });
+                _world.BroadcastNear(new WorldPosition(tile.x * 200f + 100f, tile.y * 200f + 100f), new DisappearEntityOnTile { EntityId = msg.EntityId, Tile = tile });
             }
         });
+        RegisterFarmingHandlers();      // PlantSeed / WaterPlant / FertilizePlant / UprootPlant / DrawWater
+        RegisterWarpAcceleratorHandlers();   // GetWarpAcceleratorCost / Accelerate / ParticipateAcceleration / ReceiveAcceleratorRewards
         _conn.Recv<OccupyArtifactSite>(HandleOccupyArtifactSite);
         _conn.Recv<PutMaterialsIntoArtifact>(delegate(PutMaterialsIntoArtifact msg, PacketHeader header)
         {
@@ -542,7 +567,7 @@ public partial class ServerPlayer
         {
             return;
         }
-        _world.Broadcast(msg);
+        _world.BroadcastToViewers(EntityId, msg);
     }
 
 
@@ -623,12 +648,15 @@ public partial class ServerPlayer
         Location dest = path[path.Length - 1];
 
         double nowSec = Times.UnixTimeNow();
+        float moveDx = dest.Position.x - _lastPosition.x;
+        float moveDy = dest.Position.y - _lastPosition.y;
+        float moveDistance = _hasPosition ? MathF.Sqrt(moveDx * moveDx + moveDy * moveDy) : 0f;
         if (_hasPosition && _lastMoveAt > 0.0)
         {
             double dt = Math.Min(Math.Max(nowSec - _lastMoveAt, 0.05), MaxMoveWindow);
-            float dx = dest.Position.x - _lastPosition.x;
-            float dy = dest.Position.y - _lastPosition.y;
-            float dist = MathF.Sqrt(dx * dx + dy * dy);
+            float dx = moveDx;
+            float dy = moveDy;
+            float dist = moveDistance;
             float allowed = (float)(MaxMoveSpeed * dt) + MoveSlack;
             if (dist > allowed)
             {
@@ -661,7 +689,13 @@ public partial class ServerPlayer
         _lastFloor = dest.Floor;
         _world.NoteGroundHeight(dest.Height);
         _hasPosition = true;
-        StopResting();            // ลุกเดินแล้วเลิกพัก ความล้ากลับไปไต่ขึ้นตามเวลา
+        // Move packets ที่เกิดจากการ snap เข้า attachment/แก้ jitter ไม่ควรทำให้การพักหลุด
+        // หยุดพักเฉพาะเมื่อผู้เล่นขยับจริงเกินระยะ epsilon
+        if (moveDistance > 10f)
+        {
+            StopResting();        // ลุกเดินจริงแล้วเลิกพัก ความล้ากลับไปไต่ขึ้นตามเวลา
+        }
+        CheckReachQuests();       // เควส "เดินไปถึงจุด" (เช่น ไปหาดเหนือเจอ K)
         MarkDirty();              // GP-07
         return true;
     }

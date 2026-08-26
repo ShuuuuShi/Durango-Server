@@ -205,11 +205,86 @@ public sealed class AnimalSpawner
     private readonly Dictionary<string, WorldPosition> _zoneCenters = new Dictionary<string, WorldPosition>();
 
     /// <summary>
-    /// กึ่งกลางโซนในพิกัดโลก (config เก็บเป็นระยะห่างจากจุดเข้าเกม)
+    /// โซนไหนผูกกับ "รอยแยก" (warp_accelerator) จุดไหนของเกาะนี้จริง — คิดครั้งเดียวตอนสัตว์ตัวแรกขอ ZoneCenter
+    /// key = zone.Id ?? zone.Name — โซนที่ไม่มีในนี้ = ไม่มี crack ให้จับคู่ ใช้ offset เดิมจาก config แทน
+    /// </summary>
+    private Dictionary<string, WorldPosition> _zoneCrackAssignment;
+    private readonly object _zoneCrackLock = new object();
+
+    /// <summary>
+    /// จับคู่โซนกับ "รอยแยก" (POI blueprint warp_accelerator) จริงในโลกนี้ — ตามเกมต้นฉบับที่ไดโนเสาร์
+    /// เกิดเฉพาะบริเวณใกล้รอยแยกเท่านั้น (ยืนยันจาก RecipeData.cs: warp_accelerator → model crack_02)
+    ///
+    /// ⚠️ ปัญหา: เกาะหนึ่งมี warp_accelerator แค่ ~3 จุด (ดู ServerWorld.EnsureNaturalPOIs) แต่มี 4 โซนใน
+    /// config — ถ้าบังคับทุกโซนแชร์ crack เดียวกันจะกระจุกเป็นแพ ถ้าลดโซนเหลือ 3 พื้นที่ส่วนอื่นของเกาะ
+    /// จะไม่มีสัตว์เลย ⇒ จับคู่เท่าที่มี crack พอ (โซนที่จุดยึดเดิมอยู่ใกล้จุดเกิดที่สุด จับกับ crack ที่ใกล้
+    /// จุดเกิดที่สุด ไล่ไปเรื่อย ๆ ตามระยะ) โซนที่เหลือ (มักเป็นโซนไกลสุด/นอกสุด) **ใช้ offset เดิมจาก
+    /// config ต่อไป** — นี่คือ fallback "กระจายทั่วเกาะแบบเดิม" แบบเดียวกับที่ ZoneOf ใช้เมื่อสัตว์ไม่มีโซน
+    /// เลย แค่ทำระดับโซนแทน ผลคือ ~3 ใน 4 โซนขยับไปเกาะ crack จริง ส่วนที่เหลือยังกระจายเหมือนเดิม
+    /// ไม่ทิ้งพื้นที่ไหนให้โล่งเปล่า และถ้าเกาะไหน crack วางไม่สำเร็จเลย (0 จุด) ทุกโซนจะ fallback หมด
+    /// พฤติกรรมเดิมก่อนแก้ ระบบไม่พังในกรณีขอบ
+    /// </summary>
+    private Dictionary<string, WorldPosition> ZoneCrackAssignment(WorldPosition entry)
+    {
+        lock (_zoneCrackLock)
+        {
+            if (_zoneCrackAssignment != null)
+            {
+                return _zoneCrackAssignment;
+            }
+            var result = new Dictionary<string, WorldPosition>(StringComparer.Ordinal);
+            WorldPosition[] cracks = _world.GetCrackPositions();
+            List<ZoneConfig> zones = ServerConfig.Current.Zones;
+            if (cracks.Length > 0 && zones != null && zones.Count > 0)
+            {
+                Array.Sort(cracks, (a, b) => DistSq(a, entry).CompareTo(DistSq(b, entry)));
+
+                var order = new List<ZoneConfig>(zones);
+                order.Sort((a, b) =>
+                {
+                    float da = DistSq(new WorldPosition(entry.x + a.OffsetTileX * 200f, entry.y + a.OffsetTileY * 200f), entry);
+                    float db = DistSq(new WorldPosition(entry.x + b.OffsetTileX * 200f, entry.y + b.OffsetTileY * 200f), entry);
+                    return da.CompareTo(db);
+                });
+
+                int n = Math.Min(order.Count, cracks.Length);
+                for (int i = 0; i < n; i++)
+                {
+                    result[order[i].Id ?? order[i].Name ?? i.ToString()] = cracks[i];
+                }
+            }
+            foreach (KeyValuePair<string, WorldPosition> kv in result)
+            {
+                Console.WriteLine("[animal] โซน {0} ผูกกับรอยแยกจริงที่ tile {1:F0},{2:F0}", kv.Key, kv.Value.x / 200f, kv.Value.y / 200f);
+            }
+            if (zones != null && result.Count < zones.Count)
+            {
+                Console.WriteLine("[animal] โซนที่เหลือ {0} จาก {1} ไม่มีรอยแยกให้จับคู่ — ใช้ offset เดิมจาก config",
+                    zones.Count - result.Count, zones.Count);
+            }
+            _zoneCrackAssignment = result;
+            return result;
+        }
+    }
+
+    private static float DistSq(WorldPosition a, WorldPosition b)
+    {
+        float dx = a.x - b.x, dy = a.y - b.y;
+        return dx * dx + dy * dy;
+    }
+
+    /// <summary>
+    /// กึ่งกลางโซนในพิกัดโลก
+    ///
+    /// จุดยึดหลัก: ตำแหน่ง "รอยแยก" (warp_accelerator) จริงในโลก ถ้าโซนนี้จับคู่ไว้ได้ (ดู ZoneCrackAssignment)
+    /// — สัตว์จะได้เกิดใกล้รอยแยกจริงตามเกมต้นฉบับ ไม่ใช่พิกัดคงที่ที่ตั้งไว้ล่วงหน้า
+    /// จุดยึดสำรอง: offset จากไฟล์ config (เดิม) — ใช้เมื่อโซนนี้ไม่มี crack จับคู่ หรือเกาะนี้ไม่มี crack เลย
     ///
     /// ⚠️ จุดเข้าเกมของเกาะอยู่ริมน้ำ (จุดที่เรือมาจอด) ระยะที่ตั้งไว้ในไฟล์จึงมีสิทธิ์ไปตกกลางทะเล
     /// ถ้าเจอแบบนั้นให้ **หาจุดบนบกที่ใกล้ที่สุดแทน** (ค้นเป็นวงออกไปทีละ 2 tile)
     /// ไม่งั้นสัตว์ทั้งโซนจะหาที่เกิดไม่ได้ แล้วไปโผล่บนหาดตามจุดสุดท้ายที่สุ่มได้
+    /// (จุดยึดที่มาจาก crack ปกติผ่านเงื่อนไขบนบกอยู่แล้วเพราะ POI วางบนบกเสมอ แต่ยังเช็คซ้ำ
+    /// เผื่อ MinTilesInland ของสัตว์ตัวใหญ่ในโซนลึกกว่าที่ POI ต้องการตอนวาง)
     /// </summary>
     private WorldPosition ZoneCenter(ZoneConfig zone, WorldPosition entry)
     {
@@ -226,9 +301,10 @@ public sealed class AnimalSpawner
             }
         }
 
-        var wanted = new WorldPosition(
-            entry.x + zone.OffsetTileX * 200f,
-            entry.y + zone.OffsetTileY * 200f);
+        string zoneKey = zone.Id ?? zone.Name ?? "?";
+        WorldPosition wanted = ZoneCrackAssignment(entry).TryGetValue(zoneKey, out WorldPosition crack)
+            ? crack
+            : new WorldPosition(entry.x + zone.OffsetTileX * 200f, entry.y + zone.OffsetTileY * 200f);
         WorldPosition found = wanted;
 
         if (!_world.Terrain.IsLand(wanted.x, wanted.y, minInland))
@@ -307,7 +383,8 @@ public sealed class AnimalSpawner
             // ✅ ต้องเป็นแผ่นดินที่ลึกเข้าไปพอ — ไม่งั้นไดโนเสาร์ไปยืนบนหาด/ในทะเล
             //    (ใช้ oceans.dm ของ terrain ดู TerrainStore.LandDistance)
             ok = _world.Terrain.IsLand(home.x, home.y, minInland)
-                 && (zone != null || minDist <= 0f || Distance(home, center) >= minDist);
+                 && (zone != null || minDist <= 0f || Distance(home, center) >= minDist)
+                 && !TooCloseToOther(home);
         }
         if (!ok)
         {
@@ -332,6 +409,26 @@ public sealed class AnimalSpawner
         float dx = a.x - b.x;
         float dy = a.y - b.y;
         return MathF.Sqrt(dx * dx + dy * dy);
+    }
+
+    /// <summary>จุดนี้อยู่ใกล้ไดโนเสาร์ตัวอื่นที่เกิดไปแล้วเกินระยะขั้นต่ำหรือเปล่า (กันจับกลุ่มเป็นแพ)</summary>
+    private bool TooCloseToOther(WorldPosition pos)
+    {
+        float minSq = ServerConfig.Current.Animals.MinSeparationTiles * 200f;
+        minSq *= minSq;
+        lock (_lock)
+        {
+            foreach (ServerAnimal a in _animals.Values)
+            {
+                float dx = a.Position.x - pos.x;
+                float dy = a.Position.y - pos.y;
+                if (dx * dx + dy * dy < minSq)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /// <param name="radius">0 = เกิดตรงจุดนั้นพอดี</param>
@@ -376,7 +473,7 @@ public sealed class AnimalSpawner
         double now = Times.UnixTimeNow();
         ServerAnimal animal = SpawnOne(pos, now, 0f, type);
         animal.Height = height != 0f ? height : _world.GroundHeightHint;
-        _world.Broadcast(animal.MakeAppear());
+        _world.AnnounceAnimal(animal);
         Console.WriteLine($"[animal] เรียกเกิด {animal.EntityId} (type {animal.EntityType} lv{animal.Level}) ที่ tile {pos.x / 200f:F0},{pos.y / 200f:F0} สูง {animal.Height:F0}");
         return animal;
     }
@@ -481,7 +578,7 @@ public sealed class AnimalSpawner
             if (a.StandAt > 0 && now >= a.StandAt)
             {
                 a.StandAt = 0;
-                _world.Broadcast(a.MakeMotion(AnimalMotionData.Stand(a.EntityType), a.Yaw, now, 2.0, loop: true));
+                _world.BroadcastToViewers(a.EntityId, a.MakeMotion(AnimalMotionData.Stand(a.EntityType), a.Yaw, now, 2.0, loop: true));
             }
             // ตัวนิสัยดุ: เห็นคนในระยะก็ไล่เลย ไม่ต้องรอโดนตีก่อน
             if (BehaviorOf(a.EntityType) == AnimalBehavior.Aggressive)
@@ -533,7 +630,7 @@ public sealed class AnimalSpawner
             // ต้องรอให้เดินถึงก่อนแล้วค่อยพัก ไม่งั้นสั่งเดินใหม่ทับของเดิม
             // server จะคิดว่ามันถึงที่หมายแล้วทั้งที่ client ยังเดินอยู่ → ตัวกระตุกไปข้างหน้า
             a.NextMoveAt = now + travelSeconds + NextInterval();
-            _world.Broadcast(move);
+            _world.BroadcastToViewers(a.EntityId, move);
         }
     }
 
@@ -579,7 +676,7 @@ public sealed class AnimalSpawner
 
         bool died = animal.ApplyDamage(amount, now);
         // หลอดเลือดของสัตว์ต้องอัปเดตให้ทุกคนเห็น ไม่งั้นตีจนตายแต่หลอดยังเต็ม
-        _world.Broadcast(new Survival { EntityId = animal.EntityId, Life = animal.LifeGauge() });
+        _world.BroadcastToViewers(animal.EntityId, new Survival { EntityId = animal.EntityId, Life = animal.LifeGauge() });
 
         if (!died)
         {
@@ -593,9 +690,9 @@ public sealed class AnimalSpawner
         string dieClip = AnimalMotionData.Die(animal.EntityType);
         if (dieClip != null)
         {
-            _world.Broadcast(animal.MakeMotion(dieClip, animal.Yaw, now, 2.0));
+            _world.BroadcastToViewers(animal.EntityId, animal.MakeMotion(dieClip, animal.Yaw, now, 2.0));
         }
-        _world.Broadcast(new EntityDied { EntityId = animal.EntityId, At = now });
+        _world.BroadcastToViewers(animal.EntityId, new EntityDied { EntityId = animal.EntityId, At = now });
 
         // เปิดให้แล่เนื้อ: generator ของซากเป็นของกลางที่ world เหมือนจุดเก็บของธรรมชาติ
         // (ถ้าเก็บไว้ในตัวผู้เล่น สองคนจะแล่ซากเดียวกันได้ของครบทั้งคู่)
@@ -604,7 +701,7 @@ public sealed class AnimalSpawner
         // ให้สิทธิ์เรืองแสงกับคนที่ฆ่า แต่ server ไม่ได้ห้ามคนอื่นแล่ — เล่นด้วยกันจะได้ช่วยกันเก็บได้
         if (!string.IsNullOrEmpty(attackerId))
         {
-            _world.Broadcast(new CollectibleDisplay
+            _world.BroadcastToViewers(animal.EntityId, new CollectibleDisplay
             {
                 EntityId = animal.EntityId,
                 DistributableEntities = new[] { attackerId }
@@ -791,7 +888,7 @@ public sealed class AnimalSpawner
                 Move move = a.MakeMove(dest, FleeSpeed, now, out double travel, running: true);
                 a.NextMoveAt = now + Math.Max(travel, 0.5);
                 a.StandAt = now + travel;
-                _world.Broadcast(move);
+                _world.BroadcastToViewers(a.EntityId, move);
             }
             return true;
         }
@@ -815,7 +912,7 @@ public sealed class AnimalSpawner
                 Move move = a.MakeMove(dest, ChaseSpeed, now, out double travel, running: true);
                 a.NextMoveAt = now + Math.Max(travel, 0.4);
                 a.StandAt = now + travel;
-                _world.Broadcast(move);
+                _world.BroadcastToViewers(a.EntityId, move);
             }
             return true;
         }
@@ -828,12 +925,12 @@ public sealed class AnimalSpawner
             // หันหน้าเข้าหาเหยื่อ + เล่นท่าโจมตี
             // ถ้าไม่ส่งอันนี้ ตัวจะค้างท่าเดินและหันไปทางที่เดินมาล่าสุด (ดูเหมือนกัดลม)
             string attackClip = AnimalMotionData.Attack(a.EntityType) ?? AnimalMotionData.Stand(a.EntityType);
-            _world.Broadcast(a.MakeMotion(attackClip, ServerAnimal.YawTo(a.PositionAt(now), p), now, AttackClipSeconds));
+            _world.BroadcastToViewers(a.EntityId, a.MakeMotion(attackClip, ServerAnimal.YawTo(a.PositionAt(now), p), now, AttackClipSeconds));
             // คลิปโจมตีขยับ root bone ของโมเดลไปข้างหน้า พอเล่นจบไม่มีอะไรดึงกลับ
             // ตัวเลยค้างอยู่หน้าตำแหน่งจริง แล้ว packet ถัดไปกระชากกลับ = เห็นเป็นวาร์ป
             // ปิดท้ายด้วยท่ายืนที่ตำแหน่งจริงเสมอ
             a.StandAt = now + AttackClipSeconds;
-            _world.Broadcast(new Damaged
+            _world.BroadcastToViewers(a.EntityId, new Damaged
             {
                 AttackerId = a.EntityId,
                 VictimId = target.EntityId,
@@ -922,7 +1019,7 @@ public sealed class AnimalSpawner
                     if (clip != null)
                     {
                         // เล่นคลิปเดิมด้วยความเร็ว 0 โดยข้ามไปเกือบท้ายคลิป = ค้างท่านอนตาย
-                        _world.Broadcast(dead.MakeMotion(clip, dead.Yaw, now, 30.0,
+                        _world.BroadcastToViewers(dead.EntityId, dead.MakeMotion(clip, dead.Yaw, now, 30.0,
                             loop: false, playbackRate: 0f, clipOffset: DeathClipSeconds));
                     }
                 }
@@ -942,7 +1039,7 @@ public sealed class AnimalSpawner
             {
                 SpawnTable.Entry e = SpawnTable.Find(due[i]) ?? SpawnTable.Entries[0];
                 ServerAnimal born = SpawnFromTable(e, center, now);
-                _world.Broadcast(born.MakeAppear());
+                _world.AnnounceAnimal(born);
                 Console.WriteLine("[animal] เกิดใหม่ {0} lv{1} ({2}) — ในโลกตอนนี้ {3} ตัว",
                     e.Name, born.Level, born.EntityId, Count);
             }
@@ -964,7 +1061,7 @@ public sealed class AnimalSpawner
         {
             // ของที่แล่ไม่หมดต้องทิ้งไปพร้อมซาก ไม่งั้น _generators โตขึ้นเรื่อย ๆ ทุกตัวที่ตาย
             _world.ForgetGenerators(entityId);
-            _world.Broadcast(new DisappearEntity { EntityId = entityId });
+            _world.AnnounceGone(entityId);
         }
     }
 }

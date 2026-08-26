@@ -140,3 +140,12 @@ SetEnergy((gauge == null) ? character.GetGauge("energy") : gauge);
 - **กินอาหารยังไม่ฟื้นค่าอะไร** — `UseItem` ยังไม่ผูกกับ survival
 - **ความล้าไม่มีผลอย่างอื่น** นอกจากทำให้สตามินาแพงขึ้น (ของจริงมีผลกับ biome/สภาพอากาศด้วย)
 - **`GetStatusEffects` / status effect** ยังไม่มี handler
+
+## แก้ไข 26 ส.ค. 2026 — พักที่ Shelter ทุกชนิด + ไอคอนบัพ
+
+- จุดพักยึดจาก `RecipeData.BlueprintComponents[blueprintId]` ที่มี component `Shelter` เหมือนเกณฑ์ที่ client ใช้เพิ่ม `Interaction.Rest` ไม่เดาจากชื่อ blueprint อีกต่อไป
+- ครอบคลุมกองไฟ เต็นท์ เก้าอี้ โซฟา เตียง เสื่อ สระ/เฟอร์นิเจอร์ และจุดพักอื่นที่มี `Shelter` ในข้อมูลเกม
+- เริ่มพักเปิด `away_from_keyboard` ผ่าน `Messages.StatusEffects`; หยุดพักปิด effect และส่ง packet ใหม่
+- `Move` ที่เป็น jitter/snap เข้า attachment ไม่ทำให้พักหลุด; หยุดเฉพาะการขยับจริงเกิน 10 world units
+- `RestFatiguePerSec=4` ทำงานจริงและถูกตรวจด้วย `test-client/StaminaCheck.cs`
+- ผลล่าสุด: `--stamina-check` **19/19** ผ่าน (fatigue ลด, buff เปิด, buff ปิดเมื่อหยุดพัก)

@@ -194,7 +194,7 @@ public partial class ServerPlayer
         Send(msg);
         if (updated.ContainsKey("life"))
         {
-            _world.BroadcastExcept(this, msg);
+            _world.BroadcastToViewers(EntityId, msg, except: this);
         }
         MarkDirty();
     }
@@ -285,9 +285,11 @@ public partial class ServerPlayer
         // 3) ล้าเต็ม = เลือดไหล · ยังไม่เต็มแต่เกินขีดอันตราย = เลือดไม่ฟื้น
         float fatigue = _fatigue.ValueAt(now);
         float wantLifeVel;
+        bool fatigueDraining = false;
         if (Cfg.LifeDrainWhenExhausted > 0f && fatigue >= FatigueMax - 0.01f)
         {
             wantLifeVel = -Cfg.LifeDrainWhenExhausted;
+            fatigueDraining = true;
         }
         else if (fatigue >= FatigueDanger)
         {
@@ -298,6 +300,10 @@ public partial class ServerPlayer
             wantLifeVel = LifeRegenPerSec;
         }
 
+        // บัฟ/ดีบัฟจากอาหาร: life_up ฟื้นเพิ่ม · poisoning เลือดไหล (ดู ServerPlayer.Group2)
+        // บวกทับอัตราปกติ — พิษไหลได้แม้เลือดเต็ม, life_up หยุดเองเมื่อเต็ม (กันโอเวอร์ฮีล)
+        wantLifeVel += StatusLifeVelocityDelta();
+
         _life.Settle(now);
         if (_life.Value >= LifeMax && wantLifeVel > 0f)
         {
@@ -307,10 +313,10 @@ public partial class ServerPlayer
         {
             _life.Velocity = wantLifeVel;
             PushGauges("life");
-            if (wantLifeVel < 0f)
+            if (fatigueDraining)
             {
                 Console.WriteLine("[survival] {0} ล้าเต็มหลอด — เลือดเริ่มไหลลง (เหลือ {1:F0})", Name, _life.Value);
-                Send(new Info { Text = "เหนื่อยจนหมดแรงแล้ว — เลือดกำลังลดลง รีบไปพักที่กองไฟ" });
+                Send(new Info { Text = "เหนื่อยจนหมดแรงแล้ว — เลือดกำลังลดลง รีบไปพักที่สิ่งก่อสร้างสำหรับพักผ่อน" });
             }
         }
 
@@ -349,7 +355,7 @@ public partial class ServerPlayer
         }
         if (!_world.IsRestSpotNear(artifactId, CurrentPosition, Cfg.RestRangeTiles * 200f, out string spotName))
         {
-            return "ต้องอยู่ใกล้กองไฟถึงจะพักได้";
+            return "ต้องอยู่ใกล้สิ่งก่อสร้างที่ใช้พักได้ถึงจะพักได้";
         }
         double now = Times.UnixTimeNow();
         _fatigue.Settle(now);
@@ -363,6 +369,7 @@ public partial class ServerPlayer
         _staminaResumeAt = 0.0;
         _stamina.Settle(now);
         _stamina.Velocity = Cfg.StaminaRegenWhileResting;
+        SetRestStatusEffect(enabled: true);
         PushGauges("fatigue", "stamina");
         Console.WriteLine("[rest] {0} เริ่มพักที่ {1} (ล้า {2:F0})", Name, spotName, _fatigue.Value);
         return $"กำลังพักที่{spotName} — ความล้าลดลงเรื่อย ๆ (ขยับหรือทำอะไรก็หลุด)";
@@ -381,6 +388,7 @@ public partial class ServerPlayer
         _fatigue.Velocity = FatiguePerSec;
         _stamina.Settle(now);
         _stamina.Velocity = _stamina.Value < StaminaMax ? StaminaRegenPerSec : 0f;
+        SetRestStatusEffect(enabled: false);
         PushGauges("fatigue", "stamina");
     }
 

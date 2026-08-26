@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using Shared.Economy;
 
 namespace DurangoServer.Core;
 
@@ -53,6 +54,71 @@ public static class ServerConfig
             }
         }
         Reload(quiet: false);
+    }
+
+    /// <summary>path ไฟล์ config ปัจจุบัน — admin web panel ใช้แสดง path ให้เจ้าของเซิร์ฟดู</summary>
+    public static string ConfigPath => _path;
+
+    /// <summary>ค่าปัจจุบันทั้งก้อนเป็น JSON สวย ๆ — admin panel เอาไปใส่กล่องข้อความให้แก้</summary>
+    public static string CurrentJson
+    {
+        get { lock (_lock) { return JsonConvert.SerializeObject(_current, Formatting.Indented); } }
+    }
+
+    /// <summary>
+    /// admin web panel ส่ง JSON ที่แก้แล้วมาที่นี่ — ใช้ตรรกะเดียวกับ Reload() (PopulateObject บนค่า
+    /// เริ่มต้น + FillMissing + Validate) แต่ตรวจก่อนค่อยเขียนไฟล์จริง แล้วมีผล**ทันที**
+    /// (ไม่ต้องรอ Tick ตรวจไฟล์ทุก 5 วิ) คืน true ถ้าสำเร็จ, false+เหตุผลถ้า JSON ผิดหรือค่าไม่ถูกต้อง
+    /// </summary>
+    public static bool TryApplyJson(string json, out string error)
+    {
+        error = null;
+        if (_path == null)
+        {
+            error = "ยังไม่ได้ตั้งค่า config path (เซิร์ฟยังโหลด config ไม่เสร็จ)";
+            return false;
+        }
+        ConfigRoot loaded;
+        try
+        {
+            loaded = ConfigRoot.Defaults();
+            JsonConvert.PopulateObject(json, loaded);
+        }
+        catch (Exception e)
+        {
+            error = "JSON ไม่ถูกต้อง: " + e.Message;
+            return false;
+        }
+        loaded.FillMissing();
+        string problem = loaded.Validate();
+        if (problem != null)
+        {
+            error = problem;
+            return false;
+        }
+        string normalized = JsonConvert.SerializeObject(loaded, Formatting.Indented);
+        try
+        {
+            File.WriteAllText(_path, normalized);
+        }
+        catch (Exception e)
+        {
+            error = "เขียนไฟล์ไม่สำเร็จ: " + e.Message;
+            return false;
+        }
+        lock (_lock)
+        {
+            _current = loaded;
+        }
+        try
+        {
+            _lastWrite = File.GetLastWriteTimeUtc(_path);
+        }
+        catch (Exception)
+        {
+        }
+        Console.WriteLine("[config] แก้ผ่าน admin panel แล้ว มีผลทันที");
+        return true;
     }
 
     /// <summary>เรียกทุก tick — ตรวจไฟล์ทุก 5 วินาที (ถูกกว่าการอ่านไฟล์ทุกเฟรมมาก)</summary>
@@ -146,6 +212,8 @@ public sealed class ConfigRoot
     public AnimalConfig Animals { get; set; }
     public ExpConfig Exp { get; set; }
     public SkillConfig Skills { get; set; }
+    public StatusEffectConfig StatusEffects { get; set; }
+    public CraftMenuConfig CraftMenu { get; set; }
     /// <summary>⚠️ ต้องเป็น Replace ไม่งั้น PopulateObject จะ**ต่อท้าย**ของเดิมจนสัตว์ซ้ำเป็นสองเท่า</summary>
     [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
     public List<SpawnEntryConfig> Spawn { get; set; }
@@ -179,6 +247,22 @@ public sealed class ConfigRoot
     /// <summary>ดาเมจ/ค่าป้องกัน (ดู CombatConfig)</summary>
     public CombatConfig Combat { get; set; }
 
+    /// <summary>ปลูกผัก — ความเร็วโต/น้ำ/ปุ๋ย (ดู FarmingConfig)</summary>
+    public FarmingConfig Farming { get; set; }
+
+    /// <summary>รอยแยก/วาร์ปเรกเซเลอเรเตอร์ — เวลาแต่ละเฟส/จำนวนสัตว์/รางวัล (ดู WarpAcceleratorConfig)</summary>
+    public WarpAcceleratorConfig WarpAccelerator { get; set; }
+
+    /// <summary>
+    /// [แก้เอง] 24 ส.ค. 2026 — ข้ามฉากรถไฟ/หนังเปิดตอนสร้างตัวละครใหม่ไหม (true = ข้าม)
+    /// ค่านี้ถูกส่งไปให้ client ผ่าน /entry (ดู Gateway.cs) แล้ว client ตั้ง
+    /// PrologueManager.ToBeSkipped ตามนี้เอง ⇒ **สลับได้จาก data/config.json โดยไม่ต้อง build/แจก
+    /// client ใหม่เลย** (แก้ไฟล์นี้ รอ hot-reload 5 วิ พอผู้เล่นคนต่อไปเข้า /entry ก็ได้ค่าใหม่ทันที)
+    /// default = true เพราะฉากรถไฟเต็มรูปแบบมี MediaPlayerCtrl เล่นวิดีโอที่ไฟล์หายไปจาก asset bundle
+    /// ที่แจกอยู่ ⇒ ทำให้เกม "ปิดตัวเองกะทันหัน" ตอนผู้เล่นใหม่สร้างตัวละครครั้งแรก (เจอจากเทสแจกจริง)
+    /// </summary>
+    public bool SkipPrologueVideo { get; set; }
+
     public int TotalQuota
     {
         get
@@ -199,6 +283,8 @@ public sealed class ConfigRoot
             Animals = AnimalConfig.Defaults(),
             Exp = ExpConfig.Defaults(),
             Skills = SkillConfig.Defaults(),
+            StatusEffects = StatusEffectConfig.Defaults(),
+            CraftMenu = CraftMenuConfig.Defaults(),
             Spawn = SpawnEntryConfig.Defaults(),
             Zones = ZoneConfig.Defaults(),
             World = WorldConfig.Defaults(),
@@ -208,7 +294,10 @@ public sealed class ConfigRoot
             Starter = StarterConfig.Defaults(),
             Food = FoodConfig.Defaults(),
             Abilities = AbilityConfig.Defaults(),
-            Combat = CombatConfig.Defaults()
+            Combat = CombatConfig.Defaults(),
+            Farming = FarmingConfig.Defaults(),
+            WarpAccelerator = WarpAcceleratorConfig.Defaults(),
+            SkipPrologueVideo = true
         };
     }
 
@@ -255,6 +344,8 @@ public sealed class ConfigRoot
         if (Animals == null) { Animals = AnimalConfig.Defaults(); filled = true; }
         if (Exp == null) { Exp = ExpConfig.Defaults(); filled = true; }
         if (Skills == null) { Skills = SkillConfig.Defaults(); filled = true; }
+        if (StatusEffects == null) { StatusEffects = StatusEffectConfig.Defaults(); filled = true; }
+        if (CraftMenu == null || CraftMenu.HiddenCategories == null) { CraftMenu = CraftMenuConfig.Defaults(); filled = true; }
         if (Zones == null) { Zones = ZoneConfig.Defaults(); filled = true; }
         if (World == null) { World = WorldConfig.Defaults(); filled = true; }
         if (Tools == null) { Tools = ToolConfig.Defaults(); filled = true; }
@@ -264,8 +355,83 @@ public sealed class ConfigRoot
         if (Food == null) { Food = FoodConfig.Defaults(); filled = true; }
         if (Abilities == null) { Abilities = AbilityConfig.Defaults(); filled = true; }
         if (Combat == null) { Combat = CombatConfig.Defaults(); filled = true; }
+        if (Farming == null) { Farming = FarmingConfig.Defaults(); filled = true; }
+        if (WarpAccelerator == null) { WarpAccelerator = WarpAcceleratorConfig.Defaults(); filled = true; }
         if (Spawn == null || Spawn.Count == 0) { Spawn = SpawnEntryConfig.Defaults(); filled = true; }
+        filled |= RepairMangledNames();
         return filled;
+    }
+
+    /// <summary>
+    /// 🐛 ชื่อไทยในไฟล์ config พังเป็นตัวขยะ (เจอจริง: `[animal] เน€เธยเน€เธเธ...` ใน log)
+    ///
+    /// ต้นเหตุ: มีคน/เครื่องมืออ่านไฟล์ UTF-8 นี้เป็น ANSI (cp874) แล้วเขียนกลับ
+    /// ⇒ ตัวอักษรไทยกลายเป็นลำดับ "เ + อักขระคุม C1" ซึ่ง**กู้กลับไม่ได้** (ข้อมูลหายจริง ๆ)
+    ///
+    /// ชื่อพวกนี้เป็นแค่ป้ายกำกับ ไม่มีผลต่อเกม — จึงเขียนทับด้วยชื่อตั้งต้นจากโค้ดไปเลย
+    /// แล้ว Reload จะเซฟไฟล์กลับให้เอง (ไฟล์ซ่อมตัวเองรอบเดียวจบ ไม่ต้องแก้มือ)
+    /// ⚠️ ชื่อที่ผู้ดูแลตั้งเองยังอยู่ครบ — เช็คเฉพาะตัวที่มีร่องรอยการแปลงรหัสผิดเท่านั้น
+    /// </summary>
+    private bool RepairMangledNames()
+    {
+        bool fixedAny = false;
+        if (Spawn != null)
+        {
+            List<SpawnEntryConfig> defaults = SpawnEntryConfig.Defaults();
+            for (int i = 0; i < Spawn.Count; i++)
+            {
+                SpawnEntryConfig e = Spawn[i];
+                if (e == null || !LooksMangled(e.Name))
+                {
+                    continue;
+                }
+                SpawnEntryConfig d = defaults.Find(x => x.Type == e.Type);
+                string repaired = d?.Name ?? ("สัตว์ " + e.Type);
+                Console.WriteLine("[config] ชื่อสัตว์ type {0} ในไฟล์เป็นตัวขยะ (อ่าน UTF-8 เป็น ANSI มาก่อน) — ใช้ \"{1}\" แทน", e.Type, repaired);
+                e.Name = repaired;
+                fixedAny = true;
+            }
+        }
+        if (Zones != null)
+        {
+            List<ZoneConfig> defaults = ZoneConfig.Defaults();
+            for (int i = 0; i < Zones.Count; i++)
+            {
+                ZoneConfig z = Zones[i];
+                if (z == null || !LooksMangled(z.Name))
+                {
+                    continue;
+                }
+                ZoneConfig d = defaults.Find(x => x.Id == z.Id);
+                string repaired = d?.Name ?? (z.Id ?? "โซน");
+                Console.WriteLine("[config] ชื่อโซน {0} ในไฟล์เป็นตัวขยะ — ใช้ \"{1}\" แทน", z.Id, repaired);
+                z.Name = repaired;
+                fixedAny = true;
+            }
+        }
+        return fixedAny;
+    }
+
+    /// <summary>
+    /// ข้อความนี้ผ่านการแปลงรหัสผิดมาหรือเปล่า — ดูจากร่องรอยที่ข้อความไทยจริง ๆ ไม่มีทางมี:
+    /// อักขระแทนที่ (U+FFFD), อักขระคุมช่วง C1 (U+0080–U+009F) และเครื่องหมายยูโร
+    /// (0x80 ใน cp874 = € — โผล่มาทุกครั้งที่ไบต์ UTF-8 ของสระ "เ" ถูกอ่านผิด)
+    /// </summary>
+    private static bool LooksMangled(string s)
+    {
+        if (string.IsNullOrWhiteSpace(s))
+        {
+            return true;
+        }
+        for (int i = 0; i < s.Length; i++)
+        {
+            char c = s[i];
+            if (c == '�' || c == '€' || (c >= '\u0080' && c <= '\u009F'))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /// <summary>คืนข้อความปัญหาถ้าค่าที่ใส่มาทำให้เกมพัง (คืน null = ผ่าน)</summary>
@@ -331,6 +497,19 @@ public sealed class ConfigRoot
         {
             return $"World.ChunkSendRange ต้องอยู่ระหว่าง 1-4 (ใส่มา {World.ChunkSendRange})";
         }
+        if (World.ViewRangeTiles < 4f || World.ViewRangeTiles > 200f)
+        {
+            return $"World.ViewRangeTiles ต้องอยู่ระหว่าง 4-200 tile (ใส่มา {World.ViewRangeTiles})";
+        }
+        if (World.ViewMarginTiles < 1f || World.ViewMarginTiles > World.ViewRangeTiles)
+        {
+            // ต่ำกว่า 1 = คนที่ยืนขอบระยะจะโผล่-หายรัว ๆ · มากกว่าระยะเห็น = ช่องว่างกว้างจนไม่มีความหมาย
+            return $"World.ViewMarginTiles ต้องอยู่ระหว่าง 1 ถึง ViewRangeTiles ({World.ViewRangeTiles})";
+        }
+        if (World.ViewCheckSeconds < 0.05 || World.ViewCheckSeconds > 5.0)
+        {
+            return $"World.ViewCheckSeconds ต้องอยู่ระหว่าง 0.05-5 วินาที (ใส่มา {World.ViewCheckSeconds})";
+        }
         if (Tools.Enabled && (Tools.DurabilityBase < 0f || Tools.DurabilityPerTier < 0f
                               || Tools.DurabilityBase + Tools.DurabilityPerTier <= 0f))
         {
@@ -339,6 +518,34 @@ public sealed class ConfigRoot
         if (Tools.WearPerUse < 0f)
         {
             return "Tools.WearPerUse ติดลบไม่ได้";
+        }
+        if (Farming.GrowthScale <= 0f || Farming.GrowthScale > 10f)
+        {
+            return $"Farming.GrowthScale ต้องอยู่ระหว่าง 0 ถึง 10 (ใส่มา {Farming.GrowthScale})";
+        }
+        if (Farming.MinGrowSeconds < 1f)
+        {
+            return "Farming.MinGrowSeconds ต้องอย่างน้อย 1 วินาที";
+        }
+        if (Farming.WaterPerItem <= 0f)
+        {
+            return "Farming.WaterPerItem ต้องมากกว่า 0";
+        }
+        if (Farming.SeedYield < 0 || Farming.SeedYield > 10)
+        {
+            return $"Farming.SeedYield ต้องอยู่ระหว่าง 0-10 (ใส่มา {Farming.SeedYield})";
+        }
+        if (Farming.WrongBiomeGrowthPenalty < 1f)
+        {
+            return "Farming.WrongBiomeGrowthPenalty ต้องอย่างน้อย 1 (1 = ไม่ลงโทษ)";
+        }
+        if (Farming.FertilizerYieldScale < 0f)
+        {
+            return "Farming.FertilizerYieldScale ติดลบไม่ได้";
+        }
+        if (Farming.MaxWaterCarryPerDraw <= 0f)
+        {
+            return "Farming.MaxWaterCarryPerDraw ต้องมากกว่า 0";
         }
         if (Features.MaxPlayerLevel < 0 || Features.MaxPlayerLevel > LevelData.MaxLevel)
         {
@@ -479,8 +686,21 @@ public sealed class FeatureConfig
     public bool Taming { get; set; }
     /// <summary>ตลาดซื้อขายระหว่างผู้เล่น</summary>
     public bool Market { get; set; }
+    /// <summary>
+    /// รอยแยก/วาร์ปเรกเซเลอเรเตอร์ (blueprint "warp_accelerator") — กิจกรรม PvE ป้องกันคลื่นสัตว์
+    /// เขียนใหม่ทั้งหมด 22 ส.ค. 2026 (ArtifactFactory + WarpAcceleratorManager + ServerPlayer.WarpAccelerator)
+    /// ยังไม่เคยเทสในเกมจริงสักครั้ง (เซิร์ฟหลักกำลังรันสดคู่ขนาน ห้าม restart ทดสอบ) ⇒ ปิดไว้ก่อน
+    /// เหมือน Livestock/Taming/Market — เปิดเองตอนพร้อมทดสอบ (แก้ data/config.json หรือ FeatureConfig.Defaults)
+    /// </summary>
+    public bool WarpAccelerator { get; set; }
     /// <summary>เควสจาก 4 กลุ่ม NPC</summary>
     public bool Quests { get; set; }
+
+    /// <summary>
+    /// เอา "เควสประจำวัน" (เดิม: รายการตรวจเซิร์ฟ) มาใส่เป็นเควส (ดู QuestData.Checklist)
+    /// ปิดตัวนี้เมื่อเทสผ่านหมดแล้ว — เควสชุดตรวจจะหายไปทันทีโดยไม่กระทบสายสอนเล่น
+    /// </summary>
+    public bool QuestChecklist { get; set; }
     /// <summary>PK บนเกาะ Lv.20+</summary>
     public bool Pvp { get; set; }
     /// <summary>สิทธิ์ในที่ดินส่วนตัว (เฉพาะเรา/เพื่อน/สาธารณะ)</summary>
@@ -517,11 +737,13 @@ public sealed class FeatureConfig
             IslandTravel = false,
             Jobs = false,
             Cooking = true,             // เปิดแล้ว — สูตร cook 152 อัน ต้องยืนที่กองไฟ/เตาถึงจะทำได้
-            Farming = false,
+            Farming = true,
             Livestock = false,
             Taming = false,
             Market = false,
-            Quests = false,
+            WarpAccelerator = false,   // ยังไม่เคยเทสในเกมจริง — เปิดเองตอนพร้อม
+            Quests = true,
+            QuestChecklist = true,             // เปิดแล้ว — สายสอนเล่น 8 ขั้นจบที่ต่อแพ (ดู QuestData)
             Pvp = false,
             LandPermission = false,
             PartyAndClan = false,
@@ -814,9 +1036,58 @@ public sealed class WorldConfig
     /// </summary>
     public int ChunkSendRange { get; set; }
 
+    // ───── ระยะการมองเห็น (interest management) ─────
+    //
+    // 🐛 เดิมทุกอย่างที่เกิดขึ้นในโลกถูกส่งให้ **ทุกคนในเกาะ** โดยไม่ดูระยะเลย (47 จุดเรียก Broadcast)
+    //    คนเดิน 1 ก้าว = ส่งออก N packet ตามจำนวนคนออนไลน์ ⇒ โตแบบ N²
+    //    ที่ 100 คนเดินกันคนละ 2 ครั้ง/วินาที = ~20,000 packet/วินาที
+    //    และ client ต้องวาด/อัปเดตคนที่อยู่คนละมุมเกาะซึ่งมองไม่เห็นอยู่ดี
+    //
+    // ตอนนี้ส่งเฉพาะสิ่งที่อยู่ในระยะรอบตัวผู้เล่นแต่ละคน
+
+    /// <summary>
+    /// ระยะที่ **เริ่มเห็น** กัน (tile · 1 tile = 200 หน่วยโลก)
+    /// ควรกว้างกว่าที่จอแสดงจริงเล็กน้อย เพื่อให้ข้อมูลไปถึงก่อนที่เป้าจะโผล่เข้าจอ
+    /// </summary>
+    public float ViewRangeTiles { get; set; }
+
+    /// <summary>
+    /// เลยระยะเห็นออกไปอีกเท่านี้ถึงจะ "หายไป" (tile)
+    ///
+    /// ต้องมีช่องว่างตรงนี้ ไม่งั้นคนที่ยืนอยู่พอดีขอบระยะจะ **โผล่-หาย-โผล่-หายรัว ๆ**
+    /// ทุกครั้งที่ขยับไปมาไม่กี่ก้าว (ปัญหาคลาสสิกของระบบกรองระยะ)
+    /// </summary>
+    public float ViewMarginTiles { get; set; }
+
+    /// <summary>ตรวจว่าใครเข้า/ออกระยะทุกกี่วินาที (ถี่ไป = เปลือง CPU · ห่างไป = คนโผล่ช้า)</summary>
+    public double ViewCheckSeconds { get; set; }
+
+    /// <summary>ปิดการกรองระยะ = กลับไปส่งให้ทุกคนเหมือนเดิม (ไว้เทียบเวลาสงสัยว่าบั๊กมาจากตรงนี้ไหม)</summary>
+    public bool ViewCulling { get; set; }
+
+    /// <summary>ระยะที่เริ่มเห็น (หน่วยโลก) — คิดจาก ViewRangeTiles ไม่ใช่ค่าที่ตั้งเองได้</summary>
+    [JsonIgnore]
+    public float ViewEnterUnits => ViewRangeTiles * 200f;
+
+    /// <summary>
+    /// ระยะที่หายไป (หน่วยโลก) — ใช้เป็นระยะส่ง packet ด้วย เพราะของที่ยังเห็นอยู่ต้องอัปเดตต่อ
+    /// (JsonIgnore เพราะเป็นค่าคำนวณ ถ้าปล่อยให้ลงไฟล์ คนแก้จะนึกว่าแก้ได้แล้วงงว่าทำไมไม่มีผล)
+    /// </summary>
+    [JsonIgnore]
+    public float ViewExitUnits => (ViewRangeTiles + ViewMarginTiles) * 200f;
+
     public static WorldConfig Defaults()
     {
-        return new WorldConfig { ChunkSendRange = 2 };
+        return new WorldConfig
+        {
+            ChunkSendRange = 2,
+            // 24 tile ≈ 1.5 chunk — กว้างกว่าที่จอเห็นพอสมควร แต่ยังอยู่ในพื้นที่ที่ client โหลด terrain ไว้แล้ว
+            // (ChunkSendRange 2 = 5×5 chunk ⇒ มี terrain ถึง ~40 tile รอบตัว)
+            ViewRangeTiles = 24f,
+            ViewMarginTiles = 8f,        // หายที่ 32 tile — ห่างจากขอบ terrain ที่โหลดไว้ (40) อยู่พอควร
+            ViewCheckSeconds = 0.4,
+            ViewCulling = true
+        };
     }
 }
 
@@ -876,6 +1147,12 @@ public sealed class AnimalConfig
     /// <summary>เดินออกจากบ้านตัวเองได้ไกลสุดกี่ tile</summary>
     public float WanderRadiusTiles { get; set; }
 
+    /// <summary>
+    /// สัตว์สองตัวต้องเกิดห่างกันอย่างน้อยกี่ tile — ป้องกันไดโนเสาร์จับกลุ่มกันเป็นแพ
+    /// (เกิดจากทุกตัว RandomAround จุดเดียวกัน + ตัวเล็กๆ เดินวนใกล้บ้าน)
+    /// </summary>
+    public float MinSeparationTiles { get; set; }
+
     public static AnimalConfig Defaults()
     {
         return new AnimalConfig
@@ -899,7 +1176,8 @@ public sealed class AnimalConfig
             MinTilesInland = 4,
             InlandTilesPerSize = 3,
             SpawnRadiusTiles = 30f,
-            WanderRadiusTiles = 12.5f
+            WanderRadiusTiles = 12.5f,
+            MinSeparationTiles = 4f
         };
     }
 }
@@ -912,6 +1190,10 @@ public sealed class ExpConfig
     public int Butchery { get; set; }
     public int Craft { get; set; }
     public int Build { get; set; }
+    /// <summary>exp ตอนลงเมล็ด</summary>
+    public int Plant { get; set; }
+    /// <summary>exp ต่อผลผลิต 1 ชิ้นที่เก็บได้</summary>
+    public int Harvest { get; set; }
     public int SkillPointsPerLevel { get; set; }
 
     public static ExpConfig Defaults()
@@ -924,6 +1206,8 @@ public sealed class ExpConfig
             Butchery = 3,
             Craft = 5,
             Build = 8,
+            Plant = 3,
+            Harvest = 4,
             SkillPointsPerLevel = 3
         };
     }
@@ -982,6 +1266,92 @@ public sealed class SkillConfig
             RequiredPlayerLevelPerSkillLevel = 1.0f,
             ProficiencyEnabled = true,
             ProficiencyRate = 1.0f
+        };
+    }
+}
+
+/// <summary>
+/// **บัฟ/ดีบัฟจากอาหาร-ยา (status effect) ให้มีผลจริง** — เดิมกินแล้วขึ้นแค่ไอคอน ไม่กระทบตัวเลข
+///
+/// ข้อมูลเกมจริงมี 18 บัฟ (สกัดจาก FoodData.cs) จับกลุ่มเป็น 4 กลไกที่ "มีของจริงให้กระทบ":
+///   · บัฟสตามินา (energetic/stamina_up/drink_water ฯลฯ) → ทำอะไรก็เปลืองสตามินาน้อยลง
+///   · ดีบัฟสตามินา (thirsty/eat_bizarre_food/drunk) → เปลืองสตามินามากขึ้น
+///   · life_up → เลือดฟื้นเองต่อเนื่อง (heal over time)
+///   · poisoning → เลือดไหลลงต่อเนื่อง (damage over time)
+///
+/// ค่าทั้งหมด "เกรดอ่อน ๆ" ตามที่เจ้าของสั่ง — เห็นผลจริงแต่ไม่โหด
+/// (หมายเหตุ: เดิมวางแผนให้ drunk ลดความแม่นยำ แต่โค้ดต่อสู้ไม่มีระบบพลาด/เข้า — ตีเข้าเสมอ —
+///  ความแม่นยำเป็นแค่ตัวเลขโชว์ ไม่มีผลจริง จึงเปลี่ยน drunk มาเป็นดีบัฟสตามินาแทน)
+/// </summary>
+public sealed class StatusEffectConfig
+{
+    /// <summary>บัฟสตามินาติดอยู่ = ทุกอย่างเปลืองสตามินาน้อยลงกี่ % (0.10 = ถูกลง 10%)</summary>
+    public float BuffStaminaSave { get; set; }
+
+    /// <summary>ดีบัฟสตามินาติดอยู่ = ทุกอย่างเปลืองสตามินามากขึ้นกี่ % (0.08 = แพงขึ้น 8%)</summary>
+    public float DebuffStaminaPenalty { get; set; }
+
+    /// <summary>life_up ติดอยู่ = เลือดฟื้นเองเพิ่มวินาทีละเท่าไร (บวกจากอัตราฟื้นปกติ)</summary>
+    public float LifeUpRegenPerSec { get; set; }
+
+    /// <summary>poisoning ติดอยู่ = เลือดไหลลงวินาทีละเท่าไร</summary>
+    public float PoisonDamagePerSec { get; set; }
+
+    public static StatusEffectConfig Defaults()
+    {
+        return new StatusEffectConfig
+        {
+            BuffStaminaSave = 0.10f,
+            DebuffStaminaPenalty = 0.08f,
+            LifeUpRegenPerSec = 1.0f,
+            PoisonDamagePerSec = 1.0f
+        };
+    }
+}
+
+/// <summary>
+/// **ซ่อน/โชว์แท็บในเมนู "สร้าง" ได้จาก config โดยไม่ต้อง build ใหม่**
+///
+/// เจ้าของสั่ง (จากรูปวงกลมแท็บ): ซ่อนบางแท็บจากผู้เล่นทั่วไป เหลือแค่ admin — ใส่ "หมวด" ที่อยากซ่อนลงใน
+/// <see cref="HiddenCategories"/> (ชื่อหมวดจริงจากข้อมูลเกม ดู RecipeData.BlueprintsByCategory) เอาออก
+/// จากลิสต์ = แท็บกลับมาโชว์ · แก้ไฟล์แล้ว hot-reload มีผลทันที (ไม่ต้อง build)
+///
+/// กลไก: server ไม่ส่ง blueprint "ฟรี" ในหมวดที่ซ่อนเข้า unlocked list ของ non-admin → แท็บฝั่ง client
+/// หายเอง (client โชว์แท็บเฉพาะหมวดที่มีของ Available ≥1) · **ของที่ปลดล็อกด้วยสกิลไม่โดนซ่อน** (เป็น
+/// progression จริง เช่น เตา/โต๊ะ/เตียง/กับดัก — ดู RecipeUnlockData.SkillGatedBlueprints) · admin ได้ครบ
+/// </summary>
+public sealed class CraftMenuConfig
+{
+    /// <summary>ชื่อหมวด blueprint ที่ซ่อนจากผู้เล่นทั่วไป (ว่าง = ไม่ซ่อนอะไร)</summary>
+    [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+    public List<string> HiddenCategories { get; set; }
+
+    /// <summary>
+    /// ซ่อนสูตร/แบบก่อสร้าง "ฟรี" (AlwaysRecipes/AlwaysBlueprints — ไม่ต้องเรียนสกิล) จาก non-admin
+    /// เจ้าของสั่ง: ไอเทมที่ไม่ต้องใช้วัตถุดิบ ซ่อนให้หมด เป็นของแอดมิน — ฝั่ง blueprint ไม่หักวัตถุดิบเลย
+    /// (ข้อจำกัดเบต้า) ส่วนฝั่งสูตรมีวัตถุดิบจริง แต่ที่ไม่ต้องเรียนสกิล = ดูเหมือนฟรีในสายตาผู้เล่น
+    /// เปิด = non-admin เห็นเฉพาะของที่ปลดล็อกด้วยสกิลจริงเท่านั้น · admin ได้ครบเสมอ
+    /// </summary>
+    public bool HideFreeItems { get; set; } = true;
+
+    public static CraftMenuConfig Defaults()
+    {
+        return new CraftMenuConfig
+        {
+            // 10 แท็บที่เจ้าของวงกลมไว้ให้ซ่อน (ชื่อไทยกำกับ) — เอาชื่อออกจากลิสต์ = แท็บนั้นกลับมาโชว์
+            HiddenCategories = new List<string>
+            {
+                "deco_and_installation",   // Installation/Decoration
+                "etc",                     // Other
+                "clan",                    // Clan
+                "residence",               // Rest/Shelter
+                "traffic",                 // Transportation Facility
+                "furniture_and_workbench", // Storage/Workbench
+                "trap",                    // Snare/Trap
+                "plant_collectible",       // Wood
+                "region",                  // (#recipe_category_region)
+                "building/furniture",      // (#recipe_category_building/furniture)
+            }
         };
     }
 }
@@ -1177,6 +1547,146 @@ public sealed class SpawnEntryConfig
             E(2003, "ทริเซราท็อปส์",     6, 10, 2, "FightBack",  6,  1.4),
             E(2002, "โอวิแรปเตอร์",      4, 8,  2, "Aggressive", 12, 1.3),
             E(2001, "แร็ปเตอร์",         7, 10, 1, "Aggressive", 20, 1.7),
+        };
+    }
+}
+
+/// <summary>
+/// ปลูกผัก — ตัวเลขทั้งหมดของระบบเพาะปลูก
+///
+/// **ทำไมต้องมี GrowthScale:** เวลาโตในข้อมูลเกมเป็นของเกมออนไลน์จริง (ข้าวโพด 5 นาที
+/// แต่ต้นไม้ผล 21 ชั่วโมง) ซึ่งยาวเกินไปสำหรับเซิร์ฟที่เปิดเล่นกันเอง
+/// ค่าเริ่มต้น 0.05 = ย่อเหลือ 1/20 (ต้นไม้ผล 21 ชม. → ประมาณ 1 ชม.)
+/// ใส่ 1.0 ถ้าอยากได้เวลาเท่าเกมจริง
+/// </summary>
+public sealed class FarmingConfig
+{
+    /// <summary>ตัวคูณเวลาโต (0.05 = เร็วกว่าเกมจริง 20 เท่า)</summary>
+    public float GrowthScale { get; set; }
+
+    /// <summary>เวลาโตอย่างน้อยที่สุด กันพืชที่โตเร็วอยู่แล้วกลายเป็นโตทันที</summary>
+    public float MinGrowSeconds { get; set; }
+
+    /// <summary>น้ำที่ได้ต่อไอเทมน้ำ 1 ชิ้น</summary>
+    public float WaterPerItem { get; set; }
+
+    /// <summary>ตัวคูณผลผลิตที่ได้จากปุ๋ย (1 = ตามข้อมูลเกม)</summary>
+    public float FertilizerYieldScale { get; set; }
+
+    /// <summary>เก็บเกี่ยวแล้วได้เมล็ดคืนกี่เม็ด (0 = ไม่คืนเมล็ด)</summary>
+    public int SeedYield { get; set; }
+
+    /// <summary>ปลูกผิดไบโอม → เวลาโตคูณเท่านี้ (และได้ผลผลิตครึ่งเดียว)</summary>
+    public float WrongBiomeGrowthPenalty { get; set; }
+
+    /// <summary>ตักน้ำ 1 ครั้งได้มากสุดกี่หน่วย (กันภาชนะเลเวลสูงตักทีเดียวจบ)</summary>
+    public float MaxWaterCarryPerDraw { get; set; }
+
+    public float StaminaCostPlant { get; set; }
+    public float StaminaCostTend { get; set; }
+    public float StaminaCostDraw { get; set; }
+
+    public float PlantSeconds { get; set; }
+    public float TendSeconds { get; set; }
+    public float UprootSeconds { get; set; }
+    public float HarvestSeconds { get; set; }
+    public float DrawWaterSeconds { get; set; }
+
+    /// <summary>ระยะที่ตักน้ำได้ นับจากตัวผู้เล่นถึง tile ที่เป็นน้ำ (tile)</summary>
+    public int WaterSearchTiles { get; set; }
+
+    public static FarmingConfig Defaults()
+    {
+        return new FarmingConfig
+        {
+            GrowthScale = 0.05f,
+            MinGrowSeconds = 20f,
+            WaterPerItem = 1f,
+            FertilizerYieldScale = 1f,
+            SeedYield = 1,
+            WrongBiomeGrowthPenalty = 1.5f,
+            MaxWaterCarryPerDraw = 5f,
+            StaminaCostPlant = 6f,
+            StaminaCostTend = 3f,
+            StaminaCostDraw = 3f,
+            PlantSeconds = 2f,
+            TendSeconds = 1.5f,
+            UprootSeconds = 2f,
+            HarvestSeconds = 2f,
+            DrawWaterSeconds = 2f,
+            WaterSearchTiles = 6
+        };
+    }
+}
+
+/// <summary>
+/// รอยแยก/วาร์ปเรกเซเลอเรเตอร์ (blueprint "warp_accelerator") — ดู WarpAcceleratorManager สำหรับ state machine
+///
+/// **ที่มาของตัวเลขเริ่มต้น**: เกมปิดตัวไปนานแล้ว ลองหาข้อมูลกลไกจริง (รีวิว/wiki เกาหลี) ไม่เจอ
+/// ข้อมูลตัวเลขที่ยืนยันได้จากไฟล์เกม (client/Yaml/WarpAccelerator.cs) มีแค่ *ชื่อ* ฟิลด์
+/// (breaktime/phase_time/reward_time/inactivate_time/max_phase) ไม่มีค่าจริงติดมาด้วย (อยู่ใน
+/// asset bundle ที่เข้ารหัส อ่านไม่ได้จากซอร์สที่มี) ⇒ ค่าเริ่มต้นทั้งหมดด้านล่างนี้ **ออกแบบเองใหม่**
+/// ให้เล่นได้จริงและสมเหตุสมผล ไม่ใช่ค่าจากเกมต้นฉบับ — ปรับได้อิสระผ่าน data/config.json (hot-reload)
+/// </summary>
+public sealed class WarpAcceleratorConfig
+{
+    /// <summary>เวลารอก่อนคลื่นแรกเริ่ม (นับจากกด "เร่งวาร์ป") และเวลาพักระหว่างคลื่น (Waiting/Intermission)</summary>
+    public float WaitSeconds { get; set; }
+
+    /// <summary>เวลาที่มีให้ฆ่าสัตว์ในแต่ละคลื่นก่อนหมดเวลา — หมดเวลาแล้วยังมีสัตว์เหลือ = คลื่นนั้นล้มเหลว ไม่ได้รางวัล</summary>
+    public float PhaseSeconds { get; set; }
+
+    /// <summary>ผ่านครบทุกคลื่นแล้ว มีเวลากดรับรางวัล (ReceiveAcceleratorRewards) นานแค่ไหนก่อนรีเซ็ตอัตโนมัติ</summary>
+    public float RewardWindowSeconds { get; set; }
+
+    /// <summary>จบรอบแล้ว (สำเร็จหรือล้มเหลวก็ตาม) ต้องรอเท่าไรก่อนจะ "เร่งวาร์ป" รอบใหม่ที่จุดเดิมได้</summary>
+    public float CooldownSeconds { get; set; }
+
+    /// <summary>จำนวนคลื่นทั้งหมดต่อรอบ</summary>
+    public int MaxPhase { get; set; }
+
+    /// <summary>จำนวนสัตว์คลื่นแรก</summary>
+    public int AnimalsBase { get; set; }
+
+    /// <summary>จำนวนสัตว์ที่เพิ่มขึ้นต่อคลื่น (คลื่นที่ 2 = Base+Step, คลื่นที่ 3 = Base+Step*2, ...)</summary>
+    public int AnimalsStep { get; set; }
+
+    /// <summary>กระจายสัตว์รอบจุด warp_accelerator ในรัศมีกี่ tile</summary>
+    public float SpawnRadiusTiles { get; set; }
+
+    /// <summary>
+    /// ค่าธรรมเนียมเข้าร่วม (Accelerate/ParticipateAcceleration) — ตั้ง 0 ไว้ก่อนโดยตั้งใจ:
+    /// เซิร์ฟนี้ยังไม่มีระบบกระเป๋าเงิน/Currency ใช้งานจริงเลยสักจุด (grep "Currency\." ทั้ง
+    /// ServerCore ไม่เจอที่ไหนใช้เลย) ผู้เล่นจึงไม่มีทางหา Gem/Coin มาจ่ายค่าธรรมเนียมได้ตั้งแต่ต้น
+    /// ถ้าจะเก็บค่าธรรมเนียมจริงต้องสร้างระบบกระเป๋าเงินทั้งระบบก่อน (งานใหญ่แยกต่างหาก นอกขอบเขตนี้)
+    /// </summary>
+    public long JoinCostAmount { get; set; }
+
+    /// <summary>สกุลเงินของค่าธรรมเนียมเข้าร่วม (ไม่มีผลตอนนี้เพราะ JoinCostAmount = 0)</summary>
+    public Currency JoinCostCurrency { get; set; }
+
+    /// <summary>Warp Matter ที่ได้ต่อคลื่นที่ผ่าน (สะสมไว้ก่อน กดรับจริงตอน Status = End เท่านั้น)</summary>
+    public int WarpMatterPerPhase { get; set; }
+
+    /// <summary>เพดาน Warp Matter ที่ผู้เล่นคนหนึ่งรับได้ต่อสัปดาห์ (ดู ServerPlayer.WarpAccelerator)</summary>
+    public int WeeklyWarpMatterCap { get; set; }
+
+    public static WarpAcceleratorConfig Defaults()
+    {
+        return new WarpAcceleratorConfig
+        {
+            WaitSeconds = 20f,
+            PhaseSeconds = 90f,
+            RewardWindowSeconds = 180f,
+            CooldownSeconds = 30f,
+            MaxPhase = 3,
+            AnimalsBase = 4,
+            AnimalsStep = 2,
+            SpawnRadiusTiles = 4f,
+            JoinCostAmount = 0,
+            JoinCostCurrency = Currency.Coin,
+            WarpMatterPerPhase = 5,
+            WeeklyWarpMatterCap = 100
         };
     }
 }

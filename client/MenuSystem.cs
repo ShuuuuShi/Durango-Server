@@ -88,15 +88,13 @@ public class MenuSystem : GameSystem<MenuSystem>
 		// ระบบที่ยังไม่ได้ทำ
 		MenuType.Market, MenuType.Social, MenuType.Mail, MenuType.Encyclopedia,
 		MenuType.Clan, MenuType.Faction, MenuType.Timeline, MenuType.Pet,
-		MenuType.Estate, MenuType.Shop, MenuType.Event, MenuType.Quest,
+		MenuType.Estate, MenuType.Shop, MenuType.Event,
 		MenuType.LearningGuide, MenuType.Party, MenuType.Notice, MenuType.PlayerSelection,
-		MenuType.OfficialCommunity, MenuType.Offerwall, MenuType.PvpIsland, MenuType.Story,
+		MenuType.OfficialCommunity, MenuType.Offerwall, MenuType.PvpIsland,
 		MenuType.Music, MenuType.CharacterOnMenu, MenuType.MusicOnMenu, MenuType.StoryOnMenu,
 
 		// [beta 1.0.0] ปิดเพิ่ม — หมวดที่เปิดไปก็เจอแต่ของว่าง เพราะระบบข้างในยังไม่มี
-		MenuType.CategoryToDo,      // "할 일" = เควส/สิ่งที่ต้องทำ — ยังไม่มีระบบเควส
-		MenuType.CategorySocial,    // "친구" = เพื่อน — Social/Mail/Clan ปิดหมดแล้ว หมวดนี้จึงว่างเปล่า
-		MenuType.WarpShop           // "워프 유적" = วาร์ปโฮลข้ามเกาะ — ตรงกับ Features.IslandTravel ที่ยังปิดอยู่
+		MenuType.CategorySocial     // "친구" = เพื่อน — Social/Mail/Clan ปิดหมดแล้ว หมวดนี้จึงว่างเปล่า
 	};
 
 	public static bool IsHiddenMenu(MenuType type)

@@ -90,6 +90,12 @@ public class RecipeSubListWidget : MonoBehaviour
 		SetWidgetWidth(_titleWidget, width);
 		SetWidgetWidth(_recipesContainer, width, updateAnchors: false);
 		_titleLabel.text = subList.Text;
+		// [แก้เอง] 23 ส.ค. 2026 — เจ้าของสั่งเอาแถบหัวข้อกลุ่มย่อย (เช่น "ชุดสำรวจ") ในช่องรายการ
+		// กลางออก เหลือแค่รายการไอเทมล้วน ๆ — ซ่อน + ยุบความสูงเป็น 0 ทั้งคู่ (แค่ SetActive(false)
+		// อย่างเดียวไม่พอ เพราะ TitleHeight ยังอ่าน _titleWidget.height ไปคำนวณตำแหน่ง scroll ต่อ
+		// ที่ RecipeListWidget.cs — ถ้าไม่ยุบความสูงด้วยจะเหลือช่องว่างเปล่า ๆ แทนหัวข้อ)
+		_titleWidget.gameObject.SetActive(value: false);
+		_titleWidget.height = 0;
 		int num = width / WidgetCountPerLine;
 		_recipes.Set(_recipeDataList.Count);
 		for (int i = 0; i < _recipes.Count; i++)

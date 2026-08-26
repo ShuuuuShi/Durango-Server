@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Durango.UI.Control;
 using L10N;
 using Messages;
@@ -50,8 +51,11 @@ public class QuestMainWidget : MonoBehaviour, IUIInitializable
 		{
 			_scrollView.ResetPosition();
 		}
-		_questView.SetList(quests);
-		if (KUtility.GetSize(quests) == 0)
+		// [แก้เอง] แสดงได้แค่ 10 รายการ (ข้อมูลครบในเซิร์ฟ ความคืบหน้าทำงานปกติ)
+		// ลิสต์จาก client เรียง unfinished ก่อน + ตาม Order ของเควสอยู่แล้ว — ตัดท้าย 10 แรก
+		List<QuestToDo> shown = quests.Take(10).ToList();
+		_questView.SetList(shown);
+		if (KUtility.GetSize(shown) == 0)
 		{
 			_noQuestLabel.gameObject.SetActive(value: true);
 			_noQuestLabel.alpha = 0f;

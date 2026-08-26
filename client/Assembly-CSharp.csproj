@@ -90,4 +90,8 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <!-- ระบบ mod ฝั่งเกม (24 ส.ค. 2026) — ดู ClientModLoader.cs / client-mod-sdk/ -->
+    <ProjectReference Include="..\client-mod-sdk\DurangoClientModSdk.csproj" />
+  </ItemGroup>
 </Project>

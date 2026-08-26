@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
@@ -221,6 +221,57 @@ public static class Program
             return;
         }
 
+        // --combat-skill-check [host] [port เกม] [port gateway] = เทสท่าต่อสู้ยึดจากสกิลที่เรียนจริง
+        if (args.Length >= 1 && args[0] == "--combat-skill-check")
+        {
+            string csh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int csp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int csgw = args.Length >= 4 ? int.Parse(args[3]) : csp - 1;
+            Environment.ExitCode = CombatSkillCheck.Run(csh, csp, csgw);
+            return;
+        }
+
+        // --quest-check [host] [port เกม] [port gateway] = เทสระบบเควส (สายสอนเล่น 8 ขั้น จบที่ต่อแพ)
+        if (args.Length >= 1 && args[0] == "--quest-check")
+        {
+            string qh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int qp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int qgw = args.Length >= 4 ? int.Parse(args[3]) : qp - 1;
+            Environment.ExitCode = QuestCheck.Run(qh, qp, qgw);
+            return;
+        }
+
+        // --farm-check [host] [port เกม] [port gateway] = เทสระบบปลูกผัก (ปลูก/รดน้ำ/ใส่ปุ๋ย/เก็บเกี่ยว)
+        if (args.Length >= 1 && args[0] == "--farm-check")
+        {
+            string fh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int fp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int fgw = args.Length >= 4 ? int.Parse(args[3]) : fp - 1;
+            Environment.ExitCode = FarmCheck.Run(fh, fp, fgw);
+            return;
+        }
+
+        // --farm-resume-check <setup|verify> = เทสว่ารีสตาร์ทเซิร์ฟแล้วผลผลิตไม่เกิดใหม่ (รัน 2 เฟส)
+        if (args.Length >= 1 && args[0] == "--farm-resume-check")
+        {
+            string ph = args.Length >= 2 ? args[1] : "setup";
+            string rh = args.Length >= 3 ? args[2] : "127.0.0.1";
+            int rp = args.Length >= 4 ? int.Parse(args[3]) : 8191;
+            int rgw = args.Length >= 5 ? int.Parse(args[4]) : rp - 1;
+            Environment.ExitCode = FarmCheck.RunResume(ph, rh, rp, rgw);
+            return;
+        }
+
+        // --vision-check [host] [port เกม] [port gateway] = เทสระยะการมองเห็น (เข้า/ออกจอ · ไม่ส่ง packet คนไกล)
+        if (args.Length >= 1 && args[0] == "--vision-check")
+        {
+            string vh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int vp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int vgw = args.Length >= 4 ? int.Parse(args[3]) : vp - 1;
+            Environment.ExitCode = VisionCheck.Run(vh, vp, vgw);
+            return;
+        }
+
         // --stat-check [host] [port เกม] [port gateway] = เทสค่าสถานะตัวละคร (8 ตัว · หลอดโตตามเลเวล · พลังอาวุธ/เกราะ)
         if (args.Length >= 1 && args[0] == "--stat-check")
         {
@@ -247,6 +298,33 @@ public static class Program
             int p = args.Length >= 3 ? int.Parse(args[2]) : 8191;
             int gw = args.Length >= 4 ? int.Parse(args[3]) : p - 1;
             Environment.ExitCode = CharacterSystemsCheck.Run(h, p, gw);
+            return;
+        }
+
+        if (args.Length >= 1 && args[0] == "--poi-check")
+        {
+            string h = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int p = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int gw = args.Length >= 4 ? int.Parse(args[3]) : p - 1;
+            Environment.ExitCode = PoiCheck.Run(h, p, gw);
+            return;
+        }
+
+        if (args.Length >= 1 && args[0] == "--create-check")
+        {
+            string h = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int p = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int gw = args.Length >= 4 ? int.Parse(args[3]) : p - 1;
+            Environment.ExitCode = CreateCharacterCheck.Run(h, p, gw);
+            return;
+        }
+
+        if (args.Length >= 1 && args[0] == "--recipe-check")
+        {
+            string h = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int p = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int gw = args.Length >= 4 ? int.Parse(args[3]) : p - 1;
+            Environment.ExitCode = RecipeCheck.Run(h, p, gw);
             return;
         }
 

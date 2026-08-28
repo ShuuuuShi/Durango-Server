@@ -68,7 +68,12 @@ public static class Program
         string publicHost = null;
         string islandId = null;         // Beta 1.1: โหมดหลายเกาะ
         bool recipeCheck = false;       // --recipe-check: ตรวจข้อมูลคราฟต์/ทำอาหารแล้วออก
+        bool modPackCheck = false;
         string modsDir = "mods";        // ระบบ mod: โฟลเดอร์ .dll (ดู ServerCore/Modding/PluginManager.cs)
+        bool requireMods = false;
+        bool allowUnknownOptionalMods = true;
+        bool requireModSignatures = false;
+        string modPublicKey = null;
         string clusterMode = "SingleMode";  // /entry ตอบ cluster_mode อะไร — --cluster-mode Online เพื่อเทสโหมดออนไลน์
         string adminToken = null;       // กัน /admin/* — ว่าง = ไม่ auth (ค่าเดิม เหมาะกับรันในเครื่อง/LAN เท่านั้น)
 
@@ -158,10 +163,25 @@ public static class Program
                 case "--recipe-check":
                     recipeCheck = true;
                     break;
+                case "--mod-pack-check":
+                    modPackCheck = true;
+                    break;
                 case "--mods":
                     // ระบบ mod: ระบุโฟลเดอร์ .dll เอง (default "mods" ข้าง ๆ exe) — ใส่ "" หรือโฟลเดอร์
                     // ที่ไม่มีจริงเพื่อปิด mod ทั้งหมดชั่วคราวโดยไม่ต้องย้ายไฟล์ออก
                     modsDir = args[++i];
+                    break;
+                case "--require-mods":
+                    requireMods = true;
+                    break;
+                case "--no-unknown-optional-mods":
+                    allowUnknownOptionalMods = false;
+                    break;
+                case "--require-mod-signatures":
+                    requireModSignatures = true;
+                    break;
+                case "--mod-public-key":
+                    modPublicKey = args[++i];
                     break;
                 case "--public-host":
                     // ที่อยู่ที่ client ใช้ต่อ TCP (พอร์ตเกม/แชท) — เช่น 127.0.0.1 เมื่อเล่น
@@ -239,6 +259,11 @@ public static class Program
             Environment.ExitCode = RecipeCheck.Run();
             return;
         }
+        if (modPackCheck)
+        {
+            Environment.ExitCode = ModPackCheck.Run(modsDir);
+            return;
+        }
 
         TerrainStore terrain;
         try
@@ -263,6 +288,11 @@ public static class Program
 
         GameServer gameServer = new GameServer(world);
         gameServer.RequireSessionToken = !insecureAuth;      // GP-12
+        gameServer.ModPolicy.RequireHello = requireMods;
+        gameServer.ModPolicy.AllowUnknownOptional = allowUnknownOptionalMods;
+        gameServer.ModPolicy.RequireSignatures = requireModSignatures;
+        gameServer.ModPolicy.TrustedPublicKey = modPublicKey;
+        Console.WriteLine($"[mods] negotiation={(requireMods ? "required" : "optional")} · unknown optional={(allowUnknownOptionalMods ? "allowed" : "rejected")} · signatures={(requireModSignatures ? "required" : "optional")}");
         Console.WriteLine($"[gameserver] เพดาน connection {GameServer.MaxConnections} เส้น (จาก IP เดียวกัน {GameServer.MaxConnectionsPerIp})");
         Console.WriteLine(GameServer.RegionRole == Shared.Region.Role.Sandbox || GameServer.RegionRole == Shared.Region.Role.Invalid
             ? $"[region] role={GameServer.RegionRole} — ปิดบทสนทนา NPC/ระบบสอนเล่น (เปลี่ยนด้วย --region-role Rural)"
@@ -323,13 +353,18 @@ public static class Program
         Gateway gateway;
         try
         {
-            gateway = new Gateway(gameServer, world, gatewayPort, assetBundleDir, radiotower.Port, publicHost, Path.Combine(dataDir, "reports"), clusterMode, adminToken);
+            // ข่าว/ประกาศบน DinoWorld Launcher อ่านจาก data/launcher_news.json (แก้ไฟล์ได้ตลอดไม่ต้อง restart)
+            Gateway.LauncherNewsPath = Path.Combine(dataDir, "launcher_news.json");
+            gateway = new Gateway(gameServer, world, gatewayPort, assetBundleDir,
+                enableRadiotower ? radiotower.Port : 0, publicHost, Path.Combine(dataDir, "reports"), clusterMode, adminToken);
             Console.WriteLine($"[gateway] listening on {gateway.BindPrefix} (UDP knock: {gatewayPort + 1})");
         }
         catch (Exception e)
         {
             Console.WriteLine("[fatal] gateway start failed: " + e.Message);
             Console.WriteLine("  hint: run as Administrator or free the port first");
+            try { if (enableRadiotower) radiotower.Close(); } catch (Exception) { }
+            try { gameServer.Close(); } catch (Exception) { }
             return;
         }
 
@@ -355,8 +390,10 @@ public static class Program
             e.Cancel = true;                 // ขอจัดการเอง อย่าเพิ่งฆ่า process
             Console.WriteLine();
             Console.WriteLine("[save] กำลังปิดเซิร์ฟ — เซฟทุกอย่างก่อน...");
+            PluginManager.Instance?.DisableAll();
             int n = world.SaveAll(force: true);
-            Console.WriteLine($"[save] เขียนไป {n} ไฟล์ ปิดเรียบร้อย");
+            bool modsOk = PluginManager.Instance?.FlushStorage() ?? true;
+            Console.WriteLine($"[save] เขียนไป {n} ไฟล์ + mod storage {(modsOk ? "ครบ" : "มีบางตัวล้มเหลว")} ปิดเรียบร้อย");
             Environment.Exit(0);
         };
 
@@ -411,25 +448,28 @@ public static class Program
                 }
 
                 // แก้ config.json ระหว่างเซิร์ฟรันแล้วมีผลทันที (ตรวจไฟล์ทุก 5 วินาที)
-                ServerConfig.Tick(now / 1000.0);
+                SafeProcess("config-reload", () => ServerConfig.Tick(now / 1000.0));
 
                 // ระบบ mod: เรียกทุก tick จริง (~120/วิ) — mod เขียนงานหนักเองระวังด้วย
-                double modsDt = (now - lastModsTickAt) / 1000.0;
+                double modsDt = Math.Min(0.25, Math.Max(0.0, (now - lastModsTickAt) / 1000.0));
                 lastModsTickAt = now;
                 SafeProcess("mods-tick", () => PluginManager.Instance?.FireTick(modsDt));
 
                 // เลือด/สตามินา/ความล้า — ต้องเดินต่อแม้ผู้เล่นไม่ได้ทำอะไร
                 // (ล้าเต็มแล้วเลือดไหลลงจนตายได้ ต้องมีคนคอยนับให้)
-                world.TickSurvival(Durango.Utils.Times.UnixTimeNow());
+                SafeProcess("survival", () => world.TickSurvival(Durango.Utils.Times.UnixTimeNow()));
 
                 if (AutoSaveIntervalSeconds > 0 && now - lastSaveAt >= AutoSaveIntervalSeconds * 1000.0)
                 {
                     lastSaveAt = now;
-                    int n = world.SaveAll();     // GP-07 — ข้ามถ้าไม่มีอะไรเปลี่ยน
-                    if (n > 0)
+                    SafeProcess("autosave", () =>
                     {
-                        Console.WriteLine($"[save] autosave {n} ไฟล์");
-                    }
+                        int n = world.SaveAll();
+                        if (n > 0)
+                        {
+                            Console.WriteLine($"[save] autosave {n} ไฟล์");
+                        }
+                    });
                 }
 
                 if (StatsIntervalSeconds > 0 && now - lastReportAt >= StatsIntervalSeconds * 1000.0)
@@ -456,6 +496,11 @@ public static class Program
         }
         finally
         {
+            try { PluginManager.Instance?.DisableAll(); } catch (Exception e) { Console.WriteLine($"[shutdown] mod disable failed: {e.Message}"); }
+            try { PluginManager.Instance?.FlushStorage(); } catch (Exception e) { Console.WriteLine($"[shutdown] mod storage flush failed: {e.Message}"); }
+            try { gateway.Close(); } catch (Exception e) { Console.WriteLine($"[shutdown] gateway ปิดไม่สำเร็จ: {e.Message}"); }
+            try { if (enableRadiotower) radiotower.Close(); } catch (Exception e) { Console.WriteLine($"[shutdown] radiotower ปิดไม่สำเร็จ: {e.Message}"); }
+            try { gameServer.Close(); } catch (Exception e) { Console.WriteLine($"[shutdown] gameserver ปิดไม่สำเร็จ: {e.Message}"); }
             if (hiResTimer)
             {
                 TimeEndPeriod(1);

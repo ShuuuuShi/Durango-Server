@@ -347,6 +347,82 @@ public static class Program
             return;
         }
 
+        // --building-economy-check = เทส building material economy (deposit, build, destruct/refund)
+        if (args.Length >= 1 && args[0] == "--building-economy-check")
+        {
+            string bh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int bp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int bgw = args.Length >= 4 ? int.Parse(args[3]) : bp - 1;
+            Environment.ExitCode = BuildingEconomyCheck.Run(bh, bp, bgw);
+            return;
+        }
+
+        // --blueprint-requirements-check = ตรวจ generated requirement data โดยไม่ต้องเปิด server
+        if (args.Length >= 1 && args[0] == "--blueprint-requirements-check")
+        {
+            Environment.ExitCode = BlueprintRequirementsCheck.Run();
+            return;
+        }
+
+        if (args.Length >= 1 && args[0] == "--storage-workbench-check")
+        {
+            string sh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int sp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int sgw = args.Length >= 4 ? int.Parse(args[3]) : sp - 1;
+            Environment.ExitCode = StorageWorkbenchCheck.Run(sh, sp, sgw);
+            return;
+        }
+
+        // --world-persistence-check = ตรวจ WorldSave roundtrip สำหรับ artifact materials + boxes
+        if (args.Length >= 1 && args[0] == "--world-persistence-check")
+        {
+            Environment.ExitCode = WorldPersistenceCheck.Run();
+            return;
+        }
+
+        if (args.Length >= 1 && args[0] == "--restart-persistence-check")
+        {
+            Environment.ExitCode = RestartPersistenceCheck.Run();
+            return;
+        }
+
+        // --warp-accelerator-gate-check = เทสว่า accelerator packet ถูกปิดก่อนเข้า manager
+        if (args.Length >= 1 && args[0] == "--warp-accelerator-gate-check")
+        {
+            string wh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int wp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int wgw = args.Length >= 4 ? int.Parse(args[3]) : wp - 1;
+            Environment.ExitCode = WarpAcceleratorGateCheck.Run(wh, wp, wgw);
+            return;
+        }
+
+        // --island-travel-gate-check = เทสว่า packet เดินทางถูกปิดก่อนเปลี่ยน state
+        if (args.Length >= 1 && args[0] == "--island-travel-gate-check")
+        {
+            string ih = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int ip = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int igw = args.Length >= 4 ? int.Parse(args[3]) : ip - 1;
+            Environment.ExitCode = IslandTravelGateCheck.Run(ih, ip, igw);
+            return;
+        }
+
+        // --party-gate-check = เทสว่า packet ปาร์ตี้ถูกปิดก่อนเปลี่ยน state (GetParty ตอบว่างเสมอ)
+        if (args.Length >= 1 && args[0] == "--party-gate-check")
+        {
+            string ph = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int pp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int pgw = args.Length >= 4 ? int.Parse(args[3]) : pp - 1;
+            Environment.ExitCode = PartyGateCheck.Run(ph, pp, pgw);
+            return;
+        }
+
+        // --save-check = เทส schema migration, quarantine และ .tmp recovery โดยไม่ต้องเปิด server
+        if (args.Length >= 1 && args[0] == "--save-check")
+        {
+            Environment.ExitCode = SaveStoreCheck.Run();
+            return;
+        }
+
         // --tool-check [host] [port เกม] [port gateway] = เทสความทนทานเครื่องมือ (สึก/พัง/ใช้ต่อไม่ได้)
         if (args.Length >= 1 && args[0] == "--tool-check")
         {

@@ -14,6 +14,33 @@ namespace DurangoServer.Core;
 /// </summary>
 public static class ArtifactFactory
 {
+    // Slot-based blueprints do not have a single `default_look` in the game
+    // data.  They still need a deterministic first-pass display when the
+    // server announces an artifact; otherwise the client creates the entity
+    // but receives no Parts and renders an empty construction.
+    private static readonly Dictionary<string, Dictionary<string, string>> DefaultSlotLooks =
+        new Dictionary<string, Dictionary<string, string>>(StringComparer.Ordinal)
+        {
+            { "fur_table", new Dictionary<string, string> { ["main"] = "worktable_01_wood" } },
+            { "fur_table_01", new Dictionary<string, string> { ["main"] = "worktable_02_wood" } },
+            { "fur_table_02", new Dictionary<string, string> { ["main"] = "worktable_03_wood" } },
+            { "fur_table_03", new Dictionary<string, string> { ["main"] = "worktable_04_wood" } },
+            { "fur_table_05", new Dictionary<string, string> { ["main"] = "worktable_05_wood" } },
+            { "fur_table_gem_01_wood", new Dictionary<string, string> { ["main"] = "worktable_gem_01_wood" } },
+            { "temptent", new Dictionary<string, string>
+                {
+                    ["main"] = "temptent_pillar_wood",
+                    ["roof"] = "temptent_roof_leaf"
+                }
+            },
+            { "tent", new Dictionary<string, string>
+                {
+                    ["main"] = "tent_pillar_wood",
+                    ["roof"] = "tent_roof_straw"
+                }
+            }
+        };
+
     public static AppearArtifact Make(
         string founderEntityId,
         string entityId,
@@ -41,6 +68,14 @@ public static class ArtifactFactory
                 burnable = Array.IndexOf(comps, "Burnable") != -1;
             }
             parts["common"] = burnable ? defaultLook + "_burning" : defaultLook;
+        }
+        if (!string.IsNullOrEmpty(blueprintId)
+            && DefaultSlotLooks.TryGetValue(blueprintId, out Dictionary<string, string> slotLooks))
+        {
+            foreach (KeyValuePair<string, string> slot in slotLooks)
+            {
+                parts[slot.Key] = slot.Value;
+            }
         }
         return new AppearArtifact
         {

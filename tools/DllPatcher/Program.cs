@@ -599,6 +599,356 @@ class Patcher
         Console.WriteLine($"patched MenuSystem.IsHiddenMenu — ซ่อน {hidden.Length} เมนูที่ยังไม่ได้ทำ");
     }
 
+    // After a gateway is entered from Main -> Visit Friend's Island, the old
+    // client keeps the previous account cache. Refresh it before the title
+    // state tries to create the login session; otherwise it reports 400 even
+    // though knock/admission/entry all succeeded.
+    static void PatchForceSetClustersAccountRefresh()
+    {
+        TypeDef title = module.Find("Durango.UI.TitleMenuUserControlBase", false);
+        MethodDef force = title?.FindMethod("ForceSetClusters");
+        MethodDef update = title?.FindMethod("UpdateServerAndPlayerInfo");
+        if (force == null || !force.HasBody || update == null || !update.HasBody)
+        {
+            Console.WriteLine("WARN: ForceSetClusters/UpdateServerAndPlayerInfo not found");
+            return;
+        }
+
+        for (int i = 0; i < force.Body.Instructions.Count; i++)
+        {
+            if (force.Body.Instructions[i].OpCode == OpCodes.Call &&
+                force.Body.Instructions[i].Operand is IMethod called &&
+                called.Name == "UpdateServerAndPlayerInfo")
+            {
+                Console.WriteLine("ForceSetClusters account refresh already present");
+                return;
+            }
+        }
+
+        Instruction ret = force.Body.Instructions.LastOrDefault(x => x.OpCode == OpCodes.Ret);
+        if (ret == null)
+        {
+            Console.WriteLine("WARN: ForceSetClusters has no return");
+            return;
+        }
+        int at = force.Body.Instructions.IndexOf(ret);
+        force.Body.Instructions.Insert(at++, OpCodes.Ldarg_0.ToInstruction());
+        if (update.Parameters.Count > 1)
+        {
+            force.Body.Instructions.Insert(at++, OpCodes.Ldc_I4_0.ToInstruction());
+        }
+        force.Body.Instructions.Insert(at, OpCodes.Call.ToInstruction(update));
+        force.Body.SimplifyBranches();
+        force.Body.OptimizeBranches();
+        Console.WriteLine("patched TitleMenuUserControlBase.ForceSetClusters account refresh");
+    }
+
+    static void PatchStaleAutoConnectTarget()
+    {
+        TypeDef server = module.Find("Durango.Offline.Server", false);
+        if (server == null)
+        {
+            Console.WriteLine("WARN: Durango.Offline.Server not found for auto-connect cleanup");
+            return;
+        }
+        int replaced = 0;
+        foreach (MethodDef method in server.Methods)
+        {
+            if (method.Name != ".cctor" || !method.HasBody)
+            {
+                continue;
+            }
+            foreach (Instruction instr in method.Body.Instructions)
+            {
+                if (instr.OpCode == OpCodes.Ldstr && string.Equals(instr.Operand as string, "192.168.1.34", StringComparison.Ordinal))
+                {
+                    instr.Operand = string.Empty;
+                    replaced++;
+                }
+            }
+        }
+        Console.WriteLine(replaced > 0
+            ? "patched stale Durango.Offline.Server auto-connect target to empty"
+            : "stale auto-connect target already clean");
+    }
+
+    // The retail DLL creates the Online Server (For Test) entry, but its
+    // confirmation callback only starts the embedded island.  Route that one
+    // entry through the same server-backed ConnectTo path used by the source.
+    static void PatchOnlineServerMenuRoute()
+    {
+        TypeDef closure = module.Find("Durango.Offline.Server/<>c__DisplayClass21_0", false);
+        MethodDef confirm = closure?.Methods.FirstOrDefault(m => m.Name.Contains("b__2") && m.HasBody);
+        TypeDef serverType = module.Find("Durango.Offline.Server", false);
+        MethodDef connectTo = serverType?.FindMethod("ConnectTo");
+        TypeDef preferences = module.Find("Preferences", false);
+        MethodDef getString = preferences?.Methods.FirstOrDefault(m => m.Name == "GetString" && m.Parameters.Count == 3);
+        FieldDef keyField = closure?.FindField("key");
+        if (confirm == null || connectTo == null || getString == null || keyField == null)
+        {
+            Console.WriteLine("WARN: Online Server menu patch targets not found");
+            return;
+        }
+        if (confirm.Body.Instructions.Any(i => i.Operand is IMethod called && called.Name == "ConnectTo"))
+        {
+            Console.WriteLine("Online Server menu route already patched");
+            return;
+        }
+
+        TypeRef strType = new TypeRefUser(module, "System", "String", module.CorLibTypes.AssemblyRef);
+        MemberRef equals = new MemberRefUser(module, "op_Equality",
+            MethodSig.CreateStatic(module.CorLibTypes.Boolean, module.CorLibTypes.String, module.CorLibTypes.String), strType);
+        MemberRef isNullOrEmpty = new MemberRefUser(module, "IsNullOrEmpty",
+            MethodSig.CreateStatic(module.CorLibTypes.Boolean, module.CorLibTypes.String), strType);
+        confirm.Body.InitLocals = true;
+        Local ipLocal = new Local(module.CorLibTypes.String);
+        confirm.Body.Variables.Add(ipLocal);
+        Instruction ret = confirm.Body.Instructions.LastOrDefault(i => i.OpCode == OpCodes.Ret);
+        int at = confirm.Body.Instructions.IndexOf(ret);
+        Instruction skip = ret;
+        Instruction connectLabel = OpCodes.Ldloc.ToInstruction(ipLocal);
+        var ins = new[]
+        {
+            OpCodes.Ldarg_0.ToInstruction(),
+            OpCodes.Ldfld.ToInstruction(keyField),
+            OpCodes.Ldstr.ToInstruction("online"),
+            OpCodes.Call.ToInstruction(equals),
+            OpCodes.Brfalse.ToInstruction(skip),
+            OpCodes.Ldstr.ToInstruction("last_connect_ip"),
+            OpCodes.Ldstr.ToInstruction("127.0.0.1"),
+            OpCodes.Ldc_I4_0.ToInstruction(),
+            OpCodes.Call.ToInstruction(getString),
+            OpCodes.Stloc.ToInstruction(ipLocal),
+            OpCodes.Ldloc.ToInstruction(ipLocal),
+            OpCodes.Call.ToInstruction(isNullOrEmpty),
+            OpCodes.Brfalse.ToInstruction(connectLabel),
+            OpCodes.Ldstr.ToInstruction("127.0.0.1"),
+            OpCodes.Stloc.ToInstruction(ipLocal),
+            connectLabel,
+            OpCodes.Call.ToInstruction(connectTo),
+        };
+        for (int i = 0; i < ins.Length; i++)
+        {
+            confirm.Body.Instructions.Insert(at + i, ins[i]);
+        }
+        confirm.Body.SimplifyBranches();
+        confirm.Body.OptimizeBranches();
+        confirm.Body.KeepOldMaxStack = false;
+        Console.WriteLine("patched Online Server (For Test) menu route to external gateway");
+    }
+
+    static void PatchOnlineServerDisplayName()
+    {
+        int replaced = 0;
+        TypeDef iterator = module.Find("Durango.Offline.Servers/<GetServers>d__0", false);
+        MethodDef moveNext = iterator?.FindMethod("MoveNext");
+        if (moveNext?.HasBody == true)
+        {
+            foreach (Instruction instr in moveNext.Body.Instructions)
+            {
+                if (instr.OpCode == OpCodes.Ldstr && string.Equals(instr.Operand as string, "Online Server (For Test)", StringComparison.Ordinal))
+                {
+                    instr.Operand = "[C2185B]Dinoworld Server[-]";
+                    replaced++;
+                }
+            }
+        }
+        Console.WriteLine(replaced > 0
+            ? "patched Online Server display name to dark-pink Dinoworld Server"
+            : "Online Server display name already patched or not found");
+    }
+
+    static void PatchForceMobileUI()
+    {
+        TypeDef platformPc = module.Find("Durango.System.Platform_PC", false);
+        MethodDef getter = platformPc?.FindMethod("get_UsePCUI");
+        if (getter?.HasBody != true)
+        {
+            Console.WriteLine("WARN: Platform_PC.get_UsePCUI not found");
+            return;
+        }
+
+        getter.Body.Instructions.Clear();
+        getter.Body.ExceptionHandlers.Clear();
+        getter.Body.Variables.Clear();
+        getter.Body.InitLocals = false;
+        getter.Body.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
+        getter.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
+        getter.Body.KeepOldMaxStack = false;
+        Console.WriteLine("patched Platform_PC.UsePCUI to force Mobile UI");
+    }
+
+    static void PatchTitleUiToPc()
+    {
+        TypeDef prefabMap = module.Find("UIPrefabMap", false);
+        MethodDef getTitle = prefabMap?.FindMethod("GetTitle");
+        FieldDef titlePc = prefabMap?.FindField("_titlePC");
+        if (getTitle?.HasBody != true || titlePc == null)
+        {
+            Console.WriteLine($"WARN: UIPrefabMap.GetTitle PC target not found (method={getTitle != null}, field={titlePc != null})");
+            return;
+        }
+
+        getTitle.Body.Instructions.Clear();
+        getTitle.Body.ExceptionHandlers.Clear();
+        getTitle.Body.Variables.Clear();
+        getTitle.Body.InitLocals = false;
+        getTitle.Body.Instructions.Add(OpCodes.Ldarg_0.ToInstruction());
+        getTitle.Body.Instructions.Add(OpCodes.Ldfld.ToInstruction(titlePc));
+        getTitle.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
+        getTitle.Body.KeepOldMaxStack = false;
+        Console.WriteLine("patched title/Main UI to use PC buttons while gameplay stays Mobile UI");
+    }
+
+    static void PatchMobileClickToWalk()
+    {
+        TypeDef playerController = module.Find("PlayerController", false);
+        MethodDef onAwake = playerController?.FindMethod("OnAwake");
+        if (onAwake?.HasBody != true)
+        {
+            Console.WriteLine("WARN: PlayerController.OnAwake not found");
+            return;
+        }
+
+        var instructions = onAwake.Body.Instructions;
+        for (int i = 0; i < instructions.Count - 2; i++)
+        {
+            if (instructions[i].OpCode != OpCodes.Call ||
+                instructions[i].Operand is not IMethod instanceCall ||
+                instanceCall.Name != "get_Instance" ||
+                instructions[i + 1].OpCode != OpCodes.Callvirt ||
+                instructions[i + 1].Operand is not IMethod uiModeCall ||
+                uiModeCall.Name != "get_UsePCUI" ||
+                instructions[i + 2].OpCode.Code is not Code.Brfalse and not Code.Brfalse_S)
+            {
+                continue;
+            }
+
+            instructions.RemoveAt(i + 2);
+            instructions.RemoveAt(i + 1);
+            instructions.RemoveAt(i);
+            onAwake.Body.SimplifyBranches();
+            onAwake.Body.OptimizeBranches();
+            onAwake.Body.KeepOldMaxStack = false;
+            Console.WriteLine("enabled mobile click-to-walk handler");
+            return;
+        }
+
+        bool alreadyEnabled = instructions.Count(i =>
+            i.OpCode == OpCodes.Callvirt &&
+            i.Operand is IMethod called &&
+            called.Name == "On") >= 2;
+        Console.WriteLine(alreadyEnabled
+            ? "mobile click-to-walk handler already enabled"
+            : "WARN: PlayerController.OnAwake mobile handler branch not found");
+    }
+
+    static void PatchDisableCraftLayout()
+    {
+        TypeDef craftScreen = module.Find("CraftScreen", false);
+        MethodDef getter = craftScreen?.FindMethod("get_Enabled");
+        if (getter?.HasBody != true)
+        {
+            Console.WriteLine("WARN: CraftScreen.get_Enabled not found");
+            return;
+        }
+
+        getter.Body.Instructions.Clear();
+        getter.Body.ExceptionHandlers.Clear();
+        getter.Body.Variables.Clear();
+        getter.Body.InitLocals = false;
+        getter.Body.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
+        getter.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
+        getter.Body.KeepOldMaxStack = false;
+        Console.WriteLine("disabled CraftScreen custom layout and hot-reload path");
+    }
+
+    static void PatchOnlineServerAccountLookup()
+    {
+        TypeDef server = module.Find("Durango.Offline.Server", false);
+        TypeDef cluster = module.Find("Durango.Logic.Clusters.Cluster", false);
+        MethodDef ctor = server?.Methods.FirstOrDefault(m => m.Name == ".ctor" && m.HasBody);
+        MethodDef getCluster = server?.FindMethod("get_Cluster");
+        MethodDef setAccount = cluster?.Methods.FirstOrDefault(m => m.Name == "set_OnRequestAccount");
+        FieldDef gateway = cluster?.Fields.FirstOrDefault(f => f.Name == "GatewayUrlRoot");
+        TypeDef closure = module.Find("Durango.Offline.Server/<>c__DisplayClass21_0", false);
+        FieldDef keyField = closure?.FindField("key");
+        if (ctor == null || getCluster == null || setAccount == null || gateway == null || keyField == null)
+        {
+            Console.WriteLine($"WARN: Online Server account lookup patch targets not found (ctor={ctor != null}, get={getCluster != null}, set={setAccount != null}, gateway={gateway != null}, key={keyField != null})");
+            return;
+        }
+        if (ctor.Body.Instructions.Any(i => i.OpCode == OpCodes.Ldstr && string.Equals(i.Operand as string, "http://127.0.0.1:8190", StringComparison.Ordinal)))
+        {
+            Console.WriteLine("Online Server account lookup already patched");
+            return;
+        }
+        TypeRef strType = new TypeRefUser(module, "System", "String", module.CorLibTypes.AssemblyRef);
+        MemberRef equals = new MemberRefUser(module, "op_Equality",
+            MethodSig.CreateStatic(module.CorLibTypes.Boolean, module.CorLibTypes.String, module.CorLibTypes.String), strType);
+        Instruction skip = OpCodes.Nop.ToInstruction();
+        Instruction setter = ctor.Body.Instructions.FirstOrDefault(i => i.OpCode == OpCodes.Callvirt && i.Operand is IMethod called && called.Name == "set_OnRequestAccount");
+        if (setter == null)
+        {
+            Console.WriteLine("WARN: Server constructor account setter not found");
+            return;
+        }
+        int at = ctor.Body.Instructions.IndexOf(setter) + 1;
+        var ins = new[]
+        {
+            OpCodes.Ldloc_0.ToInstruction(),
+            OpCodes.Ldfld.ToInstruction(keyField),
+            OpCodes.Ldstr.ToInstruction("online"),
+            OpCodes.Call.ToInstruction(equals),
+            OpCodes.Brfalse.ToInstruction(skip),
+            OpCodes.Ldarg_0.ToInstruction(),
+            OpCodes.Call.ToInstruction(getCluster),
+            OpCodes.Ldstr.ToInstruction("http://127.0.0.1:8190"),
+            OpCodes.Stfld.ToInstruction(gateway),
+            OpCodes.Ldarg_0.ToInstruction(),
+            OpCodes.Call.ToInstruction(getCluster),
+            OpCodes.Ldnull.ToInstruction(),
+            OpCodes.Callvirt.ToInstruction(setAccount),
+            skip,
+        };
+        for (int i = 0; i < ins.Length; i++)
+        {
+            ctor.Body.Instructions.Insert(at + i, ins[i]);
+        }
+        ctor.Body.SimplifyBranches();
+        ctor.Body.OptimizeBranches();
+        Console.WriteLine("patched Online Server account lookup to external gateway");
+    }
+
+    static void DumpMethods(string typeName, string namePart)
+    {
+        TypeDef type = module.Find(typeName, false);
+        if (type == null)
+        {
+            Console.WriteLine("WARN: type not found: " + typeName);
+            return;
+        }
+        foreach (MethodDef method in type.Methods)
+        {
+            if (!method.HasBody || (namePart != "*" && !method.Name.String.Contains(namePart, StringComparison.OrdinalIgnoreCase)))
+            {
+                continue;
+            }
+            Console.WriteLine("METHOD " + method.FullName);
+            foreach (Instruction instr in method.Body.Instructions)
+            {
+                string operand = instr.Operand switch
+                {
+                    null => "",
+                    IMethod m => m.FullName,
+                    IField f => f.FullName,
+                    _ => instr.Operand.ToString()
+                };
+                Console.WriteLine($"  {instr.Offset:X4}: {instr.OpCode.Name,-12} {operand}");
+            }
+        }
+    }
+
     static void Main(string[] args)
     {
         string dllPath = args[0];
@@ -607,6 +957,12 @@ class Patcher
         bool minimal = args.Length > 1 && args[1] == "--autoconnect-only";
 
         module = ModuleDefMD.Load(dllPath);
+
+        if (args.Length > 1 && args[1] == "--dump")
+        {
+            DumpMethods(args.Length > 2 ? args[2] : "Durango.Offline.Server", args.Length > 3 ? args[3] : "*");
+            return;
+        }
 
         if (minimal)
         {
@@ -632,6 +988,15 @@ class Patcher
         PatchAutoConnect();
         PatchServerAnimalSpawn();
         PatchHideUnimplementedMenus();
+        PatchForceSetClustersAccountRefresh();
+        PatchStaleAutoConnectTarget();
+        PatchOnlineServerMenuRoute();
+        PatchOnlineServerDisplayName();
+        PatchForceMobileUI();
+        PatchTitleUiToPc();
+        PatchMobileClickToWalk();
+        PatchDisableCraftLayout();
+        PatchOnlineServerAccountLookup();
 
         MethodDef helper = AddIslandPortHelper();
 

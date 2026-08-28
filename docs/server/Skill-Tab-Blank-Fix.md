@@ -6,7 +6,7 @@
 
 ภาพที่เจ้าของถ่ายตอนเจอบั๊ก (โหมด online):
 
-![แท็บสกิลว่าง โผล่แค่ tile กรอบเหลือง](shots/skill-tab-bug-online.png)
+[ภาพแท็บสกิลจากรอบตรวจนี้ไม่ได้รวมอยู่ใน repository]
 
 ## ไล่บั๊ก
 
@@ -80,6 +80,6 @@
 
 ## อ้างอิง
 
-- รายงานบั๊กเต็ม: `docs/bug-report-memorybot-beta.md` หัวข้อ H3
+- รายงานบั๊กเต็ม: `docs/reports/bug-report-memorybot-beta.md` หัวข้อ H3
 - `HANDOFF.md` — หัวข้อ "แก้บั๊กแท็บสกิลว่างในโหมด online" (26 ส.ค. 2026)
 - ภาพ MemoryBot ตอนเทสระบบสกิล (แยกเซสชัน แต่ยืนยันว่าเข้าเกมได้ปกติในตอนนั้น): `shots/main-scene-memorybot-check.png`

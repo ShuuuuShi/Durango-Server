@@ -25,11 +25,34 @@ namespace Durango.Modding
 
         /// <summary>ตัวละครของผู้เล่นเอง — null ถ้ายังไม่เข้าเกาะ (เช็คก่อนใช้เสมอ หรือรอ OnGameReady ก่อน)</summary>
         IClientPlayer LocalPlayer { get; }
+
+        /// <summary>[V1.1] เรียกทุกเฟรม (Time.deltaTime = วินาทีจากเฟรมก่อน) — วิ่งบน __ClientModDriver
+        /// ที่ DontDestroyOnLoad จึงไม่หายตอนเปลี่ยน scene; ห้ามทำงานหนักทุกเฟรม (จ่ายงานให้โคโรูทีนฯ)</summary>
+        void OnUpdate(Action<float> handler);
     }
 
     public interface IClientPlayer
     {
         string Name { get; }
         Vector3 Position { get; }
+    }
+
+    /// <summary>Optional identity used by the M5 multiplayer mod handshake.</summary>
+    public interface IClientModIdentity
+    {
+        string Id { get; }
+        string ApiVersion { get; }
+        string Version { get; }
+        string Signature { get; }
+        string PublicKey { get; }
+    }
+
+    /// <summary>Optional M4 presentation/asset capability. Cast IClientModApi to this interface.</summary>
+    public interface IClientPresentationApi
+    {
+        bool RegisterSceneHook(string sceneName, Action onLoaded);
+        bool RegisterHud(string id, Action draw);
+        bool ValidateAsset(string relativePath, string sha256);
+        bool ValidateAssetManifest(string relativePath);
     }
 }

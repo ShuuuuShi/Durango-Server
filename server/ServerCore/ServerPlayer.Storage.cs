@@ -25,10 +25,8 @@ public partial class ServerPlayer
         }
 
         string boxId = msg.Target.Value.EntityId;
-        if (!_world.IsStorage(boxId))
+        if (!CanUseBox(boxId, header))
         {
-            Console.WriteLine("[storage] {0} ขอดูของใน {1} ที่ไม่ใช่กล่อง", Name, boxId);
-            Send(default(Abort), header.Seq);
             return;
         }
         SendBoxInventory(boxId, header.Seq);

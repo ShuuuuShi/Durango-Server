@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
+using System.Threading;
 using Durango.Network;
 using Durango.Utils;
 using Snappier;
@@ -24,11 +26,16 @@ public class Connection
 
 	private bool _prevConnected;
 
-	private bool _receiveCompleted;
+	private volatile bool _receiveCompleted;
 
-	private bool _sendCompleted = true;
+	private volatile bool _sendCompleted = true;
 
 	private int _sendBufferSize;
+	private byte[] _sendingBuffer;
+	private int _sendingOffset;
+	private int _sendingSize;
+	private readonly object _sendLock = new object();
+	private bool _closed;
 
 	private readonly byte[] _sendBuffer1 = new byte[BufferCapacity];
 
@@ -61,9 +68,13 @@ public class Connection
 	private readonly Dictionary<uint, PacketHandler> _packetHandlers = new Dictionary<uint, PacketHandler>();
 
 	private readonly Queue<Packet> _packetQueue = new Queue<Packet>();
+	private int _queuedPayloadBytes;
+	private const int MaxQueuedPackets = 2048;
+	private const int MaxQueuedPayloadBytes = 4 * 1024 * 1024;
+	private long _totalReceivedPackets;
 
 	/// <summary>M-6: จำนวน packet ที่รับมาทั้งหมดตั้งแต่เปิด connection (ใช้ทำ rate limit ฝั่ง server)</summary>
-	public int TotalReceivedPackets { get; private set; }
+	public int TotalReceivedPackets => (int)Math.Min(int.MaxValue, Interlocked.Read(ref _totalReceivedPackets));
 
 	private byte[] SendBuffer => (_sendBufferIndex != 0) ? _sendBuffer2 : _sendBuffer1;
 
@@ -84,64 +95,78 @@ public class Connection
 
 	public void Close()
 	{
+		Socket socket;
+		Action closed;
+		lock (_sendLock)
+		{
+			if (_closed)
+			{
+				return;
+			}
+			_closed = true;
+			socket = _sock;
+			_sock = null;
+			_sendBufferSize = 0;
+			_sendCompleted = true;
+			_willBeClosed = true;
+		}
 		try
 		{
-			if (_sock != null && _sock.Connected)
+			if (socket != null)
 			{
-				_sock.Shutdown(SocketShutdown.Both);
+				try { socket.Shutdown(SocketShutdown.Both); } catch (Exception) { }
+				socket.Close();
 			}
 		}
-		catch (Exception)
+		finally
 		{
-		}
-		_socketEventArg = null;
-		_socketReceiveEventArg = null;
-		_receiveCompleted = false;
-		_sendCompleted = true;
-		_sendBufferSize = 0;
-		_sendBufferIndex = 0;
-		_sequenceNumber = 1u;
-		_willBeClosed = false;
-		lock (_packetQueue)
-		{
-			_packetQueue.Clear();
-		}
-		if (_sock != null)
-		{
-			_sock.Close();
-			_prevConnected = false;
-			_sock = null;
-			if (this.ConnetionClosed != null)
+			lock (_packetQueue)
 			{
-				this.ConnetionClosed();
+				_packetQueue.Clear();
+				_queuedPayloadBytes = 0;
+			}
+			_receiveCompleted = false;
+			_prevConnected = false;
+			closed = ConnetionClosed;
+			if (closed != null)
+			{
+				try { closed(); } catch (Exception exception) { Debug.LogException(exception); }
 			}
 		}
 	}
 
 	public bool Connected()
 	{
-		return _sock != null && _sock.Connected;
+		Socket socket = _sock;
+		return !_closed && socket != null && socket.Connected;
 	}
 
 	public bool Send<T>(T msg, uint replyOf = 0u)
 	{
-		if (!Connected())
+		lock (_sendLock)
 		{
-			return false;
+			if (_closed || _sock == null || !_sock.Connected)
+			{
+				return false;
+			}
+			uint seq = _sequenceNumber++;
+			try
+			{
+				int num = Packet.SerializeMsg(Times.UnixTimeNow(), seq, replyOf, msg, SendBuffer, _sendBufferSize, _packingBuffer, _compressingBuffer, _messagePacker);
+				if (num <= 0 || num > BufferCapacity - _sendBufferSize)
+				{
+					throw new InvalidDataException($"Outbound packet exceeds buffer capacity: {num} bytes");
+				}
+				_sendBufferSize += num;
+			}
+			catch (Exception exception)
+			{
+				Debug.LogException(exception);
+				_willBeClosed = true;
+				return false;
+			}
+			return true;
 		}
-		uint seq = _sequenceNumber++;
-		try
-		{
-			int num = Packet.SerializeMsg(Times.UnixTimeNow(), seq, replyOf, msg, SendBuffer, _sendBufferSize, _packingBuffer, _compressingBuffer, _messagePacker);
-			_sendBufferSize += num;
-		}
-		catch (Exception exception)
-		{
-			Debug.LogException(exception);
-			Close();
-			return false;
-		}
-		return true;
 	}
 
 	public bool Recv<T>(MessageHandler<T> handler)
@@ -179,17 +204,48 @@ public class Connection
 
 	private void StartSend()
 	{
-		_sendCompleted = false;
-		if (_sock != null && _sock.Connected)
+		Socket socket;
+		SocketAsyncEventArgs args;
+		lock (_sendLock)
 		{
-			_socketEventArg.SetBuffer(SendBuffer, 0, _sendBufferSize);
-			bool flag = _sock.SendAsync(_socketEventArg);
-			_sendBufferIndex = (_sendBufferIndex + 1) % 2;
-			_sendBufferSize = 0;
-			if (!flag)
+			if (_closed || !_sendCompleted)
 			{
-				SendCompleted(_socketEventArg);
+				return;
 			}
+			socket = _sock;
+			args = _socketEventArg;
+			if (socket == null || args == null || !socket.Connected)
+			{
+				_willBeClosed = true;
+				return;
+			}
+			if (_sendingSize == 0)
+			{
+				if (_sendBufferSize <= 0)
+				{
+					return;
+				}
+				_sendingBuffer = SendBuffer;
+				_sendingOffset = 0;
+				_sendingSize = _sendBufferSize;
+				_sendBufferIndex = (_sendBufferIndex + 1) % 2;
+				_sendBufferSize = 0;
+			}
+			_sendCompleted = false;
+			args.SetBuffer(_sendingBuffer, _sendingOffset, _sendingSize);
+		}
+		try
+		{
+			if (!socket.SendAsync(args))
+			{
+				SendCompleted(args);
+			}
+		}
+		catch (Exception exception)
+		{
+			Debug.LogException(exception);
+			_willBeClosed = true;
+			_sendCompleted = true;
 		}
 	}
 
@@ -223,11 +279,28 @@ public class Connection
 
 	private void SendCompleted(SocketAsyncEventArgs e)
 	{
-		if (e.SocketError != SocketError.Success || e.BytesTransferred <= 0)
+		lock (_sendLock)
 		{
-			_willBeClosed = true;
+			if (e.SocketError != SocketError.Success || e.BytesTransferred <= 0)
+			{
+				_willBeClosed = true;
+				_sendingSize = 0;
+				_sendingOffset = 0;
+				_sendCompleted = true;
+				return;
+			}
+			if (e.BytesTransferred < _sendingSize)
+			{
+				_sendingOffset += e.BytesTransferred;
+				_sendingSize -= e.BytesTransferred;
+				_sendCompleted = true;
+				return;
+			}
+			_sendingBuffer = null;
+			_sendingOffset = 0;
+			_sendingSize = 0;
+			_sendCompleted = true;
 		}
-		_sendCompleted = true;
 	}
 
 	private void ReceiveCompleted(SocketAsyncEventArgs e)
@@ -255,30 +328,43 @@ public class Connection
 
 	private void ReceiveProcess(SocketAsyncEventArgs e)
 	{
+		if (e.BytesTransferred <= 0 || e.BytesTransferred > BufferCapacity - _receivedSize)
+		{
+			_willBeClosed = true;
+			return;
+		}
 		Buffer.BlockCopy(e.Buffer, e.Offset, _receivedBuffer, _receivedSize, e.BytesTransferred);
 		_receivedSize += e.BytesTransferred;
 		int num = 0;
 		int num2 = _receivedSize;
 		while (num2 > 0)
 		{
-			PacketHeader header = Packet.ReadPacketHeader(_receivedBuffer, num2, num);
-			int num3 = header.Size + header.PayloadSize;
-			if (header.Size == 0 || num2 < num3)
+			if (!Packet.TryReadPacketHeader(_receivedBuffer, num2, num, out PacketHeader header, out bool incomplete))
+			{
+				if (!incomplete)
+				{
+					_willBeClosed = true;
+				}
+				break;
+			}
+			int num3 = Packet.HeaderSize + header.PayloadSize;
+			if (num3 > num2)
 			{
 				break;
 			}
-			byte[] array = new byte[header.PayloadSize];
-			Buffer.BlockCopy(_receivedBuffer, num + header.Size, array, 0, header.PayloadSize);
-			TotalReceivedPackets++;      // M-6: ให้ server เอาไปทำ rate limit
-			Packet item = new Packet
-			{
-				Header = header,
-				Payload = array
-			};
 			lock (_packetQueue)
 			{
-				_packetQueue.Enqueue(item);
+				if (_packetQueue.Count >= MaxQueuedPackets || _queuedPayloadBytes > MaxQueuedPayloadBytes - header.PayloadSize)
+				{
+					_willBeClosed = true;
+					break;
+				}
+				byte[] array = new byte[header.PayloadSize];
+				Buffer.BlockCopy(_receivedBuffer, num + header.Size, array, 0, header.PayloadSize);
+				_packetQueue.Enqueue(new Packet { Header = header, Payload = array });
+				_queuedPayloadBytes += array.Length;
 			}
+			Interlocked.Increment(ref _totalReceivedPackets);
 			num += num3;
 			num2 -= num3;
 		}
@@ -309,7 +395,7 @@ public class Connection
 				Close();
 			}
 		}
-		if (_sendCompleted && _sendBufferSize > 0)
+		if (_sendCompleted && (_sendBufferSize > 0 || _sendingSize > 0))
 		{
 			try
 			{
@@ -344,6 +430,7 @@ public class Connection
 					break;
 				}
 				packet = _packetQueue.Dequeue();
+				_queuedPayloadBytes -= packet.Payload?.Length ?? 0;
 			}
 			processed++;
 			try

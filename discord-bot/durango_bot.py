@@ -182,11 +182,12 @@ class DurangoBot:
         channel_id = channel_id or (next(iter(CHANNELS_ANSWER), None))
         if not channel_id:
             log.error("no channel to send")
-            return
+            return False
         payload = json.dumps({"content": text}).encode("utf-8")
         url = "https://discord.com/api/v10/channels/%s/messages" % channel_id
         proc = await asyncio.create_subprocess_exec(
             "curl.exe", "-s", "-X", "POST",
+            "-w", "\nHTTP_STATUS:%{http_code}",
             "-H", "Authorization: Bot " + TOKEN,
             "-H", "Content-Type: application/json",
             "-d", "@-", url,
@@ -194,8 +195,18 @@ class DurangoBot:
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )
-        await proc.communicate(payload)
+        stdout, stderr = await proc.communicate(payload)
+        response = stdout.decode("utf-8", "replace")
+        match = re.search(r"HTTP_STATUS:(\d+)\s*$", response)
+        status = int(match.group(1)) if match else 0
+        if 200 <= status < 300:
+            log.info("discord send ok: channel=%s status=%s", channel_id, status)
+        else:
+            detail = response[:500].replace("\n", " | ")
+            err = stderr.decode("utf-8", "replace")[:300]
+            log.error("discord send failed: channel=%s status=%s response=%s stderr=%s", channel_id, status, detail, err)
         await asyncio.sleep(1.2)  # rate limit guard
+        return 200 <= status < 300
 
 
 async def main():
@@ -205,8 +216,11 @@ async def main():
             log.error("ยังไม่ได้ตั้งช่องประกาศ (announce) ใน config.json")
             return
         bot = DurangoBot()
-        await bot.send(text, CHANNEL_ANNOUNCE)
-        log.info("ประกาศแล้ว: %s", text[:60])
+        sent = await bot.send(text, CHANNEL_ANNOUNCE)
+        if sent:
+            log.info("ประกาศแล้ว: %s", text[:60])
+        else:
+            log.error("ประกาศไม่สำเร็จ: %s", text[:60])
         return
     load_brief()
     bot = DurangoBot()

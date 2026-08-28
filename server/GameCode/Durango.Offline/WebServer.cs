@@ -81,6 +81,8 @@ public class WebServer
 	private readonly Queue<HttpListenerContext> _contextQueue = new Queue<HttpListenerContext>();
 
 	private readonly LinkedList<KeyValuePair<HttpListenerContext, Response>> _responseList = new LinkedList<KeyValuePair<HttpListenerContext, Response>>();
+	private const int MaxRequestBodyBytes = 128 * 1024;
+	private const int MaxQueuedContexts = 256;
 
 	private readonly HttpListener _listener;
 
@@ -175,11 +177,16 @@ public class WebServer
 			if (_listener.IsListening)
 			{
 				HttpListenerContext item = _listener.EndGetContext(result);
-				lock (_contextQueue)
-				{
-					_contextQueue.Enqueue(item);
-					return;
-				}
+					lock (_contextQueue)
+					{
+						if (_contextQueue.Count >= MaxQueuedContexts)
+						{
+							try { item.Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable; item.Response.Close(); } catch (Exception) { }
+							return;
+						}
+						_contextQueue.Enqueue(item);
+						return;
+					}
 			}
 		}
 		catch (Exception)
@@ -241,22 +248,32 @@ public class WebServer
 
 	public void Process()
 	{
-		if (_contextQueue.Count != 0)
+		List<HttpListenerContext> pending = null;
+		lock (_contextQueue)
 		{
-			lock (_contextQueue)
+			if (_contextQueue.Count > 0)
 			{
-				while (_contextQueue.Count != 0)
+				pending = new List<HttpListenerContext>(_contextQueue.Count);
+				while (_contextQueue.Count > 0)
 				{
-					HttpListenerContext httpListenerContext = _contextQueue.Dequeue();
-					try
-					{
-						Response value = Process(httpListenerContext);
-						_responseList.AddLast(new KeyValuePair<HttpListenerContext, Response>(httpListenerContext, value));
-					}
-					catch (Exception ex)
-					{
-						Console.WriteLine("[web] route error: " + ex);
-					}
+					pending.Add(_contextQueue.Dequeue());
+				}
+			}
+		}
+		if (pending != null)
+		{
+			for (int i = 0; i < pending.Count; i++)
+			{
+				HttpListenerContext httpListenerContext = pending[i];
+				try
+				{
+					Response value = Process(httpListenerContext);
+					_responseList.AddLast(new KeyValuePair<HttpListenerContext, Response>(httpListenerContext, value));
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("[web] route error: " + ex);
+					try { httpListenerContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError; httpListenerContext.Response.Close(); } catch (Exception) { }
 				}
 			}
 		}
@@ -322,38 +339,41 @@ public class WebServer
 		{
 			dictionary = GetRoute;
 		}
-		else if (context.Request.HttpMethod.Equals("POST"))
-		{
-			if (context.Request.ContentType != null && context.Request.ContentType.IndexOf("application/x-www-form-urlencoded", StringComparison.Ordinal) == -1)
+			else if (context.Request.HttpMethod.Equals("POST"))
 			{
-				flag = true;
-			}
-			else
-			{
-				using StreamReader streamReader = new StreamReader(context.Request.InputStream);
-				string text = streamReader.ReadToEnd();
-				string[] array = text.Split(new char[1] { '&' }, StringSplitOptions.RemoveEmptyEntries);
-				if (array.Length > 0)
+				if (context.Request.ContentType != null && context.Request.ContentType.IndexOf("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase) == -1)
 				{
-					dictionary2 = new Dictionary<string, string>();
+					flag = true;
 				}
-				string[] array2 = array;
-				foreach (string text2 in array2)
+				else if (context.Request.ContentLength64 < 0 || context.Request.ContentLength64 > MaxRequestBodyBytes)
 				{
-					string[] array3 = text2.Split(new char[1] { '=' }, StringSplitOptions.RemoveEmptyEntries);
-					if (array3.Length == 2)
+					flag = true;
+				}
+				else
+				{
+					using StreamReader streamReader = new StreamReader(context.Request.InputStream);
+					char[] chars = new char[MaxRequestBodyBytes];
+					int read = 0;
+					while (read < chars.Length)
 					{
-						string key = Uri.UnescapeDataString(array3[0]);
-						string value = Uri.UnescapeDataString(array3[1].Replace("+", " "));
-						if (dictionary2 != null)
-						{
-							dictionary2[key] = value;
-						}
+						int n = streamReader.Read(chars, read, chars.Length - read);
+						if (n == 0) break;
+						read += n;
+					}
+					string text = new string(chars, 0, read);
+					string[] array = text.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+					if (array.Length > 0) dictionary2 = new Dictionary<string, string>();
+					foreach (string text2 in array)
+					{
+						int separator = text2.IndexOf('=');
+						if (separator <= 0) continue;
+						string key = Uri.UnescapeDataString(text2.Substring(0, separator));
+						string value = Uri.UnescapeDataString(text2.Substring(separator + 1).Replace("+", " "));
+						dictionary2[key] = value;
 					}
 				}
+				dictionary = PostRoute;
 			}
-			dictionary = PostRoute;
-		}
 		context.Response.Headers.Add(HttpResponseHeader.CacheControl, "no-cache, no-store, must-revalidate");
 		context.Response.Headers.Add("Pragma", "no-cache");
 		context.Response.Headers.Add(HttpResponseHeader.Expires, "0");

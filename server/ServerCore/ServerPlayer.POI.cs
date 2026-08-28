@@ -4,6 +4,8 @@ using Durango.Network;
 using Durango.Utils;
 using Messages;
 using Shared.System;
+using DurangoServer.Modding;
+using Shared.Building;
 
 namespace DurangoServer.Core;
 
@@ -116,48 +118,117 @@ public partial class ServerPlayer
     /// <summary>ExplorePOI — client บอกว่าเจอ POI แล้ว (เดินใกล้พอ) → บันทึก</summary>
     private void HandleExplorePOI(ExplorePOI msg, PacketHeader header)
     {
-        if (msg.Type != Shared.System.PointOfInterest.Invalid)
+        if (msg.Type == Shared.System.PointOfInterest.Invalid
+            || msg.Tile.x < 0 || msg.Tile.y < 0
+            || msg.Tile.x >= _world.Terrain.Width || msg.Tile.y >= _world.Terrain.Height
+            || !IsWithinReach(msg.Tile))
         {
-            _exploredPOIs[msg.Tile] = msg.Type;
-            MarkDirty();
+            Send(default(Abort), header.Seq);
+            return;
         }
+        bool found = false;
+        foreach (var poi in AllPOIs())
+        {
+            if (poi.Tile == msg.Tile && poi.Type == msg.Type)
+            {
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        {
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        _exploredPOIs[msg.Tile] = msg.Type;
+        MarkDirty();
         Send(default(OK), header.Seq);
     }
 
     // ───────────────────────── วาร์ป ─────────────────────────
 
-    /// <summary>Warp — วาร์ปผู้เล่นไปยัง tile ที่ระบุ</summary>
+    /// <summary>Warp — วาร์ปผู้เล่นไปยัง POI ที่ server ยืนยันแล้ว</summary>
     private void HandleWarp(Warp msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "Warp", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
+        if (msg.Tile.x < 0 || msg.Tile.y < 0
+            || msg.Tile.x >= _world.Terrain.Width || msg.Tile.y >= _world.Terrain.Height)
+        {
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        bool valid = false;
+        foreach (var poi in AllPOIs())
+        {
+            if (poi.Tile == msg.Tile && poi.Type == Shared.System.PointOfInterest.Warphole)
+            {
+                valid = true;
+                break;
+            }
+        }
+        if (!valid)
+        {
+            Send(default(Abort), header.Seq);
+            return;
+        }
         WorldPosition dest = new WorldPosition(msg.Tile.x * 200f, msg.Tile.y * 200f);
+        IModEventContext? travelBefore = PluginManager.Instance?.FireEvent("travel.leaving", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "warp", ["tile"] = msg.Tile.x + "," + msg.Tile.y });
+        if (travelBefore?.IsCancelled == true) { Send(default(Abort), header.Seq); return; }
         Console.WriteLine("[warp] {0} วาร์ปไป tile {1},{2}", Name, msg.Tile.x, msg.Tile.y);
         RememberPosition(dest, 0f);
         SendTeleport(dest, Shared.Teleport.TeleportType.WarpBack);
         Send(default(OK), header.Seq);
+        PluginManager.Instance?.FireEvent("travel.entered", this, false, true,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "warp", ["tile"] = msg.Tile.x + "," + msg.Tile.y });
     }
 
     /// <summary>WarpBack — วาร์ปกลับจุดเกิด</summary>
     private void HandleWarpBack(WarpBack msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "WarpBack", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
         WorldPosition dest = _world.GetEntryPosition();
+        IModEventContext? travelBackBefore = PluginManager.Instance?.FireEvent("travel.leaving", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "warp_back" });
+        if (travelBackBefore?.IsCancelled == true) { Send(default(Abort), header.Seq); return; }
         Console.WriteLine("[warp] {0} วาร์ปกลับจุดเกิด", Name);
         RememberPosition(dest, 0f);
         SendTeleport(dest, Shared.Teleport.TeleportType.WarpBack);
         Send(default(OK), header.Seq);
+        PluginManager.Instance?.FireEvent("travel.entered", this, false, true,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "warp_back" });
     }
 
     /// <summary>WarpToPort — วาร์ปไปท่าเรือ (หา dock ใกล้สุด ถ้าไม่มีไปจุดเกิด)</summary>
     private void HandleWarpToPort(WarpToPort msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "WarpToPort", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
         WorldPosition dest = FindNearestPOIPosition(Shared.System.PointOfInterest.Port);
         if (dest.x == 0f && dest.y == 0f)
         {
             dest = _world.GetEntryPosition();
         }
+        IModEventContext? travelPortBefore = PluginManager.Instance?.FireEvent("travel.leaving", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "port" });
+        if (travelPortBefore?.IsCancelled == true) { Send(default(Abort), header.Seq); return; }
         Console.WriteLine("[warp] {0} วาร์ปไปท่าเรือ ({1:F0},{2:F0})", Name, dest.x, dest.y);
         RememberPosition(dest, 0f);
         SendTeleport(dest, Shared.Teleport.TeleportType.WarpBack);
         Send(default(OK), header.Seq);
+        PluginManager.Instance?.FireEvent("travel.entered", this, false, true,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "port" });
     }
 
     /// <summary>
@@ -170,9 +241,18 @@ public partial class ServerPlayer
     /// </summary>
     private void HandleIsWarpholeAvailable(IsWarpholeAvailable msg, PacketHeader header)
     {
-        if (!_world.TryGetArtifactBlueprint(msg.EntityId, out string bp)
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "IsWarpholeAvailable", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
+        if (!_world.TryGetArtifact(msg.EntityId, out AppearArtifact artifact)
+            || artifact.Tile != msg.Tile
+            || (artifact.States.BuildingState != BuildingState.Built
+                && artifact.States.BuildingState != BuildingState.Completed)
+            || !_world.TryGetArtifactBlueprint(msg.EntityId, out string bp)
             || !BlueprintPOIType.TryGetValue(bp ?? "", out var poiType)
-            || (poiType != Shared.System.PointOfInterest.Warphole && poiType != Shared.System.PointOfInterest.CargoWarphole))
+            || poiType != Shared.System.PointOfInterest.Warphole)
         {
             Console.WriteLine("[warp] ปฏิเสธ {0}: {1} ไม่ใช่หลุมวาร์ปที่ใช้งานได้", Name, msg.EntityId);
             Send(default(Abort), header.Seq);
@@ -194,11 +274,15 @@ public partial class ServerPlayer
     /// </summary>
     private void HandleGetWarpCosts(GetWarpCosts msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "GetWarpCosts", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
         var costs = new List<WarpCost>();
         foreach (var poi in AllPOIs())
         {
-            if (poi.Type != Shared.System.PointOfInterest.Warphole
-                && poi.Type != Shared.System.PointOfInterest.CargoWarphole)
+            if (poi.Type != Shared.System.PointOfInterest.Warphole)
             {
                 continue;
             }
@@ -212,6 +296,11 @@ public partial class ServerPlayer
     /// [แก้เอง] เหมือน GetWarpCosts — ไม่เคยมี handler มาก่อน คู่กันเสมอ</summary>
     private void HandleGetWarpBackCost(GetWarpBackCost msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "GetWarpBackCost", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
         Point2 entry = _world.Terrain.EntryPoint;
         Send(new WarpCosts
         {
@@ -233,10 +322,50 @@ public partial class ServerPlayer
                 case Shared.System.PointOfInterest.Warphole: warphole++; break;
                 case Shared.System.PointOfInterest.Crater: crater++; break;
                 case Shared.System.PointOfInterest.Rift: rift++; break;
-                case Shared.System.PointOfInterest.CargoWarphole: warphole++; break;
+                case Shared.System.PointOfInterest.CargoWarphole: break;
             }
         }
         return ((byte)port, (byte)warphole, (byte)crater, (byte)rift);
+    }
+
+    private void ApplyPoiSave(PlayerSave save)
+    {
+        _lastPOISearchedAt = Math.Max(0d, save.LastPOISearchedAt);
+        _exploredPOIs.Clear();
+        if (save.ExploredPOIs == null)
+        {
+            return;
+        }
+        for (int i = 0; i < save.ExploredPOIs.Count; i++)
+        {
+            PoiDiscoverySave poi = save.ExploredPOIs[i];
+            if (poi == null || poi.TileX < 0 || poi.TileY < 0
+                || poi.TileX >= _world.Terrain.Width || poi.TileY >= _world.Terrain.Height)
+            {
+                continue;
+            }
+            var type = (Shared.System.PointOfInterest)poi.Type;
+            if (type == Shared.System.PointOfInterest.Invalid
+                || !Enum.IsDefined(typeof(Shared.System.PointOfInterest), type))
+            {
+                continue;
+            }
+            _exploredPOIs[new Point2(poi.TileX, poi.TileY)] = type;
+        }
+    }
+
+    private void FillPoiSave(PlayerSave save)
+    {
+        save.LastPOISearchedAt = _lastPOISearchedAt;
+        foreach (KeyValuePair<Point2, Shared.System.PointOfInterest> poi in _exploredPOIs)
+        {
+            save.ExploredPOIs.Add(new PoiDiscoverySave
+            {
+                TileX = poi.Key.x,
+                TileY = poi.Key.y,
+                Type = (int)poi.Value
+            });
+        }
     }
 
     /// <summary>ค้นหา POI ใกล้ผู้เล่น ส่งกลับเป็น SearchResult[]</summary>

@@ -1,5 +1,146 @@
-﻿# HANDOFF — Durango Claude
+# HANDOFF — Durango / งานตัวเกมวันนี้
 
+## อัปเดตล่าสุด — 28 ส.ค. 2026: ตรวจบั๊กตัวเกมและ Server โดยเฉพาะ “มอนล่องหน”
+
+### สถานะที่ตรวจยืนยันแล้ว
+
+- Server build ผ่าน `0 error / 0 warning` ด้วย `dotnet build server\DurangoServer.csproj --no-restore`
+- Server ที่กำลังรันอยู่ตอบสนองปกติ: ประมาณ `119–120 TPS`, มอนมีชีวิต `34 ตัว`, พอร์ตเกม `8191`, Gateway `8190`
+- `/entry` ตอบ `200` และ log ยืนยันว่า Client เข้าโลกจริง, โหลด terrain/chunk และ Server ส่ง initial world พร้อมสัตว์ `34 ตัว`
+- มอนที่ตั้งใน `server/data/config.json` มี 10 ชนิด รวมโควตา 34 ตัว
+- ตรวจ `Info.5.2.1.json` และไฟล์ bundle จริงแล้ว: prefab ของมอนทั้ง 10 ชนิดมีไฟล์จริง, ขนาดตรงกับ manifest และ CRC ตรงกับชื่อไฟล์ครบทุกตัว
+- `AnimalMotionData` มี motion mapping ของมอนทั้ง 10 ชนิดครบ จึงไม่น่าใช่ปัญหา Server ไม่รู้จักชนิดหรือไม่มีชื่อ animation
+- รอบนี้เป็นการตรวจและสรุป ยังไม่ได้แก้โค้ดเพิ่ม และยังไม่ได้ deploy production
+
+### สาเหตุที่เป็นไปได้ของ “มอนล่องหน”
+
+1. **มอนอยู่นอกระยะมองเห็น — ความเป็นไปได้สูง**
+
+   จุดเริ่มเกมคือประมาณ tile `40,177` แต่จุดกลางโซนที่ Server ใช้จริงอยู่ไกลกว่า `ViewRangeTiles=24`:
+
+   - meadow ประมาณ `32.6` tiles
+   - forest ประมาณ `55.3` tiles
+   - raptor den ประมาณ `40.7` tiles
+   - highland ประมาณ `170.8` tiles
+
+   จึงมีโอกาสที่ผู้เล่นยืนจุดเริ่มเกมแล้วไม่เห็นมอน แม้ Server จะมีมอนและทำงานถูกต้องตาม view culling
+   ดู `server/data/config.json` ส่วน `Zones` และ `World`
+
+2. **Server ส่งความสูงมอนเป็น 0 หรือใช้ค่าประมาณผิด — บั๊กจริงที่ต้องแก้**
+
+   Terrain มีไฟล์ `whole.elevations` แต่ `TerrainStore` ยังไม่ได้โหลดไฟล์นี้ มอนจึงใช้ `GroundHeightHint`
+   จากค่าความสูงที่ Client รายงานล่าสุดแทน หากไม่มีค่าดังกล่าวจะได้ `Height=0` ทำให้ Client วางมอนใต้พื้นหรือผิดระดับ
+
+   ไฟล์เกี่ยวข้อง:
+
+   - `server/ServerCore/TerrainStore.cs` — ยังไม่ได้โหลด `whole.elevations`
+   - `server/ServerCore/AnimalSpawner.cs` — กำหนด `animal.Height = GroundHeightHint`
+   - `server/ServerCore/ServerPlayer.Vision.cs` — ซ่อมความสูงเฉพาะเมื่อค่าเป็น 0
+   - `client/PathMovable.cs` — คำนวณตำแหน่ง Y จาก `Floor + Height + WaterDepth`
+
+3. **Client โหลด prefab ไม่สำเร็จแล้วไม่มี retry — บั๊กจริงที่ทำให้หายถาวรได้**
+
+   `client/AnimalManager.cs` เรียก `RequestAsset()` แล้วถ้า asset ไม่พร้อม, path ว่าง หรือหา bundle ไม่พบ จะลบสถานะ ghost
+   และแสดง error เท่านั้น นอกจากนี้ยัง dereference `AnimalBehavior` โดยไม่ null-check
+
+   หาก Client โหลดไม่สำเร็จ แต่ Server เพิ่ม entity เข้า `_seenAnimals` ไปแล้ว Server จะคิดว่า Client เห็นมอนแล้ว
+   จึงไม่ส่ง `AppearAnimal` ซ้ำจนกว่าจะออก/เข้าเขตใหม่
+
+   จุดต้องแก้:
+
+   - log `EntityId`, `EntityType`, prefab path และสาเหตุ RequestAsset fail
+   - null-check `AnimalBehavior`, `Animation` และ Renderer
+   - ล้าง `_animals`/`_ghosts` ให้ถูกต้องเมื่อโหลดล้มเหลว
+   - เพิ่ม retry หรือ protocol ACK ให้ Server ส่ง Appear ซ้ำได้
+
+4. **Fallback spawn ยังยอมใช้จุดที่ตรวจไม่ผ่าน**
+
+   ถ้าหาจุดบนบกไม่สำเร็จใน 80 ครั้ง Server ใช้จุดสุ่มสุดท้าย แม้จุดนั้นอาจเป็นหาด/น้ำ/พื้นที่ผิดระดับ
+   Log รอบนี้พบจริงกับ `โดโดฟิซิส` จึงอาจทำให้มอนอยู่ใต้ฉากหรือไกลจากจุดที่คาดไว้
+
+### บั๊กอื่นที่พบจากการตรวจ
+
+- `game/game.log` แจ้ง `resources.assets` corrupted หลายครั้ง
+- `level2` และ `level3` แจ้ง corrupted
+- GameObject `CombatModeButton` อ้าง script ที่หาย
+- Server แจ้ง `Messages.GetPersonalProducts has no TypeCode` และลง handler ที่ key `0` — ไม่ใช่ต้นเหตุโดยตรงของมอนล่องหน แต่เป็น protocol bug
+- `test-client` build ไม่ผ่าน เพราะ `test-client/DurangoTestClient.csproj` ไม่มี package `Lib.Harmony` เหมือน Server
+- test client รุ่นเก่าส่ง character id แบบสุ่ม/ไม่มีอยู่จริง จึงถูก Gateway ปฏิเสธด้วย `character_not_found`; visibility test ยังใช้ยืนยันไม่ได้
+- Server ที่ใช้ทดสอบเปิด `--enable-cheat --admin gm --admin-token test-token` อยู่ ห้ามนำคำสั่งนี้ไปใช้ production
+- Log มี `dock ไม่เจอ` ตอนสร้างโลก เป็นปัญหา world/POI แยกจากมอนล่องหน
+
+### ลำดับงานถัดไปที่แนะนำ
+
+1. แก้/เพิ่มระบบอ่าน `whole.elevations` และกำหนดความสูงมอนตาม tile จริง
+2. ห้ามใช้จุด fallback ที่ไม่ผ่าน `IsLand`; ให้ค้นจุด valid หรือข้ามการ spawn รอบนั้น
+3. เพิ่ม diagnostic log และ retry ใน `AnimalManager.MakeAnimalObject()`
+4. ปรับ spawn zone หรือเพิ่ม test spawn ใกล้จุดเริ่มเกม เพื่อแยก “อยู่นอกระยะ” กับ “โหลดไม่ขึ้น”
+5. ซ่อม/ตรวจไฟล์ `resources.assets`, `level2`, `level3` และ script `CombatModeButton`
+6. เพิ่ม `Lib.Harmony` ให้ test-client แล้วปรับ vision test ให้ใช้ตัวละครที่มีอยู่จริง
+7. ทดสอบใหม่ด้วยเกมจริง: เข้าโลก → เดินเข้า meadow → ตรวจว่ามอนปรากฏ/เคลื่อนที่/ถูกโจมตี/หายเมื่อออกระยะ → reconnect แล้วตรวจซ้ำ
+
+### ไฟล์สำคัญ
+
+- สเปก Map Editor: `tools/MapEditor/spec.md`
+- Client สร้างมอน: `client/AnimalManager.cs`
+- Client การเคลื่อนที่/ความสูง: `client/PathMovable.cs`
+- Server spawn: `server/ServerCore/AnimalSpawner.cs`
+- Server ส่ง visibility: `server/ServerCore/ServerPlayer.Vision.cs`
+- Server สัตว์และ packet: `server/ServerCore/ServerAnimal.cs`
+- Terrain: `server/ServerCore/TerrainStore.cs`
+- Log ตัวเกม: `game/game.log`
+
+---
+
+# HANDOFF — Durango Claude
+## งานล่าสุด — Main ใช้ปุ่ม PC / ในเกมใช้ Mobile UI และจัดชุด DLL หลัก (28 ส.ค. 2026)
+
+สถานะที่ยืนยันกับเกมจริง:
+
+- หน้า Main/หน้าเลือกเซิร์ฟเวอร์ใช้ prefab และปุ่มแบบ PC โดยแพตช์ `UIPrefabMap.GetTitle()` ให้คืน `_titlePC`
+- UI ในฉากเกมยังเป็น Mobile UI (`Platform_PC.UsePCUI = false`) และแสดงปุ่มมือถือ
+- คลิกขวาเพื่อเดินผ่านแล้ว โดย `PlayerController.OnAwake()` ไม่กั้น handler `MoveToPosition` ด้วย `UsePCUI`
+- พื้นหลัง Main กลับมาแล้ว: เปลี่ยน `game/DurangoV2_Data/StreamingAssets/Movie/PC/title.mp4` ที่เสีย (9,440,309 bytes, 11.2 วินาที) เป็นไฟล์จาก `game-backup` (62,976,166 bytes, 103.2 วินาที)
+- ไฟล์ title เดิมเก็บไว้ที่ `game/DurangoV2_Data/StreamingAssets/Movie/PC/title.mp4.corrupt-20260828`
+- `Dinoworld Server` ใช้ NGUI BBCode ที่ถูกต้อง `[C2185B]Dinoworld Server[-]` จึงแสดงสีชมพูเข้ม
+- ภาพทดสอบยืนยัน: Main มีพื้นหลังวิดีโอและปุ่ม PC; เข้าโลกแล้ว Mobile UI ยังทำงาน
+
+### ชุด DLL หลักและ backup
+
+- ตัวหลักที่เกมใช้งาน: `game/DurangoV2_Data/Managed/Assembly-CSharp.dll`
+- backup หลักของแพตช์วันนี้: `game/Backups/Assembly-CSharp.dll.main-20260828.dll`
+- ต้นฉบับสำหรับแพตช์ซ้ำ: `game/DurangoV2_Data/Managed/Assembly-CSharp.dll.bak`
+- backup DLL รุ่นเก่า `Assembly-CSharp.dll.bak.patched.dll`, `Assembly-CSharp.dll.original-ilpatch-backup` และ `Assembly-CSharp.dll.recompiled-mod-backup` ถูกลบแล้ว
+- hash SHA256 ของตัวหลักและ backup วันนี้ตรงกัน: `0EA5815F21E15D496777EC39571C9C34D908F59068448ED50E7166C02C59D5DE`
+
+### คำสั่งแพตช์ DLL
+
+ต้องแพตช์จาก `.bak` ทุกครั้ง ห้ามแพตช์ซ้ำจาก DLL ที่แพตช์แล้ว:
+
+```powershell
+cd 'C:\Users\thana\Desktop\Durango Opencode'
+dotnet build tools\DllPatcher\DllPatcher.csproj --no-restore --verbosity quiet
+& tools\DllPatcher\bin\Debug\net9.0\DllPatcher.exe game\DurangoV2_Data\Managed\Assembly-CSharp.dll.bak
+Copy-Item game\DurangoV2_Data\Managed\Assembly-CSharp.dll.bak.patched.dll game\DurangoV2_Data\Managed\Assembly-CSharp.dll -Force
+```
+
+หลังแพตช์ใหม่ ให้คัดลอกตัวหลักไปทับ `game/Backups/Assembly-CSharp.dll.main-YYYYMMDD.dll` และตรวจ hash ก่อนลบไฟล์เก่า
+
+ตรวจแพตช์สำคัญ:
+
+```powershell
+& tools\DllPatcher\bin\Debug\net9.0\DllPatcher.exe game\DurangoV2_Data\Managed\Assembly-CSharp.dll --dump UIPrefabMap GetTitle
+& tools\DllPatcher\bin\Debug\net9.0\DllPatcher.exe game\DurangoV2_Data\Managed\Assembly-CSharp.dll --dump PlayerController OnAwake
+```
+
+ค่าที่ควรเห็นคือ `UIPrefabMap::_titlePC`, `InputSystem::On` สำหรับการเดิน 2 จุด และไม่มี `Platform::get_UsePCUI` คั่น handler ใน `PlayerController.OnAwake()`
+
+ข้อควรระวัง:
+
+- เปิดเกมผ่าน Computer Use `@oai/sky` หากต้องการหน้าต่างที่มองเห็นได้; `Start-Process` จาก shell บางครั้งสร้าง process แบบไม่มีหน้าต่าง
+- warning `resources.assets is corrupted` ยังเป็นปัญหาแยกจาก `title.mp4`; เกมยังเข้าโลกได้ แต่ควรกู้ `resources.assets` แยกก่อน deploy
+
+---
 **อัปเดตล่าสุด:** 26 ส.ค. 2026 — **แก้บั๊ก "แท็บสกิลว่าง (เห็นแค่ tile)" — สาเหตุจริงคือเซิร์ฟไม่ copy terrain data ไป runtime**
 
 ## งานล่าสุดสำหรับ agent คนถัดไป (26 ส.ค. 2026) — แก้บั๊กแท็บสกิลว่างในโหมด online
@@ -13,7 +154,7 @@
   3. บั๊กแฝงที่เจอระหว่างแก้: ชื่อหมวด `Weaponcrafting`/`Armorcrafting` ขึ้นเป็น raw localization key เพราะข้อมูล localize ใช้ชื่อ enum เก่า (`WeaponCrafting`/`ArmorCrafting` ตัว C ใหญ่) — แก้ใน `client/Durango.Logic.Skill/Util.cs`
 - **ยืนยันแล้วในเกมจริง:** build ทั้งเซิร์ฟ+client ผ่าน 0 error → เปิดเซิร์ฟ (มี terrain data) + เปิดเกม online (ปิด cheat, โลกใหม่) → แท็บสกิลขึ้นครบ — ผู้เล่นเทสเองยืนยัน "ผ่านแล้ว"
 - **สถานะ:** build ผ่าน 0 error ทั้งสองฝั่ง ยังไม่ได้ deploy production — รอเจ้าของอนุมัติ
-- รายละเอียดเต็ม (พร้อมภาพ): `docs/server/Skill-Tab-Blank-Fix.md` · สรุปสั้นในรายงานบั๊ก: `docs/bug-report-memorybot-beta.md` หัวข้อ H3
+- รายละเอียดเต็ม (พร้อมภาพ): `docs/server/Skill-Tab-Blank-Fix.md` · สรุปสั้นในรายงานบั๊ก: `docs/reports/bug-report-memorybot-beta.md` หัวข้อ H3
 
 ## งานล่าสุดสำหรับ agent คนถัดไป (26 ส.ค. 2026) — MemoryBot MVP
 
@@ -507,7 +648,7 @@ curl http://127.0.0.1:8190/admin/players
 > Release ใหม่ `client-2026-08-24-1856` (repo `SuperCodeTH/Durango-TH-Client`, ตั้งเป็น Latest) —
 > `server.txt` ในชุดชี้ไปที่ `100.84.186.56` แล้ว — **auto-updater ไม่แก้ `server.txt` ให้คนที่ติดตั้งอยู่แล้ว**
 > (design ตั้งใจกันไฟล์ตั้งค่าโดนทับ) ⇒ **คนที่เคยโหลด/เล่นอยู่แล้วต้องแก้ `server.txt` เป็น `100.84.186.56`
-> เองด้วยมือ** — เขียนโพสประกาศเต็มรูปแบบไว้ที่ `docs/ANNOUNCE-tailscale.md` แล้ว (มีวิธีสมัคร Tailscale +
+> เองด้วยมือ** — เขียนโพสประกาศเต็มรูปแบบไว้ที่ `docs/operations/ANNOUNCE-tailscale.md` แล้ว (มีวิธีสมัคร Tailscale +
 > รับสิทธิ์ + ตั้งค่าเป็นขั้นตอน) ลิงก์รับสิทธิ์: `https://login.tailscale.com/admin/invite/uVPapaMPTtH7N2TBMssQ11`
 > (แบบ reusable ใช้ได้หลายคน)
 >
@@ -978,7 +1119,7 @@ curl http://127.0.0.1:8190/admin/players
 > ไล่โค้ดแล้วพบว่า **เกมต้นฉบับไม่มีพรีแฟบ/คลาสมือถือแยกสำหรับหน้านี้เลย** — `grep _Mobile` ทั่ว `client/` เจอแค่
 > 4 ไฟล์ (`TerrainChunk_Mobile`/`Terrain_Mobile`/`UIAnchorPolicy_Mobile`/`BlurController_Mobile`) ไม่มี
 > `RecipeSelectorGroup` หรือคราฟต์-ที่เกี่ยวข้องเลยสักตัว และ `_mainMobile`(95)/`_mainPC`(96) ต่างกันแค่ 1 รายการ
-> (ดู `docs/CAPABILITY-REPORT.md` หัวข้อ 3) ⇒ **น่าจะเป็นของเดิมจากค่าย ไม่ใช่บั๊กที่เราทำพัง** หน้าคราฟต์แชร์
+> (ดู `docs/project/CAPABILITY-REPORT.md` หัวข้อ 3) ⇒ **น่าจะเป็นของเดิมจากค่าย ไม่ใช่บั๊กที่เราทำพัง** หน้าคราฟต์แชร์
 > เลย์เอาต์เดียวกันทั้งสองแพลตฟอร์มในเกมต้นฉบับจริง ๆ — ยังไม่ได้ยืนยัน 100% ด้วยการ diff รายชื่อ GameObject
 > ใน `_mainMobile` vs `_mainPC` แบบละเอียด (ต้อง manual byte-parse ใหม่ ดู CAPABILITY-REPORT หัวข้อ 3 วิธีทำ)
 > **ทางเลือกที่ยังไม่ได้ถาม:** (ก) ปล่อยไว้แบบนี้ (ข) ยืนยันด้วย byte-diff ให้ชัดก่อน (ค) ออกแบบ UI คราฟต์แบบ
@@ -1329,11 +1470,11 @@ skill 13/13 · cook 11/11 · stamina 16/16 · tool 8/8 (ชุด tool ใช้
   (ยืน/เดิน/วิ่ง/โจมตี/ตาย · หันหน้าถูก · ตายแล้วค้างท่าไม่วนซ้ำ)
 - ซ่อนเมนูของระบบที่ยังไม่ได้ทำ 24 เมนู · ปิดบทสนทนา NPC ด้วย `RegionRole=Sandbox`
 
-**อ่านก่อนวางแผน:** [docs/GOAL.md](docs/GOAL.md) (เกมนี้จะเป็นอะไร) · [docs/ROADMAP.md](docs/ROADMAP.md) (beta 4 รอบ → เปิดจริง)
-**ก่อนเทส:** [docs/TESTPLAN.md](docs/TESTPLAN.md) — รายการเทสทั้งหมด (อัตโนมัติ + เช็คลิสต์เล่นจริง + เกณฑ์ผ่าน)
+**อ่านก่อนวางแผน:** [docs/project/GOAL.md](docs/project/GOAL.md) (เกมนี้จะเป็นอะไร) · [docs/project/ROADMAP.md](docs/project/ROADMAP.md) (beta 4 รอบ → เปิดจริง)
+**ก่อนเทส:** [docs/testing/TESTPLAN.md](docs/testing/TESTPLAN.md) — รายการเทสทั้งหมด (อัตโนมัติ + เช็คลิสต์เล่นจริง + เกณฑ์ผ่าน)
 
 **เหลือก่อนเปิดจริง:** เล่นด้วยตัวเกมจริง 30 นาทีเป็นรอบสุดท้าย (เกณฑ์ข้อ 3 ใน
-[docs/BETA-1.0-PLAN.md](docs/BETA-1.0-PLAN.md) §4) แล้วเปิดได้เลย
+[docs/testing/BETA-1.0-PLAN.md](docs/testing/BETA-1.0-PLAN.md) §4) แล้วเปิดได้เลย
 
 **คำสั่งเปิดเซิร์ฟสำหรับ beta:**
 ```bash
@@ -1377,7 +1518,7 @@ C:\Users\thana\Desktop\Durango Claude\
 ถ้าเผลอเปิดโหมดเปิดจริงค้างไว้แล้วมากดเทส มันจะปิดแล้วเปิดใหม่ให้เอง (cheat ปิด = เทสตกยกแผง)
 โหมดเทสเปิดด้วย `--enable-cheat --admin gm` เสมอ เพราะกล่องเครื่องมือ (ข้อ 5) สั่งผ่านบอทชื่อ `gm`
 
-เอกสารสำหรับ**ผู้ทดสอบ/ผู้เล่น** (ว่าจะได้เจออะไรบ้าง): `docs/BETA-1.0-PLAYERS.html` — เปิดในเบราว์เซอร์ได้เลย
+เอกสารสำหรับ**ผู้ทดสอบ/ผู้เล่น** (ว่าจะได้เจออะไรบ้าง): `docs/operations/BETA-1.0-PLAYERS.html` — เปิดในเบราว์เซอร์ได้เลย
 
 **ข้อ 17 = ตั้งค่าเซิร์ฟ** — เรทเกิดสัตว์ · สมดุล · exp อยู่ใน `server/data/config.json`
 แก้แล้วมีผลใน 5 วินาทีโดยไม่ต้อง build/รีสตาร์ท (ตารางสัตว์ต้องเปิดเซิร์ฟใหม่) ดู `docs/server/Config.md`
@@ -1447,7 +1588,7 @@ export DOTNET_ROLL_FORWARD=LatestMajor && ilspycmd -p ...
 
 ### 2.1 เทสรอบสุดท้ายก่อนเปิด beta ← **สิ่งที่ค้างอยู่ตอนหยุด**
 
-เกณฑ์ทั้ง 5 ข้ออยู่ใน `docs/BETA-1.0-PLAN.md` §4 — ผ่านแล้ว 4 ข้อ เหลือข้อ 3:
+เกณฑ์ทั้ง 5 ข้ออยู่ใน `docs/testing/BETA-1.0-PLAN.md` §4 — ผ่านแล้ว 4 ข้อ เหลือข้อ 3:
 
 | # | เกณฑ์ | สถานะ |
 |---|---|---|

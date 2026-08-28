@@ -86,6 +86,7 @@ public class PlayerPreviewPage : UIWidget
 		_islandLabel.gameObject.SetActive(value: false);
 		if (flag)
 		{
+			string requestedPlayerEntityId = info.PlayerEntityId;
 			_playerNameLabel.text = info.PlayerName;
 			_deleteHelperLabel.gameObject.SetActive(info.IsSoftDeleted);
 			_deleteHelperLabel.SetText(new SyncString(delegate(out string text, out float period)
@@ -103,8 +104,16 @@ public class PlayerPreviewPage : UIWidget
 				}
 			}));
 			_buttonLabel.text = ((!info.IsSoftDeleted) ? T._("[icon=icon_x]  캐릭터 삭제") : T._("삭제 취소"));
-			Singleton<PlayerInfoManager>.Instance().RequestPlayerInfo(info.PlayerEntityId, delegate(Durango.Player.PlayerInfo playerInfo)
+			Singleton<PlayerInfoManager>.Instance().RequestNewPlayerInfo(info.PlayerEntityId, delegate(Durango.Player.PlayerInfo playerInfo)
 			{
+				if (_selectedPlayerInfo == null || _selectedPlayerInfo.PlayerEntityId != requestedPlayerEntityId)
+				{
+					return;
+				}
+				if (playerInfo == null || !playerInfo.Valid)
+				{
+					return;
+				}
 				_islandLabel.gameObject.SetActive(value: true);
 				_islandLabel.text = string.Format("{0} {1}\n{2} {3}", (!string.IsNullOrEmpty(playerInfo.RegionName)) ? playerInfo.RegionName : T._("알 수 없음"), "icon_popup_player_island".ToEncodedIcon(), (!string.IsNullOrEmpty(playerInfo.ReturningRegionName)) ? playerInfo.ReturningRegionName : T._("알 수 없음"), "icon_popup_player_house".ToEncodedIcon());
 				if (_uiModelRender == null)

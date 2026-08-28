@@ -326,17 +326,51 @@ public class TitleMenuGroup : MonoBehaviour
 				int playerSlotCount = account.PlayerSlotCount;
 				TitlePlayerSelectionGroupBase titlePlayerSelectionGroupBase = TitleUIManager.Find<TitlePlayerSelectionGroupBase>();
 				Action<PlayerInfo> deleteClicked = null;
-				if (cluster.Mode == Mode.Editable)
-				{
-					deleteClicked = delegate(PlayerInfo info)
-					{
-						UserControl.ShowMessageBox($"<em>{info.PlayerName}</em> " + T._("캐릭터를 삭제하시겠습니까?"), T._("해당 캐릭터에 속한 창작섬과 건축물, 아이템이 모두 삭제되며, 복구할 수 없습니다.\n\n정말 삭제하시겠습니까?"), delegate
-						{
-							cluster.OnDeletePlayer(info.PlayerEntityId);
-							UserControl.CloseMessageBox();
-							UserControl.UpdateServerAndPlayerInfo(forceUpdate: true);
-							CurState = State.SelectPlayer;
-						}, delegate
+				bool useCharacterServer = !string.IsNullOrEmpty(Durango.Offline.Server.AutoConnectTarget) || cluster.Mode == Mode.Online;
+				if (useCharacterServer || cluster.Mode != Mode.Offline)
+                {
+                    deleteClicked = delegate(PlayerInfo info)
+                    {
+                        UserControl.ShowMessageBox($"<em>{info.PlayerName}</em> " + T._("캐릭터를 삭제하시겠습니까?"), T._("해당 캐릭터에 속한 창작섬과 건축물, 아이템이 모두 삭제되며, 복구할 수 없습니다.\n\n정말 삭제하시겠습니까?"), delegate
+                        {
+							if (useCharacterServer)
+							{
+								GameSystem<PlayerSelectionSystem>.Instance().RequestDeletePlayer(info, delegate(bool success)
+								{
+									UserControl.CloseMessageBox();
+									if (success)
+									{
+										if (GameManager.PlayerId == info.PlayerEntityId)
+										{
+											GameManager.PlayerId = string.Empty;
+											GameManager.IsPlayerIdSelected = false;
+										}
+										UserControl.RequestAccountAsync(delegate(Account refreshedAccount)
+										{
+											if (refreshedAccount != null)
+											{
+												CurState = State.SelectPlayer;
+											}
+											else
+											{
+												UIManager.SystemMsg(T._("캐릭터 목록을 불러오지 못했습니다."));
+											}
+										});
+                                    }
+                                    else
+                                    {
+                                        UIManager.SystemMsg(T._("캐릭터 삭제에 실패했습니다."));
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                cluster.OnDeletePlayer(info.PlayerEntityId);
+                                UserControl.CloseMessageBox();
+                                UserControl.UpdateServerAndPlayerInfo(forceUpdate: true);
+                                CurState = State.SelectPlayer;
+                            }
+                        }, delegate
 						{
 							UserControl.CloseMessageBox();
 						});
@@ -400,34 +434,21 @@ public class TitleMenuGroup : MonoBehaviour
 			case State.NPAGetUser:
 			{
 				Dictionary<string, string> dictionary = Platform.Instance.BuildSessionForm();
-				// [แก้เอง] ส่ง player JSON ที่มี id ตัวละครทุกครั้ง — เซิร์ฟผูก token กับ id ที่ประกาศ
-				// ตอน /sessions ถ้าไม่ตรงกับที่ /entry อ้าง = โดน auth เตะกลับหน้าหลัก
-				if (Durango.Offline.Server._localPlayer != null)
+				// Send only the selected identity.  Reusing _localPlayer here copied the
+				// previous character's name/display onto a newly selected entity id.
+				// The character server is authoritative and fills the rest from its save.
+				JObject minimalPlayer = new JObject();
+				JObject appear = new JObject();
+				JObject playerInfo = new JObject();
+				if (!string.IsNullOrEmpty(GameManager.PlayerId))
 				{
-					Durango.Offline.PlayerContext lp = Durango.Offline.Server._localPlayer;
-					if (!string.IsNullOrEmpty(GameManager.PlayerId))
-					{
-						lp.AppearPlayer.EntityId = GameManager.PlayerId;
-						if (lp.PlayerInfo != null)
-						{
-							lp.PlayerInfo.PlayerEntityId = GameManager.PlayerId;
-						}
-					}
-					dictionary.Add("player", Json.Write(lp));
+					minimalPlayer["entity_id"] = GameManager.PlayerId;
+					appear["entity_id"] = GameManager.PlayerId;
+					playerInfo["player_entity_id"] = GameManager.PlayerId;
 				}
-				else
-				{
-					// [แก้เอง] ไม่มี context บนเครื่อง (ยังไม่เคยลงโลก) — ส่ง JSON ขั้นต่ำแค่ id
-					// ⚠️ ห้ามใช้ ConnectCluster.LocalPlayer — เป็น JSON ค้างตอนบูต (id/ชื่อว่างเป๊ะ)
-					JObject minimalPlayer = new JObject();
-					JObject appear = new JObject();
-					if (!string.IsNullOrEmpty(GameManager.PlayerId))
-					{
-						appear["entity_id"] = GameManager.PlayerId;
-					}
-					minimalPlayer["appear_player"] = appear;
-					dictionary.Add("player", minimalPlayer.ToString());
-				}
+				minimalPlayer["appear_player"] = appear;
+				minimalPlayer["player_info"] = playerInfo;
+				dictionary.Add("player", minimalPlayer.ToString());
 				RequestUrl("/sessions", dictionary, auth: false, HTTPMethods.Post);
 				break;
 			}

@@ -85,20 +85,39 @@ public partial class ServerPlayer
         {
             currentLevel = known;
         }
-        int cost = msg.Level - currentLevel;
-        if (cost <= 0)
+        if (msg.Level != currentLevel + 1)
         {
-            Console.WriteLine("[skill] ปฏิเสธ {0}: {1} เลเวล {2} อยู่แล้ว (ขอ {3})", Name, msg.SkillId, currentLevel, msg.Level);
+            Console.WriteLine("[skill] ปฏิเสธ {0}: {1}/{2} ต้องเรียนเลเวลถัดไป {3} (ขอ {4})",
+                Name, msg.SkillId, subKey, currentLevel + 1, msg.Level);
             Send(default(Abort), header.Seq);
             return;
         }
-        if (_skillPoints < cost)
+        if (!SkillNodeData.TryGet(msg.SkillId, subKey, msg.Level, out SkillNodeData.Node node))
         {
-            Console.WriteLine("[skill] ปฏิเสธ {0}: ต้องใช้ {1} แต้ม มีอยู่ {2}", Name, cost, _skillPoints);
+            Console.WriteLine("[skill] ปฏิเสธ {0}: ไม่มี node {1}/{2} lv={3} ในข้อมูลเกม",
+                Name, msg.SkillId, subKey, msg.Level);
             Send(default(Abort), header.Seq);
             return;
         }
-        _skillPoints -= cost;
+        if (ProficiencyLevel((Shared.Skill.Category)catId) < node.CategoryLevel)
+        {
+            Console.WriteLine("[skill] ปฏิเสธ {0}: {1}/{2} lv={3} ต้องการความชำนาญหมวด {4} (ตอนนี้ {5})",
+                Name, msg.SkillId, subKey, msg.Level, node.CategoryLevel,
+                ProficiencyLevel((Shared.Skill.Category)catId));
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        int spent = SkillNodeData.UsedCost(_knownSkills);
+        int remain = _skillPoints - spent;
+        if (remain < node.SkillPoint)
+        {
+            Console.WriteLine("[skill] ปฏิเสธ {0}: node ใช้ {1} แต้ม เหลือ {2} (รวม {3}, ใช้ไป {4})",
+                Name, node.SkillPoint, remain, _skillPoints, spent);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        Console.WriteLine("[skill] อนุมัติ {0}: node cost={1}, total={2}, spent ก่อน={3}, remain ก่อน={4}",
+            Name, node.SkillPoint, _skillPoints, spent, remain);
         Shared.Skill.Category category = (Shared.Skill.Category)catId;
         int index = existing;
         if (index >= 0)
@@ -135,32 +154,43 @@ public partial class ServerPlayer
             Reward = default(RewardInfo)
         });
         QuestProgress(QuestData.Goal.LearnSkill);
+        PluginManager.Instance?.FireEvent("progress.skill_learned", this, false, true);
     }
 
     private void HandleUntrainSkill(UntrainSkill msg, PacketHeader header)
     {
-        Console.WriteLine("[skill] untrain {0}/{1}", msg.SkillId, msg.SubId);
-        int index = _knownSkills.FindIndex(s => s.SkillId == msg.SkillId);
-        if (index >= 0)
+        Console.WriteLine("[skill] untrain {0}/{1} lv={2}", msg.SkillId, msg.SubId, msg.Level);
+        if (!string.IsNullOrEmpty(msg.VoucherId))
         {
-            // คืนแต้มเท่าที่จ่ายไปจริง (เลเวลรวมของสกิลนั้น) ไม่ใช่คืน 1 แต้มตายตัว
-            int refund = 0;
-            if (_knownSkills[index].Levels != null)
-            {
-                foreach (int lv in _knownSkills[index].Levels.Values)
-                {
-                    refund += lv;
-                }
-            }
-            _knownSkills.RemoveAt(index);
-            _skillPoints += Math.Max(1, refund);
-            MarkDirty();          // GP-07
+            Send(new Info { Text = "การใช้ voucher ยกเลิกสกิลยังไม่เปิดในรอบนี้" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
         }
+        string subKey = msg.SubId ?? "__base__";
+        int index = _knownSkills.FindIndex(s => s.SkillId == msg.SkillId);
+        if (index < 0 || _knownSkills[index].Levels == null
+            || !_knownSkills[index].Levels.TryGetValue(subKey, out int currentLevel)
+            || currentLevel != msg.Level)
+        {
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        if (!SkillNodeData.TryGet(msg.SkillId, subKey, currentLevel, out SkillNodeData.Node node)
+            || node.UntrainDisabled || node.SkillPoint <= 0)
+        {
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        _knownSkills[index].Levels.Remove(subKey);
+        if (_knownSkills[index].Levels.Count == 0)
+        {
+            _knownSkills.RemoveAt(index);
+        }
+        Console.WriteLine("[skill] untrain อนุมัติ {0}/{1} lv={2}: คืน {3} แต้มจาก total pool {4}",
+            msg.SkillId, subKey, currentLevel, node.SkillPoint, _skillPoints);
+        MarkDirty();          // GP-07
         Send(default(OK), header.Seq);
         SendSkills();
-        // [แก้เอง] 25 ส.ค. 2026 — เจ้าของเจอ: ยกเลิกเรียนสกิลแล้ว "รายการคราฟยังไม่หาย" — ยกเลิกสกิล
-        // เอาสูตรที่สกิลนั้นปลดล็อกออกจาก _knownSkills แล้วจริง (BuildUnlocked() คิดใหม่ทุกครั้งถูกอยู่แล้ว)
-        // แต่ลืม push ให้ client รู้เหมือนตอนเรียนสกิล (จุดเดียวกับที่พลาดตอนแรก แค่ไม่ครบทุก handler)
         SendUnlockedRecipesAndBlueprints();
     }
 
@@ -423,6 +453,11 @@ public partial class ServerPlayer
         for (int i = 0; i < nodes.Length; i++)
         {
             AutomaticSkillData.Node node = nodes[i];
+            if (!SkillNodeData.TryGet(node.SkillId, node.SubId, node.Level, out SkillNodeData.Node raw)
+                || raw.SkillPoint != 0 || !raw.UntrainDisabled)
+            {
+                continue;
+            }
             _categoryExp.TryGetValue(node.Category, out int totalExp);
             ResolveProficiency(node.Category, totalExp, out int categoryLevel, out int _);
             if (categoryLevel < node.RequiredCategoryLevel)

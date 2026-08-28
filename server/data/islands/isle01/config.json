@@ -12,8 +12,15 @@
     "GiveUpTiles": 20.0,
     "AggroSeconds": 20.0,
     "FirstAttackDelay": 0.5,
+    "WalkSpeed": 120.0,
+    "RestMinSeconds": 4.0,
+    "RestMaxSeconds": 11.0,
+    "MaxWalkLegSeconds": 5.0,
+    "MinTilesInland": 4,
+    "InlandTilesPerSize": 3,
     "SpawnRadiusTiles": 30.0,
-    "WanderRadiusTiles": 12.5
+    "WanderRadiusTiles": 12.5,
+    "MinSeparationTiles": 4.0
   },
   "Exp": {
     "KillBase": 4,
@@ -22,6 +29,8 @@
     "Butchery": 3,
     "Craft": 5,
     "Build": 8,
+    "Plant": 3,
+    "Harvest": 4,
     "SkillPointsPerLevel": 3
   },
   "Skills": {
@@ -34,7 +43,31 @@
     "DefenseReduce": 0.3,
     "CraftSpeed": 0.4,
     "StaminaSave": 0.3,
-    "RequiredPlayerLevelPerSkillLevel": 1.0
+    "RequiredPlayerLevelPerSkillLevel": 1.0,
+    "ProficiencyEnabled": true,
+    "ProficiencyRate": 1.0
+  },
+  "StatusEffects": {
+    "BuffStaminaSave": 0.1,
+    "DebuffStaminaPenalty": 0.08,
+    "LifeUpRegenPerSec": 1.0,
+    "PoisonDamagePerSec": 1.0
+  },
+  "CraftMenu": {
+    "HiddenCategories": [
+      "deco_and_installation",
+      "etc",
+      "clan",
+      "residence",
+      "traffic",
+      "furniture_and_workbench",
+      "trap",
+      "plant_collectible",
+      "region",
+      "building/furniture"
+    ],
+    "HideFreeItems": true,
+    "AllowFreeBuild": false
   },
   "Spawn": [
     {
@@ -148,5 +181,250 @@
       "BehaviorEnum": 2
     }
   ],
+  "Zones": [
+    {
+      "Id": "meadow",
+      "Name": "ทุ่งหญ้าหน้าบ้าน",
+      "OffsetTileX": 0.0,
+      "OffsetTileY": 0.0,
+      "RadiusTiles": 14.0,
+      "Species": [
+        2042,
+        2015,
+        2033
+      ]
+    },
+    {
+      "Id": "forest",
+      "Name": "ชายป่า",
+      "OffsetTileX": 22.0,
+      "OffsetTileY": 6.0,
+      "RadiusTiles": 13.0,
+      "Species": [
+        2006,
+        2017
+      ]
+    },
+    {
+      "Id": "highland",
+      "Name": "ที่ราบสูง",
+      "OffsetTileX": -8.0,
+      "OffsetTileY": 24.0,
+      "RadiusTiles": 13.0,
+      "Species": [
+        2009,
+        2000,
+        2003
+      ]
+    },
+    {
+      "Id": "raptor_den",
+      "Name": "หุบแร็ปเตอร์",
+      "OffsetTileX": 26.0,
+      "OffsetTileY": -22.0,
+      "RadiusTiles": 10.0,
+      "Species": [
+        2002,
+        2001
+      ]
+    }
+  ],
+  "World": {
+    "ChunkSendRange": 2,
+    "ViewRangeTiles": 24.0,
+    "ViewMarginTiles": 8.0,
+    "ViewCheckSeconds": 0.4,
+    "ViewCulling": true
+  },
+  "Tools": {
+    "Enabled": true,
+    "DurabilityBase": 20.0,
+    "DurabilityPerTier": 20.0,
+    "WearPerUse": 1.0
+  },
+  "Features": {
+    "Gathering": true,
+    "Crafting": true,
+    "Combat": true,
+    "Butchery": true,
+    "Building": true,
+    "Progression": true,
+    "Skills": true,
+    "Equipment": true,
+    "Survival": true,
+    "ToolDurability": true,
+    "Chat": true,
+    "IslandTravel": true,
+    "Jobs": false,
+    "Cooking": true,
+    "Farming": true,
+    "Livestock": false,
+    "Taming": false,
+    "Market": false,
+    "WarpAccelerator": false,
+    "Quests": true,
+    "QuestChecklist": true,
+    "Pvp": false,
+    "LandPermission": false,
+    "PartyAndClan": false,
+    "Emotes": false,
+    "Friends": false,
+    "Mail": false,
+    "Wallet": false,
+    "Factions": false,
+    "Missions": false,
+    "Attendance": false,
+    "Cargo": false,
+    "Archipelago": false,
+    "Band": false,
+    "AddOns": false,
+    "DyeAndBleach": false,
+    "PrivateConversation": false,
+    "MaxPlayerLevel": 20
+  },
+  "Weather": {
+    "Enabled": true,
+    "CycleSeconds": 90.0,
+    "Sequence": [
+      "sunny",
+      "cloudy",
+      "rainy",
+      "heavy_rainy",
+      "sunny"
+    ]
+  },
+  "Survival": {
+    "StaminaMax": 100.0,
+    "StaminaRegenPerSec": 1.2,
+    "StaminaRegenDelaySeconds": 4.0,
+    "StaminaRegenWhileResting": 10.0,
+    "StaminaCostCollect": 6.0,
+    "StaminaCostCraft": 4.0,
+    "StaminaCostBuild": 8.0,
+    "FatigueMax": 100.0,
+    "FatiguePerSec": 0.027777778,
+    "FatiguePerAction": 0.35,
+    "FatigueCaution": 60.0,
+    "FatigueDanger": 85.0,
+    "LifeMax": 100.0,
+    "LifeRegenPerSec": 0.5,
+    "LifePerLevel": 2.0,
+    "LifePerEndurance": 0.8,
+    "StaminaPerLevel": 1.0,
+    "StaminaPerWill": 0.5,
+    "LifeDrainWhenExhausted": 0.6,
+    "RestFatiguePerSec": 4.0,
+    "RestRangeTiles": 3.0
+  },
+  "Starter": {
+    "Recipes": [
+      "handle",
+      "twist_rope",
+      "twist_rope_02",
+      "extend_rope",
+      "extend_stick",
+      "cut_pillar",
+      "sheaf",
+      "blade_stone",
+      "blade_big_stone",
+      "blade_bone",
+      "blade_big_bone",
+      "blade_saw_stone",
+      "club_onehand_wooden_01",
+      "assembled_hammer_one_01",
+      "assembled_hammer_two_01",
+      "assembled_axe_one_01",
+      "assembled_axe_two_01",
+      "assembled_sword_one_01",
+      "assembled_sword_two_01",
+      "bowstring_01",
+      "bow_wooden_assembled",
+      "harpoon_wooden_01",
+      "handle_lance_01",
+      "hoe_wooden_00",
+      "hoe_wooden_01",
+      "pickaxe_wooden_01",
+      "clothes_leaf_01",
+      "hat_leaf",
+      "shoes_footwraps",
+      "shoes_sandal_straw",
+      "skewer",
+      "boil",
+      "broth",
+      "boiled_meat"
+    ],
+    "Blueprints": [
+      "bonfire",
+      "bonfire_01",
+      "fur_table",
+      "tent",
+      "fishtrap",
+      "trap_basket",
+      "dryingrack_01",
+      "kiln_01",
+      "furnace_01",
+      "fur_box_03_leaf",
+      "fence1",
+      "gate1"
+    ]
+  },
+  "Food": {
+    "EnergyScale": 0.5,
+    "FatigueScale": 0.1,
+    "HealthScale": 1.0,
+    "RawFoodEnergyScale": 0.6,
+    "RawFoodFatigue": 3.0,
+    "DigestScale": 1.0
+  },
+  "Abilities": {
+    "Base": 10.0,
+    "PerLevel": 0.5,
+    "PerProficiency": 0.35,
+    "Max": 100.0
+  },
+  "Combat": {
+    "BareHandAttack": 6.0,
+    "AttackPerLevel": 0.3,
+    "AttackPerStrength": 0.15,
+    "WeaponAttackScale": 0.14,
+    "ArmorDefenseScale": 1.0,
+    "ArmorDefenseK": 120.0,
+    "ArmorMaxReduce": 0.75,
+    "CritChance": 0.12,
+    "CritMultiplier": 1.6
+  },
+  "Farming": {
+    "GrowthScale": 0.05,
+    "MinGrowSeconds": 20.0,
+    "WaterPerItem": 1.0,
+    "FertilizerYieldScale": 1.0,
+    "SeedYield": 1,
+    "WrongBiomeGrowthPenalty": 1.5,
+    "MaxWaterCarryPerDraw": 5.0,
+    "StaminaCostPlant": 6.0,
+    "StaminaCostTend": 3.0,
+    "StaminaCostDraw": 3.0,
+    "PlantSeconds": 2.0,
+    "TendSeconds": 1.5,
+    "UprootSeconds": 2.0,
+    "HarvestSeconds": 2.0,
+    "DrawWaterSeconds": 2.0,
+    "WaterSearchTiles": 6
+  },
+  "WarpAccelerator": {
+    "WaitSeconds": 20.0,
+    "PhaseSeconds": 90.0,
+    "RewardWindowSeconds": 180.0,
+    "CooldownSeconds": 30.0,
+    "MaxPhase": 3,
+    "AnimalsBase": 4,
+    "AnimalsStep": 2,
+    "SpawnRadiusTiles": 4.0,
+    "JoinCostAmount": 0,
+    "JoinCostCurrency": 2,
+    "WarpMatterPerPhase": 5,
+    "WeeklyWarpMatterCap": 100
+  },
+  "SkipPrologueVideo": true,
   "TotalQuota": 34
 }

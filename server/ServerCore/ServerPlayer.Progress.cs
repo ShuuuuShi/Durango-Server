@@ -1,4 +1,5 @@
 using System;
+using Durango.Network;
 using Messages;
 
 namespace DurangoServer.Core;
@@ -36,6 +37,7 @@ public partial class ServerPlayer
         }
         if (!ServerConfig.Current.Features.Progression)
         {
+            Console.WriteLine("[feature] ปฏิเสธ feature=Progression action=GainExp entity={0} name={1}: ปิดอยู่", EntityId, Name);
             return;                       // ปิดระบบเลเวลไว้ (Features.Progression)
         }
         if (Level >= LevelData.Cap && TotalExp >= LevelData.RequiredFor(LevelData.Cap))
@@ -82,6 +84,7 @@ public partial class ServerPlayer
             SendSurvivalPublic();
             // คนอื่นต้องเห็นเลเวลใหม่บนหัวด้วย
             _world.BroadcastToViewers(EntityId, MakeAppearPlayer(), except: this);
+            PluginManager.Instance?.FireEvent("progress.level_up", this, false, true);
         }
         else
         {

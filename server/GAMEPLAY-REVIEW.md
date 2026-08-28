@@ -235,7 +235,7 @@ private void LoadPlayerSave()
 
 ## GP-08 · Craft ไม่ตรวจอะไรเลย — เสกของได้ทุกอย่าง
 
-> ✅ **แก้แล้ว 14 ส.ค. 2026** — ดู [CHANGELOG](../docs/CHANGELOG.md) หัวข้อ "เลิกเชื่อ client" (ยังเหลือการตรวจ tag วัตถุดิบ)
+> ✅ **แก้แล้ว 14 ส.ค. 2026** — ดู [CHANGELOG](../docs/project/CHANGELOG.md) หัวข้อ "เลิกเชื่อ client" (ยังเหลือการตรวจ tag วัตถุดิบ)
 
 ```csharp
 private void HandleCraft(Craft msg, PacketHeader header)
@@ -420,7 +420,7 @@ private void Accept()
 - [x] **GP-11** เอา `ServerKnock.HostName = playerName` ออก
 - [x] **GP-13** ลบพารามิเตอร์ `excludeSelf` ที่ไม่ถูกใช้ (แถม)
 - [x] **GP-15** กัน `Listener` bind fail + ปิด socket ปลอดภัย
-- 📋 รายละเอียดทั้งหมดที่ [../docs/CHANGELOG.md](../docs/CHANGELOG.md)
+- 📋 รายละเอียดทั้งหมดที่ [../docs/project/CHANGELOG.md](../docs/project/CHANGELOG.md)
 - ⏳ **เกณฑ์ผ่าน (ยังไม่ได้ทดสอบกับ client จริง):** คนที่ 3 เข้ามากลางเกม เห็นบ้าน เห็นคนอื่นยืนถูกตำแหน่ง แชทมีชื่อ
 
 ### เฟส B · เก็บความคืบหน้าได้ — ✅ ส่วน GP-07 เสร็จแล้ว

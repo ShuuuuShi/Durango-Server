@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Durango.Network;
 using Durango.Offline;
@@ -20,6 +21,9 @@ public class AnimalManager : Singleton<AnimalManager>
 	private WildAnimalAI _wildAnimalAI;
 
 	private readonly Dictionary<string, WildAnimalAI> _ghosts = new Dictionary<string, WildAnimalAI>();
+
+	private const int MaxAnimalLoadAttempts = 4;
+
 
 	public event Action<AnimalBehavior> AnimalAppeared;
 
@@ -75,7 +79,11 @@ public class AnimalManager : Singleton<AnimalManager>
 		});
 		GameSystem<InteractionSystem>.Instance().AddInteractionHandler(Interaction.RemoveAppearAnimal, delegate(InteractionObject obj)
 		{
-			GetAnimal(obj.EntityId).Disappear();
+			AnimalBehavior animal = GetAnimal(obj.EntityId);
+                    if (animal != null)
+                    {
+                        animal.Disappear();
+                    }
 			Player.Instance._world.RemoveAppearAnimal(obj.EntityId);
 		});
 		Connections.Frontend.On(delegate(AppearAnimal msg, PacketHeader header)
@@ -111,10 +119,14 @@ public class AnimalManager : Singleton<AnimalManager>
 		_animals.Values.CopyTo(array, 0);
 		AnimalBehavior[] array2 = array;
 		for (int i = 0; i < array2.Length; i++)
-		{
-			UnityEngine.Object.Destroy(array2[i].gameObject);
-		}
-		_animals.Clear();
+        {
+            if (array2[i] != null)
+            {
+                UnityEngine.Object.Destroy(array2[i].gameObject);
+            }
+        }
+        _animals.Clear();
+        _ghosts.Clear();
 	}
 
 	public AnimalBehavior GetAnimal(string id)
@@ -203,63 +215,135 @@ public class AnimalManager : Singleton<AnimalManager>
 		animal.Destroyed += Animal_Destroyed;
 	}
 
-	public void MakeAnimalObject(AppearAnimal msg, Vector3 pos)
-	{
-		if (_ghosts.ContainsKey(msg.EntityId))
-		{
-			return;
-		}
-		PrepareLoad(msg.EntityId);
-		string prefabPath = AnimalYaml.GetPrefabPath(msg.EntityType);
-		_ghosts[msg.EntityId] = null;
-		Singleton<AssetBundleManager>.Instance().RequestAsset(prefabPath, typeof(GameObject), delegate(UnityEngine.Object asset)
-		{
-			if (!CheckPrepared(msg.EntityId))
-			{
-				_ghosts.Remove(msg.EntityId);
-				UIManager.SystemMsg("Error", "메소드가 준비되지 않았습니다. 잠시 후 다시 시도해주세요.");
-			}
-			else if (asset == null)
-			{
-				_ghosts.Remove(msg.EntityId);
-				UIManager.SystemMsg("Error", "에셋이 존재하지 않습니다.");
-			}
-			else
-			{
-				GameObject gameObject = UnityEngine.Object.Instantiate(rotation: Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f)), original: asset, position: pos) as GameObject;
-				if (gameObject == null)
-				{
-					_ghosts.Remove(msg.EntityId);
-					UIManager.SystemMsg("Error", "타겟이 존재하지 않습니다.");
-				}
-				else
-				{
-					WildAnimalAI wildAnimalAI = gameObject.AddMissingComponent<WildAnimalAI>();
-					wildAnimalAI.Animal = msg;
-					wildAnimalAI.SetAiActivated();
-					_wildAnimalAI = wildAnimalAI;
-					AnimalBehavior component = gameObject.GetComponent<AnimalBehavior>();
-					component.EntityId = msg.EntityId;
-					component.EntityTypeId = msg.EntityType;
-					component.SetAlive(alive: true, fromInit: true);
-					component.TurnToYaw(UnityEngine.Random.Range(0f, 360f), bSnap: true);
-					component.Level = msg.Level;
-					component.SetSurvivalGauge(msg.Survival.Life, null);
-					Location location = PathMovable.GetLocation(msg.Move, Connections.Frontend.GetBufferedServerTime());
-					component.CurrentPosition = location.Position.ToClientPosition();
-					component.Floor.Value = location.Floor;
-					component.Destroyed += Animal_Destroyed;
-					_appearAnimal = msg;
-					_animals[msg.EntityId] = component;
-					_ghosts[msg.EntityId] = wildAnimalAI;
-					HandleMoveMsg(msg.Move);
-					OnAppearAnimal(component);
-					OnPostAppearAnimal(msg);
-				}
-			}
-		});
-	}
+    private IEnumerator RetryAnimalLoad(AppearAnimal msg, Vector3 pos, int attempt)
+    {
+        yield return new WaitForSeconds(Mathf.Min(5f, 0.5f * (attempt + 1)));
+        if (_animals.ContainsKey(msg.EntityId))
+        {
+            MakeAnimalObject(msg, pos, attempt);
+        }
+    }
 
+    private void HandleAnimalLoadFailure(AppearAnimal msg, Vector3 pos, int attempt, string prefabPath, string reason)
+    {
+        if (!_animals.ContainsKey(msg.EntityId))
+        {
+            _ghosts.Remove(msg.EntityId);
+            return;
+        }
+        _animals.Remove(msg.EntityId);
+        _ghosts.Remove(msg.EntityId);
+        Debug.LogError("[AnimalManager] animal prefab load failed entity=" + msg.EntityId + " type=" + msg.EntityType + " path=" + (prefabPath ?? "") + " reason=" + reason);
+        Connections.Frontend.PushPacket(new AnimalLoadFailed
+        {
+            EntityId = msg.EntityId,
+            Reason = reason ?? "unknown"
+        });
+        if (attempt + 1 < MaxAnimalLoadAttempts)
+        {
+            _animals[msg.EntityId] = null;
+            StartCoroutine(RetryAnimalLoad(msg, pos, attempt + 1));
+        }
+        else
+        {
+            UIManager.SystemMsg("Error", "ไม่สามารถโหลดโมเดลสัตว์ได้");
+        }
+    }
+
+    public void MakeAnimalObject(AppearAnimal msg, Vector3 pos)
+    {
+        MakeAnimalObject(msg, pos, 0);
+    }
+
+    private void MakeAnimalObject(AppearAnimal msg, Vector3 pos, int attempt)
+    {
+        if (string.IsNullOrEmpty(msg.EntityId))
+        {
+            return;
+        }
+        if (_animals.TryGetValue(msg.EntityId, out AnimalBehavior existing) && existing != null)
+        {
+            return;
+        }
+        if (_ghosts.ContainsKey(msg.EntityId))
+        {
+            return;
+        }
+        PrepareLoad(msg.EntityId);
+        string prefabPath = AnimalYaml.GetPrefabPath(msg.EntityType);
+        _ghosts[msg.EntityId] = null;
+        if (string.IsNullOrEmpty(prefabPath))
+        {
+            HandleAnimalLoadFailure(msg, pos, attempt, prefabPath, "empty prefab path");
+            return;
+        }
+        Singleton<AssetBundleManager>.Instance().RequestAsset(prefabPath, typeof(GameObject), delegate(UnityEngine.Object asset)
+        {
+            if (!_animals.TryGetValue(msg.EntityId, out AnimalBehavior prepared) || prepared != null)
+            {
+                _ghosts.Remove(msg.EntityId);
+                return;
+            }
+            if (asset == null)
+            {
+                HandleAnimalLoadFailure(msg, pos, attempt, prefabPath, "RequestAsset returned null");
+                return;
+            }
+            GameObject original = asset as GameObject;
+            if (original == null)
+            {
+                HandleAnimalLoadFailure(msg, pos, attempt, prefabPath, "asset is not a GameObject");
+                return;
+            }
+            GameObject gameObject = UnityEngine.Object.Instantiate(original, pos, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f)) as GameObject;
+            if (gameObject == null)
+            {
+                HandleAnimalLoadFailure(msg, pos, attempt, prefabPath, "Instantiate returned null");
+                return;
+            }
+            AnimalBehavior component = gameObject.GetComponent<AnimalBehavior>();
+            Animation animation = gameObject.GetComponentInChildren<Animation>(true);
+            Renderer renderer = gameObject.GetComponentInChildren<Renderer>(true);
+            if (component == null || animation == null || renderer == null)
+            {
+                string missing = (component == null ? "AnimalBehavior " : "") + (animation == null ? "Animation " : "") + (renderer == null ? "Renderer" : "");
+                UnityEngine.Object.Destroy(gameObject);
+                HandleAnimalLoadFailure(msg, pos, attempt, prefabPath, "missing " + missing);
+                return;
+            }
+            WildAnimalAI wildAnimalAI = gameObject.GetComponent<WildAnimalAI>();
+            if (wildAnimalAI == null)
+            {
+                wildAnimalAI = gameObject.AddMissingComponent<WildAnimalAI>();
+            }
+            if (wildAnimalAI == null)
+            {
+                UnityEngine.Object.Destroy(gameObject);
+                HandleAnimalLoadFailure(msg, pos, attempt, prefabPath, "cannot create WildAnimalAI");
+                return;
+            }
+            wildAnimalAI.Animal = msg;
+            wildAnimalAI.SetAiActivated();
+            _wildAnimalAI = wildAnimalAI;
+            component.EntityId = msg.EntityId;
+            component.EntityTypeId = msg.EntityType;
+            component.SetAlive(alive: true, fromInit: true);
+            component.TurnToYaw(UnityEngine.Random.Range(0f, 360f), bSnap: true);
+            component.Level = msg.Level;
+            component.SetSurvivalGauge(msg.Survival.Life, null);
+            Location location = PathMovable.GetLocation(msg.Move, Connections.Frontend.GetBufferedServerTime());
+            component.CurrentPosition = location.Position.ToClientPosition();
+            component.Floor.Value = location.Floor;
+            component.Destroyed += Animal_Destroyed;
+            _appearAnimal = msg;
+            _animals[msg.EntityId] = component;
+            _ghosts[msg.EntityId] = wildAnimalAI;
+            HandleMoveMsg(msg.Move);
+            component.Appear();
+            OnAppearAnimal(component);
+            OnPostAppearAnimal(msg);
+        });
+    }
 	private void OnPreTouchTarget(InteractionObject obj, ref bool result)
 	{
 		if (!(obj.EntityId != _appearAnimal.EntityId))

@@ -1,0 +1,107 @@
+# S0 — Feature registry and operating evidence
+
+> Status: **Ready for S1** (2026-08-27)  
+> Source roadmap: [`plantServer.md`](plantServer.md) §5, §7, §9
+
+S0 makes rollout decisions reviewable before new player-facing systems are enabled. A protocol struct or a client menu does **not** make a feature supported; the row needs authoritative state, persistence, anti-abuse evidence and a real-client result.
+
+## Status vocabulary
+
+- **Not implemented** — no authoritative server handler/state; protocol/UI alone is not an implementation.
+- **Implemented** — core code exists but remains server-gated until all acceptance evidence is complete.
+- **Internal test** — restricted to controlled saves, admins, allowlist or test shard.
+- **Player enabled** — available to ordinary players with telemetry and rollback evidence.
+- **Stable** — release gates, regression, soak and real-client evidence are complete.
+
+## Feature-completeness matrix
+
+| Flow | UI / packet mapping | Authoritative state & persistence | Anti-abuse / tests | Real client | Rollout decision |
+|---|---|---|---|---|---|
+| Login, session, character | `/sessions`, `Auth`, `Ready`; title/prologue captures pending | `AccountStore`, `PlayerSave`, session tokens | token/account/IP validation; `--create-check`, `--character-check` | In progress | Implemented |
+| World and movement | `Move`, visibility packets | `ServerWorld`, `ServerPlayer` position saves | range/speed checks; `--gp-check`, `--vision-check` | In progress | Implemented |
+| Gathering, inventory and tools | `Touch`, `Collect`, inventory packets | world reservations + `PlayerSave.Inventory` | tool/range/reservation checks; `--gp-check`, `--multi-check`, `--tool-check` | In progress | Implemented |
+| Combat, animals, death/revive | attack/action packets, animal UI | `ServerAnimal`, player survival/death state | action/skill/range/cooldown checks; `--gp-check`, `--combat-skill-check` | In progress | Implemented |
+| Crafting and cooking | `Craft`, recipe/workbench UI | inventory + crafting queue/save | recipe/material/workbench/tool validation; `--cook-check`, `--recipe-check` | Checklist exists | Implemented |
+| Skills and progression | skill/research packets and character UI | player EXP, skills, proficiency saves | server-owned cost/unlock/action checks; `--skill-check`, `--combat-skill-check` | In progress | Implemented |
+| Quests/tutorial | quest packets and HUD | project-owned quest state in `PlayerSave` | prerequisite/reward checks; `--quest-check` | In progress | Internal test |
+| Farming | farm interaction packets | `WorldSave.Farms` | ownership/resources/restart; `--farm-check`, `--farm-resume-check` | In progress | Internal test |
+| Building and storage | placement/box packets | artifacts and boxes in `WorldSave` | placement/ownership baseline; material economy/refund incomplete | In progress | Implemented, gated for economy completion |
+| POI/local warp | POI discovery and map UI | explored POIs in `PlayerSave` | range/type validation; `--poi-check` | In progress | Internal test |
+| Island travel | `Warp*`, `IsWarpholeAvailable`, tutorial departure, `TravelTo` | shared player save, per-island world save | all packet entry points reject while `Features.IslandTravel=false` | Not verified | **Implemented, disabled** |
+| Warp accelerator | accelerator interaction packets | manager/player state | feature gate exists; reward/currency/abort lifecycle incomplete | Not verified | Not implemented, disabled |
+| PvP | player combat targeting | combat/death state | `Features.Pvp=false`; consent/zone/reward policy absent | Not verified | Not implemented, disabled |
+| Private conversation | Radiotower protocol | no authenticated social state | server defaults off because identity can be spoofed | Not verified | Not implemented, disabled |
+| Party, friends, clan | generated messages/UI may exist | no ServerCore handler/state | safe by absence; no handler is registered | Not verified | Not implemented |
+| Wallet, mail, trade, market | generated messages/UI may exist | no ledger/service state | safe by absence; no handler is registered | Not verified | Not implemented |
+| Estate/land permissions | partial owner/architect baseline | incomplete permission model | `Features.LandPermission=false` | Not verified | Not implemented, disabled |
+| Pets, taming, mounts, livestock, jobs | generated messages/UI may exist | no authoritative lifecycle state | safe by absence; flags remain false | Not verified | Not implemented |
+
+## Protocol inventory rule
+
+The generated `server/GameCode/Messages/` collection contains protocol types, not a feature list. The tracked server denominator is the set of inbound `_conn.Recv<T>` registrations in `server/ServerCore`; each registry row links its applicable request/response types and owner handler. A generated message with no ServerCore handler is classified `protocol-only/unowned` until a work package assigns it a state model and gate.
+
+The checked-in index is generated by `server/scripts/generate_protocol_inventory.py`:
+
+```bash
+python server/scripts/generate_protocol_inventory.py
+python server/scripts/generate_protocol_inventory.py --check
+```
+
+`--check` fails when `docs/server/protocol-inventory.json` no longer matches source registrations/messages. The inventory is a protocol denominator, not evidence that each row is gameplay-complete.
+
+## UI evidence workflow
+
+`client/UIBase.cs` calls `UiDump.Dump` for each successfully opened UI. Capture real-client evidence with:
+
+```text
+DURANGO_UIDUMP=1
+```
+
+The game writes UI hierarchy text files to `game/ui-dump/`. Each successful dump appends metadata-only provenance to `game/ui-dump/_captures.tsv` (UTC, root/tag, file name, screen size, Unity version and product). The raw game directory remains ignored; copy evidence deliberately into the tracked [`../reports/ui-capture-evidence.tsv`](../reports/ui-capture-evidence.tsv) index after review, with a SHA-256, source artifact, linked flow and narrow status.
+
+Existing indexed captures are evidence only for their named UI roots. They do not prove a server flow is complete, packet ordering is valid or a player interaction succeeds. `client/Durango.Development/PacketWatcher.cs` is a bandwidth diagnostic and must not be cited as a decoded packet trace or ordering proof.
+
+## Gate and rejection contract
+
+For a feature that is not Stable, its server handler must check the gate before reservation, item/currency mutation, timer scheduling or `MarkDirty()`. Request/reply flows use the shared `ServerPlayer.RejectFeatureDisabled` helper, which logs feature, action, entity and player name, then sends `Info` and `Abort`. Fire-and-forget packets may use a documented response exception, but must retain structured rejection logging.
+
+Current S0 reconciliation: `Features.IslandTravel` is **false** in the checked-in runtime config and code default. `Warp`, `WarpBack`, `WarpToPort`, warphole availability/cost requests, tutorial departure, and the console travel path must remain non-mutating while this flag is false. Re-enable only after S2 evidence: client handoff, cross-island save/reconnect/rollback, packet parity and real-client travel.
+
+`Features.WarpAccelerator` is also **false** in the standard runtime profile. Its mutation requests (`Accelerate`, `ParticipateAcceleration`, `ReceiveAcceleratorRewards`) use the same `Info + Abort` contract before access/manager state. `GetWarpAcceleratorCost` is the documented non-mutating query exception and continues to return configured cost while the feature is disabled.
+
+## Save compatibility and recovery policy
+
+- Save files are project-owned models, never serialized client message structs.
+- `SaveEnvelope.CurrentVersion` is the newest schema this build writes. Version `0` and `1` are legacy inputs; they are normalized in memory and written as the current version at the next successful save.
+- A save with a negative or future version is rejected. Malformed JSON and unusable `.tmp` files are renamed with `.rejected-<UTC timestamp>` rather than overwritten.
+- When the primary file is absent, a valid `<path>.tmp` is recovered atomically as the primary. If a primary exists, it wins and a stale `.tmp` is not promoted.
+- A present player save that cannot load is a login failure, never a new-player/starter-item path. A present world save that cannot load aborts startup.
+- Writes are atomic **per file** (`.tmp` then same-volume rename). World, player, account and mod files do not form one cross-file transaction; expected loss boundary is the last successful file save.
+
+## Backup and restore procedure
+
+1. Stop normally with Ctrl+C and wait for `[save] ... ปิดเรียบร้อย`.
+2. Snapshot the entire configured `--saves` root, including `worlds`, `players`, `accounts`, mods and future subdirectories. Use the menu backup only while the server is stopped.
+3. Verify the archive is non-empty and retain it outside the live save root.
+4. To restore: keep the failed save root intact, stop the server, extract the selected archive into a fresh restore directory, inspect expected `world.json` or `worlds/`, `players/` and `accounts/`, then start the server with `--saves <restore directory>` for validation before replacing production data.
+5. Before schema, economy, world or deployment changes, create a backup and complete a restore drill on a controlled copy.
+
+Do not use forced termination as normal maintenance. If a graceful shutdown times out, preserve the existing save root before escalation and record that the final dirty interval may be absent.
+
+## Evidence completed
+
+| Evidence | Command | Result |
+|---|---|---|
+| Save schema/current/legacy/future/negative/malformed/temp recovery | `--save-check` | **14/14** |
+| Backup/restore drill (6-file snapshot, verify, extract, compare) | `tools/test-save-backup-workflow.ps1` | **PASS** |
+| IslandTravel disabled packet gate (8 entry points + cheat travel) | `--island-travel-gate-check` | **17/17** |
+| WarpAccelerator disabled packet gate (3 mutation + cost query) | `--warp-accelerator-gate-check` | **7/7** |
+| POI packet flow + reconnect persistence | `--poi-check` | **PASS** |
+| Protocol inventory reproducibility | `python server/scripts/generate_protocol_inventory.py --check` | **PASS** |
+| Server/test-client build | `dotnet build` | **0 errors** |
+| Feature gate normalization (all disabled features use RejectFeatureDisabled) | code audit + `--poi-check`, `--island-travel-gate-check`, `--warp-accelerator-gate-check` | **PASS** |
+
+## Evidence still manual
+
+- Real-client UI evidence sweep (`DURANGO_UIDUMP=1` + menu walkthrough): 5 UI roots currently indexed.
+- 2-hour gameplay checklist and soak test: requires real play session.

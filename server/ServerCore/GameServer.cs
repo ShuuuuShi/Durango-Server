@@ -205,7 +205,7 @@ public class GameServer
     // ถ้าไม่มีเพดาน/ไม่มี timeout แค่เปิด TCP ค้างไว้เฉย ๆ ก็ทำให้ RAM หมดได้
 
     /// <summary>รับพร้อมกันได้กี่เส้น (ตั้งด้วย <c>--max-connections</c>)</summary>
-    public static int MaxConnections = 32;
+    public static int MaxConnections = 10;
 
     /// <summary>จาก IP เดียวกันได้กี่เส้น (กันคนเดียวจองหมด)</summary>
     public static int MaxConnectionsPerIp = 4;
@@ -223,6 +223,10 @@ public class GameServer
     /// <summary>packet ต่อวินาทีที่ยอมให้ (ค่าปกติของ client อยู่หลักสิบ)</summary>
     public static int MaxPacketsPerSecond = 120;
 
+    /// <summary>M5: mod handshake is opt-in for backwards compatibility; production can enable it with --require-mods.</summary>
+    public ModNegotiationPolicy ModPolicy { get; } = new ModNegotiationPolicy();
+    public string ModCatalogHash => PluginManager.Instance == null ? "" : ModNegotiation.BuildServerCatalog(PluginManager.Instance.Mods);
+
     /// <summary>เกินเพดานติดกันกี่วินาทีถึงตัดการเชื่อมต่อ</summary>
     private const int RateStrikesBeforeKick = 3;
 
@@ -233,12 +237,14 @@ public class GameServer
         public string Ip;
         public double AcceptedAt;
         public bool Authed;
+        public bool ModHelloReceived;
         public bool PlayerCreated;
 
         // M-6: หน้าต่างนับ packet
         public double WindowStart;
         public int PacketsInWindow;
         public int Strikes;
+        public bool Rejected;
     }
 
     public GameServer(ServerWorld world)
@@ -257,6 +263,22 @@ public class GameServer
         _listener.ClientAccepted += Listener_ClientAccepted;
         Console.WriteLine($"[gameserver] listening on 0.0.0.0:{port}");
         return true;
+    }
+
+    public void Close()
+    {
+        _listener.ClientAccepted -= Listener_ClientAccepted;
+        _listener.Close();
+        ConnState[] snapshot;
+        lock (_connLock)
+        {
+            snapshot = _connections.ToArray();
+            _connections.Clear();
+        }
+        for (int i = 0; i < snapshot.Length; i++)
+        {
+            try { snapshot[i].Conn.Close(); } catch (Exception e) { Console.WriteLine($"[gameserver] ปิด connection ไม่สำเร็จ: {e.Message}"); }
+        }
     }
 
     private void Listener_ClientAccepted(Socket socket)
@@ -284,7 +306,7 @@ public class GameServer
                 }
             }
         }
-        if (total >= MaxConnections || fromSameIp >= MaxConnectionsPerIp)
+        if (MaxConnections <= 0 || MaxConnectionsPerIp <= 0 || total >= MaxConnections || fromSameIp >= MaxConnectionsPerIp)
         {
             Console.WriteLine($"[gameserver] ปฏิเสธ {ip}: เต็มเพดาน (ทั้งหมด {total}/{MaxConnections}, จาก IP นี้ {fromSameIp}/{MaxConnectionsPerIp})");
             try
@@ -343,12 +365,33 @@ public class GameServer
             playerName = LookupName(entityId);
             SendWelcome(connection, entityId, playerName, header.Seq);
         });
+        connection.Recv<ModHello>(delegate(ModHello hello, PacketHeader header)
+        {
+            if (!state.Authed || state.PlayerCreated || state.ModHelloReceived || state.Rejected)
+            { connection.Send(default(Abort), header.Seq); return; }
+            IReadOnlyList<PluginManager.LoadedModInfo> mods = PluginManager.Instance?.Mods ?? Array.Empty<PluginManager.LoadedModInfo>();
+            ModNegotiationResult result = ModNegotiation.Validate(hello.ManifestJson, hello.CatalogHash, mods, ModPolicy);
+            if (!result.Accepted)
+            {
+                state.Rejected = true;
+                Console.WriteLine($"[mods] ปฏิเสธ handshake ของ {ip}: {result.Reason}");
+                Error error = default; error.Text = "mod negotiation failed: " + result.Reason;
+                connection.Send(error, header.Seq); connection.Close(); return;
+            }
+            state.ModHelloReceived = true;
+        });
         connection.Recv<Ready>(delegate(Ready ready, PacketHeader header)
         {
-            if (string.IsNullOrEmpty(entityId))
+            if (string.IsNullOrEmpty(entityId) || state.Rejected)
             {
                 connection.Close();
                 return;
+            }
+            if (ModPolicy.RequireHello && !state.ModHelloReceived)
+            {
+                state.Rejected = true;
+                Error error = default; error.Text = "mod negotiation required before Ready";
+                connection.Send(error, header.Seq); connection.Close(); return;
             }
             // H-8: Ready ซ้ำ = สร้าง ServerPlayer ซ้ำบนเส้นเดียว → ผีค้างในโลก + เซฟทับกันเอง
             if (state.PlayerCreated)
@@ -383,6 +426,7 @@ public class GameServer
                 // GP-07: เซฟก่อนเอาออกจากโลก ไม่งั้นของที่เก็บมาทั้งเซสชันหายหมด
                 try
                 {
+                    player.LeavePartyOnDisconnect();
                     player.Save();
                 }
                 catch (Exception e)
@@ -480,60 +524,87 @@ public class GameServer
         connection.Send(msg, seq);
     }
 
-    public void Process()
-    {
-        _listener.Process();
-        _world.ProcessPlayers();
-        double now = Times.UnixTimeNow();
-        lock (_connLock)
-        {
-            for (int i = _connections.Count - 1; i >= 0; i--)
-            {
-                ConnState state = _connections[i];
-                state.Conn.Process();
-                if (!state.Conn.Connected())
-                {
-                    _connections.RemoveAt(i);
-                    continue;
-                }
-                // M-6: นับ packet ต่อวินาที เกินเพดานติดกันหลายรอบ = ตัด
-                double windowAge = now - state.WindowStart;
-                if (windowAge >= 1.0)
-                {
-                    int received = state.Conn.TotalReceivedPackets;
-                    int inWindow = received - state.PacketsInWindow;
-                    state.PacketsInWindow = received;
-                    state.WindowStart = now;
-                    if (inWindow > MaxPacketsPerSecond)
-                    {
-                        state.Strikes++;
-                        Console.WriteLine($"[gameserver] {state.Ip} ยิง {inWindow} packet/วิ (เพดาน {MaxPacketsPerSecond}) ครั้งที่ {state.Strikes}");
-                        if (state.Strikes >= RateStrikesBeforeKick)
-                        {
-                            Console.WriteLine($"[gameserver] ตัด {state.Ip}: ยิง packet ถี่เกินติดกัน {state.Strikes} วินาที");
-                            state.Conn.Close();
-                            _connections.RemoveAt(i);
-                            continue;
-                        }
-                    }
-                    else if (state.Strikes > 0)
-                    {
-                        state.Strikes--;         // ประพฤติดีแล้วค่อย ๆ ลบประวัติให้
-                    }
-                }
-
-                // H-3: เส้นที่ต่อเข้ามาแล้วไม่ทำอะไรต่อ ต้องถูกตัดทิ้ง
-                // ไม่งั้นค้างกินบัฟเฟอร์ตลอดไป (half-open ไม่มีทางทำให้ Connected() เป็น false)
-                double age = now - state.AcceptedAt;
-                bool tooSlow = (!state.Authed && age > AuthDeadlineSeconds)
-                    || (state.Authed && !state.PlayerCreated && age > ReadyDeadlineSeconds);
-                if (tooSlow)
-                {
-                    Console.WriteLine($"[gameserver] ตัด {state.Ip}: ต่อมา {age:F0} วิ แล้วยัง{(state.Authed ? "ไม่ Ready" : "ไม่ Auth")}");
-                    state.Conn.Close();
-                    _connections.RemoveAt(i);
-                }
-            }
-        }
-    }
+	public void Process()
+	{
+		_listener.Process();
+		// Process simulation independently so a player/world exception cannot starve all sockets.
+		try
+		{
+			_world.ProcessPlayers();
+		}
+		catch (Exception exception)
+		{
+			Debug.LogException(exception);
+		}
+		double now = Times.UnixTimeNow();
+		ConnState[] snapshot;
+		lock (_connLock)
+		{
+			snapshot = _connections.ToArray();
+		}
+		for (int i = 0; i < snapshot.Length; i++)
+		{
+			ConnState state = snapshot[i];
+			try
+			{
+				state.Conn.Process();
+			}
+			catch (Exception exception)
+			{
+				Debug.LogException(exception);
+				state.Conn.Close();
+			}
+			bool remove = !state.Conn.Connected();
+			if (remove)
+			{
+				// Always run the idempotent close path so disconnect handlers save/remove the player.
+				state.Conn.Close();
+			}
+			if (!remove)
+			{
+				// M-6: นับ packet ต่อวินาที เกินเพดานติดกันหลายรอบ = ตัด
+				double windowAge = now - state.WindowStart;
+				if (windowAge >= 1.0)
+				{
+					int received = state.Conn.TotalReceivedPackets;
+					int inWindow = received - state.PacketsInWindow;
+					state.PacketsInWindow = received;
+					state.WindowStart = now;
+					if (inWindow > MaxPacketsPerSecond)
+					{
+						state.Strikes++;
+						Console.WriteLine($"[gameserver] {state.Ip} ยิง {inWindow} packet/วิ (เพดาน {MaxPacketsPerSecond}) ครั้งที่ {state.Strikes}");
+						if (state.Strikes >= RateStrikesBeforeKick)
+						{
+							Console.WriteLine($"[gameserver] ตัด {state.Ip}: ยิง packet ถี่เกินติดกัน {state.Strikes} วินาที");
+							state.Conn.Close();
+							remove = true;
+						}
+					}
+					else if (state.Strikes > 0)
+					{
+						state.Strikes--;
+					}
+				}
+			}
+			if (!remove)
+			{
+				double age = now - state.AcceptedAt;
+				remove = (!state.Authed && age > AuthDeadlineSeconds)
+					|| (state.Authed && !state.PlayerCreated && age > ReadyDeadlineSeconds);
+				if (remove)
+				{
+					Console.WriteLine($"[gameserver] ตัด {state.Ip}: ต่อมา {age:F0} วิ แล้วยัง{(state.Authed ? "ไม่ Ready" : "ไม่ Auth")}");
+					state.Conn.Close();
+				}
+			}
+			if (remove)
+			{
+				lock (_connLock)
+				{
+					_connections.Remove(state);
+				}
+			}
+		}
+	}
 }

@@ -49,27 +49,30 @@
 ลำดับตรงนี้ถูกแล้ว: ลบของก่อนตรวจ blueprint จะทำของหาย — โค้ดตรวจ blueprint **หลัง** ลบของไปแล้ว
 ⚠️ ถ้า blueprint ไม่รู้จัก ของจะหายไปโดยไม่ได้อะไรกลับมา ควรตรวจให้ครบก่อนค่อยลบ
 
-## `HandleBuildArtifact(msg, header)` — บรรทัด 215
+## Building material economy — S1
 
-"ลงมือสร้าง" — ตอบ `Timer { 2f }` แล้วเข้าคิว `_deferred` +2.1 วิ พอถึงเวลา broadcast:
-- `ArtifactBuilt { EntityId, BuilderId }`
-- `ArtifactCompleted { EntityId }`
+> Test/admin capsules (`capsulated_*`) are completed artifacts by design and
+> therefore can be placed without depositing construction materials. This is
+> separate from the normal player flow: `OccupyArtifactSite` creates an
+> `Occupied` artifact, `PutMaterialsIntoArtifact` must fill every required
+> slot, and only then may `BuildArtifact` complete it.
 
-ไม่ตรวจวัสดุ ไม่ตรวจว่า `EntityId` นี้มีอยู่จริงไหม ส่ง id อะไรมาก็ "สร้างเสร็จ"
+`BlueprintRequirements.cs` เป็นข้อมูล generated จาก TextAsset `blueprints` ของเกมจริง: ระบุ slot, จำนวน และ tag/material level ที่ใช้สร้างแต่ละ blueprint
 
-## `HandleGetArtifact(msg, header)` — บรรทัด 226
+- `HandlePutMaterials()` resolve blueprint จาก artifact ฝั่ง server แล้วตรวจ slot, จำนวน, duplicate item id, equipped/locked item, inventory และ tag/material ก่อนหักของทั้ง request แบบ atomic
+- `HandleBuildArtifact()` จะเริ่มได้เมื่อทุก required slot ครบ; ก่อน completion ตรวจ ledger ซ้ำแล้วเปลี่ยนสถานะเพียงครั้งเดียว
+- ledger วัตถุดิบอยู่ต่อหลังสร้างเสร็จและถูก save ใน `WorldSave.ArtifactMaterials` เพื่อคืนของได้ครบหลัง restart
+- `HandleGetArtifact()` ส่ง reservation/ledger ที่มีจริงให้ UI
 
-ตอบ `ArtifactMaterials` ที่มี dict ว่าง — client ถามว่าอาคารนี้ใส่วัสดุอะไรไปแล้วบ้าง เราตอบว่า "ไม่มี"
-เป็น stub ให้ UI ไม่ค้าง
-
-## `HandleDestructArtifact(msg, header)` ✅ GP-04
+## `HandleDestructArtifact(msg, header)` ✅ GP-04/S1
 
 ```
 ไม่พบ artifact ในโลก        → log + Abort
 CanModifyArtifact() ไม่ผ่าน → log + Abort
-ผ่าน → RemoveArtifact() + Broadcast(DisappearEntity)
+อยู่นอกระยะ                   → Info + Abort
+ผ่าน → คืน ledger วัสดุ + ของในกล่อง → RemoveArtifact() + Broadcast(DisappearEntity)
 ```
-เดิมเป็น `Broadcast(DisappearEntity)` บรรทัดเดียวโดยไม่ตรวจอะไร
+การทุบคืนวัสดุก่อสร้างทั้งหมดตาม ledger ที่ server ยืนยัน ไม่ว่าจะยังเป็นโครงหรือสร้างเสร็จแล้ว; storage contents ก็คืนเข้ากระเป๋าผู้มีสิทธิ์ก่อน cleanup
 
 ---
 

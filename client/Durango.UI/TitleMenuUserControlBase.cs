@@ -309,6 +309,7 @@ public class TitleMenuUserControlBase : MonoBehaviour
 		Cluster cluster = Clusters.GetCluster(lastSelectedClusterKey);
 		_clusterSelectionButton.Disabled = false;
 		_clusterSelectionButtonLabel.text = cluster.GetName(LocalizeSystem.Locale);
+		_clusterSelectionButtonLabel.color = new Color32(194, 24, 91, 255);
 		UpdateButtonLayout(showPlayerButton: false);
 		IsAccountReady = false;
 		SetExplainLabel(ManualTranslator.LoadingUserInfo);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Durango.Network;
+using DurangoServer.Modding;
 using Messages;
 
 namespace DurangoServer.Core;
@@ -107,6 +108,7 @@ public partial class ServerPlayer
         Send(new InventoryUpdated { EntityId = EntityId, RemovedItemIds = removed.ToArray() });
         Send(default(OK), header.Seq);
         SendInventory();
+        PluginManager.Instance?.FireEvent("inventory.removed", this, false, true);
     }
 
     /// <summary>
@@ -172,6 +174,7 @@ public partial class ServerPlayer
         Send(new InventoryUpdated { EntityId = EntityId, RemovedItemIds = new[] { item.Id } });
         Send(default(OK), header.Seq);
         SendInventory();
+        PluginManager.Instance?.FireEvent("inventory.removed", this, false, true);
     }
 
     /// <summary>

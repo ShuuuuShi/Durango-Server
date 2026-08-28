@@ -15,7 +15,36 @@ internal static class MemoryBotCommands
 {
     public static string Execute(MemoryBotRequest request)
     {
-        if (request.Name == "player.stop")
+        if (request.Name == "bot.start" || request.Name == "bot.stop" || request.Name == "bot.status")
+        {
+            return MemoryBotAutopilot.Execute(request);
+        }
+        if (request.Name == "map.walk_to" || request.Name == "map.click")
+        {
+            if (!request.HasX || !request.HasY) throw new InvalidOperationException("map_walk_to_needs_x_y");
+            if (PlayerBehavior.LocalPlayer == null || !Singleton<PlayerController>.HasInstance())
+                return "{\"status\":\"rejected\",\"reason\":\"player_unavailable\"}";
+            MemoryBotAutopilot.Execute(new MemoryBotRequest { Name = "bot.stop" });
+            float worldX = request.X;
+            float worldZ = request.Y;
+            bool tileCoordinates = string.Equals(request.Kind, "tile", StringComparison.OrdinalIgnoreCase);
+            if (tileCoordinates)
+            {
+                worldX = request.X * 200f + 100f;
+                worldZ = request.Y * 200f + 100f;
+            }
+            int tileCount = Durango.Terrain.TerrainMeta.TileCount;
+            float maxWorld = tileCount > 0 ? tileCount * 200f : float.MaxValue;
+            if (worldX < 0f || worldZ < 0f || worldX >= maxWorld || worldZ >= maxWorld)
+                return "{\"status\":\"rejected\",\"reason\":\"position_out_of_bounds\"}";
+            Vector3 world = new Vector3(worldX, 0f, worldZ);
+            Vector3 client = TerrainUtil.WorldPositionToClientPosition(world);
+            Singleton<PlayerController>.Instance().MoveToPosition(client);
+            return "{\"status\":\"accepted\",\"command\":" + MemoryBotProtocol.Quote(request.Name)
+                + ",\"coordinate_space\":" + MemoryBotProtocol.Quote(tileCoordinates ? "tile" : "world")
+                + ",\"x\":" + worldX.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)
+                + ",\"z\":" + worldZ.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + "}";
+        }        if (request.Name == "player.stop")
         {
             if (PlayerBehavior.LocalPlayer == null) return "{\"status\":\"rejected\",\"reason\":\"no_local_player\"}";
             Singleton<PlayerController>.Instance().StopMove();

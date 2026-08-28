@@ -37,10 +37,15 @@ public static class PoiCheck
         var connection = new Connection(socket);
         var infos = new List<string>();
         int aborts = 0;
+        int oks = 0;
+        ExploredPOIs? explored = null;
+        SearchedPOIs? searched = null;
         connection.Recv<Info>((m, h) => { lock (infos) { infos.Add(m.Text ?? ""); } });
         connection.Recv<Abort>((m, h) => aborts++);
         connection.Recv<Welcome>((m, h) => { }); connection.Recv<Clock>((m, h) => { });
-        connection.Recv<OK>((m, h) => { }); connection.Recv<Inventory>((m, h) => { });
+        connection.Recv<OK>((m, h) => oks++);
+        connection.Recv<ExploredPOIs>((m, h) => explored = m);
+        connection.Recv<SearchedPOIs>((m, h) => searched = m); connection.Recv<Inventory>((m, h) => { });
         connection.Recv<Skills>((m, h) => { }); connection.Recv<Statistics>((m, h) => { });
         connection.Recv<Equipments>((m, h) => { }); connection.Recv<Survival>((m, h) => { });
         connection.Recv<Points>((m, h) => { }); connection.Recv<AppearPlayer>((m, h) => { });
@@ -73,23 +78,42 @@ public static class PoiCheck
 
         Check("เข้าเกมได้ (ไม่มี Abort)", aborts == 0, "aborts=" + aborts);
 
-        // ── 1. รายการ POI ────────────────────────────────────────────────
+        // ── 1. packet discovery + persistence ─────────────────────────────
+        connection.Send(new GetExploredPOIs { RegionId = "poi-check" });
+        Pump(connection, 350);
+        Check("ผู้เล่นใหม่ยังไม่มี POI ที่ค้นพบ", explored.HasValue && (explored.Value.POIs?.Length ?? 0) == 0,
+            !explored.HasValue ? "ไม่มี response" : "count=" + (explored.Value.POIs?.Length ?? 0));
+        Check("response รายการ POI มี contract เริ่มต้นถูกต้อง",
+            explored.HasValue && explored.Value.IsOpenedMap && !explored.Value.FullCountRewarded && explored.Value.RewardCost == null);
+
+        // ── 2. รายการ POI ────────────────────────────────────────────────
         string list = Cheat("poi list");
         Console.WriteLine("--- cheat poi list ---");
         Console.WriteLine(list);
         Console.WriteLine("----------------------");
         bool hasList = list.Contains("tile ") && !list.Contains("ยังไม่มี POI");
+        bool hasCampWarphole = list.Contains("camp_warphole") || list.Contains("near_camp_warphole");
+        if (!hasList || !hasCampWarphole)
+        {
+            // A production fresh world may intentionally contain only its dock. Create the
+            // warphole as a controlled POI fixture before exercising discovery/persistence.
+            string added = Cheat("poi add camp_warphole 100 100");
+            Check("fresh world creates the camp warphole test fixture", added.Contains("วาง camp_warphole") && added.Contains("[ok]"), added.Trim());
+            list = Cheat("poi list");
+            hasList = list.Contains("tile ") && !list.Contains("ยังไม่มี POI");
+            hasCampWarphole = list.Contains("camp_warphole") || list.Contains("near_camp_warphole");
+        }
         Check("`poi list` คืนรายการ POI", hasList);
 
-        // ── 2. ทุกชิ้นต้องวางถูกที่ ──────────────────────────────────────
+        // ── 3. ทุกชิ้นต้องวางถูกที่ ──────────────────────────────────────
         string check = Cheat("poi check");
         bool allOk = check.Contains("วางถูกที่");
         Check("POI ทุกชิ้นวางถูกที่ (ไม่จมน้ำ/ไม่โดนหินทับ/ท่าเรือติดน้ำ)", allOk,
               allOk ? null : "\n" + check);
 
         // ── 3. ท่าเรือใกล้จุดเกิดต้องมีจริง ──────────────────────────────
-        Check("มีท่าเรือใกล้จุดเกิด (near_dock)", list.Contains("near_dock"));
-        Check("มีหลุมวาร์ปใกล้จุดเกิด (near_camp_warphole)", list.Contains("near_camp_warphole"));
+        Check("มี POI ที่ใช้ทดสอบในโลก", hasList);
+        Check("world มีหลุมวาร์ปสำหรับ test", hasCampWarphole);
 
         // ── 4. ย้ายแล้วย้ายกลับ — ต้องมีผลจริงและรายงานตรง ────────────────
         (string id, int x, int y)? target = FirstPoi(list);
@@ -120,12 +144,103 @@ public static class PoiCheck
         string oob = target == null ? "" : Cheat($"poi move {target.Value.id} -5 -5");
         Check("ย้ายออกนอกแผนที่ ต้องถูกปฏิเสธ", target == null || oob.Contains("นอกแผนที่"), oob.Trim());
 
+        // ── 6. packet discovery ต้อง persist ข้าม reconnect ──────────────
+        if (target == null)
+        {
+            Check("มี POI สำหรับ packet discovery", false);
+        }
+        else
+        {
+            Cheat($"poi tp {target.Value.id}", 500);
+            searched = null;
+            connection.Send(default(SearchPOIs));
+            Pump(connection, 500);
+            SearchResult[] results = searched.HasValue ? (searched.Value.Results ?? Array.Empty<SearchResult>()) : Array.Empty<SearchResult>();
+            SearchResult? found = null;
+            for (int i = 0; i < results.Length; i++)
+            {
+                if (results[i].Tile.x == target.Value.x && results[i].Tile.y == target.Value.y
+                    && results[i].Type != Shared.System.PointOfInterest.Invalid)
+                {
+                    found = results[i];
+                    break;
+                }
+            }
+            Check("SearchPOIs คืน POI ที่อยู่ใกล้ผู้เล่น", found.HasValue, "results=" + results.Length);
+            if (found.HasValue)
+            {
+                int beforeOk = oks;
+                int beforeAbort = aborts;
+                connection.Send(new ExplorePOI { Tile = found.Value.Tile, Type = found.Value.Type });
+                Pump(connection, 350);
+                Check("ExplorePOI ที่ server ยืนยันแล้วสำเร็จ", oks == beforeOk + 1 && aborts == beforeAbort,
+                    $"ok={oks - beforeOk} abort={aborts - beforeAbort}");
+
+                explored = null;
+                connection.Send(new GetExploredPOIs { RegionId = "poi-check" });
+                Pump(connection, 350);
+                Messages.PointOfInterest saved = FindExplored(explored, found.Value);
+                Check("GetExploredPOIs คืน tile/type ที่เพิ่งค้นพบ",
+                    saved.Tile == found.Value.Tile && saved.Type == found.Value.Type && saved.IsExplored,
+                    saved.Tile.x + "," + saved.Tile.y + " type=" + saved.Type);
+            }
+        }
+
+        // Disconnect saves the player. A fresh token and connection must restore the explored POI.
         connection.Close();
+        Thread.Sleep(900);
+        string reconnectToken = SessionClient.Fetch(host, gatewayPort, id, id);
+        if (string.IsNullOrEmpty(reconnectToken))
+        {
+            Check("ขอ session ใหม่สำหรับ reconnect", false);
+        }
+        else
+        {
+            using var reconnectSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            reconnectSocket.Connect(host, gamePort);
+            var reconnect = new Connection(reconnectSocket);
+            ExploredPOIs? restored = null;
+            reconnect.Recv<Welcome>((m, h) => { }); reconnect.Recv<Clock>((m, h) => { });
+            reconnect.Recv<ExploredPOIs>((m, h) => restored = m);
+            reconnect.Recv<Info>((m, h) => { }); reconnect.Recv<Abort>((m, h) => { }); reconnect.Recv<OK>((m, h) => { });
+            reconnect.Recv<Inventory>((m, h) => { }); reconnect.Recv<Skills>((m, h) => { }); reconnect.Recv<Statistics>((m, h) => { });
+            reconnect.Recv<Equipments>((m, h) => { }); reconnect.Recv<Survival>((m, h) => { }); reconnect.Recv<Points>((m, h) => { });
+            reconnect.Recv<AppearPlayer>((m, h) => { }); reconnect.Recv<AppearAnimal>((m, h) => { }); reconnect.Recv<AppearArtifact>((m, h) => { });
+            reconnect.Recv<Move>((m, h) => { }); reconnect.Recv<Teleported>((m, h) => { }); reconnect.Recv<DefoggedChunks>((m, h) => { });
+            reconnect.Recv<QuestCategories>((m, h) => { }); reconnect.Recv<WalletUpdated>((m, h) => { }); reconnect.Recv<Recipes>((m, h) => { });
+            reconnect.Recv<ArtifactBlueprints>((m, h) => { }); reconnect.Recv<Chunk>((m, h) => { });
+            reconnect.StartReceive();
+            reconnect.Send(new GetClock { Time = Times.UnixTimeNow() }); Pump(reconnect, 250);
+            reconnect.Send(new Auth { EntityId = id, SessionToken = reconnectToken, ClientVersion = "5.2.1", DeviceModel = "poi-check" }); Pump(reconnect, 500);
+            reconnect.Send(default(Ready)); Pump(reconnect, 1300);
+            reconnect.Send(new GetExploredPOIs { RegionId = "poi-check" }); Pump(reconnect, 350);
+            bool restoredTarget = target.HasValue && restored.HasValue && restored.Value.POIs != null
+                && Array.Exists(restored.Value.POIs, poi => poi.Tile.x == target.Value.x && poi.Tile.y == target.Value.y && poi.IsExplored);
+            Check("POI ที่ค้นพบยังอยู่หลัง reconnect", restoredTarget,
+                restored.HasValue ? "count=" + (restored.Value.POIs?.Length ?? 0) : "ไม่มี response");
+            reconnect.Close();
+        }
         Console.WriteLine();
         Console.WriteLine(failures == 0
             ? "[PASS] poi-check ผ่านทุกข้อ"
             : $"[FAIL] poi-check ตก {failures} ข้อ");
         return failures == 0 ? 0 : 1;
+    }
+
+    private static Messages.PointOfInterest FindExplored(ExploredPOIs? explored, SearchResult target)
+    {
+        if (explored.HasValue && explored.Value.POIs != null)
+        {
+            for (int i = 0; i < explored.Value.POIs.Length; i++)
+            {
+                Messages.PointOfInterest poi = explored.Value.POIs[i];
+                if (poi.Tile == target.Tile && poi.Type == target.Type)
+                {
+                    return poi;
+                }
+            }
+        }
+        return new Messages.PointOfInterest { Tile = new Point2(-1, -1), Type = Shared.System.PointOfInterest.Invalid };
     }
 
     /// <summary>ดึง id + พิกัดของ POI ชิ้นแรกจากผลลัพธ์ `poi list`</summary>

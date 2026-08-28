@@ -12,6 +12,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <!-- Snappy.NET P/Invokes kernel32.dll and crashes as soon as Linux accepts a client. -->
     <PackageReference Include="Snappier" Version="1.3.1" />
+    <PackageReference Include="Lib.Harmony" Version="2.4.2" />
   </ItemGroup>
 
   <ItemGroup>

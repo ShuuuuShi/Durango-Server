@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Durango.Network;
 using Messages;
 
@@ -30,10 +31,16 @@ public partial class ServerPlayer
     /// </summary>
     private void LoadPersistedState()
     {
-        PlayerSave save = SaveStore.Load<PlayerSave>(SaveStore.PlayerPath(EntityId));
+        string savePath = SaveStore.PlayerPath(EntityId);
+        bool hadSave = System.IO.File.Exists(savePath) || System.IO.File.Exists(savePath + ".tmp");
+        PlayerSave save = SaveStore.Load<PlayerSave>(savePath);
 
         if (save == null)
         {
+            if (hadSave)
+            {
+                throw new InvalidDataException($"ไฟล์เซฟผู้เล่น {EntityId} อ่านไม่ได้และถูกกักกัน — ไม่สร้างตัวละครใหม่ทับ");
+            }
             GrantStarterItems();
             ApplySurvivalSave(null);          // เฟส C — ค่าเริ่มต้นเต็มหลอด
             _dirty = true;
@@ -58,12 +65,24 @@ public partial class ServerPlayer
                     ItemSave it = save.Inventory[i];
                     if (it != null && !string.IsNullOrEmpty(it.Id))
                     {
-                        _inventory.Add(it.ToItem());
+                        Item loaded = it.ToItem();
+                        // Migrate the old starter/cheat axe icon. The prototype's
+                        // actual client icon is weapon_axe_onehand_stone_2;
+                        // keeping the prototype id but sending the old icon key
+                        // makes the inventory render a missing icon.
+                        if (string.Equals(loaded.Prototype, "axe_onehand_stone_01", StringComparison.Ordinal)
+                            && !string.Equals(loaded.Icon, "weapon_axe_onehand_stone_2", StringComparison.Ordinal))
+                        {
+                            loaded.Icon = "weapon_axe_onehand_stone_2";
+                            _dirty = true;
+                        }
+                        _inventory.Add(loaded);
                     }
                 }
             }
         }
         ApplyInventoryStateSave(save);
+        ApplyPoiSave(save);
 
         if (save.KnownSkills != null && save.KnownSkills.Count > 0)
         {
@@ -186,9 +205,13 @@ public partial class ServerPlayer
         ApplyProficiencySave(save.CategoryExp);   // ความชำนาญของหมวดสกิล
         ApplySkillResearchSave(save);
         ApplyDeathSave(save);
-        ApplyDeathSave(save);
         ApplyGroup2Save(save);
         ApplyQuestSave(save);
+        ApplyPartySave(save);
+        ApplySocialSave(save);
+        ApplyMailSave(save);
+        ApplyWalletSave(save);
+        ApplyClanSave(save);
 
         _starterGiven = save.StarterGiven;
         if (!_starterGiven)
@@ -217,12 +240,12 @@ public partial class ServerPlayer
             // ไอเทมเริ่มต้น: กองไฟ (capsule) สำหรับวางสิ่งก่อสร้างโดยไม่ต้องคราฟ
             _inventory.Add(MakeCapsuleItem("capsulated_bonfire", "กองไฟ", "furniture_workbench_bonfire"));
             // Beta 1.0: แจกขวานหินด้วย — มือเปล่าตีได้ ~6 หน่วย ล่าสัตว์แทบไม่ไหว
-            // (ดูตารางสมดุลใน docs/BETA-1.0-PLAN.md)
+            // (ดูตารางสมดุลใน docs/testing/BETA-1.0-PLAN.md)
             _inventory.Add(MakeGatheredItem(new Generator
             {
                 Id = "axe_onehand_stone_01",
                 Name = "ขวานหิน",
-                Icon = "weapon_axe_onehand_stone_01"
+                Icon = "weapon_axe_onehand_stone_2"
             }));
         }
         _starterGiven = true;
@@ -262,6 +285,7 @@ public partial class ServerPlayer
             }
         }
         FillInventoryStateSave(save);
+        FillPoiSave(save);
         save.CurrentEquipSlotType = (int)_currentEquipSlotType;
         save.AccessoryId = _accessoryId;
         foreach (KeyValuePair<Shared.Item.EquipSlotType, Dictionary<string, string>> preset in _equipmentPresets)
@@ -276,9 +300,13 @@ public partial class ServerPlayer
         save.CategoryExp = BuildProficiencySave();          // ความชำนาญของหมวดสกิล
         FillSkillResearchSave(save);
         FillDeathSave(save);
-        FillDeathSave(save);
         FillGroup2Save(save);
         FillQuestSave(save);
+        FillPartySave(save);
+        FillSocialSave(save);
+        FillMailSave(save);
+        FillWalletSave(save);
+        FillClanSave(save);
         for (int i = 0; i < _knownSkills.Count; i++)
         {
             save.KnownSkills.Add(SkillBundleSave.From(_knownSkills[i]));

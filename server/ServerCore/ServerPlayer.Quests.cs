@@ -420,6 +420,7 @@ public partial class ServerPlayer
                 GoalCount = q.Count,
                 Finished = finished
             });
+            PluginManager.Instance?.FireEvent(finished ? "quest.completed" : "quest.progressed", this, false, true);
         }
 
         if (unlockedSomething)

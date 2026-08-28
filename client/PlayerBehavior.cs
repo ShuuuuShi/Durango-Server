@@ -812,6 +812,10 @@ public class PlayerBehavior : CharacterBehavior, IAnimationEventPlayable, ICostu
 				AmbientLighting.SetupMaterials(Renderers);
 			}
 		}
+		if (IsLocalPlayer)
+		{
+			ClientModLoader.NotifyLocalPlayerAppearanceChanged();
+		}
 	}
 
 	private void TransferEvent(PlayerBehavior oldPlayer)

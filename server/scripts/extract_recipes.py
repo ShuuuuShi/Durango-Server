@@ -42,8 +42,22 @@ if data is None:
     raise SystemExit('parse JSON ของ recipes ไม่ได้: %s' % last_err)
 
 
+def cs_requirements(values):
+    """คืน TagRequirement[] พร้อมระดับจาก required_tags/materials"""
+    if not values:
+        return 'null'
+    inner = ', '.join(
+        'new TagRequirement("%s", %d)' % (
+            str(k).replace('\\', '\\\\').replace('"', '\\"'),
+            int(v or 1),
+        )
+        for k, v in sorted(values.items())
+    )
+    return 'new[] { %s }' % inner
+
+
+# Kept for callers of older generated snippets; requirements use cs_requirements below.
 def cs_array(values):
-    """คืน literal array ของ C# (หรือ null ถ้าว่าง)"""
     if not values:
         return 'null'
     inner = ', '.join('"%s"' % v.replace('\\', '\\\\').replace('"', '\\"') for v in values)
@@ -68,10 +82,10 @@ out.append('    {')
 out.append('        public readonly string Id;')
 out.append('        public readonly int Min;')
 out.append('        public readonly int Max;')
-out.append('        public readonly string[] Tags;')
-out.append('        public readonly string[] Materials;')
+out.append('        public readonly TagRequirement[] Tags;')
+out.append('        public readonly TagRequirement[] Materials;')
 out.append('')
-out.append('        public Slot(string id, int min, int max, string[] tags, string[] materials)')
+out.append('        public Slot(string id, int min, int max, TagRequirement[] tags, TagRequirement[] materials)')
 out.append('        {')
 out.append('            Id = id;')
 out.append('            Min = min;')
@@ -81,7 +95,7 @@ out.append('            Materials = materials;')
 out.append('        }')
 out.append('    }')
 out.append('')
-out.append('    private static Slot S(string id, int min, int max, string[] tags = null, string[] materials = null)')
+out.append('    private static Slot S(string id, int min, int max, TagRequirement[] tags = null, TagRequirement[] materials = null)')
 out.append('    {')
 out.append('        return new Slot(id, min, max, tags, materials);')
 out.append('    }')
@@ -100,8 +114,8 @@ for recipe_id in sorted(data):
             slot.get('slot_id', ''),
             int(slot.get('count_min', 0) or 0),
             int(slot.get('count_max', 0) or 0),
-            cs_array(sorted((slot.get('required_tags') or {}).keys())),
-            cs_array(sorted((slot.get('required_materials') or {}).keys())),
+            cs_requirements(slot.get('required_tags') or {}),
+            cs_requirements(slot.get('required_materials') or {}),
         ))
     body_txt = 'new Slot[0]' if not parts else 'new[] { %s }' % ', '.join(parts)
     out.append('        { "%s", %s },' % (recipe_id, body_txt))

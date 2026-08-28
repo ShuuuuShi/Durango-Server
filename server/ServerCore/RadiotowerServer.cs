@@ -55,6 +55,22 @@ public class RadiotowerServer
         return true;
     }
 
+    public void Close()
+    {
+        _listener.ClientAccepted -= ClientAccepted;
+        _listener.Close();
+        Durango.Offline.Connection[] snapshot;
+        lock (_connLock)
+        {
+            snapshot = _connections.ToArray();
+            _connections.Clear();
+        }
+        for (int i = 0; i < snapshot.Length; i++)
+        {
+            try { snapshot[i].Close(); } catch (Exception e) { Console.WriteLine($"[radiotower] ปิด connection ไม่สำเร็จ: {e.Message}"); }
+        }
+    }
+
     private void ClientAccepted(Socket socket)
     {
         Durango.Offline.Connection connection = new Durango.Offline.Connection(socket);

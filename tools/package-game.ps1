@@ -128,7 +128,7 @@ if (-not $SkipUpdater) {
   $updaterProj = Join-Path $root 'tools\Updater\DurangoUpdater.csproj'
   & dotnet publish $updaterProj -c Release -r win-x64 -p:SelfContained=true --nologo -v quiet
   if ($LASTEXITCODE -ne 0) { throw "build DurangoUpdater ล้มเหลว (exit $LASTEXITCODE)" }
-  $updaterExe = Join-Path $root 'tools\Updater\bin\Release\net9.0\win-x64\publish\DurangoUpdater.exe'
+  $updaterExe = Join-Path $root 'tools\Updater\bin\Release\net9.0-windows\win-x64\publish\DurangoUpdater.exe'
   if (-not (Test-Path $updaterExe)) { throw "ไม่เจอ $updaterExe หลัง publish" }
   Copy-Item $updaterExe $stage -Force
 

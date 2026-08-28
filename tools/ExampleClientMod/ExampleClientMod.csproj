@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    ตัวอย่าง client mod — สาธิตทุกจุดของ IClientModApi ในไฟล์เดียว (V1.1)
+    ดูวิธีเขียน mod ของตัวเองที่ docs/client/Modding.md
+
+    build:    dotnet build tools\ExampleClientMod -c Release
+    ติดตั้ง:  copy tools\ExampleClientMod\bin\Release\net35\ExampleClientMod.dll ไป game\mods\
+              (mod จริงต้องการแค่ .dll ของ mod เอง — DurangoClientModSdk.dll เกมมีอยู่แล้ว
+              ใน DurangoV2_Data\Managed ห้ามก๊อปซ้ำไปวางใน mods\)
+  -->
+
+  <PropertyGroup>
+    <AssemblyName>ExampleClientMod</AssemblyName>
+    <RootNamespace>ExampleClientMod</RootNamespace>
+    <TargetFramework>net35</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\client-mod-sdk\DurangoClientModSdk.csproj" />
+    <!-- อยากแตะส่วนไหนของเกมเพิ่ม ก็ reference DLL ของ Unity/เกมตัวนั้นเข้ามา (แบบ MemoryBotMod)
+         ตัวอย่างนี้ใช้แค่ CoreModule (KeyCode/Vector3/Input/Time) พอ -->
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\game\DurangoV2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

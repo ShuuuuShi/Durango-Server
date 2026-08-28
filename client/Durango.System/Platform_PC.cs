@@ -1,3 +1,4 @@
+using System;
 using Durango.UI;
 using UnityEngine;
 
@@ -5,6 +6,28 @@ namespace Durango.System;
 
 public class Platform_PC : Platform
 {
+	private const string LocalAccountIdKey = "durango_local_account_id";
+
+	private static string _localAccountId;
+
+	public override string NPSN
+	{
+		get
+		{
+			if (string.IsNullOrEmpty(_localAccountId))
+			{
+				_localAccountId = PlayerPrefs.GetString(LocalAccountIdKey, string.Empty);
+				if (string.IsNullOrEmpty(_localAccountId))
+				{
+					_localAccountId = Guid.NewGuid().ToString("N");
+					PlayerPrefs.SetString(LocalAccountIdKey, _localAccountId);
+					PlayerPrefs.Save();
+				}
+			}
+			return _localAccountId;
+		}
+	}
+
 	public override bool IsPCStore => true;
 
 	public override string AppBundleId => "com.nexon.durango.wildlands";
@@ -18,10 +41,11 @@ public class Platform_PC : Platform
 	public override bool IsAvailableOfferwall => false;
 
 	// [แก้เอง] 23 ส.ค. 2026 — เจ้าของสั่งใช้ UI มือถือเป็นหลัก (ทดลองแล้วโหลดสมบูรณ์ ไม่มี error ใหม่
-	// ดู docs/CAPABILITY-REPORT.md หัวข้อ 3) เดิมต้องตั้ง env DURANGO_MOBILEUI=1 ถึงจะเห็น UI มือถือ
+	// ดู docs/project/CAPABILITY-REPORT.md หัวข้อ 3) เดิมต้องตั้ง env DURANGO_MOBILEUI=1 ถึงจะเห็น UI มือถือ
 	// ⇒ สลับ default: ตอนนี้ UI มือถือเป็นค่าเริ่มต้นเสมอ ถ้าอยากย้อนกลับไป UI PC ชั่วคราว (เช่นเทียบผล)
 	// ตั้ง env DURANGO_FORCE_PCUI=1
-	public override bool UsePCUI => global::System.Environment.GetEnvironmentVariable("DURANGO_FORCE_PCUI") == "1";
+	// Always use the mobile prefab/layout set, even when the game runs on Windows.
+	public override bool UsePCUI => false;
 
 	public override int DefaultUISize => 1280;
 

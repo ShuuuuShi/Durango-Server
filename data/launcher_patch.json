@@ -1,0 +1,6 @@
+{
+  "version": "v1.2.4",
+  "notes": "ตัวอย่าง manifest แพตช์สำหรับ DinoWorld Launcher (รูปแบบเดียวกับ manifest.json ของ tools/Updater)\nแก้ zip_url/sha256 ให้ตรงชุดแจกจริงเมื่อปล่อยอัปเดต — launcher จะโหลด+ตรวจ hash ก่อนติดตั้งเสมอ\nถ้าไม่ต้องการแจกแพตช์ผ่านเซิร์ฟ ลบไฟล์นี้ได้ (launcher จะ fallback ไป update-manifest-url.txt / GitHub)",
+  "zip_url": "",
+  "sha256": ""
+}

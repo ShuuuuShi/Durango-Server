@@ -61,9 +61,9 @@
 ## 5. เอกสารอ้างอิง (ถ้า agent ต้องการรายละเอียดเพิ่ม)
 
 - `docs/HANDOFF.md` — สรุปงาน + กับดักที่เคยเสียเวลา (อ่านได้)
-- `docs/CHANGELOG.md` — ประวัติการแก้ทุกเฟส (ละเอียด)
-- `docs/BETA-1.0-PLAN.md` — เกณฑ์ 5 ข้อก่อนเปิด beta
-- `docs/discord-update.md` — ฉบับโพสต์ลง Discord
+- `docs/project/CHANGELOG.md` — ประวัติการแก้ทุกเฟส (ละเอียด)
+- `docs/testing/BETA-1.0-PLAN.md` — เกณฑ์ 5 ข้อก่อนเปิด beta
+- `docs/operations/discord-update.md` — ฉบับโพสต์ลง Discord
 
 ## 6. หมายเหตุสำหรับ agent
 

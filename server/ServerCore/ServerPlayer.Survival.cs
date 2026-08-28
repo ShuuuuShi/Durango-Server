@@ -277,8 +277,14 @@ public partial class ServerPlayer
             _fatigue.Settle(now);
             if (_fatigue.Value <= 0f)
             {
-                StopResting();
-                Send(new Info { Text = "หายเหนื่อยแล้ว" });
+                // ถึงความล้าจะหมดแล้วก็ยังถือว่านั่งพักอยู่ บัพต้องค้างจนกว่าผู้เล่น
+                // จะลุก/ขยับ/ทำกิจกรรมเอง จึงหยุดเฉพาะความเร็วลด fatigue ไม่เรียก StopResting()
+                _fatigue.Value = 0f;
+                if (Math.Abs(_fatigue.Velocity) > 0.0001f)
+                {
+                    _fatigue.Velocity = 0f;
+                    PushGauges("fatigue");
+                }
             }
         }
 
@@ -364,6 +370,8 @@ public partial class ServerPlayer
             return "ยังไม่เหนื่อยเลย";
         }
         _resting = true;
+        _restStartedAt = now;
+        _restMovementGraceUntil = now + 2.0;
         _fatigue.Velocity = -Cfg.RestFatiguePerSec;
         // นั่งพัก = สตามินาฟื้นไวขึ้นทันที ไม่ต้องรอเวลาหน่วง
         _staminaResumeAt = 0.0;
@@ -382,7 +390,10 @@ public partial class ServerPlayer
         {
             return;
         }
+        Console.WriteLine("[rest] {0} หยุดพัก — เปลี่ยนกลับเป็นโหมดปกติ", Name);
         _resting = false;
+        _restStartedAt = 0.0;
+        _restMovementGraceUntil = 0.0;
         double now = Times.UnixTimeNow();
         _fatigue.Settle(now);
         _fatigue.Velocity = FatiguePerSec;
@@ -529,7 +540,9 @@ public partial class ServerPlayer
         _stamina.Velocity = 0f;
         _stamina.UpdatedAt = now;
         _staminaResumeAt = 0.0;
-        _resting = false;
+        // reset/revive ต้องล้างทั้ง state ภายในและ status effect ที่ client เห็น
+        // ไม่ให้บัพพักค้างข้ามการฟื้นหรือคำสั่งแอดมิน
+        StopResting();
         if (clearFatigue)
         {
             _fatigue.Value = 0f;
@@ -561,6 +574,13 @@ public partial class ServerPlayer
         }
         g.Settle(now);
         g.Value = Math.Clamp(value, 0f, g.Max);
+        // ถ้าปรับความล้าจาก cheat/admin ระหว่างที่ผู้เล่นยังนั่งพักอยู่
+        // ต้องคืน velocity ของการพักด้วย ไม่อย่างนั้นกรณีเดิมล้าถึง 0
+        // จะมี velocity=0 ค้าง แล้วค่าเหนื่อยที่เด้งขึ้นมาจะไม่ลดต่อ
+        if (key == "fatigue" && _resting)
+        {
+            g.Velocity = -Cfg.RestFatiguePerSec;
+        }
         PushGauges(key);
     }
 

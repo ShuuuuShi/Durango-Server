@@ -15,6 +15,9 @@ public struct Packet
 
 	public const int HeaderSize = 24;
 
+	/// <summary>ขนาด payload สูงสุดที่ยอมรับ/ส่งใน connection หนึ่ง frame</summary>
+	public const int MaxPayloadSize = 524288 - HeaderSize;
+
 	public static T DeserializeMsg<T>(byte[] payload, int payloadOffset, int payloadSize, byte[] decompressingBuffer, MessagePacking packer)
 	{
 		int count = Snappy.Decompress(payload.AsSpan(payloadOffset, payloadSize), decompressingBuffer);
@@ -34,6 +37,10 @@ public struct Packet
 			return 0;
 		}
 		int num = Snappy.Compress(packingBuffer.AsSpan(0, (int)memoryStream.Position), compressingBuffer);
+		if (num > MaxPayloadSize || dstBuffer == null || dstOffset < 0 || dstOffset > dstBuffer.Length - HeaderSize - num)
+		{
+			throw new InvalidDataException($"Packet payload is too large: {num} bytes");
+		}
 		int num2 = WritePacketHeader(time, seq, replyOf, typeCode, num, dstBuffer, dstOffset);
 		Buffer.BlockCopy(compressingBuffer, 0, dstBuffer, dstOffset + num2, num);
 		return num2 + num;
@@ -49,25 +56,44 @@ public struct Packet
 		return 24;
 	}
 
-	public static PacketHeader ReadPacketHeader(byte[] bytes, int remainBytes, int offset)
+	public static bool TryReadPacketHeader(byte[] bytes, int remainBytes, int offset, out PacketHeader result, out bool incomplete)
 	{
-		PacketHeader result = new PacketHeader
+		result = new PacketHeader { Size = HeaderSize };
+		incomplete = false;
+		if (bytes == null || offset < 0 || remainBytes < HeaderSize)
 		{
-			Size = 24
-		};
-		if (remainBytes < result.Size)
+			incomplete = true;
+			result.Size = 0;
+			return false;
+		}
+		if (offset > bytes.Length - HeaderSize || remainBytes > bytes.Length - offset)
 		{
-			return result;
+			result.Size = 0;
+			return false;
 		}
 		result.Time = (double)BitConverter.ToUInt64(bytes, offset) / 1000.0;
 		result.Seq = BitConverter.ToUInt32(bytes, offset + 8);
 		result.ReplyOf = BitConverter.ToUInt32(bytes, offset + 12);
 		result.TypeCode = BitConverter.ToUInt32(bytes, offset + 16);
-		result.PayloadSize = (int)BitConverter.ToUInt32(bytes, offset + 20);
-		if (bytes.Length - result.Size < result.PayloadSize)
+		uint payloadSize = BitConverter.ToUInt32(bytes, offset + 20);
+		if (payloadSize > MaxPayloadSize)
 		{
 			result.Size = 0;
+			return false;
 		}
+		if (payloadSize > (uint)(remainBytes - HeaderSize))
+		{
+			incomplete = true;
+			result.Size = 0;
+			return false;
+		}
+		result.PayloadSize = (int)payloadSize;
+		return true;
+	}
+
+	public static PacketHeader ReadPacketHeader(byte[] bytes, int remainBytes, int offset)
+	{
+		TryReadPacketHeader(bytes, remainBytes, offset, out PacketHeader result, out _);
 		return result;
 	}
 

@@ -3,6 +3,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Windows.Forms;
 
 namespace DurangoUpdater;
 
@@ -20,28 +21,55 @@ internal static class Program
     private const string DefaultManifestUrl =
         "https://github.com/SuperCodeTH/Durango-TH-Client/releases/latest/download/manifest.json";
 
-    private static async Task<int> Main(string[] args)
+    private static ProgressForm? _progress;
+
+    [STAThread]
+    private static void Main(string[] args)
     {
-        string gameDir = AppContext.BaseDirectory.TrimEnd('\\', '/');
-        Console.WriteLine("Durango Updater");
-        Console.WriteLine("โฟลเดอร์เกม: " + gameDir);
-
-        try
-        {
-            await RunUpdateCheck(gameDir);
-        }
-        catch (Exception e)
-        {
-            // กันเหนียวชั้นนอกสุด — ไม่ว่าจะพังตรงไหนในขั้นตอนอัปเดต ต้องไปเปิดเกมต่อได้เสมอ
-            Console.WriteLine("[อัปเดต] ข้ามไป (ผิดพลาด: " + e.Message + ")");
-        }
-
-        LaunchGame(gameDir);
-        return 0;
+        ApplicationConfiguration.Initialize();
+        Application.Run(new UpdaterApplicationContext(args));
     }
+
+    private sealed class UpdaterApplicationContext : ApplicationContext
+    {
+        private readonly string _gameDir;
+
+        public UpdaterApplicationContext(string[] args)
+        {
+            _gameDir = AppContext.BaseDirectory.TrimEnd('\\', '/');
+            _progress = new ProgressForm();
+            _progress.Show();
+            _ = RunAsync();
+        }
+
+        private async Task RunAsync()
+        {
+            Console.WriteLine("Durango Updater");
+            Console.WriteLine("โฟลเดอร์เกม: " + _gameDir);
+
+            try
+            {
+                await RunUpdateCheck(_gameDir);
+            }
+            catch (Exception e)
+            {
+                // กันเหนียวชั้นนอกสุด — ไม่ว่าจะพังตรงไหนในขั้นตอนอัปเดต ต้องไปเปิดเกมต่อได้เสมอ
+                Console.WriteLine("[อัปเดต] ข้ามไป (ผิดพลาด: " + e.Message + ")");
+                _progress?.SetStatus("อัปเดตไม่สำเร็จ — กำลังเปิดเกมเวอร์ชันเดิม...");
+                await Task.Delay(700);
+            }
+
+            _progress?.Close();
+            LaunchGame(_gameDir);
+            ExitThread();
+        }
+    }
+
+    private static void SetProgressBusy(string message) => _progress?.SetBusy(message);
 
     private static async Task RunUpdateCheck(string gameDir)
     {
+        SetProgressBusy("กำลังตรวจสอบแพท...");
         if (IsGameRunning())
         {
             Console.WriteLine("[อัปเดต] เกมกำลังเปิดอยู่แล้ว ข้ามการเช็คอัปเดตรอบนี้");
@@ -92,11 +120,25 @@ internal static class Program
         try
         {
             // ── 1) โหลดไฟล์ทั้งก้อนลงเครื่องชั่วคราวก่อน (ยังไม่แตะโฟลเดอร์เกมจริงเลย) ──
+            SetProgressBusy("กำลังดาวน์โหลดแพท...");
+            using HttpResponseMessage downloadResponse = await http.GetAsync(
+                manifest.ZipUrl, HttpCompletionOption.ResponseHeadersRead);
+            downloadResponse.EnsureSuccessStatusCode();
+            long totalBytes = downloadResponse.Content.Headers.ContentLength ?? -1L;
+            long receivedBytes = 0L;
+            byte[] buffer = new byte[1024 * 1024];
             await using (FileStream fs = new FileStream(zipPath, FileMode.Create, FileAccess.Write))
-            using (Stream dl = await http.GetStreamAsync(manifest.ZipUrl))
+            using (Stream dl = await downloadResponse.Content.ReadAsStreamAsync())
             {
-                await dl.CopyToAsync(fs);
+                int read;
+                while ((read = await dl.ReadAsync(buffer.AsMemory(0, buffer.Length))) > 0)
+                {
+                    await fs.WriteAsync(buffer.AsMemory(0, read));
+                    receivedBytes += read;
+                    _progress?.SetProgress(receivedBytes, totalBytes);
+                }
             }
+            _progress?.SetComplete("ดาวน์โหลดเสร็จแล้ว — กำลังตรวจสอบไฟล์...");
 
             // ── 2) ตรวจ SHA256 — ไม่ตรง = หยุดทันที ไม่แตะโฟลเดอร์เกมจริงเลย ──
             if (!string.IsNullOrEmpty(manifest.Sha256))
@@ -111,6 +153,7 @@ internal static class Program
             }
 
             // ── 3) แตกไฟล์ลงโฟลเดอร์ชั่วคราว (ยังไม่แตะโฟลเดอร์เกมจริง) ──
+            SetProgressBusy("กำลังติดตั้งแพท...");
             Directory.CreateDirectory(extractDir);
             ZipFile.ExtractToDirectory(zipPath, extractDir, overwriteFiles: true);
 
@@ -137,6 +180,8 @@ internal static class Program
 
             WriteLocalVersion(gameDir, manifest.Version);
             Console.WriteLine("[อัปเดต] อัปเดตเป็นเวอร์ชัน " + manifest.Version + " เรียบร้อยแล้ว");
+            _progress?.SetComplete("ติดตั้งเสร็จแล้ว — กำลังเปิดเกม...");
+            await Task.Delay(600);
         }
         finally
         {
@@ -189,6 +234,11 @@ internal static class Program
         }
 
         string server = ReadServerTarget(gameDir);
+        if (!server.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+            && !server.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+        {
+            server = "http://" + server;
+        }
         Console.WriteLine();
         Console.WriteLine("  Durango TH");
         Console.WriteLine("  server : " + server);
@@ -199,12 +249,11 @@ internal static class Program
         ProcessStartInfo psi = new ProcessStartInfo
         {
             FileName = exePath,
-            Arguments = "-force-d3d11 -screen-fullscreen 0 -screen-width 1600 -screen-height 900 " +
+            Arguments = "-durango-updated -force-d3d11 -screen-fullscreen 0 -screen-width 1600 -screen-height 900 " +
                         "-logFile \"" + Path.Combine(gameDir, "game.log") + "\"",
             WorkingDirectory = gameDir,
             UseShellExecute = false
         };
-        psi.EnvironmentVariables["DURANGO_AUTOCONNECT"] = server;
         Process.Start(psi);
     }
 

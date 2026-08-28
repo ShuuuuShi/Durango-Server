@@ -4,6 +4,7 @@ using Durango.Network;
 using Shared.Item;
 using Durango.Utils;
 using Messages;
+using DurangoServer.Modding;
 using Shared.Building;
 using Shared.Etc;
 
@@ -120,6 +121,10 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        IModEventContext? beforePlant = PluginManager.Instance?.FireEvent("farm.before_plant", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["entity_id"] = msg.EntityId ?? "", ["seed_item_id"] = seed.Id ?? "", ["seed_prototype"] = seed.Prototype ?? "" });
+        if (beforePlant?.IsCancelled == true)
+        { Send(new Info { Text = beforePlant.CancelReason ?? "การปลูกถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
         if (!TrySpendStamina(FarmCfg.StaminaCostPlant))
         {
             Console.WriteLine("[survival] {0} สตามินาไม่พอสำหรับปลูก", Name);
@@ -136,6 +141,8 @@ public partial class ServerPlayer
         }
         RemoveItemById(seed.Id);       // กินเมล็ดหลังจากลงแปลงสำเร็จแล้วเท่านั้น
         SendInventory();
+        PluginManager.Instance?.FireEvent("farm.planted", this, false, true);
+        PluginManager.Instance?.FireEvent("inventory.removed", this, false, true);
         MarkDirty();
 
         float seconds = Math.Max(0.5f, FarmCfg.PlantSeconds);
@@ -319,8 +326,7 @@ public partial class ServerPlayer
     {
         if (!ServerConfig.Current.Features.Farming)
         {
-            Send(new Info { Text = "ระบบปลูกผักยังไม่เปิดในรอบนี้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            RejectFeatureDisabled("Farming", "DrawWater", "ระบบปลูกผักยังไม่เปิดในรอบนี้", header);
             return;
         }
         if (Dead)
@@ -375,9 +381,12 @@ public partial class ServerPlayer
             int made = 0;
             for (int i = 0; i < bottles; i++)
             {
-                if (InventoryFull)
+                lock (_inventory)
                 {
-                    break;
+                    if (_inventory.Count >= PlayerInventoryMaxSize)
+                    {
+                        break;
+                    }
                 }
                 Item bottle = MakeGatheredItem(new Generator
                 {
@@ -393,6 +402,7 @@ public partial class ServerPlayer
             }
             if (made == 0)
             {
+                RestoreStamina(FarmCfg.StaminaCostDraw, 0f);
                 Send(new Info { Text = "กระเป๋าเต็ม" }, header.Seq);
                 Send(default(Abort), header.Seq);
                 return;
@@ -509,6 +519,10 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        IModEventContext? beforeHarvest = PluginManager.Instance?.FireEvent("farm.before_harvest", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["entity_id"] = msg.EntityId ?? "", ["generator_id"] = msg.GeneratorId ?? "" });
+        if (beforeHarvest?.IsCancelled == true)
+        { Send(new Info { Text = beforeHarvest.CancelReason ?? "การเก็บเกี่ยวถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
         if (!TrySpendStamina(StaminaCostCollect))
         {
             Send(default(Abort), header.Seq);
@@ -557,6 +571,8 @@ public partial class ServerPlayer
             }
             MarkDirty();
             SendInventory();
+            PluginManager.Instance?.FireEvent("farm.harvested", this, false, true);
+            PluginManager.Instance?.FireEvent("inventory.added", this, false, true);
             GainExpForHarvest(part.Id);
             if (emptied)
             {

@@ -166,5 +166,6 @@ autosave ข้ามผู้เล่นที่ไม่มีอะไร�
   **หน้าตา** ยังให้ client เปลี่ยนได้ตามเกาะตัวเอง (เป็นเรื่องความสวยงาม) แต่เก็บลง `PlayerSave.DisplayJson`
   ไว้ใช้ตอน login ที่ไม่มีข้อมูลจากเกาะ
 - **`_skills`** (`Dictionary<Category, SkillCategory>` จาก `/sessions`) ยังไม่ถูกเซฟ — เซฟแค่ `_knownSkills`
-- ไม่มีระบบสำรอง/หมุนไฟล์เซฟ — ถ้าไฟล์พังก็คือพัง
-- ไม่มี migration เมื่อ `Version` เปลี่ยน (ตอนนี้ยังมีเวอร์ชันเดียว)
+- Save schema ใช้ `SaveEnvelope.CurrentVersion`; input legacy จะถูก normalize ก่อนใช้ แต่ future version หรือ JSON ที่อ่านไม่ได้จะถูกกักกันเป็น `.rejected-<UTC timestamp>` และไม่ถูกสร้างตัวละครใหม่ทับ
+- หาก primary ไม่มีแต่มี `<save>.tmp` ที่อ่านได้ จะกู้เป็น primary ตอนเปิด; atomic write ยังเป็นรายไฟล์ ไม่ใช่ transaction ร่วมระหว่าง world/player/account
+- ขั้นตอน backup/restore และ restore drill อยู่ที่ [`S0-FOUNDATION.md`](S0-FOUNDATION.md#backup-and-restore-procedure); helper ในเมนูใช้สำหรับ snapshot local ขณะ server หยุดเท่านั้น

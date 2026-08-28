@@ -5,7 +5,7 @@
 - **3760 ไฟล์ .cs** · **117 namespace** · **23813 เมทอด/property**
 - ทุกแถวคือ **ลายเซ็นจริง + เลขบรรทัดจริง** ในไฟล์ `client/<path>`
 - `ส่ง packet` / `รับ packet` ดึงจาก `Connections.Frontend/Radiotower.Send(...)` และ `.On(...)` ในไฟล์นั้น
-- ส่วนที่เป็นคำอธิบายว่า "ทำงานยังไง" แบบเขียนมือ อยู่ที่ [../server/](../server/) และ [../ARCHITECTURE.md](../ARCHITECTURE.md)
+- ส่วนที่เป็นคำอธิบายว่า "ทำงานยังไง" แบบเขียนมือ อยู่ที่ [../server/](../server/) และ [../project/ARCHITECTURE.md](../project/ARCHITECTURE.md)
 
 | namespace | หน้า | ไฟล์ |
 |---|---|---:|

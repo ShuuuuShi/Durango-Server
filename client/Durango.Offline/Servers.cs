@@ -48,8 +48,8 @@ public static class Servers
 		});
 		yield return new Server("online", new Dictionary<string, string>
 		{
-			{ "en_US", "Online Server (For Test)" },
-			{ "ko_KR", "온라인 서버 (테스트)" }
+            { "en_US", "[C2185B]Dinoworld Server[-]" },
+            { "ko_KR", "[C2185B]Dinoworld Server[-]" }
 		});
 	}
 }

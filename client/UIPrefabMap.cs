@@ -100,7 +100,8 @@ public class UIPrefabMap : ResourceSingleton<UIPrefabMap>
 
 	public GameObject[] GetTitle()
 	{
-		return GetUIList(Platform.Instance.UIType, Category.Title);
+		// The title/Main screen keeps the PC button layout. In-game UI remains mobile.
+		return _titlePC;
 	}
 
 	[Conditional("UNITY_EDITOR")]

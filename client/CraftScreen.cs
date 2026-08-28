@@ -68,15 +68,8 @@ public static class CraftScreen
     {
         get
         {
-            if (!_enabled.HasValue)
-            {
-                string v = null;
-                try { v = System.Environment.GetEnvironmentVariable("DURANGO_NEWUI"); }
-                catch (System.Exception) { }
-                bool envAllows = string.IsNullOrEmpty(v) || v != "0";
-                _enabled = envAllows && Platform.Instance.UsePCUI;
-            }
-            return _enabled.Value;
+            // The custom layout is retired. Use the native game prefab/layout instead.
+            return false;
         }
     }
 

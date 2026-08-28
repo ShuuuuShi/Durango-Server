@@ -55,7 +55,7 @@ entity type ต้องอยู่ช่วง 1000-1999 — ดู [ServerPla
   (แต่มันแก้แค่ `frontend_addresses[0]` เท่านั้น)
 - `radiotower` **ไม่ถูกเขียนทับ** → ถ้าวันไหนเปิด Online mode เครื่องแขกจะวิ่งไปหา 127.0.0.1 ของตัวเอง (GP-06)
 - `cluster_mode = "SingleMode"` คือสวิตช์สำคัญ: ทำให้ client โหลดข้อมูลเกมจากไฟล์ในเครื่อง
-  ถ้าเปลี่ยนเป็น `"Online"` มันจะมาขอ 71 ไฟล์จากเราแทน — ดู [ARCHITECTURE.md ข้อ 7](../ARCHITECTURE.md)
+  ถ้าเปลี่ยนเป็น `"Online"` มันจะมาขอ 71 ไฟล์จากเราแทน — ดู [ARCHITECTURE.md ข้อ 7](../project/ARCHITECTURE.md)
 
 ### `POST /players`
 สร้างตัวละครใหม่ — ตอนนี้แค่สุ่ม GUID + จำชื่อ แล้วตอบ `entity_id` (ไม่ได้สร้าง state จริง)

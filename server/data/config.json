@@ -1,4 +1,9 @@
 {
+  "Weather": {
+    "Enabled": true,
+    "CycleSeconds": 90.0,
+    "Sequence": ["sunny", "cloudy", "rainy", "heavy_rainy", "sunny"]
+  },
   "Animals": {
     "LifeBase": 30.0,
     "LifePerLevel": 8.0,
@@ -16,7 +21,7 @@
     "RestMinSeconds": 4.0,
     "RestMaxSeconds": 11.0,
     "MaxWalkLegSeconds": 5.0,
-    "MinTilesInland": 3,
+    "MinTilesInland": 4,
     "InlandTilesPerSize": 3,
     "SpawnRadiusTiles": 30.0,
     "WanderRadiusTiles": 12.5,
@@ -66,7 +71,8 @@
       "region",
       "building/furniture"
     ],
-    "HideFreeItems": true
+    "HideFreeItems": true,
+    "AllowFreeBuild": false
   },
   "Spawn": [
     {
@@ -256,17 +262,29 @@
     "IslandTravel": true,
     "Jobs": false,
     "Cooking": true,
-    "Farming": true,
+    "Farming": false,
     "Livestock": false,
     "Taming": false,
     "Market": false,
     "WarpAccelerator": false,
-    "Quests": true,
+    "Quests": false,
     "QuestChecklist": true,
     "Pvp": false,
     "LandPermission": false,
     "PartyAndClan": false,
     "Emotes": false,
+    "Friends": false,
+    "Mail": false,
+    "Wallet": false,
+    "Factions": false,
+    "Missions": false,
+    "Attendance": false,
+    "Cargo": false,
+    "Archipelago": false,
+    "Band": false,
+    "AddOns": false,
+    "DyeAndBleach": false,
+    "PrivateConversation": false,
     "MaxPlayerLevel": 20
   },
   "Survival": {

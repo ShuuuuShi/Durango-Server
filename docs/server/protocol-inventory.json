@@ -1,0 +1,6593 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "deterministic-from-source",
+  "generatedMessageCount": 985,
+  "inboundRegistrationCount": 225,
+  "rows": [
+    {
+      "request": "Abort",
+      "typeCode": 1024,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Accelerate",
+      "typeCode": 21112512,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AcceptAllPurchases",
+      "typeCode": 5247810,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AcceptPetRank",
+      "typeCode": 74016,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AcceptPurchase",
+      "typeCode": 5247809,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AcceptSuggestion",
+      "typeCode": 9138749,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AcceptTENCoupon",
+      "typeCode": 2345690,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AcceptableSubPurchase",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AcceptableSubPurchases",
+      "typeCode": 259675,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AcceptedSupportRewards",
+      "typeCode": 2509347,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AccessRights",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ActionInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ActionStatus",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Actions",
+      "typeCode": 315,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ActivePersonalRegionWarphole",
+      "typeCode": 3022,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AddFavoriteRegionOwners",
+      "typeCode": 20011,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AddItemsToWarehouse",
+      "typeCode": 3690,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AddOns",
+      "typeCode": 2438,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AdviceCompletedEffect",
+      "typeCode": 2083,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AdvisorRewardPoint",
+      "typeCode": 3902,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AdvisorTargets",
+      "typeCode": 3709,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AlarmNotify",
+      "typeCode": 3910,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AllySlot",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AllySlots",
+      "typeCode": 9138746,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AlreadyHaveEstate",
+      "typeCode": 2443,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AnimalDebugStatus",
+      "typeCode": 9898980,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AnimalDisplay",
+      "typeCode": 2432,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Announce",
+      "typeCode": 322,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AppearAnimal",
+      "typeCode": 91,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AppearArtifact",
+      "typeCode": 93,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AppearEntity",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AppearEntityOnTile",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AppearEpicNPC",
+      "typeCode": 3141592,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AppearNatural",
+      "typeCode": 92,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AppearPet",
+      "typeCode": 94,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AppearPlayer",
+      "typeCode": 90,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AppearTutorialBoat",
+      "typeCode": 95,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Appliers",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Archipelago",
+      "typeCode": 2053,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArchipelagoRegionInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArchipelagoRegionRewardsEffect",
+      "typeCode": 240003,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArchipelagoRoute",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArchipelagoToDo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArchipelagoTodos",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactAccess",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactAntibacterialStat",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactBlueprints",
+      "typeCode": 316,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactBuilt",
+      "typeCode": 2093,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactCapsulated",
+      "typeCode": 3640,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactCapsule",
+      "typeCode": 3550,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactComfortStat",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactCompleted",
+      "typeCode": 2095,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactDigest",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactDisplay",
+      "typeCode": 2433,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactMaterials",
+      "typeCode": 2091,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactMood",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactPackage",
+      "typeCode": 3694,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactPlaced",
+      "typeCode": 3641,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactPreview",
+      "typeCode": 2313,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactResponse",
+      "typeCode": 310,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactSet",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactState",
+      "typeCode": 323,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ArtifactStats",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AskEatFoodOverrideStatusEffect",
+      "typeCode": 282001,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AttachableAccessories",
+      "typeCode": 9823458,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AttachmentReceivedEffect",
+      "typeCode": 20841,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AttackAlerted",
+      "typeCode": 3928,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AttendanceReward",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AttendanceRewards",
+      "typeCode": 1097853,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AttendanceTakenEffect",
+      "typeCode": 2084,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Auth",
+      "typeCode": 1,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AvailableClanResearch",
+      "typeCode": 5987334,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AvailableEmotions",
+      "typeCode": 9592635,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AvailablePersonalResearch",
+      "typeCode": 5987337,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AvailableTask",
+      "typeCode": 65107,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Band",
+      "typeCode": 63459084,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Bandstand",
+      "typeCode": 63459083,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BattleBegun",
+      "typeCode": 3278,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BattleEnded",
+      "typeCode": 3587,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BattleLog",
+      "typeCode": 2043,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BattleNotification",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BattleScenario",
+      "typeCode": 798135,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BiomeFatigue",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Block",
+      "typeCode": 4016,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Blocklist",
+      "typeCode": 4019,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BlueprintItem",
+      "typeCode": 19875324,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BoolOption",
+      "typeCode": 337,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BuildEstimation",
+      "typeCode": 2415,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BuildGoal",
+      "typeCode": 3511,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BuildTodo",
+      "typeCode": 3521,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "BuildingPart",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Cage",
+      "typeCode": 811,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CageInfo",
+      "typeCode": 950843,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Cancel",
+      "typeCode": 2036,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CancelClanJoinRequest",
+      "typeCode": 1923487521,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CancelCrafting",
+      "typeCode": 2023,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CancelFiredProjectile",
+      "typeCode": 312098,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CancelPetTask",
+      "typeCode": 65103,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CancelTargetTitle",
+      "typeCode": 3901,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Canceled",
+      "typeCode": 2038,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CapsulateArtifact",
+      "typeCode": 4020,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CargoDestination",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CargoReceiver",
+      "typeCode": 103495712,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CargoReceivers",
+      "typeCode": 3813,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CargoWarpholeTaxToClanFund",
+      "typeCode": 3815,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CatapultState",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CategoryLevelUpRewardEffect",
+      "typeCode": 2064,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ChangeMannequinDisplay",
+      "typeCode": 24311,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ChangePlayerDisplay",
+      "typeCode": 34589,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ChargeEffect",
+      "typeCode": 820,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ChatLogs",
+      "typeCode": 27,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CheatFlags",
+      "typeCode": 2089,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CheckSequenceMissionCleared",
+      "typeCode": 3631,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CheckUnstableItem",
+      "typeCode": 1590123,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Chunk",
+      "typeCode": 200,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClaimedDlc",
+      "typeCode": 841262,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClanApplyDropped",
+      "typeCode": 98274512,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClanBattle",
+      "typeCode": 2340978,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClanBattleReward",
+      "typeCode": 2340979,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClanCargoWarphole",
+      "typeCode": 3824,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClanInfoUpdated",
+      "typeCode": 698346,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClanResearch",
+      "typeCode": 5987335,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClanResearchList",
+      "typeCode": 5987342,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClanRewardsUpdated",
+      "typeCode": 3705,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClanStatusEffectsUpdated",
+      "typeCode": 3703,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ClearedUnstableFactors",
+      "typeCode": 240000,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Clock",
+      "typeCode": 4001,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Collected",
+      "typeCode": 104,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Collectible",
+      "typeCode": 2019,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CollectibleChanged",
+      "typeCode": 2417,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CollectibleDisplay",
+      "typeCode": 860936,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CombatInteraction",
+      "typeCode": 23,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Commodities",
+      "typeCode": 856701,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CommodityInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CompleteArtifact",
+      "typeCode": 2094,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Confirm",
+      "typeCode": 3649,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ConfirmResurrection",
+      "typeCode": 56238474,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ContactReactingProp",
+      "typeCode": 78452083,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Container",
+      "typeCode": 2058,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Conversation",
+      "typeCode": 2412,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Conversations",
+      "typeCode": 2405,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Cooltime",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Cost",
+      "typeCode": 4023,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Costs",
+      "typeCode": 4024,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Crack",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CraftEstimation",
+      "typeCode": 8,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CraftEstimationInfo",
+      "typeCode": 406132,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CraftFailed",
+      "typeCode": 121,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CraftGoal",
+      "typeCode": 3510,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CraftStartedOnWorkbench",
+      "typeCode": 66,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CraftTodo",
+      "typeCode": 3520,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Crafted",
+      "typeCode": 122,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CraftedResult",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Crafting",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CurrentArchipelagoTodos",
+      "typeCode": 240001,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CurrentRegionCoOpTodos",
+      "typeCode": 241001,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "CustomQuestEvent",
+      "typeCode": 312798,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DailyContents",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DailyMissionCompletedEffect",
+      "typeCode": 19843572,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Damage",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Damaged",
+      "typeCode": 12,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Dashed",
+      "typeCode": 2491,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DefensiveState",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DefoggedChunks",
+      "typeCode": 203,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DeliverItems",
+      "typeCode": 3614,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DeodorantItem",
+      "typeCode": 55555,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Depart",
+      "typeCode": 2448,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DepartTutorialReady",
+      "typeCode": 2305,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DeregisterUser",
+      "typeCode": 1999,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Destructing",
+      "typeCode": 2007,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DisappearEntities",
+      "typeCode": 324987,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DisappearEntity",
+      "typeCode": 101,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DisappearPet",
+      "typeCode": 198246,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DiscoverAnimal",
+      "typeCode": 5002,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DiscoverDistances",
+      "typeCode": 2309,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DiscoveryInfo",
+      "typeCode": 5001,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DiscoveryRates",
+      "typeCode": 5004,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Dispenser",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Display",
+      "typeCode": 102,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DomesticCage",
+      "typeCode": 694358,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DomesticationInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DomesticationResult",
+      "typeCode": 694356,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DrawActiveSkill",
+      "typeCode": 800101,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DrawLava",
+      "typeCode": 13498,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DrawLineBase",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DrawSkillResult",
+      "typeCode": 800103,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DrinkWater",
+      "typeCode": 3492,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "DumpedPersonalIsland",
+      "typeCode": 381923,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EffectDetail",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Effector",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Emigrated",
+      "typeCode": 2099,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EmotionPurchaseContent",
+      "typeCode": 71294575,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EnergyWarning",
+      "typeCode": 3648,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EngagementAgreementChanged",
+      "typeCode": 1444250,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EntityDied",
+      "typeCode": 119,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EntityKey",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EntityRescueRequested",
+      "typeCode": 119911,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EntityRevived",
+      "typeCode": 119119,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EntityTile",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EpicNPC",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EquipmentSlot",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Equipments",
+      "typeCode": 111,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Error",
+      "typeCode": 1022,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EstateAccess",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EstateGrids",
+      "typeCode": 2429,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EstateLicense",
+      "typeCode": 2430,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EstateLicenses",
+      "typeCode": 3821,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EstimateCraft",
+      "typeCode": 7,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "EstimateRemodeling",
+      "typeCode": 2413,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Evicted",
+      "typeCode": 2052,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ExitRecipient",
+      "typeCode": 4015,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ExpGained",
+      "typeCode": 3707,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ExpectedCropBooster",
+      "typeCode": 37124,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ExplorePOIEffect",
+      "typeCode": 2079,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ExploredPOIs",
+      "typeCode": 903,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ExtendFloor",
+      "typeCode": 25565,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ExtinguishBurnable",
+      "typeCode": 2097,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Faction",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FactionDeliveryCondition",
+      "typeCode": 3613,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FactionLevelUpEffect",
+      "typeCode": 2068,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Factions",
+      "typeCode": 3601,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Failed",
+      "typeCode": 1232,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Farming",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FarmingEncyclopedia",
+      "typeCode": 37126,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FarmingEncyclopediaData",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FarmingEncyclopediaProgress",
+      "typeCode": 37127,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FatigueVelocities",
+      "typeCode": 318,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Feeding",
+      "typeCode": 805,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FeedingSuccess",
+      "typeCode": 813,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FindTargetEntityPosition",
+      "typeCode": 3950,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FinishConcert",
+      "typeCode": 63459101,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FinishPacking",
+      "typeCode": 3771,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FinishPetTask",
+      "typeCode": 65104,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FireBurnable",
+      "typeCode": 2096,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FireProjectileFromVehicle",
+      "typeCode": 203493,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FloatOption",
+      "typeCode": 335,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FollowTutorialColleagues",
+      "typeCode": 2419,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FollowerStatus",
+      "typeCode": 2406,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FollowingStatus",
+      "typeCode": 2407,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FriendRequestAccepted",
+      "typeCode": 1451219,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FriendRequested",
+      "typeCode": 1451218,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "FriendType",
+      "typeCode": 78209744,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GardenDiff",
+      "typeCode": 202,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Generator",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetAcceptableSubPurchases",
+      "typeCode": 259674,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetAdvisorTargets",
+      "typeCode": 3708,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetAppliers",
+      "typeCode": 3682,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetAttachableAccessories",
+      "typeCode": 9823457,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetAvailablePersonalResearch",
+      "typeCode": 5987336,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetBlocklist",
+      "typeCode": 4018,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetCapsulatingCost",
+      "typeCode": 4022,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetCheatFlags",
+      "typeCode": 2088,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetClanCreationCosts",
+      "typeCode": 3667,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetClanNotificationEnabled",
+      "typeCode": 4027,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetClock",
+      "typeCode": 4000,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetDefoggedChunks",
+      "typeCode": 204,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetDiscoverDistances",
+      "typeCode": 2310,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetDiscoveryInfo",
+      "typeCode": 5000,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetDiscoveryRates",
+      "typeCode": 5003,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetExpectedCropBooster",
+      "typeCode": 37123,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetGrazedPets",
+      "typeCode": 29912240,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetInventoryInfos",
+      "typeCode": 108,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetInventoryItems",
+      "typeCode": 106,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetLatestChatLog",
+      "typeCode": 25,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetMemos",
+      "typeCode": 2439,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetNomadInfo",
+      "typeCode": 100000,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetPersonalRegionInfo",
+      "typeCode": 20420,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetPetInventory",
+      "typeCode": 49823,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetPioneerGradeInfo",
+      "typeCode": 812234574,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetPunchMachineCost",
+      "typeCode": 98241,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetPunchMachineLeaderboard",
+      "typeCode": 785103,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetPurchaseRPieceInfo",
+      "typeCode": 19021101,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetPurchases",
+      "typeCode": 510397,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetQuestCategories",
+      "typeCode": 237901,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetReceivedItems",
+      "typeCode": 3809,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetRechargeShuffleCost",
+      "typeCode": 3625,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetRecommendMissionCost",
+      "typeCode": 3628,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetRegion",
+      "typeCode": 2120,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetRegionMapInfo",
+      "typeCode": 205,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetRepairImmediateCost",
+      "typeCode": 417980,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetReturnerInfo",
+      "typeCode": 3450983,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetRoutes",
+      "typeCode": 2030,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetRoutesOfParty",
+      "typeCode": 20300,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetSailingBackCost",
+      "typeCode": 3110,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetSeasons",
+      "typeCode": 871245,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetSectionItems",
+      "typeCode": 3692,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetSkillAdvisorPoint",
+      "typeCode": 3903,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetSkillCategoryAdvisorPoint",
+      "typeCode": 3904,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetSkipResearchCost",
+      "typeCode": 3642,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetSlotItemTodo",
+      "typeCode": 3523,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetSocialOptions",
+      "typeCode": 24000,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetSpecialDeals",
+      "typeCode": 259680,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetStorageItem",
+      "typeCode": 2301,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetTechSupportEstimates",
+      "typeCode": 59138,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetTimelineOption",
+      "typeCode": 81234526,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetToolTodo",
+      "typeCode": 3524,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetUserFirstPurchaseHistory",
+      "typeCode": 856720,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetWarehouse",
+      "typeCode": 3683,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetWarpCostToNextRegion",
+      "typeCode": 12033,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GetWorkbench",
+      "typeCode": 2025,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GiveUpDistribution",
+      "typeCode": 451390,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GrazedPets",
+      "typeCode": 29912241,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GrowCage",
+      "typeCode": 65100,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GrowRapidly",
+      "typeCode": 3712,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "GuideProgress",
+      "typeCode": 702,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "HelpPostprocess",
+      "typeCode": 2442,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "HelpedPostprocess",
+      "typeCode": 2444,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Home",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "HostConcert",
+      "typeCode": 63459079,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "HuntGoal",
+      "typeCode": 2513,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "HuntRewardEffect",
+      "typeCode": 2061,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Info",
+      "typeCode": 1023,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "IntegerOption",
+      "typeCode": 336,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "InteractWithEpicNPC",
+      "typeCode": 3141593,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "InteriorSetEffectChanged",
+      "typeCode": 739812,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Inventory",
+      "typeCode": 110,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "InventoryAccess",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "InventoryInfos",
+      "typeCode": 109,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "InventoryItems",
+      "typeCode": 107,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "InventorySectionInfos",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "InventoryState",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "InventoryUpdated",
+      "typeCode": 113,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "InvestToCrack",
+      "typeCode": 3663,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Item",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ItemExpired",
+      "typeCode": 3714,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ItemExtension",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ItemPurchaseContent",
+      "typeCode": 71294574,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ItemSupportReward",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ItemTodoCondition",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ItemUsed",
+      "typeCode": 18,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "JoinRecipients",
+      "typeCode": 4014,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Keepalive",
+      "typeCode": 254,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "KickVisitor",
+      "typeCode": 20424,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "LastSearchedTime",
+      "typeCode": 907,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Leaderboard",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "LeaderboardContent",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "LearnSkillTodo",
+      "typeCode": 3522,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "LevelUpEffect",
+      "typeCode": 2062,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "LimitedAcquisition",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "LivingLog",
+      "typeCode": 2059,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Location",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "LookAroundMood",
+      "typeCode": 234789,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "LootBoxItem",
+      "typeCode": 29875325,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Mail",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MailPut",
+      "typeCode": 2074,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Mails",
+      "typeCode": 2073,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MakeSection",
+      "typeCode": 3686,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Mannequin",
+      "typeCode": 19726,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MannequinDisplayInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MarketCollectAllPayments",
+      "typeCode": 5102,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MarketCollectPayment",
+      "typeCode": 5101,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MarketCollectablePaymentExists",
+      "typeCode": 5110,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MarketPaymentReceived",
+      "typeCode": 5130,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Member",
+      "typeCode": 105,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MemberRole",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MemoCollected",
+      "typeCode": 2441,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Memos",
+      "typeCode": 2440,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MergeBattleBegun",
+      "typeCode": 123798,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MergeBattleEnded",
+      "typeCode": 980123,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Message_",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MilestoneCandidates",
+      "typeCode": 800011,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MilestoneInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MilestoneResult",
+      "typeCode": 800013,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MiniGameDanceScore",
+      "typeCode": 4625400,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MiniGameDanceStarted",
+      "typeCode": 4625401,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Mission",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MissionBonusReward",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MissionCompletedEffect",
+      "typeCode": 2078,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MissionInfos",
+      "typeCode": 3622,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MissionNotAcceptable",
+      "typeCode": 3630,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MissionToDo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MonitorOffer",
+      "typeCode": 3504,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Mount",
+      "typeCode": 802,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MountAirBalloon",
+      "typeCode": 123987,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MountVehicle",
+      "typeCode": 327918,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MoveCommandBase",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "MoveItemsInWarehouse",
+      "typeCode": 3685,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Movement",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Music",
+      "typeCode": 47852455,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Musician",
+      "typeCode": 815,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Musics",
+      "typeCode": 47852454,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "NGSConsignment",
+      "typeCode": 76917,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "NearestPOI",
+      "typeCode": 912,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "NomadInfo",
+      "typeCode": 100001,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "NotificationAdded",
+      "typeCode": 3715,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "NotificationCanceled",
+      "typeCode": 3716,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "NotifyArchipelagoTodoProceed",
+      "typeCode": 240004,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "NotifyQuestProceed",
+      "typeCode": 237922,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "NotifyRegionCoOpTodoProceed",
+      "typeCode": 241003,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Null",
+      "typeCode": 255,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "OK",
+      "typeCode": 1231,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Occupied",
+      "typeCode": 301,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "OccupyGardenGrid",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "OfferCompleted",
+      "typeCode": 3501,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "OfferCompletedEffect",
+      "typeCode": 2066,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Offers",
+      "typeCode": 3499,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "OpenMap",
+      "typeCode": 915,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "OpenRewardBoxEffect",
+      "typeCode": 29875326,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Option",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Options",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "POICount",
+      "typeCode": 901,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PackArtifact",
+      "typeCode": 3772,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PackedArtifact",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ParticipateTutorialBoat",
+      "typeCode": 2303,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ParticleEffect",
+      "typeCode": 503,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PartierStatus",
+      "typeCode": 20000,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Party",
+      "typeCode": 20002,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PartyInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Performance",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PersonalIslandInfo",
+      "typeCode": 231978,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PersonalRegion",
+      "typeCode": 2042,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PersonalRegionInfo",
+      "typeCode": 20422,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Pet",
+      "typeCode": 1097965,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetActiveSkill",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetActiveSkillCanceled",
+      "typeCode": 800202,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetActiveSkillUsed",
+      "typeCode": 800201,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetInventory",
+      "typeCode": 574978,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetIsHungry",
+      "typeCode": 814,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetLevelUpEffect",
+      "typeCode": 2086,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetStatistics",
+      "typeCode": 4097197,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetStats",
+      "typeCode": 4097198,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetTaskFinishedEffect",
+      "typeCode": 2087,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Pets",
+      "typeCode": 29912234,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PetsInfo",
+      "typeCode": 29912233,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PickMilestone",
+      "typeCode": 800012,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PickMilestoneAgain",
+      "typeCode": 800014,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PioneerGradeInfo",
+      "typeCode": 812234573,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PioneerGradeUpEffect",
+      "typeCode": 20621,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayConcert",
+      "typeCode": 63459081,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerAimTarget",
+      "typeCode": 1010,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerBattle",
+      "typeCode": 1002,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerCPR",
+      "typeCode": 1001,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerChangeCostume",
+      "typeCode": 1014,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerChangeEquip",
+      "typeCode": 1013,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerChangeGender",
+      "typeCode": 1018,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerCharge",
+      "typeCode": 1015,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerDisplay",
+      "typeCode": 2431,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerDrawLine",
+      "typeCode": 1016,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerUseCampfire",
+      "typeCode": 1009,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PlayerVoice",
+      "typeCode": 1017,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PointOfInterest",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Points",
+      "typeCode": 2033,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PopItemsFromWarehouse",
+      "typeCode": 3691,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Postprocess",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PriceRangePredicate",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Product",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ProductSold",
+      "typeCode": 2427,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ProductStateUpdated",
+      "typeCode": 5120,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Products",
+      "typeCode": 5100,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PropKey",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ProtectedItems",
+      "typeCode": 235489,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PunchMachineLeaderboards",
+      "typeCode": 4625394,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PurcasesAccepted",
+      "typeCode": 5247811,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Purchase",
+      "typeCode": 510399,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PurchaseCommodity",
+      "typeCode": 856710,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PurchaseContent",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PurchaseRPiece",
+      "typeCode": 19021103,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PurchaseRPieceInfo",
+      "typeCode": 19021102,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Purchased",
+      "typeCode": 856711,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Purchases",
+      "typeCode": 510398,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PushFallback",
+      "typeCode": 1021,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PutInItemsIntoPet",
+      "typeCode": 806,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PutInReinsToCage",
+      "typeCode": 694351,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PutItemsForDomestication",
+      "typeCode": 694352,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "PutMaterialsIntoTutorialBoat",
+      "typeCode": 2304,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "QuestCategories",
+      "typeCode": 237902,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "QuestCategory",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "QuestRewardResults",
+      "typeCode": 237924,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "QuestScoreInfos",
+      "typeCode": 237921,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "QuestScoreReward",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "QuestStarted",
+      "typeCode": 879361,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "QuestState",
+      "typeCode": 398133,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "QuestToDo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Quests",
+      "typeCode": 237919,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioAlert",
+      "typeCode": 2610,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioBody",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioChannelUpdated",
+      "typeCode": 2606,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioDictation",
+      "typeCode": 2602,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioEntered",
+      "typeCode": 2607,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioId",
+      "typeCode": 2600,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioLeft",
+      "typeCode": 2608,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioLink",
+      "typeCode": 2611,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioNotice",
+      "typeCode": 2604,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioPin",
+      "typeCode": 2605,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioPinWithText",
+      "typeCode": 2609,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioTalk",
+      "typeCode": 2601,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RadioText",
+      "typeCode": 2603,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RangePredicate",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RankingRewardEffect",
+      "typeCode": 20871,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReactingProp",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReactingPropRewarded",
+      "typeCode": 78452084,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Ready",
+      "typeCode": 20,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReceiveAdvisorPoint",
+      "typeCode": 3905,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReceiveAdvisorReward",
+      "typeCode": 3908,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReceivedItems",
+      "typeCode": 3810,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReceivingItem",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Recipes",
+      "typeCode": 120,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Recipients",
+      "typeCode": 4013,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RecommendArchipelago",
+      "typeCode": 3012,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RecommendPersonalRegion",
+      "typeCode": 3002,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RecommendRecipes",
+      "typeCode": 3645,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RecommendRegion",
+      "typeCode": 3001,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RecommendStableRegions",
+      "typeCode": 5792841,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RecommendedRecipes",
+      "typeCode": 3646,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RecommendedStableRegions",
+      "typeCode": 5792842,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RedrawActiveSkill",
+      "typeCode": 800102,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReformSlot",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RefuseSuggestion",
+      "typeCode": 9138750,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Region",
+      "typeCode": 2041,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RegionCoOpTodo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RegionCoOpTodoCompleted",
+      "typeCode": 241004,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RegionCoOpTodoSpawned",
+      "typeCode": 241002,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RegionExpirationAlarm",
+      "typeCode": 2423,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RegionExpired",
+      "typeCode": 2424,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RegionMapInfo",
+      "typeCode": 206,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RegionMovedByExpiration",
+      "typeCode": 2425,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RegionTile",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RegisterConcert",
+      "typeCode": 63459082,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReinifyPet",
+      "typeCode": 74013,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Reins",
+      "typeCode": 801,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReissueOffer",
+      "typeCode": 3502,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RelayBase",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReleaseReinFromCage",
+      "typeCode": 694353,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RemodelArtifact",
+      "typeCode": 2098,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RemoveFavoriteRegionOwners",
+      "typeCode": 20012,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RemoveMemberRole",
+      "typeCode": 792253,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RemoveSection",
+      "typeCode": 3687,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RenameWarehouseSection",
+      "typeCode": 3696,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RepairArtifact",
+      "typeCode": 2055,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RepairEffect",
+      "typeCode": 2082,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RepairImmediate",
+      "typeCode": 2056,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RepairRequirement",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestClanRewards",
+      "typeCode": 3706,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestClanStatusEffects",
+      "typeCode": 3704,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestDumpedPersonalIsland",
+      "typeCode": 381922,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestEpicWarp",
+      "typeCode": 77777,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestFullCountPOIsReward",
+      "typeCode": 9031,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestNearestPOI",
+      "typeCode": 911,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestQuestScoreReward",
+      "typeCode": 237925,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestResetReformSlot",
+      "typeCode": 59145,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestReturnerGuideAction",
+      "typeCode": 3450984,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestTechSupport",
+      "typeCode": 59144,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequestTechSupportEstimate",
+      "typeCode": 59141,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RequiredItems",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ResistanceExpCap",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ResistanceExpCaps",
+      "typeCode": 349378783,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ResistanceLevelUpEffect",
+      "typeCode": 20620,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RespawnPoint",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ResubscribeClanChannel",
+      "typeCode": 24,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ResubscribePartyChannel",
+      "typeCode": 28,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ResultCheckUnstableItem",
+      "typeCode": 5197836,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Resurrect",
+      "typeCode": 132,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ResurrectPet",
+      "typeCode": 239187,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ResurrectionReady",
+      "typeCode": 56238473,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReturnPet",
+      "typeCode": 808,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReturnToCamp",
+      "typeCode": 3462987,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReturnToHome",
+      "typeCode": 2100,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReturnerInfo",
+      "typeCode": 9439833,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RevertPetRank",
+      "typeCode": 74014,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RevertPetRankCandidate",
+      "typeCode": 74015,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ReviveImmediatelyInfo",
+      "typeCode": 210102,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Revived",
+      "typeCode": 131,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RewardEffect",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RewardInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RewardItem",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RewardStatusEffect",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Rewarded",
+      "typeCode": 2065,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RoleOrder",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Route",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Routes",
+      "typeCode": 2032,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "RoutesOfArchipelago",
+      "typeCode": 20320,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02DequeueEntree",
+      "typeCode": 222202,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02EnqueueEntree",
+      "typeCode": 222201,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02EntreeFailed",
+      "typeCode": 222204,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02EntreeInfo",
+      "typeCode": 222203,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02GetLobbyInfo",
+      "typeCode": 222214,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02GetRankReward",
+      "typeCode": 222230,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02GetRewardedRanking",
+      "typeCode": 222231,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02GetSupplyRewardStatus",
+      "typeCode": 222211,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02Leave",
+      "typeCode": 222221,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02LobbyInfo",
+      "typeCode": 222215,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02PVPAnnounceLeave",
+      "typeCode": 222208,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02PVPDead",
+      "typeCode": 222209,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02PVPFinish",
+      "typeCode": 222220,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02PVPKill",
+      "typeCode": 222210,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02PVPRefresh",
+      "typeCode": 222207,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02PVPStart",
+      "typeCode": 222205,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02PVPStatus",
+      "typeCode": 222206,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02RewardStatus",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02RewardedRanking",
+      "typeCode": 222232,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "S02SupplyRewardsEffect",
+      "typeCode": 222212,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SailingBack",
+      "typeCode": 3130,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SailingBackCost",
+      "typeCode": 3120,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Say",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Scribble",
+      "typeCode": 319,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ScribbleContent",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SearchResult",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SearchedPOIs",
+      "typeCode": 905,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Season",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Seasons",
+      "typeCode": 871246,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SectionItems",
+      "typeCode": 3693,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SectionUpdated",
+      "typeCode": 5298430,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Secured",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SequenceMissionCleared",
+      "typeCode": 3632,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetArtifactAccess",
+      "typeCode": 987123450,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetAsHome",
+      "typeCode": 2102,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetBaseMoveSpeed",
+      "typeCode": 8749871,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetBlueprintLike",
+      "typeCode": 3801,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetCargoWarpholeTaxRate",
+      "typeCode": 3816,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetClanEmblem",
+      "typeCode": 3695,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetClanInfo",
+      "typeCode": 3699,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetClanMemberRole",
+      "typeCode": 3662,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetConcertMusic",
+      "typeCode": 63459080,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetMemberRoleGrades",
+      "typeCode": 792252,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetMemberRoleInfo",
+      "typeCode": 3681,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetPersonalRegionAdmission",
+      "typeCode": 20423,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetRecipeLike",
+      "typeCode": 3800,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetResurrectionRewards",
+      "typeCode": 133,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetReturningPoint",
+      "typeCode": 2105,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetSectionItemOrder",
+      "typeCode": 3689,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetSectionOrder",
+      "typeCode": 3688,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetSharedConcertMusic",
+      "typeCode": 63459180,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetSocialOptions",
+      "typeCode": 24002,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetStorageItem",
+      "typeCode": 2302,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SetTimelineOption",
+      "typeCode": 81234528,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SharedMusic",
+      "typeCode": 47852458,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SharedSheet",
+      "typeCode": 47852650,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Sign",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Skill",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkillBundle",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkillCategory",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkillCategoryExperienced",
+      "typeCode": 3644,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkillCategoryResearchTime",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkillCategoryResearching",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkillGoal",
+      "typeCode": 3512,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkillNeeded",
+      "typeCode": 2449,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkillRewardEffect",
+      "typeCode": 2063,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Skills",
+      "typeCode": 123,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkipEntrustedCraft",
+      "typeCode": 7498153,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkipPostprocess",
+      "typeCode": 2450,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SkipTutorialMission",
+      "typeCode": 3633,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Social",
+      "typeCode": 2403,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SocialOptions",
+      "typeCode": 24001,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SortCondition",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SpawnPet",
+      "typeCode": 923570,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SpecialDeal",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SpecialDeals",
+      "typeCode": 259681,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Sprinkle",
+      "typeCode": 37121,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SprinkledInfo",
+      "typeCode": 37122,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SprinklerState",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "StartPacking",
+      "typeCode": 3770,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "StartPersonalResearch",
+      "typeCode": 5987338,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "StartPetTask",
+      "typeCode": 65102,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "StartTimer",
+      "typeCode": 124,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Statistics",
+      "typeCode": 2040,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "StatusEffect",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "StatusEffects",
+      "typeCode": 317,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "StoneCrack",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Storage",
+      "typeCode": 2299,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "StorageItem",
+      "typeCode": 2300,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SubscriptionCount",
+      "typeCode": 2080,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SuggestBreak",
+      "typeCode": 9138748,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SupportRequest",
+      "typeCode": 523412,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SupportRequestUpdated",
+      "typeCode": 978254,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SupportRequests",
+      "typeCode": 523413,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SupportRewards",
+      "typeCode": 731497,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Survival",
+      "typeCode": 182,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "SurvivalUpdated",
+      "typeCode": 183,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Tag",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Tags",
+      "typeCode": 313,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TakeEffect",
+      "typeCode": 821,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TakeOutFromCage",
+      "typeCode": 810,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TakeOutItemsFromPet",
+      "typeCode": 807,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TakeOutReinFromCage",
+      "typeCode": 694359,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TamingCompletedEffect",
+      "typeCode": 2060,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TargetChanged",
+      "typeCode": 3787,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TargetEntityPosition",
+      "typeCode": 3951,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TargetTitle",
+      "typeCode": 3907,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TaskStatus",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TechSupportEstimate",
+      "typeCode": 59143,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TechSupportEstimateInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TechSupportEstimateResult",
+      "typeCode": 59142,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TechSupportEstimates",
+      "typeCode": 59139,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Teleported",
+      "typeCode": 2037,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TensionChanged",
+      "typeCode": 3794,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TerrainDebug",
+      "typeCode": 2050,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Text",
+      "typeCode": 222,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TimeRange",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TimedOut",
+      "typeCode": 3650,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TimelineLog",
+      "typeCode": 2445,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TimelineOption",
+      "typeCode": 81234527,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Timer",
+      "typeCode": 1134,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TimerEnded",
+      "typeCode": 14,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Title",
+      "typeCode": 334,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Titles",
+      "typeCode": 2045,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TodayAttendanceReward",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TodayAttendanceRewards",
+      "typeCode": 1097851,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Todo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TodoGoal",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TodoTemplate",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ToggleAutoBattleAction",
+      "typeCode": 3491,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ToggleClanNotification",
+      "typeCode": 4025,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ToggleConversationNotification",
+      "typeCode": 4011,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "ToolNeeded",
+      "typeCode": 3647,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Tool_Collect",
+      "typeCode": 330,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Tool_Collectibles",
+      "typeCode": 328,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Touched",
+      "typeCode": 2020,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TranslatedRadioTalk",
+      "typeCode": 32978,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Trap",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TravelByRegion",
+      "typeCode": 2029,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TravelByRegionInArchipelago",
+      "typeCode": 2054,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TravelByRegionTemplate",
+      "typeCode": 2031,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TravelToRandomPersonalRegion",
+      "typeCode": 20314,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TravelToStableRegion",
+      "typeCode": 20321235,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Tune",
+      "typeCode": 2400,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TurnOffMusic",
+      "typeCode": 3892,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TurnOnMusic",
+      "typeCode": 3891,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TutorialBoatMaterialUpdated",
+      "typeCode": 2418,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TutorialBoatSessions",
+      "typeCode": 2308,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TutorialEvent",
+      "typeCode": 701,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "TutorialSession",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Unblock",
+      "typeCode": 4017,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Unmount",
+      "typeCode": 803,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UnmountAirBalloon",
+      "typeCode": 135867,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UnmountVehicle",
+      "typeCode": 192834,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UnpackArtifact",
+      "typeCode": 3773,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UpdateAdvisorProgress",
+      "typeCode": 3505,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UpdateOffer",
+      "typeCode": 3500,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UseActionTodo",
+      "typeCode": 3526,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UseItemsForPioneerPoint",
+      "typeCode": 812234572,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UsePetActiveSkill",
+      "typeCode": 800200,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UserFirstPurchase",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UserFirstPurchaseHistory",
+      "typeCode": 856721,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "UserMailPut",
+      "typeCode": 9786525,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "VehicleProjectileFired",
+      "typeCode": 243178,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "VisualEffects",
+      "typeCode": 123049871,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "VoucherInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Wallet",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WalletUpdated",
+      "typeCode": 5198234,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Warehouse",
+      "typeCode": 3684,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarehouseUpdated",
+      "typeCode": 114,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarpAccelerationRewardsEffect",
+      "typeCode": 21112517,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarpAccelerator",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarpAcceleratorAcquisition",
+      "typeCode": 21112518,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarpAcceleratorInfo",
+      "typeCode": 21112515,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarpAcceleratorsInRegion",
+      "typeCode": 21112516,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarpCost",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarpCosts",
+      "typeCode": 2107,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarpToPersonalRegion",
+      "typeCode": 3023,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WarpToUrbanRegion",
+      "typeCode": 3024,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Wash",
+      "typeCode": 13497,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WashBody",
+      "typeCode": 3494,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WeaponDisplayInfo",
+      "typeCode": null,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Weather",
+      "typeCode": 331,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Welcome",
+      "typeCode": 22,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Withdraw",
+      "typeCode": 2028,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "Workbench",
+      "typeCode": 3000,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "WriteToRegionPinboard",
+      "typeCode": 584793,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "_Dirty",
+      "typeCode": 504,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "AcceptAllFriendRequests",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 62,
+      "handler": "HandleAcceptAllFriendRequests)",
+      "status": "registered",
+      "typeCode": 1451221,
+      "generatedMessage": true
+    },
+    {
+      "request": "AcceptFriendRequest",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 59,
+      "handler": "HandleAcceptFriendRequest)",
+      "status": "registered",
+      "typeCode": 1451215,
+      "generatedMessage": true
+    },
+    {
+      "request": "AcceptMails",
+      "file": "server/ServerCore/ServerPlayer.Mail.cs",
+      "line": 46,
+      "handler": "HandleAcceptMails)",
+      "status": "registered",
+      "typeCode": 2075,
+      "generatedMessage": true
+    },
+    {
+      "request": "AcceptMilestone",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 162,
+      "handler": "HandleAcceptMilestone)",
+      "status": "registered",
+      "typeCode": 800015,
+      "generatedMessage": true
+    },
+    {
+      "request": "AcceptMission",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 327,
+      "handler": "HandleAcceptMission)",
+      "status": "registered",
+      "typeCode": 3623,
+      "generatedMessage": true
+    },
+    {
+      "request": "AcceptUserMails",
+      "file": "server/ServerCore/ServerPlayer.Mail.cs",
+      "line": 47,
+      "handler": "HandleAcceptUserMails)",
+      "status": "registered",
+      "typeCode": 9786523,
+      "generatedMessage": true
+    },
+    {
+      "request": "ActivateCargoReceiver",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 432,
+      "handler": "HandleActivateCargoReceiver)",
+      "status": "registered",
+      "typeCode": 3811,
+      "generatedMessage": true
+    },
+    {
+      "request": "ActivateFaction",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 272,
+      "handler": "HandleActivateFaction)",
+      "status": "registered",
+      "typeCode": 3610,
+      "generatedMessage": true
+    },
+    {
+      "request": "AddToFavoriteProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 42,
+      "handler": "HandleAddToFavoriteProducts)",
+      "status": "registered",
+      "typeCode": 123482,
+      "generatedMessage": true
+    },
+    {
+      "request": "ApproveClanApplier",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 55,
+      "handler": "HandleApproveClanApplier)",
+      "status": "registered",
+      "typeCode": 3657,
+      "generatedMessage": true
+    },
+    {
+      "request": "AttachAccessory",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 464,
+      "handler": "HandleAttachAccessory)",
+      "status": "registered",
+      "typeCode": 9823459,
+      "generatedMessage": true
+    },
+    {
+      "request": "Bleach",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 710,
+      "handler": "HandleBleach)",
+      "status": "registered",
+      "typeCode": 3669,
+      "generatedMessage": true
+    },
+    {
+      "request": "BreakAlly",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 59,
+      "handler": "HandleBreakAlly)",
+      "status": "registered",
+      "typeCode": 9138751,
+      "generatedMessage": true
+    },
+    {
+      "request": "BuildArtifact",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 601,
+      "handler": "HandleBuildArtifact)",
+      "status": "registered",
+      "typeCode": 2090,
+      "generatedMessage": true
+    },
+    {
+      "request": "BuyProduct",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 39,
+      "handler": "HandleBuyProduct)",
+      "status": "registered",
+      "typeCode": 2071,
+      "generatedMessage": true
+    },
+    {
+      "request": "CancelDomestication",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 153,
+      "handler": "HandleCancelDomestication)",
+      "status": "registered",
+      "typeCode": 694354,
+      "generatedMessage": true
+    },
+    {
+      "request": "CancelFriendRequest",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 61,
+      "handler": "HandleCancelFriendRequest)",
+      "status": "registered",
+      "typeCode": 1451220,
+      "generatedMessage": true
+    },
+    {
+      "request": "CancelMission",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 328,
+      "handler": "HandleCancelMission)",
+      "status": "registered",
+      "typeCode": 3624,
+      "generatedMessage": true
+    },
+    {
+      "request": "CancelSkillCategoryResearch",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 431,
+      "handler": "HandleCancelSkillCategoryResearch)",
+      "status": "registered",
+      "typeCode": 36431,
+      "generatedMessage": true
+    },
+    {
+      "request": "ChangeEquipSlotType",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 463,
+      "handler": "HandleChangeEquipSlotType)",
+      "status": "registered",
+      "typeCode": 81534,
+      "generatedMessage": true
+    },
+    {
+      "request": "ChangeFarmingEncyclopediaMastery",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 840,
+      "handler": "HandleChangeFarmingEncyclopediaMastery)",
+      "status": "registered",
+      "typeCode": 37128,
+      "generatedMessage": true
+    },
+    {
+      "request": "ChangeFollowMusic",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 552,
+      "handler": "HandleChangeFollowMusic)",
+      "status": "registered",
+      "typeCode": 47852459,
+      "generatedMessage": true
+    },
+    {
+      "request": "Cheat",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 412,
+      "handler": "HandleCheat)",
+      "status": "registered",
+      "typeCode": 201,
+      "generatedMessage": true
+    },
+    {
+      "request": "CloseGate",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 434,
+      "handler": "HandleCloseGate)",
+      "status": "registered",
+      "typeCode": 3805,
+      "generatedMessage": true
+    },
+    {
+      "request": "Collect",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 540,
+      "handler": "HandleCollect)",
+      "status": "registered",
+      "typeCode": 2026,
+      "generatedMessage": true
+    },
+    {
+      "request": "Craft",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 459,
+      "handler": "HandleCraft)",
+      "status": "registered",
+      "typeCode": 6,
+      "generatedMessage": true
+    },
+    {
+      "request": "DeclareEstate",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 752,
+      "handler": "HandleDeclareEstate)",
+      "status": "registered",
+      "typeCode": 2422,
+      "generatedMessage": true
+    },
+    {
+      "request": "DeleteEngagementData",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 857,
+      "handler": "HandleDeleteEngagementData)",
+      "status": "registered",
+      "typeCode": 1444251,
+      "generatedMessage": true
+    },
+    {
+      "request": "DeleteMails",
+      "file": "server/ServerCore/ServerPlayer.Mail.cs",
+      "line": 48,
+      "handler": "HandleDeleteMails)",
+      "status": "registered",
+      "typeCode": 2076,
+      "generatedMessage": true
+    },
+    {
+      "request": "DeleteUserMails",
+      "file": "server/ServerCore/ServerPlayer.Mail.cs",
+      "line": 49,
+      "handler": "HandleDeleteUserMails)",
+      "status": "registered",
+      "typeCode": 9786524,
+      "generatedMessage": true
+    },
+    {
+      "request": "DepartTutorial",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 482,
+      "handler": "HandleDepartTutorial)",
+      "status": "registered",
+      "typeCode": 2306,
+      "generatedMessage": true
+    },
+    {
+      "request": "DepartTutorialFor",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 483,
+      "handler": "HandleDepartTutorialFor)",
+      "status": "registered",
+      "typeCode": 2307,
+      "generatedMessage": true
+    },
+    {
+      "request": "DestructArtifact",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 603,
+      "handler": "HandleDestructArtifact)",
+      "status": "registered",
+      "typeCode": 2051,
+      "generatedMessage": true
+    },
+    {
+      "request": "DisappearEntityOnTile",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 575,
+      "handler": "delegate(DisappearEntityOnTile msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 112,
+      "generatedMessage": true
+    },
+    {
+      "request": "DonateToClanFund",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 58,
+      "handler": "HandleDonateToClanFund)",
+      "status": "registered",
+      "typeCode": 3679,
+      "generatedMessage": true
+    },
+    {
+      "request": "DrawWater",
+      "file": "server/ServerCore/ServerPlayer.Farming.cs",
+      "line": 33,
+      "handler": "HandleDrawWater)",
+      "status": "registered",
+      "typeCode": 3493,
+      "generatedMessage": true
+    },
+    {
+      "request": "DropClanApplier",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 56,
+      "handler": "HandleDropClanApplier)",
+      "status": "registered",
+      "typeCode": 3659,
+      "generatedMessage": true
+    },
+    {
+      "request": "DumpItems",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 421,
+      "handler": "HandleDumpItems)",
+      "status": "registered",
+      "typeCode": 16,
+      "generatedMessage": true
+    },
+    {
+      "request": "Dye",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 709,
+      "handler": "HandleDye)",
+      "status": "registered",
+      "typeCode": 3666,
+      "generatedMessage": true
+    },
+    {
+      "request": "ElectPartyLeader",
+      "file": "server/ServerCore/ServerPlayer.Party.cs",
+      "line": 64,
+      "handler": "HandleElectPartyLeader)",
+      "status": "registered",
+      "typeCode": 20010,
+      "generatedMessage": true
+    },
+    {
+      "request": "EnterBattle",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 522,
+      "handler": "delegate(EnterBattle msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 3495,
+      "generatedMessage": true
+    },
+    {
+      "request": "Equip",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 461,
+      "handler": "HandleEquip)",
+      "status": "registered",
+      "typeCode": 10,
+      "generatedMessage": true
+    },
+    {
+      "request": "EstimateBleach",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 712,
+      "handler": "HandleEstimateBleach)",
+      "status": "registered",
+      "typeCode": 3670,
+      "generatedMessage": true
+    },
+    {
+      "request": "EstimateBuild",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 604,
+      "handler": "delegate(EstimateBuild msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 2414,
+      "generatedMessage": true
+    },
+    {
+      "request": "EstimateDye",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 711,
+      "handler": "HandleEstimateDye)",
+      "status": "registered",
+      "typeCode": 3668,
+      "generatedMessage": true
+    },
+    {
+      "request": "ExitBattle",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 533,
+      "handler": "delegate(ExitBattle msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 3496,
+      "generatedMessage": true
+    },
+    {
+      "request": "ExitConversation",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 630,
+      "handler": "HandleExitConversation)",
+      "status": "registered",
+      "typeCode": 4010,
+      "generatedMessage": true
+    },
+    {
+      "request": "ExpandEstate",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 753,
+      "handler": "HandleExpandEstate)",
+      "status": "registered",
+      "typeCode": 2421,
+      "generatedMessage": true
+    },
+    {
+      "request": "ExplorePOI",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 489,
+      "handler": "HandleExplorePOI)",
+      "status": "registered",
+      "typeCode": 908,
+      "generatedMessage": true
+    },
+    {
+      "request": "ExtendEstateActivation",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 755,
+      "handler": "HandleExtendEstateActivation)",
+      "status": "registered",
+      "typeCode": 3822,
+      "generatedMessage": true
+    },
+    {
+      "request": "FeedInCage",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 156,
+      "handler": "HandleFeedInCage)",
+      "status": "registered",
+      "typeCode": 65101,
+      "generatedMessage": true
+    },
+    {
+      "request": "FertilizePlant",
+      "file": "server/ServerCore/ServerPlayer.Farming.cs",
+      "line": 31,
+      "handler": "HandleFertilizePlant)",
+      "status": "registered",
+      "typeCode": 3711,
+      "generatedMessage": true
+    },
+    {
+      "request": "FinishDomestication",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 152,
+      "handler": "HandleFinishDomestication)",
+      "status": "registered",
+      "typeCode": 694355,
+      "generatedMessage": true
+    },
+    {
+      "request": "Follow",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 67,
+      "handler": "HandleFollow)",
+      "status": "registered",
+      "typeCode": 2401,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetActions",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 512,
+      "handler": "HandleGetActions)",
+      "status": "registered",
+      "typeCode": 314,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetAddOns",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 662,
+      "handler": "HandleGetAddOns)",
+      "status": "registered",
+      "typeCode": 2437,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetAllySlots",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 61,
+      "handler": "HandleGetAllySlots)",
+      "status": "registered",
+      "typeCode": 9138745,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetArchipelago",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 500,
+      "handler": "HandleGetArchipelago)",
+      "status": "registered",
+      "typeCode": 2121,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetArtifact",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 602,
+      "handler": "HandleGetArtifact)",
+      "status": "registered",
+      "typeCode": 2018,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetArtifactBlueprints",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 450,
+      "handler": "delegate(GetArtifactBlueprints msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 2012,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetAttendanceRewards",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 393,
+      "handler": "HandleGetAttendanceRewards)",
+      "status": "registered",
+      "typeCode": 1097852,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetAvailableClanResearch",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 64,
+      "handler": "HandleGetAvailableClanResearch)",
+      "status": "registered",
+      "typeCode": 5987333,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetAvailableEmotions",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 501,
+      "handler": "delegate(GetAvailableEmotions msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 9592634,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetAvailableTask",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 160,
+      "handler": "HandleGetAvailableTask)",
+      "status": "registered",
+      "typeCode": 65106,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetCargoReceivers",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 431,
+      "handler": "HandleGetCargoReceivers)",
+      "status": "registered",
+      "typeCode": 3812,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetCargoWarpholeDefenseReward",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 438,
+      "handler": "HandleGetCargoWarpholeDefenseReward)",
+      "status": "registered",
+      "typeCode": 3825,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetClaimedDlc",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 663,
+      "handler": "HandleGetClaimedDlc)",
+      "status": "registered",
+      "typeCode": 841261,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetClanEstateLicense",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 761,
+      "handler": "HandleGetClanEstateLicense)",
+      "status": "registered",
+      "typeCode": 3697,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetClanFund",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 57,
+      "handler": "HandleGetClanFund)",
+      "status": "registered",
+      "typeCode": 3678,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetClanResearch",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 62,
+      "handler": "HandleGetClanResearch)",
+      "status": "registered",
+      "typeCode": 5987341,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetCollectible",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 541,
+      "handler": "HandleGetCollectible)",
+      "status": "registered",
+      "typeCode": 2017,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetCommodities",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 28,
+      "handler": "HandleGetCommodities)",
+      "status": "registered",
+      "typeCode": 856700,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetEncyclopedia",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 839,
+      "handler": "HandleGetEncyclopedia)",
+      "status": "registered",
+      "typeCode": 37125,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetEquipments",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 462,
+      "handler": "HandleGetEquipments)",
+      "status": "registered",
+      "typeCode": 2014,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetEstateLicenseById",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 760,
+      "handler": "HandleGetEstateLicenseById)",
+      "status": "registered",
+      "typeCode": 879534,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetEstateLicenses",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 751,
+      "handler": "HandleGetEstateLicenses)",
+      "status": "registered",
+      "typeCode": 3820,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetExpiredProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 34,
+      "handler": "HandleGetExpiredProducts)",
+      "status": "registered",
+      "typeCode": 5015,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetExploredPOIs",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 487,
+      "handler": "HandleGetExploredPOIs)",
+      "status": "registered",
+      "typeCode": 902,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetFactionDeliveryCondition",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 274,
+      "handler": "HandleGetFactionDeliveryCondition)",
+      "status": "registered",
+      "typeCode": 3612,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetFactions",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 271,
+      "handler": "HandleGetFactions)",
+      "status": "registered",
+      "typeCode": 3600,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetFavoriteProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 44,
+      "handler": "HandleGetFavoriteProducts)",
+      "status": "registered",
+      "typeCode": 179238,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetInventory",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 417,
+      "handler": "HandleGetInventory)",
+      "status": "registered",
+      "typeCode": 2010,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetLastSearchedTime",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 488,
+      "handler": "HandleGetLastSearchedTime)",
+      "status": "registered",
+      "typeCode": 906,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetMails",
+      "file": "server/ServerCore/ServerPlayer.Mail.cs",
+      "line": 44,
+      "handler": "HandleGetMails)",
+      "status": "registered",
+      "typeCode": 2072,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetMilestoneCandidate",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 161,
+      "handler": "HandleGetMilestoneCandidate)",
+      "status": "registered",
+      "typeCode": 800010,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetMissions",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 325,
+      "handler": "HandleGetMissions)",
+      "status": "registered",
+      "typeCode": 3620,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetMusic",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 548,
+      "handler": "HandleGetMusic)",
+      "status": "registered",
+      "typeCode": 47852452,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetMusics",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 547,
+      "handler": "HandleGetMusics)",
+      "status": "registered",
+      "typeCode": 47852453,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetMyFriendType",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 66,
+      "handler": "HandleGetMyFriendType)",
+      "status": "registered",
+      "typeCode": 78209743,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetOffers",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 36,
+      "handler": "HandleGetOffers)",
+      "status": "registered",
+      "typeCode": 3498,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetPOICount",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 486,
+      "handler": "HandleGetPOICount)",
+      "status": "registered",
+      "typeCode": 900,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetParty",
+      "file": "server/ServerCore/ServerPlayer.Party.cs",
+      "line": 58,
+      "handler": "HandleGetParty)",
+      "status": "registered",
+      "typeCode": 20001,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetPersonalProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 33,
+      "handler": "HandleGetPersonalProducts)",
+      "status": "registered",
+      "typeCode": null,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetPetsInfo",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 149,
+      "handler": "HandleGetPetsInfo)",
+      "status": "registered",
+      "typeCode": 14198037,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetPreviewPet",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 150,
+      "handler": "HandleGetPreviewPet)",
+      "status": "registered",
+      "typeCode": 181120,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetPurchasedProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 32,
+      "handler": "HandleGetPurchasedProducts)",
+      "status": "registered",
+      "typeCode": 5013,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetQuestScoreInfos",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 477,
+      "handler": "HandleGetQuestScoreInfos)",
+      "status": "registered",
+      "typeCode": 237920,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetQuestState",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 475,
+      "handler": "HandleGetQuestState)",
+      "status": "registered",
+      "typeCode": 398132,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetQuests",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 474,
+      "handler": "HandleGetQuests)",
+      "status": "registered",
+      "typeCode": 237918,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetRecipes",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 441,
+      "handler": "delegate(GetRecipes msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 2011,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetRecipients",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 631,
+      "handler": "HandleGetRecipients)",
+      "status": "registered",
+      "typeCode": 4012,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetRegisteredProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 30,
+      "handler": "HandleGetRegisteredProducts)",
+      "status": "registered",
+      "typeCode": 5011,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetResistanceExpCaps",
+      "file": "server/ServerCore/ServerPlayer.Group2.cs",
+      "line": 76,
+      "handler": "HandleGetResistanceExpCaps)",
+      "status": "registered",
+      "typeCode": 349378781,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetReviveImmediatelyInfo",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 515,
+      "handler": "HandleGetReviveImmediatelyInfo)",
+      "status": "registered",
+      "typeCode": 210101,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetRouteOfArchipelago",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 501,
+      "handler": "HandleGetRouteOfArchipelago)",
+      "status": "registered",
+      "typeCode": 20301,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetSharedMusic",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 556,
+      "handler": "HandleGetSharedMusic)",
+      "status": "registered",
+      "typeCode": 47852457,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetSimilarProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 35,
+      "handler": "HandleGetSimilarProducts)",
+      "status": "registered",
+      "typeCode": 5008,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetSkills",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 426,
+      "handler": "delegate(GetSkills msg, PacketHeader header) { SendSkills()",
+      "status": "registered",
+      "typeCode": 2047,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetSocial",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 57,
+      "handler": "HandleGetSocial)",
+      "status": "registered",
+      "typeCode": 2402,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetSoldProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 31,
+      "handler": "HandleGetSoldProducts)",
+      "status": "registered",
+      "typeCode": 5012,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetStatistics",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 413,
+      "handler": "delegate(GetStatistics msg, PacketHeader header) { SendStatistics()",
+      "status": "registered",
+      "typeCode": 2039,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetStatusEffects",
+      "file": "server/ServerCore/ServerPlayer.Group2.cs",
+      "line": 74,
+      "handler": "(msg, header) => SendStatusEffects())",
+      "status": "registered",
+      "typeCode": 2016,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetSupportRequests",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 275,
+      "handler": "HandleGetSupportRequests)",
+      "status": "registered",
+      "typeCode": 2347809,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetTargetTitle",
+      "file": "server/ServerCore/ServerPlayer.Group2.cs",
+      "line": 79,
+      "handler": "(msg, header) => Send(new TargetTitle { TitleId = _targetTitleId }))",
+      "status": "registered",
+      "typeCode": 3906,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetTitles",
+      "file": "server/ServerCore/ServerPlayer.Group2.cs",
+      "line": 77,
+      "handler": "(msg, header) => SendTitles())",
+      "status": "registered",
+      "typeCode": 2044,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetWarpAcceleratorCost",
+      "file": "server/ServerCore/ServerPlayer.WarpAccelerator.cs",
+      "line": 35,
+      "handler": "(msg, header) =>",
+      "status": "registered",
+      "typeCode": 21112519,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetWarpBackCost",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 497,
+      "handler": "HandleGetWarpBackCost)",
+      "status": "registered",
+      "typeCode": 2109,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetWarpCosts",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 496,
+      "handler": "HandleGetWarpCosts)",
+      "status": "registered",
+      "typeCode": 2106,
+      "generatedMessage": true
+    },
+    {
+      "request": "GiveAttendanceAppendix",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 395,
+      "handler": "HandleGiveAttendanceAppendix)",
+      "status": "registered",
+      "typeCode": 1097855,
+      "generatedMessage": true
+    },
+    {
+      "request": "GiveAttendanceReward",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 394,
+      "handler": "HandleGiveAttendanceReward)",
+      "status": "registered",
+      "typeCode": 1097854,
+      "generatedMessage": true
+    },
+    {
+      "request": "GrazePets",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 159,
+      "handler": "HandleGrazePets)",
+      "status": "registered",
+      "typeCode": 800000,
+      "generatedMessage": true
+    },
+    {
+      "request": "InventoryOrder",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 424,
+      "handler": "HandleInventoryOrder)",
+      "status": "registered",
+      "typeCode": 15,
+      "generatedMessage": true
+    },
+    {
+      "request": "InviteIntoParty",
+      "file": "server/ServerCore/ServerPlayer.Party.cs",
+      "line": 59,
+      "handler": "HandleInviteIntoParty)",
+      "status": "registered",
+      "typeCode": 20004,
+      "generatedMessage": true
+    },
+    {
+      "request": "InviteToClan",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 52,
+      "handler": "HandleInviteToClan)",
+      "status": "registered",
+      "typeCode": 3660,
+      "generatedMessage": true
+    },
+    {
+      "request": "InviteToConversation",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 629,
+      "handler": "HandleInviteToConversation)",
+      "status": "registered",
+      "typeCode": 2411,
+      "generatedMessage": true
+    },
+    {
+      "request": "IsWarpholeAvailable",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 500,
+      "handler": "HandleIsWarpholeAvailable)",
+      "status": "registered",
+      "typeCode": 3021,
+      "generatedMessage": true
+    },
+    {
+      "request": "JoinClan",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 50,
+      "handler": "HandleJoinClan)",
+      "status": "registered",
+      "typeCode": 3655,
+      "generatedMessage": true
+    },
+    {
+      "request": "JoinIntoParty",
+      "file": "server/ServerCore/ServerPlayer.Party.cs",
+      "line": 60,
+      "handler": "HandleJoinIntoParty)",
+      "status": "registered",
+      "typeCode": 20006,
+      "generatedMessage": true
+    },
+    {
+      "request": "KickClanMember",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 53,
+      "handler": "HandleKickClanMember)",
+      "status": "registered",
+      "typeCode": 3661,
+      "generatedMessage": true
+    },
+    {
+      "request": "KickPartyMember",
+      "file": "server/ServerCore/ServerPlayer.Party.cs",
+      "line": 63,
+      "handler": "HandleKickPartyMember)",
+      "status": "registered",
+      "typeCode": 20009,
+      "generatedMessage": true
+    },
+    {
+      "request": "LearnSkill",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 428,
+      "handler": "HandleLearnSkill)",
+      "status": "registered",
+      "typeCode": 2048,
+      "generatedMessage": true
+    },
+    {
+      "request": "LeaveClan",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 51,
+      "handler": "HandleLeaveClan)",
+      "status": "registered",
+      "typeCode": 3652,
+      "generatedMessage": true
+    },
+    {
+      "request": "LeaveParty",
+      "file": "server/ServerCore/ServerPlayer.Party.cs",
+      "line": 62,
+      "handler": "HandleLeaveParty)",
+      "status": "registered",
+      "typeCode": 20008,
+      "generatedMessage": true
+    },
+    {
+      "request": "LockOrUnlockItems",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 425,
+      "handler": "HandleLockOrUnlockItems)",
+      "status": "registered",
+      "typeCode": 3497,
+      "generatedMessage": true
+    },
+    {
+      "request": "MakeClan",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 49,
+      "handler": "HandleMakeClan)",
+      "status": "registered",
+      "typeCode": 3651,
+      "generatedMessage": true
+    },
+    {
+      "request": "MakeParty",
+      "file": "server/ServerCore/ServerPlayer.Party.cs",
+      "line": 57,
+      "handler": "HandleMakeParty)",
+      "status": "registered",
+      "typeCode": 20003,
+      "generatedMessage": true
+    },
+    {
+      "request": "MarkMailsAsRead",
+      "file": "server/ServerCore/ServerPlayer.Mail.cs",
+      "line": 50,
+      "handler": "HandleMarkMailsAsRead)",
+      "status": "registered",
+      "typeCode": 98712435,
+      "generatedMessage": true
+    },
+    {
+      "request": "MarkUserMailsAsRead",
+      "file": "server/ServerCore/ServerPlayer.Mail.cs",
+      "line": 51,
+      "handler": "HandleMarkUserMailsAsRead)",
+      "status": "registered",
+      "typeCode": 98712436,
+      "generatedMessage": true
+    },
+    {
+      "request": "Move",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 407,
+      "handler": "HandleMove)",
+      "status": "registered",
+      "typeCode": 4,
+      "generatedMessage": true
+    },
+    {
+      "request": "OccupyArtifactSite",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 599,
+      "handler": "HandleOccupyArtifactSite)",
+      "status": "registered",
+      "typeCode": 2057,
+      "generatedMessage": true
+    },
+    {
+      "request": "OccupyCargoWarphole",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 437,
+      "handler": "HandleOccupyCargoWarphole)",
+      "status": "registered",
+      "typeCode": 3819,
+      "generatedMessage": true
+    },
+    {
+      "request": "OpenGate",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 433,
+      "handler": "HandleOpenGate)",
+      "status": "registered",
+      "typeCode": 3804,
+      "generatedMessage": true
+    },
+    {
+      "request": "ParticipateAcceleration",
+      "file": "server/ServerCore/ServerPlayer.WarpAccelerator.cs",
+      "line": 40,
+      "handler": "HandleParticipateAcceleration)",
+      "status": "registered",
+      "typeCode": 21112513,
+      "generatedMessage": true
+    },
+    {
+      "request": "PlaceAddOns",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 664,
+      "handler": "HandlePlaceAddOns)",
+      "status": "registered",
+      "typeCode": 2436,
+      "generatedMessage": true
+    },
+    {
+      "request": "PlaceCapsulatedArtifact",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 466,
+      "handler": "HandlePlaceCapsulatedArtifact)",
+      "status": "registered",
+      "typeCode": 4021,
+      "generatedMessage": true
+    },
+    {
+      "request": "PlantSeed",
+      "file": "server/ServerCore/ServerPlayer.Farming.cs",
+      "line": 29,
+      "handler": "HandlePlantSeed)",
+      "status": "registered",
+      "typeCode": 3806,
+      "generatedMessage": true
+    },
+    {
+      "request": "PlayEmoticon",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 542,
+      "handler": "delegate(PlayEmoticon msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 9592636,
+      "generatedMessage": true
+    },
+    {
+      "request": "PlayMusic",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 549,
+      "handler": "HandlePlayMusic)",
+      "status": "registered",
+      "typeCode": 3802,
+      "generatedMessage": true
+    },
+    {
+      "request": "PlaySharedMusic",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 551,
+      "handler": "HandlePlaySharedMusic)",
+      "status": "registered",
+      "typeCode": 47852451,
+      "generatedMessage": true
+    },
+    {
+      "request": "PublishMusic",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 555,
+      "handler": "HandlePublishMusic)",
+      "status": "registered",
+      "typeCode": 47852557,
+      "generatedMessage": true
+    },
+    {
+      "request": "PurchaseCommodityWithSteamDlc",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 665,
+      "handler": "HandlePurchaseCommodityWithSteamDlc)",
+      "status": "registered",
+      "typeCode": 841260,
+      "generatedMessage": true
+    },
+    {
+      "request": "PurchaseCommodityWithVoucher",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 666,
+      "handler": "HandlePurchaseCommodityWithVoucher)",
+      "status": "registered",
+      "typeCode": 841253,
+      "generatedMessage": true
+    },
+    {
+      "request": "PutInCage",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 155,
+      "handler": "HandlePutInCage)",
+      "status": "registered",
+      "typeCode": 809,
+      "generatedMessage": true
+    },
+    {
+      "request": "PutInItem",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 418,
+      "handler": "HandlePutInItem)",
+      "status": "registered",
+      "typeCode": 2434,
+      "generatedMessage": true
+    },
+    {
+      "request": "PutMaterialsIntoArtifact",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 600,
+      "handler": "HandlePutMaterials)",
+      "status": "registered",
+      "typeCode": 2092,
+      "generatedMessage": true
+    },
+    {
+      "request": "ReceiveAcceleratorRewards",
+      "file": "server/ServerCore/ServerPlayer.WarpAccelerator.cs",
+      "line": 41,
+      "handler": "HandleReceiveAcceleratorRewards)",
+      "status": "registered",
+      "typeCode": 21112514,
+      "generatedMessage": true
+    },
+    {
+      "request": "ReceiveCargoImmediately",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 436,
+      "handler": "HandleReceiveCargoImmediately)",
+      "status": "registered",
+      "typeCode": 3823,
+      "generatedMessage": true
+    },
+    {
+      "request": "RechargeMissionShuffleCount",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 330,
+      "handler": "HandleRechargeMissionShuffleCount)",
+      "status": "registered",
+      "typeCode": 3626,
+      "generatedMessage": true
+    },
+    {
+      "request": "RecommendMissionImmediately",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 331,
+      "handler": "HandleRecommendMissionImmediately)",
+      "status": "registered",
+      "typeCode": 3629,
+      "generatedMessage": true
+    },
+    {
+      "request": "RecommendMissions",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 326,
+      "handler": "HandleRecommendMissions)",
+      "status": "registered",
+      "typeCode": 3621,
+      "generatedMessage": true
+    },
+    {
+      "request": "RefuseAllFriendRequests",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 63,
+      "handler": "HandleRefuseAllFriendRequests)",
+      "status": "registered",
+      "typeCode": 1451222,
+      "generatedMessage": true
+    },
+    {
+      "request": "RefuseFriendRequest",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 60,
+      "handler": "HandleRefuseFriendRequest)",
+      "status": "registered",
+      "typeCode": 1451216,
+      "generatedMessage": true
+    },
+    {
+      "request": "RegisterMultipleProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 38,
+      "handler": "HandleRegisterMultipleProducts)",
+      "status": "registered",
+      "typeCode": 82309,
+      "generatedMessage": true
+    },
+    {
+      "request": "RegisterProduct",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 37,
+      "handler": "HandleRegisterProduct)",
+      "status": "registered",
+      "typeCode": 2069,
+      "generatedMessage": true
+    },
+    {
+      "request": "ReissueArchipelagoTodos",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 503,
+      "handler": "HandleReissueArchipelagoTodos)",
+      "status": "registered",
+      "typeCode": 240005,
+      "generatedMessage": true
+    },
+    {
+      "request": "RejectPartyInvitation",
+      "file": "server/ServerCore/ServerPlayer.Party.cs",
+      "line": 61,
+      "handler": "HandleRejectPartyInvitation)",
+      "status": "registered",
+      "typeCode": 20007,
+      "generatedMessage": true
+    },
+    {
+      "request": "ReleasePet",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 158,
+      "handler": "HandleReleasePet)",
+      "status": "registered",
+      "typeCode": 74012,
+      "generatedMessage": true
+    },
+    {
+      "request": "RemoveDeathPoint",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 517,
+      "handler": "HandleRemoveDeathPoint)",
+      "status": "registered",
+      "typeCode": 2034,
+      "generatedMessage": true
+    },
+    {
+      "request": "RemoveEstate",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 757,
+      "handler": "HandleRemoveEstate)",
+      "status": "registered",
+      "typeCode": 9518234,
+      "generatedMessage": true
+    },
+    {
+      "request": "RemoveFriend",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 64,
+      "handler": "HandleRemoveFriend)",
+      "status": "registered",
+      "typeCode": 1451217,
+      "generatedMessage": true
+    },
+    {
+      "request": "RemoveFromFavoriteProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 43,
+      "handler": "HandleRemoveFromFavoriteProducts)",
+      "status": "registered",
+      "typeCode": 423809,
+      "generatedMessage": true
+    },
+    {
+      "request": "RemoveMusicFromSlot",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 554,
+      "handler": "HandleRemoveMusicFromSlot)",
+      "status": "registered",
+      "typeCode": 63459078,
+      "generatedMessage": true
+    },
+    {
+      "request": "Rename",
+      "file": "server/ServerCore/ServerPlayer.Group2.cs",
+      "line": 81,
+      "handler": "HandleCharacterRename)",
+      "status": "registered",
+      "typeCode": 324,
+      "generatedMessage": true
+    },
+    {
+      "request": "RenameClan",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 54,
+      "handler": "HandleRenameClan)",
+      "status": "registered",
+      "typeCode": 36510,
+      "generatedMessage": true
+    },
+    {
+      "request": "RenamePet",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 157,
+      "handler": "HandleRenamePet)",
+      "status": "registered",
+      "typeCode": 804,
+      "generatedMessage": true
+    },
+    {
+      "request": "RepairItem",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 423,
+      "handler": "HandleRepairItem)",
+      "status": "registered",
+      "typeCode": 3717,
+      "generatedMessage": true
+    },
+    {
+      "request": "ReportFactionProp",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 273,
+      "handler": "HandleReportFactionProp)",
+      "status": "registered",
+      "typeCode": 3611,
+      "generatedMessage": true
+    },
+    {
+      "request": "RequestArchipelagoRegionClear",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 504,
+      "handler": "HandleRequestArchipelagoRegionClear)",
+      "status": "registered",
+      "typeCode": 240002,
+      "generatedMessage": true
+    },
+    {
+      "request": "RequestFriend",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 58,
+      "handler": "HandleRequestFriend)",
+      "status": "registered",
+      "typeCode": 1451212,
+      "generatedMessage": true
+    },
+    {
+      "request": "RequestQuestReward",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 476,
+      "handler": "HandleRequestQuestReward)",
+      "status": "registered",
+      "typeCode": 237923,
+      "generatedMessage": true
+    },
+    {
+      "request": "ResearchSkillCategory",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 430,
+      "handler": "HandleResearchSkillCategory)",
+      "status": "registered",
+      "typeCode": 2446,
+      "generatedMessage": true
+    },
+    {
+      "request": "ResetAccessory",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 465,
+      "handler": "HandleResetAccessory)",
+      "status": "registered",
+      "typeCode": 9823460,
+      "generatedMessage": true
+    },
+    {
+      "request": "RestOn",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 467,
+      "handler": "delegate(RestOn msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 2416,
+      "generatedMessage": true
+    },
+    {
+      "request": "ReturnToEstate",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 758,
+      "handler": "HandleReturnToEstate)",
+      "status": "registered",
+      "typeCode": 10190234,
+      "generatedMessage": true
+    },
+    {
+      "request": "Revive",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 514,
+      "handler": "HandleRevive)",
+      "status": "registered",
+      "typeCode": 2101,
+      "generatedMessage": true
+    },
+    {
+      "request": "ReviveImmediately",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 516,
+      "handler": "HandleReviveImmediately)",
+      "status": "registered",
+      "typeCode": 210201,
+      "generatedMessage": true
+    },
+    {
+      "request": "SaveMusicToSlot",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 553,
+      "handler": "HandleSaveMusicToSlot)",
+      "status": "registered",
+      "typeCode": 47852456,
+      "generatedMessage": true
+    },
+    {
+      "request": "SayInConversation",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 565,
+      "handler": "delegate(SayInConversation msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 2409,
+      "generatedMessage": true
+    },
+    {
+      "request": "SayInExclusiveChannel",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 554,
+      "handler": "delegate(SayInExclusiveChannel msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 2408,
+      "generatedMessage": true
+    },
+    {
+      "request": "SearchPOIs",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 485,
+      "handler": "HandleSearchPOIs)",
+      "status": "registered",
+      "typeCode": 904,
+      "generatedMessage": true
+    },
+    {
+      "request": "SearchProducts",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 29,
+      "handler": "HandleSearchProducts)",
+      "status": "registered",
+      "typeCode": 5016,
+      "generatedMessage": true
+    },
+    {
+      "request": "SelectBattleTarget",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 518,
+      "handler": "delegate(SelectBattleTarget msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 3441,
+      "generatedMessage": true
+    },
+    {
+      "request": "SelectTargetTitle",
+      "file": "server/ServerCore/ServerPlayer.Group2.cs",
+      "line": 80,
+      "handler": "HandleSelectTargetTitle)",
+      "status": "registered",
+      "typeCode": 3900,
+      "generatedMessage": true
+    },
+    {
+      "request": "SelectTitle",
+      "file": "server/ServerCore/ServerPlayer.Group2.cs",
+      "line": 78,
+      "handler": "HandleSelectTitle)",
+      "status": "registered",
+      "typeCode": 2046,
+      "generatedMessage": true
+    },
+    {
+      "request": "SendCargo",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 435,
+      "handler": "HandleSendCargo)",
+      "status": "registered",
+      "typeCode": 3814,
+      "generatedMessage": true
+    },
+    {
+      "request": "SendFactionSupportRequest",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 276,
+      "handler": "HandleSendFactionSupportRequest)",
+      "status": "registered",
+      "typeCode": 725982,
+      "generatedMessage": true
+    },
+    {
+      "request": "SendMail",
+      "file": "server/ServerCore/ServerPlayer.Mail.cs",
+      "line": 45,
+      "handler": "HandleSendMail)",
+      "status": "registered",
+      "typeCode": 2077,
+      "generatedMessage": true
+    },
+    {
+      "request": "SetChunk",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 411,
+      "handler": "HandleSetChunk)",
+      "status": "registered",
+      "typeCode": 199,
+      "generatedMessage": true
+    },
+    {
+      "request": "SetEstateLicense",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 756,
+      "handler": "HandleSetEstateLicense)",
+      "status": "registered",
+      "typeCode": 2420,
+      "generatedMessage": true
+    },
+    {
+      "request": "SetFriendType",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 65,
+      "handler": "HandleSetFriendType)",
+      "status": "registered",
+      "typeCode": 908134,
+      "generatedMessage": true
+    },
+    {
+      "request": "ShrinkEstate",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 754,
+      "handler": "HandleShrinkEstate)",
+      "status": "registered",
+      "typeCode": 2426,
+      "generatedMessage": true
+    },
+    {
+      "request": "ShuffleMission",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 329,
+      "handler": "HandleShuffleMission)",
+      "status": "registered",
+      "typeCode": 3627,
+      "generatedMessage": true
+    },
+    {
+      "request": "SkipSkillCategoryResearch",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 432,
+      "handler": "HandleSkipSkillCategoryResearch)",
+      "status": "registered",
+      "typeCode": 3643,
+      "generatedMessage": true
+    },
+    {
+      "request": "StartClanResearch",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 63,
+      "handler": "HandleStartClanResearch)",
+      "status": "registered",
+      "typeCode": 3702,
+      "generatedMessage": true
+    },
+    {
+      "request": "StartDomestication",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 151,
+      "handler": "HandleStartDomestication)",
+      "status": "registered",
+      "typeCode": 694357,
+      "generatedMessage": true
+    },
+    {
+      "request": "StopMusic",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 550,
+      "handler": "HandleStopMusic)",
+      "status": "registered",
+      "typeCode": 3803,
+      "generatedMessage": true
+    },
+    {
+      "request": "SuggestAlly",
+      "file": "server/ServerCore/ServerPlayer.Clan.cs",
+      "line": 60,
+      "handler": "HandleSuggestAlly)",
+      "status": "registered",
+      "typeCode": 9138747,
+      "generatedMessage": true
+    },
+    {
+      "request": "TakeOutItem",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 419,
+      "handler": "HandleTakeOutItem)",
+      "status": "registered",
+      "typeCode": 2435,
+      "generatedMessage": true
+    },
+    {
+      "request": "ToggleStatusEffect",
+      "file": "server/ServerCore/ServerPlayer.Group2.cs",
+      "line": 75,
+      "handler": "HandleToggleStatusEffect)",
+      "status": "registered",
+      "typeCode": 2081,
+      "generatedMessage": true
+    },
+    {
+      "request": "Touch",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 539,
+      "handler": "HandleTouch)",
+      "status": "registered",
+      "typeCode": 2021,
+      "generatedMessage": true
+    },
+    {
+      "request": "TransferDurangoCoin",
+      "file": "server/ServerCore/ServerPlayer.Wallet.cs",
+      "line": 42,
+      "handler": "HandleTransferDurangoCoin)",
+      "status": "registered",
+      "typeCode": 5092384,
+      "generatedMessage": true
+    },
+    {
+      "request": "Unfollow",
+      "file": "server/ServerCore/ServerPlayer.Social.cs",
+      "line": 68,
+      "handler": "HandleUnfollow)",
+      "status": "registered",
+      "typeCode": 2410,
+      "generatedMessage": true
+    },
+    {
+      "request": "UnregisterProduct",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 40,
+      "handler": "HandleUnregisterProduct)",
+      "status": "registered",
+      "typeCode": 2070,
+      "generatedMessage": true
+    },
+    {
+      "request": "UntrainSkill",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 429,
+      "handler": "HandleUntrainSkill)",
+      "status": "registered",
+      "typeCode": 2049,
+      "generatedMessage": true
+    },
+    {
+      "request": "UprootPlant",
+      "file": "server/ServerCore/ServerPlayer.Farming.cs",
+      "line": 32,
+      "handler": "HandleUprootPlant)",
+      "status": "registered",
+      "typeCode": 3807,
+      "generatedMessage": true
+    },
+    {
+      "request": "UseBattleAction",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 513,
+      "handler": "HandleUseBattleAction)",
+      "status": "registered",
+      "typeCode": 3440,
+      "generatedMessage": true
+    },
+    {
+      "request": "UseItem",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 422,
+      "handler": "HandleUseItem)",
+      "status": "registered",
+      "typeCode": 17,
+      "generatedMessage": true
+    },
+    {
+      "request": "UseTamingAction",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 154,
+      "handler": "HandleUseTamingAction)",
+      "status": "registered",
+      "typeCode": 1900,
+      "generatedMessage": true
+    },
+    {
+      "request": "VisitEstate",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 759,
+      "handler": "HandleVisitEstate)",
+      "status": "registered",
+      "typeCode": 2104,
+      "generatedMessage": true
+    },
+    {
+      "request": "Warp",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 490,
+      "handler": "HandleWarp)",
+      "status": "registered",
+      "typeCode": 2108,
+      "generatedMessage": true
+    },
+    {
+      "request": "WarpBack",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 491,
+      "handler": "HandleWarpBack)",
+      "status": "registered",
+      "typeCode": 2110,
+      "generatedMessage": true
+    },
+    {
+      "request": "WarpToNextArchipelagoRegion",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 502,
+      "handler": "HandleWarpToNextArchipelagoRegion)",
+      "status": "registered",
+      "typeCode": 2035,
+      "generatedMessage": true
+    },
+    {
+      "request": "WarpToPort",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 492,
+      "handler": "HandleWarpToPort)",
+      "status": "registered",
+      "typeCode": 9081241,
+      "generatedMessage": true
+    },
+    {
+      "request": "WaterPlant",
+      "file": "server/ServerCore/ServerPlayer.Farming.cs",
+      "line": 30,
+      "handler": "HandleWaterPlant)",
+      "status": "registered",
+      "typeCode": 3710,
+      "generatedMessage": true
+    },
+    {
+      "request": "WithdrawProduct",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 41,
+      "handler": "HandleWithdrawProduct)",
+      "status": "registered",
+      "typeCode": 2085,
+      "generatedMessage": true
+    }
+  ]
+}

@@ -63,7 +63,7 @@ public class PlayerInfoManager : Singleton<PlayerInfoManager>
 
 	private static void RequestFunc(string key, PlayerInfo cachedInfo, Action<string, PlayerInfo> onResult)
 	{
-		string url = $"{GameManager.GatewayUrl}/players/{key}";
+		string url = $"{PlayerSelectionSystem.CharacterGatewayUrl}/players/{key}";
 		Http.RequestYml(url, delegate(PlayerInfoJson json)
 		{
 			PlayerInfo playerInfo = cachedInfo;
@@ -79,17 +79,9 @@ public class PlayerInfoManager : Singleton<PlayerInfoManager>
 				}
 				playerInfo.Set(json);
 			}
-			if (Singleton<PlayerManager>.HasInstance())
-			{
-				PlayerBehavior playerIncludeLocalPlayer = Singleton<PlayerManager>.Instance().GetPlayerIncludeLocalPlayer(key);
-				if (playerIncludeLocalPlayer != null)
-				{
-					playerInfo.Display = playerIncludeLocalPlayer.Display;
-					playerInfo.Level = playerIncludeLocalPlayer.Level;
-					playerInfo.ClanId = playerIncludeLocalPlayer.ClanId;
-					playerInfo.ClanName = playerIncludeLocalPlayer.Clan.ClanName;
-				}
-			}
+			// Selection screens must use the character-server response.  During a
+			// character switch a retained local player can carry the old appearance
+			// after its entity id has already been reassigned.
 			onResult(key, playerInfo);
 		});
 	}

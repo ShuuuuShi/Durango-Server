@@ -15,7 +15,7 @@ namespace DurangoServer.Core;
 /// </summary>
 public sealed class AnimalSpawner
 {
-    // Beta 1.0: จำนวน/ชนิด/เลเวล มาจาก SpawnTable ไม่ใช่การสุ่มแล้ว (ดู docs/BETA-1.0-PLAN.md)
+    // Beta 1.0: จำนวน/ชนิด/เลเวล มาจาก SpawnTable ไม่ใช่การสุ่มแล้ว (ดู docs/testing/BETA-1.0-PLAN.md)
 
     /// <summary>รัศมีจากจุดเกิดที่ใช้กระจายสัตว์ (หน่วยโลก = tile * 200)</summary>
     private static float SpawnRadius => ServerConfig.Current.Animals.SpawnRadiusTiles * 200f;
@@ -355,7 +355,7 @@ public sealed class AnimalSpawner
         return found;
     }
 
-    private ServerAnimal SpawnFromTable(SpawnTable.Entry e, WorldPosition center, double now)
+    private ServerAnimal? SpawnFromTable(SpawnTable.Entry e, WorldPosition center, double now)
     {
         float scale = AnimalData.TryGet(e.EntityType, out AnimalData.AnimalInfo info) ? info.Scale : 1f;
         int level = e.MinLevel + _rng.Next(e.MaxLevel - e.MinLevel + 1);
@@ -386,22 +386,71 @@ public sealed class AnimalSpawner
                  && (zone != null || minDist <= 0f || Distance(home, center) >= minDist)
                  && !TooCloseToOther(home);
         }
+        if (!ok && TryFindValidSpawnPosition(home, zone, center, minDist, minInland, out WorldPosition fallback))
+        {
+            home = fallback;
+            ok = true;
+            Console.WriteLine($"[animal] หาจุดสุ่มให้ {e.Name} ไม่ได้ใน 80 ครั้ง — ใช้จุด land ที่ตรวจซ้ำแล้ว tile {home.x / 200f:F0},{home.y / 200f:F0}");
+        }
         if (!ok)
         {
-            Console.WriteLine($"[animal] หาจุดเกิดบนบกให้ {e.Name} ไม่ได้ใน 80 ครั้ง — ใช้จุดสุดท้ายที่สุ่มได้");
+            Console.WriteLine($"[animal] ข้ามการเกิด {e.Name}: หา land ที่ผ่านเงื่อนไขไม่ได้");
+            return null;
         }
 
         ServerAnimal animal = new ServerAnimal(
             "animal_" + Guid.NewGuid().ToString("N").Substring(0, 12),
             e.EntityType, level, scale, home, SpawnTable.LifeFor(level), now);
         animal.NextMoveAt = now + NextInterval();
-        animal.Height = _world.GroundHeightHint;
+        animal.Height = GroundHeightAt(home);
 
         lock (_lock)
         {
             _animals[animal.EntityId] = animal;
         }
         return animal;
+    }
+
+    private float GroundHeightAt(WorldPosition position)
+    {
+        return _world.Terrain.TryGetGroundHeight(position.x, position.y, out float height)
+            ? height
+            : _world.GroundHeightHint;
+    }
+
+    private bool TryFindValidSpawnPosition(WorldPosition preferred, ZoneConfig zone, WorldPosition entry, float minDist, int minInland, out WorldPosition result)
+    {
+        result = default;
+        int minX = 0, maxX = _world.Terrain.Width - 1, minY = 0, maxY = _world.Terrain.Height - 1;
+        if (zone != null)
+        {
+            float radius = zone.RadiusTiles;
+            minX = Math.Max(0, (int)Math.Floor(preferred.x / 200f - radius));
+            maxX = Math.Min(_world.Terrain.Width - 1, (int)Math.Ceiling(preferred.x / 200f + radius));
+            minY = Math.Max(0, (int)Math.Floor(preferred.y / 200f - radius));
+            maxY = Math.Min(_world.Terrain.Height - 1, (int)Math.Ceiling(preferred.y / 200f + radius));
+        }
+        double best = double.MaxValue;
+        bool found = false;
+        WorldPosition zoneCenter = zone == null ? default : ZoneCenter(zone, entry);
+        for (int y = minY; y <= maxY; y++)
+        {
+            for (int x = minX; x <= maxX; x++)
+            {
+                WorldPosition candidate = new WorldPosition(x * 200f + 100f, y * 200f + 100f);
+                if (zone != null && Distance(candidate, zoneCenter) > zone.RadiusTiles * 200f) continue;
+                if (minDist > 0f && Distance(candidate, entry) < minDist) continue;
+                if (!_world.Terrain.IsLand(candidate.x, candidate.y, minInland) || TooCloseToOther(candidate)) continue;
+                double score = DistSq(candidate, preferred);
+                if (score < best)
+                {
+                    best = score;
+                    result = candidate;
+                    found = true;
+                }
+            }
+        }
+        return found;
     }
 
     private static float Distance(WorldPosition a, WorldPosition b)
@@ -455,6 +504,7 @@ public sealed class AnimalSpawner
             "animal_" + Guid.NewGuid().ToString("N").Substring(0, 12),
             type, level, scale, home, lifeMax, now);
         animal.NextMoveAt = now + NextInterval();
+        animal.Height = GroundHeightAt(home);
 
         lock (_lock)
         {
@@ -472,7 +522,7 @@ public sealed class AnimalSpawner
     {
         double now = Times.UnixTimeNow();
         ServerAnimal animal = SpawnOne(pos, now, 0f, type);
-        animal.Height = height != 0f ? height : _world.GroundHeightHint;
+        animal.Height = height != 0f ? height : GroundHeightAt(pos);
         _world.AnnounceAnimal(animal);
         Console.WriteLine($"[animal] เรียกเกิด {animal.EntityId} (type {animal.EntityType} lv{animal.Level}) ที่ tile {pos.x / 200f:F0},{pos.y / 200f:F0} สูง {animal.Height:F0}");
         return animal;
@@ -544,7 +594,11 @@ public sealed class AnimalSpawner
                 // ใช้ความสูงพื้นที่คนเข้าเกมรายงานมา ไม่งั้นสัตว์จมใต้พื้น (เห็นแต่เงา)
                 if (all[i].Height == 0f)
                 {
-                    all[i].Height = player.CurrentHeight != 0f ? player.CurrentHeight : _world.GroundHeightHint;
+                    all[i].Height = GroundHeightAt(all[i].Position);
+                    if (all[i].Height == 0f)
+                    {
+                        all[i].Height = player.CurrentHeight != 0f ? player.CurrentHeight : _world.GroundHeightHint;
+                    }
                 }
                 player.Send(all[i].MakeAppear());
             }
@@ -625,6 +679,7 @@ public sealed class AnimalSpawner
                 a.NextMoveAt = now + 1.0;
                 continue;
             }
+            a.Height = GroundHeightAt(dest);
             Move move = a.MakeMove(dest, WalkSpeed, now, out double travelSeconds);
             a.StandAt = now + travelSeconds;
             // ต้องรอให้เดินถึงก่อนแล้วค่อยพัก ไม่งั้นสั่งเดินใหม่ทับของเดิม
@@ -1038,7 +1093,11 @@ public sealed class AnimalSpawner
             for (int i = 0; i < due.Count; i++)
             {
                 SpawnTable.Entry e = SpawnTable.Find(due[i]) ?? SpawnTable.Entries[0];
-                ServerAnimal born = SpawnFromTable(e, center, now);
+                ServerAnimal? born = SpawnFromTable(e, center, now);
+                if (born == null)
+                {
+                    continue;
+                }
                 _world.AnnounceAnimal(born);
                 Console.WriteLine("[animal] เกิดใหม่ {0} lv{1} ({2}) — ในโลกตอนนี้ {3} ตัว",
                     e.Name, born.Level, born.EntityId, Count);

@@ -16,6 +16,8 @@
 param(
   [string]$Ip = "127.0.0.1",
   [switch]$SkipLaunch,
+  # use the game's Main menu -> Visit Friend's Island -> Direct Input flow
+  [switch]$Manual,
   # the game boots to the title screen ("Multi Play Mode" + character + Start);
   # pass -InGame when the client is already standing on an island
   [switch]$InGame
@@ -95,7 +97,8 @@ function Click-Game([int]$x, [int]$y, [string]$what) {
 # Click at a FRACTION of the window (0..1), not a fixed pixel.
 #
 # Why: the game ignores -screen-width/-screen-height when a previous run saved a window
-# size in the registry, so the window is often 1010x588 even when 1600x900 was asked for.
+# size in the registry, so the window can differ from the requested 800x458
+# (which is an 816x497 window after Windows adds its 16x39 title-bar frame).
 # Fixed pixel coords then miss the button, the title screen never advances, and it looks
 # exactly like "the game is stuck on the loading screen" - which cost us an hour once.
 function Click-GameFrac([double]$fx, [double]$fy, [string]$what) {
@@ -135,9 +138,18 @@ if (-not $SkipLaunch) {
     # The dll patch (PatchAutoConnect) makes Server.BeginServer read this env var and
     # call ConnectTo() by itself - that removes 5 of the 6 UI clicks, so connecting no
     # longer depends on window coordinates that drift when the UI changes.
-    $env:DURANGO_AUTOCONNECT = $Ip
+    if ($Manual) {
+      Remove-Item Env:DURANGO_AUTOCONNECT -ErrorAction SilentlyContinue
+    } else {
+      $env:DURANGO_AUTOCONNECT = $Ip
+    }
+    # Start-Process flattens an argument array without preserving the quotes around
+    # a path with spaces.  Keep this one command line so Unity writes client.log
+    # inside the game directory, rather than a stray file named "Desktop\\Durango".
+    $clientLog = Join-Path $gameDir 'client.log'
+    $launchArgs = '-force-d3d11 -screen-fullscreen 0 -screen-width 800 -screen-height 458 -logFile "' + $clientLog + '"'
     Start-Process -FilePath (Join-Path $gameDir "DurangoV2.exe") `
-      -ArgumentList '-force-d3d11','-screen-fullscreen','0','-screen-width','1600','-screen-height','900','-logFile',(Join-Path $gameDir 'client.log') `
+      -ArgumentList $launchArgs `
       -WorkingDirectory $gameDir
     # loading the island takes a while on a cold start
     for ($i = 0; $i -lt 60; $i++) {
@@ -157,32 +169,36 @@ if (-not $InGame) {
   Write-Output "title screen: pressing Start, then waiting for the island to load..."
   Click-GameFrac 0.50 0.794 "Start"
   Start-Sleep -Seconds 60
-  if ($env:DURANGO_AUTOCONNECT) {
+  if (-not $Manual -and $env:DURANGO_AUTOCONNECT) {
     Write-Output "autoconnect should have run - check the server log for '[world] player joined'"
     return
   }
-  for ($i = 0; $i -lt 6; $i++) { Click-Game 413 520 "dialogue next" | Out-Null; Start-Sleep -Milliseconds 500 }
+  for ($i = 0; $i -lt 6; $i++) { Click-GameFrac 0.50 0.956 "dialogue next" | Out-Null; Start-Sleep -Milliseconds 500 }
 }
 
 # fallback path: drive the menu by hand (used when autoconnect is unavailable)
 Write-Output "connecting to $Ip via the menu..."
-Click-Game 20 512 "main menu (hamburger)"
-Click-Game 101 205 "visit friend's island"
-Click-Game 345 138 "direct input"
-Click-Game 413 462 "OK (server list)"
+Click-GameFrac 0.05 0.94 "main menu (hamburger)"
+Click-GameFrac 0.122 0.377 "visit friend's island"
+Click-GameFrac 0.417 0.254 "direct input"
+Click-GameFrac 0.50 0.849 "OK (server list)"
 # The IP box is prefilled from Preferences("last_connect_ip"); retype only if different.
 if ($Ip -ne "127.0.0.1") {
   [System.Windows.Forms.SendKeys]::SendWait("^a")
   [System.Windows.Forms.SendKeys]::SendWait($Ip)
   Start-Sleep -Milliseconds 300
 }
-Click-Game 551 88  "OK (ip input)"
-Click-Game 413 303 "OK (travel confirm)"
+Click-GameFrac 0.666 0.162 "OK (ip input)"
+Click-GameFrac 0.50 0.557 "OK (travel confirm)"
 
 Write-Output "loading the server world (this takes ~30s)..."
 Start-Sleep -Seconds 30
 # The intro/tutorial dialogue blocks input until clicked through - it is decided
 # client-side (GameManager.IsPrologueMode) so the server cannot turn it off.
-for ($i = 0; $i -lt 8; $i++) { Click-Game 413 520 "dialogue next" | Out-Null; Start-Sleep -Milliseconds 600 }
+# In manual-IP mode, leave the loaded game untouched: clicking at the bottom while
+# the login curtain is still changing state can turn a successful login into a 400.
+if (-not $Manual) {
+  for ($i = 0; $i -lt 8; $i++) { Click-GameFrac 0.50 0.956 "dialogue next" | Out-Null; Start-Sleep -Milliseconds 600 }
+}
 
 Write-Output "done - check the server log for '[world] player joined'"

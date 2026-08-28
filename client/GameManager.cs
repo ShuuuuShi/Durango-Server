@@ -396,6 +396,15 @@ public class GameManager : Singleton<GameManager>
 		Auth msg = auth;
 		Connections.Frontend.Send(msg).On(delegate(Welcome welcome, PacketHeader header)
 		{
+			// M5: advertise loaded client mods before the normal Ready packet. Legacy servers
+			// simply ignore this optional message; required-mod servers validate it.
+			string modCatalogHash;
+			string modManifest = ClientModLoader.BuildNegotiationManifest(out modCatalogHash);
+			ModHello modHello = default(ModHello);
+			modHello.Protocol = 1;
+			modHello.ManifestJson = modManifest;
+			modHello.CatalogHash = modCatalogHash;
+			Connections.Frontend.Send(modHello);
 			Durango.Logic.Explore.Region region = Region;
 			Region = new Durango.Logic.Explore.Region(welcome.Region);
 			PersonalRegionId = welcome.PersonalRegionId;
@@ -508,8 +517,18 @@ public class GameManager : Singleton<GameManager>
 			return;
 		}
 
-		bool flag = Emigrated != 0 || _forceMoveToTitle;
+		bool forceMoveToTitle = _forceMoveToTitle;
+		bool flag = Emigrated != 0 || forceMoveToTitle;
 		_forceMoveToTitle = false;
+		// An explicit MoveToTitle (logout/change character) must finish loading the
+		// title scene.  The old auto-connect fallback below intercepted the closed
+		// socket and connected to the previous server again, so character switching
+		// looked like a reconnect to the old character.
+		if (forceMoveToTitle)
+		{
+			MoveToTitleLevel();
+			return;
+		}
 		if (!flag && !_isReconnecting && Singleton<TerrainBase>.HasInstance() && Singleton<TerrainBase>.Instance().IsReady)
 		{
 			ReconnectLoadingCurtain reconnectLoadingCurtain = UIManager.ShowLoadingCurtain<ReconnectLoadingCurtain>();

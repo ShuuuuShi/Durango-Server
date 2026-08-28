@@ -1,0 +1,28 @@
+{
+  "name": "dinoworld-launcher",
+  "productName": "DinoWorld Launcher",
+  "version": "1.0.0",
+  "description": "DinoWorld game launcher",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "th.dinoworld.launcher",
+    "artifactName": "DinoWorldLauncher-${version}.${ext}",
+    "win": {
+      "target": "portable",
+      "icon": "icon.png",
+      "sign": null,
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "requestExecutionLevel": "user"
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  }
+}

@@ -12,7 +12,7 @@
 | `BlueprintType[id]` → `ushort` | แปลง blueprint เป็น entity type ตอนก่อสร้าง |
 | `BlueprintSize[id]` → ขนาด tile | ใช้เมื่อ client ไม่ส่งขนาดมา |
 
-> ถ้าเปิด Online mode ตามที่เขียนใน [ARCHITECTURE ข้อ 7](../ARCHITECTURE.md) ไฟล์นี้จะไม่จำเป็นอีกต่อไป
+> ถ้าเปิด Online mode ตามที่เขียนใน [ARCHITECTURE ข้อ 7](../project/ARCHITECTURE.md) ไฟล์นี้จะไม่จำเป็นอีกต่อไป
 > เพราะข้อมูลจะมาจาก `/assets/item/recipes` และ `/assets/building/blueprints` ที่เราเสิร์ฟเองแทน
 
 ## `ServerCore/RecipeRequirements.cs` — 766 บรรทัด (สร้างอัตโนมัติ) ✅ GP-08

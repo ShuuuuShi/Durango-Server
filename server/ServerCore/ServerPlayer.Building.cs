@@ -8,6 +8,7 @@ using System.Threading;
 using Durango.Network;
 using Durango.Offline;
 using Durango.Utils;
+using DurangoServer.Modding;
 using Messages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -96,6 +97,8 @@ public partial class ServerPlayer
     /// <summary>H-7: สร้างได้คนละกี่ชิ้น (กันบอทถมทั้งเกาะจนคนใหม่เข้าเกมไม่ได้)</summary>
     private const int MaxArtifactsPerPlayer = 40;
 
+    private bool AllowFreeBuild => ServerConfig.Current.CraftMenu?.AllowFreeBuild ?? false;
+
     private void HandleOccupyArtifactSite(OccupyArtifactSite msg, PacketHeader header)
     {
         if (Dead)
@@ -124,6 +127,19 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[build] ปฏิเสธ {0}: สร้างครบเพดานแล้ว ({1} ชิ้น)", Name, mine);
             Send(new Info { Text = $"สร้างได้สูงสุด {MaxArtifactsPerPlayer} ชิ้นต่อคน — ทุบของเก่าก่อน" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        IModEventContext? placeBefore = PluginManager.Instance?.FireEvent("building.before_place", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["blueprint_id"] = msg.BlueprintId ?? "",
+                ["tile_x"] = msg.Tile.x.ToString(),
+                ["tile_y"] = msg.Tile.y.ToString()
+            });
+        if (placeBefore != null && placeBefore.IsCancelled)
+        {
+            Send(new Info { Text = placeBefore.CancelReason ?? "mod ยกเลิกการวางสิ่งปลูกสร้าง" }, header.Seq);
             Send(default(Abort), header.Seq);
             return;
         }
@@ -156,6 +172,16 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        if (!AllowFreeBuild
+            && BlueprintRequirements.TryGet(msg.BlueprintId ?? string.Empty, out BlueprintRequirements.Slot[] requestedSlots)
+            && requestedSlots.Length == 0)
+        {
+            Console.WriteLine("[build] ปฏิเสธ {0}: '{1}' เป็นแบบก่อสร้างฟรีและปิดอยู่", Name, msg.BlueprintId);
+            RestoreStamina(StaminaCostBuild, 0f);
+            Send(new Info { Text = "การสร้างสิ่งก่อสร้างฟรีถูกปิดอยู่ — ต้องใช้แบบที่มีวัตถุดิบ" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
         string entityId = Guid.NewGuid().ToString();
         ushort entityType = 0;
         if (!RecipeData.BlueprintType.TryGetValue(msg.BlueprintId ?? "", out entityType))
@@ -183,6 +209,14 @@ public partial class ServerPlayer
         // GP-04: จำไว้ในโลกก่อน แล้วค่อย broadcast — คนที่เข้ามาทีหลังจะได้เห็นด้วย
         _world.AddArtifact(artifact, msg.BlueprintId);
         _world.AnnounceArtifact(artifact);
+        PluginManager.Instance?.FireEvent("building.placed", this, false, true,
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["blueprint_id"] = msg.BlueprintId ?? "",
+                ["entity_id"] = entityId,
+                ["tile_x"] = msg.Tile.x.ToString(),
+                ["tile_y"] = msg.Tile.y.ToString()
+            });
         Send(new Messages.Timer { Duration = 2f }, header.Seq);
         Send(new Occupied
         {
@@ -223,9 +257,14 @@ public partial class ServerPlayer
         return ArtifactFactory.Make(EntityId, entityId, entityType, tile, size, rotation, floor, stories, blueprintId);
     }
 
-    private void HandlePlaceCapsulatedArtifact(PlaceCapsulatedArtifact msg, PacketHeader header)
-    {
-        if (!ServerConfig.Current.Features.Building || IsItemLocked(msg.ItemId))
+	private void HandlePlaceCapsulatedArtifact(PlaceCapsulatedArtifact msg, PacketHeader header)
+	{
+		if (!ServerConfig.Current.Features.Building)
+        {
+            RejectFeatureDisabled("Building", "PlaceCapsulatedArtifact", "ระบบก่อสร้างยังไม่เปิดในรอบนี้", header);
+            return;
+        }
+        if (Dead || IsItemLocked(msg.ItemId))
         {
             Send(default(Abort), header.Seq);
             return;
@@ -251,6 +290,13 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        if (!AllowFreeBuild)
+        {
+            Console.WriteLine("[build] ปฏิเสธ {0}: วางแคปซูล '{1}' แบบไม่ใช้วัสดุถูกปิดอยู่", Name, blueprintId);
+            Send(new Info { Text = "การวางสิ่งก่อสร้างแบบไม่ใช้วัตถุดิบถูกปิดอยู่ — ต้องสร้างผ่านแบบและใส่วัตถุดิบ" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
         // [แก้เอง] 25 ส.ค. 2026 — กันซ้ำอีกชั้นเผื่อมีทางได้แคปซูล event มาโดยไม่ผ่านการคราฟ (เช่น
         // เก็บจากพื้น/รับจากคนอื่น) ตัวจริงกันไว้ที่ HandleCraft แล้ว แต่จุดวางก็ควรกันด้วยเหมือนกัน
         if (RecipeData.IsEventBlueprint(blueprintId) && !IsAdmin)
@@ -260,6 +306,39 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        Item capsule;
+        lock (_inventory)
+        {
+            int idx = _inventory.FindIndex(it => it.Id == msg.ItemId && it.Prototype == proto);
+            if (idx < 0)
+            {
+                Send(default(Abort), header.Seq);
+                return;
+            }
+            capsule = _inventory[idx];
+        }
+		Point2 size = new Point2(1, 1);
+		if (RecipeData.BlueprintSize.TryGetValue(blueprintId, out var bpSize))
+		{
+			size = new Point2(bpSize.x, bpSize.y);
+		}
+		if (msg.Tile.x < 0 || msg.Tile.y < 0
+			|| size.x <= 0 || size.y <= 0
+			|| msg.Tile.x > _world.Terrain.Width - size.x
+			|| msg.Tile.y > _world.Terrain.Height - size.y
+			|| !IsWithinReach(msg.Tile)
+			|| _world.HasArtifactOverlapping(msg.Tile, size)
+			|| _world.CountArtifactsOf(EntityId) >= MaxArtifactsPerPlayer)
+		{
+			Console.WriteLine("[build] ปฏิเสธ {0}: ตำแหน่งแคปซูลไม่ถูกต้องหรือเกินสิทธิ์", Name);
+            lock (_inventory)
+            {
+                _inventory.Add(capsule);
+            }
+			Send(default(Abort), header.Seq);
+			return;
+		}
+        string entityId = Guid.NewGuid().ToString();
         lock (_inventory)
         {
             int idx = _inventory.FindIndex(it => it.Id == msg.ItemId && it.Prototype == proto);
@@ -271,12 +350,6 @@ public partial class ServerPlayer
             _inventory.RemoveAt(idx);
             ForgetInventoryItem(msg.ItemId);
         }
-        Point2 size = new Point2(1, 1);
-        if (RecipeData.BlueprintSize.TryGetValue(blueprintId, out var bpSize))
-        {
-            size = new Point2(bpSize.x, bpSize.y);
-        }
-        string entityId = Guid.NewGuid().ToString();
         Console.WriteLine("[build] place capsule {0} (proto={1}) type={2} tile={3},{4}", entityId, proto, entityType, msg.Tile.x, msg.Tile.y);
         // ของที่อยู่ในแคปซูลคือ "ของสำเร็จรูป" — วางแล้วใช้ได้เลย ไม่ต้องเอาวัสดุมาสร้างซ้ำ
         // 🐛 เดิมวางออกมาเป็น Occupied (= แค่จองพื้นที่) ⇒ กองไฟที่วางจากแคปซูลใช้เป็นโต๊ะคราฟต์ไม่ได้
@@ -288,6 +361,200 @@ public partial class ServerPlayer
         MarkDirty();              // GP-07 — ของออกจากกระเป๋าไปแล้ว
         Send(new Messages.Timer { Duration = 2f }, header.Seq);
         SendInventory();
+    }
+
+    private bool TryGetBuildSlots(string entityId, out BlueprintRequirements.Slot[] slots, out string reason)
+    {
+        slots = null;
+        reason = null;
+        if (!_world.TryGetArtifactBlueprint(entityId, out string blueprintId) || string.IsNullOrEmpty(blueprintId))
+        {
+            reason = "ไม่รู้ชนิดของสิ่งปลูกสร้างนี้";
+            return false;
+        }
+        if (!BlueprintRequirements.TryGet(blueprintId, out slots))
+        {
+            reason = $"ไม่มีข้อมูลวัตถุดิบของ {blueprintId}";
+            return false;
+        }
+        return true;
+    }
+
+    private bool ValidateBuildingDeposit(BlueprintRequirements.Slot[] slots, Dictionary<string, List<Item>> reserved,
+        Dictionary<string, string[]> request, out List<string> itemIds, out string reason)
+    {
+        itemIds = new List<string>();
+        reason = null;
+        if (request == null || request.Count == 0)
+        {
+            reason = "ไม่ได้เลือกวัตถุดิบ";
+            return false;
+        }
+
+        var slotById = new Dictionary<string, BlueprintRequirements.Slot>();
+        for (int i = 0; i < slots.Length; i++) slotById[slots[i].Id] = slots[i];
+        foreach (var pair in request)
+        {
+            if (!slotById.ContainsKey(pair.Key))
+            {
+                reason = $"ไม่มีช่อง '{pair.Key}' ในแบบก่อสร้าง";
+                return false;
+            }
+        }
+
+        var used = new HashSet<string>(StringComparer.Ordinal);
+        if (reserved != null)
+            foreach (var pair in reserved)
+                foreach (Item item in pair.Value)
+                    used.Add(item.Id);
+
+        foreach (var pair in request)
+        {
+            BlueprintRequirements.Slot slot = slotById[pair.Key];
+            string[] given = pair.Value ?? Array.Empty<string>();
+            int existing = reserved != null && reserved.TryGetValue(pair.Key, out List<Item> old) ? old.Count : 0;
+            if (existing + given.Length > slot.Max)
+            {
+                reason = $"ช่อง '{slot.Id}' ใส่ได้มากสุด {slot.Max} ชิ้น";
+                return false;
+            }
+            for (int i = 0; i < given.Length; i++)
+            {
+                string id = given[i];
+                if (string.IsNullOrEmpty(id) || !used.Add(id))
+                {
+                    reason = $"ไอเทม {id ?? "(ว่าง)"} ถูกใช้ซ้ำ";
+                    return false;
+                }
+                if (_equippedItems.ContainsValue(id) || IsItemLocked(id))
+                {
+                    reason = $"ไอเทม {id} ถูกใช้งานหรือล็อกอยู่";
+                    return false;
+                }
+                Item item;
+                lock (_inventory)
+                {
+                    int index = _inventory.FindIndex(x => x.Id == id);
+                    if (index < 0)
+                    {
+                        reason = $"ไม่มีไอเทม {id} อยู่ในกระเป๋า";
+                        return false;
+                    }
+                    item = _inventory[index];
+                }
+                if (!MatchesAny(item.Prototype, slot.Tags) || !MatchesAny(item.Prototype, slot.Materials))
+                {
+                    reason = $"ไอเทม {item.Prototype} ไม่ตรงกับช่อง '{slot.Id}'";
+                    return false;
+                }
+                itemIds.Add(id);
+            }
+        }
+        return true;
+    }
+
+    private static bool AreBuildSlotsComplete(BlueprintRequirements.Slot[] slots, Dictionary<string, List<Item>> reserved)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            int count = reserved != null && reserved.TryGetValue(slots[i].Id, out List<Item> items) ? items.Count : 0;
+            if (count < slots[i].Min || count > slots[i].Max) return false;
+        }
+        return true;
+    }
+
+    private void HandlePutMaterials(PutMaterialsIntoArtifact msg, PacketHeader header)
+    {
+        if (!ServerConfig.Current.Features.Building)
+        {
+            RejectFeatureDisabled("Building", "PutMaterials", "ระบบก่อสร้างยังไม่เปิดในรอบนี้", header);
+            return;
+        }
+        if (Dead)
+        {
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        if (!_world.TryGetArtifact(msg.EntityId, out AppearArtifact artifact))
+        {
+            Console.WriteLine("[build] PutMaterials ปฏิเสธ {0}: ไม่มีสิ่งปลูกสร้าง {1}", Name, msg.EntityId);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        if (!CanModifyArtifact(artifact))
+        {
+            Console.WriteLine("[build] PutMaterials ปฏิเสธ {0}: ไม่ใช่เจ้าของ {1}", Name, msg.EntityId);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        if (artifact.States.BuildingState != BuildingState.Occupied)
+        {
+            Send(new Info { Text = "สิ่งปลูกสร้างนี้สร้างเสร็จแล้ว — ไม่ต้องใส่วัสดุ" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        if (!IsWithinReach(artifact.Tile))
+        {
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        List<string> itemIds = null;
+        string reason = null;
+        bool hasSlots = TryGetBuildSlots(msg.EntityId, out BlueprintRequirements.Slot[] slots, out string slotsReason);
+        bool validDeposit = hasSlots && ValidateBuildingDeposit(slots, _world.GetArtifactMaterials(msg.EntityId), msg.Materials,
+            out itemIds, out reason);
+        if (!validDeposit)
+        {
+            string message = slotsReason ?? reason ?? "วัตถุดิบไม่ถูกต้อง";
+            Console.WriteLine("[build] PutMaterials ปฏิเสธ {0}: {1}", Name, message);
+            Send(new Info { Text = message }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+
+        var deposits = new Dictionary<string, List<Item>>();
+        lock (_inventory)
+        {
+            // ValidateBuildingDeposit saw a snapshot; verify every ID again before any removal.
+            foreach (var pair in msg.Materials)
+            {
+                var items = new List<Item>();
+                foreach (string id in pair.Value ?? Array.Empty<string>())
+                {
+                    int index = _inventory.FindIndex(x => x.Id == id);
+                    if (index < 0)
+                    {
+                        Send(default(Abort), header.Seq);
+                        return;
+                    }
+                    items.Add(_inventory[index]);
+                }
+                if (items.Count > 0) deposits[pair.Key] = items;
+            }
+            foreach (string id in itemIds)
+            {
+                int index = _inventory.FindIndex(x => x.Id == id);
+                if (index >= 0) _inventory.RemoveAt(index);
+            }
+        }
+        var maximums = new Dictionary<string, int>();
+        for (int i = 0; i < slots.Length; i++) maximums[slots[i].Id] = slots[i].Max;
+        if (!_world.TryReserveArtifactMaterials(msg.EntityId, deposits, maximums))
+        {
+            lock (_inventory)
+            {
+                foreach (var pair in deposits) _inventory.AddRange(pair.Value);
+            }
+            Send(new Info { Text = "วัสดุในช่องนี้ถูกเติมครบโดยผู้เล่นคนอื่นแล้ว" }, header.Seq);
+            SendInventory();
+            Send(default(Abort), header.Seq);
+            return;
+        }
+
+        Console.WriteLine("[build] PutMaterials {0} → {1}: {2} slots", Name, msg.EntityId, deposits.Count);
+        MarkDirty();
+        SendInventory();
+        Send(default(OK), header.Seq);
     }
 
     private void HandleBuildArtifact(BuildArtifact msg, PacketHeader header)
@@ -326,6 +593,25 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+        if (!IsWithinReach(target.Tile))
+        {
+            Send(new Info { Text = "ต้องเข้าไปใกล้ ๆ ก่อนถึงจะสร้างได้" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        if (!TryGetBuildSlots(msg.EntityId, out BlueprintRequirements.Slot[] buildSlots, out string slotReason)
+            || !AreBuildSlotsComplete(buildSlots, _world.GetArtifactMaterials(msg.EntityId)))
+        {
+            string message = slotReason ?? "ใส่วัตถุดิบสำหรับก่อสร้างยังไม่ครบ";
+            Console.WriteLine("[build] ปฏิเสธ {0}: {1}", Name, message);
+            Send(new Info { Text = message }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        IModEventContext? beforeComplete = PluginManager.Instance?.FireEvent("building.before_complete", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["entity_id"] = msg.EntityId ?? "" });
+        if (beforeComplete?.IsCancelled == true)
+        { Send(new Info { Text = beforeComplete.CancelReason ?? "การก่อสร้างถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
         // กันยิงซ้ำระหว่างที่ตัวเดิมยังนับเวลา 2 วิอยู่ (สถานะยังไม่เปลี่ยนจนกว่าจะครบเวลา)
         if (!_buildingNow.Add(msg.EntityId))
         {
@@ -349,10 +635,18 @@ public partial class ServerPlayer
         _deferred.Add((Times.UnixTimeNow() + 2.1, () =>
         {
             _buildingNow.Remove(msg.EntityId);
-            // GP-04: อัปเดตสถานะที่เก็บไว้ด้วย ไม่งั้นคนที่เข้ามาทีหลังจะเห็นเป็น Occupied ตลอด
+            if (!_world.TryGetArtifact(msg.EntityId, out AppearArtifact current)
+                || current.States.BuildingState != BuildingState.Occupied
+                || !TryGetBuildSlots(msg.EntityId, out BlueprintRequirements.Slot[] completedSlots, out _)
+                || !AreBuildSlotsComplete(completedSlots, _world.GetArtifactMaterials(msg.EntityId)))
+            {
+                return;
+            }
+            // Keep the validated reservation as a construction ledger for deterministic demolition refunds.
             _world.SetArtifactBuildingState(msg.EntityId, BuildingState.Built);
             _world.BroadcastToViewers(msg.EntityId, new ArtifactBuilt { EntityId = msg.EntityId, BuilderId = EntityId });
             _world.BroadcastToViewers(msg.EntityId, new ArtifactCompleted { EntityId = msg.EntityId });
+            PluginManager.Instance?.FireEvent("building.completed", this, false, true);
             _world.TryGetArtifactBlueprint(msg.EntityId, out string builtBlueprint);
             GainExpForBuild(builtBlueprint);
         }));
@@ -360,10 +654,27 @@ public partial class ServerPlayer
 
     private void HandleGetArtifact(GetArtifact msg, PacketHeader header)
     {
+        if (!_world.TryGetArtifact(msg.EntityId, out AppearArtifact artifact)
+            || !CanModifyArtifact(artifact)
+            || !IsWithinReach(artifact.Tile))
+        {
+            Console.WriteLine("[build] GetArtifact ปฏิเสธ {0}: ไม่มีสิทธิ์หรือไกลเกินเอื้อม {1}", Name, msg.EntityId);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        var deposited = _world.GetArtifactMaterials(msg.EntityId);
+        var materials = new Dictionary<string, Item[]>();
+        if (deposited != null)
+        {
+            foreach (var kv in deposited)
+            {
+                materials[kv.Key] = kv.Value.ToArray();
+            }
+        }
         Send(new ArtifactMaterials
         {
             EntityId = msg.EntityId,
-            Materials = new Dictionary<string, Item[]>()
+            Materials = materials
         }, header.Seq);
     }
 
@@ -395,7 +706,36 @@ public partial class ServerPlayer
             return;
         }
 
+        IModEventContext? beforeDestroy = PluginManager.Instance?.FireEvent("building.before_destroy", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["entity_id"] = msg.EntityId ?? "" });
+        if (beforeDestroy?.IsCancelled == true)
+        { Send(new Info { Text = beforeDestroy.CancelReason ?? "การทำลายถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
+
+        Dictionary<string, List<Item>> materials = _world.TakeArtifactMaterials(msg.EntityId);
+        List<Item> stored = _world.TakeAllFromBox(msg.EntityId);
+        int refunded = 0;
+        lock (_inventory)
+        {
+            if (materials != null)
+            {
+                foreach (var pair in materials)
+                {
+                    _inventory.AddRange(pair.Value);
+                    refunded += pair.Value.Count;
+                }
+            }
+            _inventory.AddRange(stored);
+        }
+        if (refunded > 0 || stored.Count > 0)
+        {
+            Console.WriteLine("[build] destruct คืนวัสดุ {0} ชิ้นและของในกล่อง {1} ชิ้นให้ {2}", refunded, stored.Count, Name);
+            Send(new Info { Text = $"ได้รับวัสดุคืน {refunded} ชิ้น และของในกล่อง {stored.Count} ชิ้น" }, header.Seq);
+        }
+
         _world.RemoveArtifact(msg.EntityId);
+        MarkDirty();
+        SendInventory();
+        PluginManager.Instance?.FireEvent("building.destroyed", this, false, true);
         _world.AnnounceGone(msg.EntityId);
     }
 

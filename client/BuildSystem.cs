@@ -106,7 +106,8 @@ public class BuildSystem : GameSystem<BuildSystem>
 		}
 		if ((bool)artifact)
 		{
-			OnArtifactOccupied(artifact);
+			// Placement leaves the blueprint inert. The material window is opened
+			// only after the player clicks the blueprint on the ground.
 		}
 	}
 

@@ -27,6 +27,10 @@ public interface IModApi
     /// <summary>เรียกทุกครั้งที่ผู้เล่นตัดการเชื่อมต่อ (ปิดเกม/หลุดเน็ต)</summary>
     void OnPlayerLeft(Action<IModPlayer> handler);
 
+    /// <summary>[V1.1] เรียกทุกครั้งที่ผู้เล่นล้มจริง ๆ (Die() — ไม่ใช่หลุด/ออกเกม) IsDead เป็น true
+    /// แล้วตอน handler วิ่ง และยิงครั้งเดียวต่อการตายหนึ่งรอบ (ไม่ยิงซ้ำตอนฟื้น/เข้าใหม่)</summary>
+    void OnPlayerDied(Action<IModPlayer> handler);
+
     /// <summary>เรียกทุก tick ของ main loop (~120 ครั้ง/วินาทีตามค่าเซิร์ฟ) — deltaSeconds คือเวลาห่างจาก
     /// tick ก่อนหน้าจริง ๆ (ไม่คงที่เป๊ะ) ห้ามทำงานหนักในนี้ (ทำทุก tick จริง ไม่ใช่ทุกวินาที)</summary>
     void OnTick(Action<double> handler);
@@ -39,4 +43,57 @@ public interface IModApi
 
     /// <summary>ส่งข้อความ (Info popup) ไปทุกคนที่ออนไลน์อยู่</summary>
     void BroadcastMessage(string text);
+}
+
+/// <summary>Optional capability exposed by the server API view. Cast IModApi to this interface.</summary>
+public interface IModEventsApi : IModEvents
+{
+    /// <summary>Persistent namespaced storage owned by this mod.</summary>
+    IModStorage Storage { get; }
+}
+
+/// <summary>Persistent namespaced mod data. Implementations must isolate failures per mod.</summary>
+public interface IModStorage
+{
+    bool Exists(string key);
+    string? LoadJson(string key);
+    bool SaveJson(string key, string json);
+    bool Delete(string key);
+    bool Flush();
+}
+
+/// <summary>Optional lifecycle capability. Old plugins can omit it.</summary>
+public interface IModLifecycle
+{
+    void OnDisable(IModApi api);
+}
+
+/// <summary>Optional metadata capability detected by the loader.</summary>
+public interface IModIdentity
+{
+    string Id { get; }
+    string ApiVersion { get; }
+    IReadOnlyList<string> Dependencies { get; }
+}
+
+/// <summary>Event registration capability for plugins that need the V2 bus.</summary>
+public interface IModEvents
+{
+    bool Subscribe(string eventName, Action<IModEventContext> handler, EventPriority priority = EventPriority.Normal);
+    IReadOnlyList<string> GetAvailableEvents();
+}
+
+/// <summary>Read-only event data plus cancellation for future before-events.</summary>
+public interface IModEventContext
+{
+    string EventName { get; }
+    string EventId { get; }
+    double OccurredAt { get; }
+    IModPlayer? Player { get; }
+    bool IsBefore { get; }
+    bool IsCommitted { get; }
+    bool IsCancelled { get; }
+    string? CancelReason { get; }
+    IReadOnlyDictionary<string, string> Data { get; }
+    void Cancel(string reason);
 }

@@ -16,4 +16,15 @@ public interface IModPlayer
 
     /// <summary>วาร์ปผู้เล่นไปยัง tile ที่ระบุ</summary>
     void Teleport(int tileX, int tileY);
+
+    /// <summary>[V1.1] นับของในกระเป๋าติดตัวที่ prototype ตรงกัน (id ตามข้อมูลเกม เช่น "stone",
+    /// "blade_stone" — case-sensitive) กล่องที่วางบนพื้นไม่นับ เฉพาะของในตัว</summary>
+    int CountItem(string prototypeId);
+
+    /// <summary>[V1.1] สรุปของถือติดตัวทั้งหมด key = prototype id, value = จำนวนชิ้น</summary>
+    IReadOnlyDictionary<string, int> GetInventorySummary();
+
+    /// <summary>[V1.1] เพิ่มของเข้ากระเป๋าเหมือน "เก็บได้เอง" (durability/tag/performance ผ่านข้อมูล
+    /// เกมครบ + sync client ทันที) name/icon โชว์เป็น prototype-id; false ถ้า count &lt;= 0</summary>
+    bool GiveItem(string prototypeId, int count = 1);
 }

@@ -65,7 +65,9 @@
       "plant_collectible",
       "region",
       "building/furniture"
-    ]
+    ],
+    "HideFreeItems": true,
+    "AllowFreeBuild": false
   },
   "Spawn": [
     {
@@ -266,6 +268,18 @@
     "LandPermission": false,
     "PartyAndClan": false,
     "Emotes": false,
+    "Friends": false,
+    "Mail": false,
+    "Wallet": false,
+    "Factions": false,
+    "Missions": false,
+    "Attendance": false,
+    "Cargo": false,
+    "Archipelago": false,
+    "Band": false,
+    "AddOns": false,
+    "DyeAndBleach": false,
+    "PrivateConversation": false,
     "MaxPlayerLevel": 20
   },
   "Survival": {

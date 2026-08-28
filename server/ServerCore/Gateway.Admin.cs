@@ -88,11 +88,34 @@ public partial class Gateway
                         ["version"] = m.Version,
                         ["source_file"] = m.SourceFile,
                         ["loaded"] = m.Loaded,
+                        ["state"] = m.State,
+                        ["has_manifest"] = m.HasManifest,
+                        ["package_directory"] = m.PackageDirectory,
                         ["error"] = m.Error,
                         ["commands"] = commands,
                         ["has_join_hook"] = m.HasPlayerJoinedHook,
                         ["has_leave_hook"] = m.HasPlayerLeftHook,
-                        ["has_tick_hook"] = m.HasTickHook
+                        ["has_died_hook"] = m.HasPlayerDiedHook,
+                        ["has_tick_hook"] = m.HasTickHook,
+                        ["has_event_bus"] = m.HasEventBus,
+                        ["id"] = m.Id,
+                        ["api_version"] = m.ApiVersion,
+                        ["dependencies"] = new JArray(m.Dependencies),
+                        ["events"] = new JArray(m.Events),
+                        ["event_errors"] = m.EventErrors,
+                        ["event_milliseconds"] = m.EventMilliseconds,
+                        ["event_calls"] = m.EventCalls,
+                        ["command_calls"] = m.CommandCalls,
+                        ["command_errors"] = m.CommandErrors,
+                        ["rate_limited_calls"] = m.RateLimitedCalls,
+                        ["assembly_sha256"] = m.AssemblySha256,
+                        ["content_sha256"] = m.ContentSha256,
+                        ["required"] = m.Required,
+                        ["has_method_overrides"] = m.HasMethodOverrides,
+                        ["method_overrides"] = new JArray(m.MethodOverrides),
+                        ["method_override_errors"] = m.MethodOverrideErrors,
+                        ["method_override_calls"] = m.MethodOverrideCalls,
+                        ["method_override_milliseconds"] = m.MethodOverrideMilliseconds
                     });
                 }
             }
@@ -101,6 +124,7 @@ public partial class Gateway
                 ["mods_dir"] = mgr?.ModsDir,
                 ["mods_dir_exists"] = mgr?.ModsDirExists ?? false,
                 ["items"] = arr
+                , ["catalog_hash"] = _gameServer.ModCatalogHash
             };
             return new WebServer.JsonResponse(o.ToString());
         };
@@ -305,18 +329,11 @@ public partial class Gateway
         // ── กัน route ทั้งหมดข้างบนด้วย token (ยกเว้นหน้า HTML เอง) ──────
         // ทำทีเดียวตรงนี้แทนที่จะห่อทุก route ข้างบนทีละอัน — วนดูทุก key ที่ขึ้นต้น "/admin/" ใน
         // GetRoute/PostRoute (ยกเว้น "/admin" กับ "/admin/" ที่เสิร์ฟ HTML เฉย ๆ ไม่มีข้อมูลอ่อนไหว)
-        // ไม่ระบุ --admin-token ตอนเปิดเซิร์ฟ = พฤติกรรมเดิมทุกอย่าง (ไม่ auth)
-        if (!string.IsNullOrEmpty(_adminToken))
-        {
-            GuardAdminRoutes(_webServer.GetRoute);
-            GuardAdminRoutes(_webServer.PostRoute);
-            Console.WriteLine("[admin] เปิด token กัน /admin/* แล้ว (--admin-token) — ต้องมี ?token=... ถึงจะเรียก endpoint ได้");
-        }
-        else
-        {
-            Console.WriteLine("[admin] ⚠️ /admin/* ไม่มี token กันเลย — ใครรู้ที่อยู่เซิร์ฟก็เข้าคุมเซิร์ฟได้ " +
-                "(สั่ง cheat/เตะผู้เล่น/แก้ config) ถ้าเปิดพอร์ตออกอินเทอร์เน็ต ควรรันด้วย --admin-token <รหัสลับ>");
-        }
+        GuardAdminRoutes(_webServer.GetRoute);
+        GuardAdminRoutes(_webServer.PostRoute);
+        Console.WriteLine(string.IsNullOrEmpty(_adminToken)
+            ? "[admin] /admin/* ถูกปิดจนกว่าจะตั้ง --admin-token"
+            : "[admin] เปิด token กัน /admin/* แล้ว (--admin-token)");
     }
 
     private void GuardAdminRoutes(Dictionary<string, WebServer.RouteFunction> routes)
@@ -328,14 +345,22 @@ public partial class Gateway
                 WebServer.RouteFunction inner = routes[key];
                 routes[key] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
                 {
-                    string token = request.QueryString["token"];
+                    string token = request.Headers["Authorization"];
+                    if (token != null && token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                    {
+                        token = token.Substring(7).Trim();
+                    }
+                    if (string.IsNullOrEmpty(token))
+                    {
+                        token = request.QueryString["token"];
+                    }
                     if (string.IsNullOrEmpty(token))
                     {
                         token = Field(postData, "token");
                     }
-                    if (token != _adminToken)
+                    if (string.IsNullOrEmpty(_adminToken) || token != _adminToken)
                     {
-                        return AdminError("unauthorized — ใส่ ?token=<รหัสที่ผู้ดูแลตั้งไว้> ต่อท้าย URL", HttpStatusCode.Unauthorized);
+                        return AdminError("unauthorized — ใช้ Authorization: Bearer <token>", HttpStatusCode.Unauthorized);
                     }
                     return inner(request, postData);
                 };

@@ -8,7 +8,9 @@ using System.Threading;
 using Durango.Network;
 using Durango.Offline;
 using Durango.Utils;
+using DurangoServer.Modding;
 using Messages;
+using DurangoServer.Modding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shared.Item;
@@ -59,6 +61,7 @@ public partial class ServerPlayer
     private const int InteractionAttack = 1;        // "공격!" — ปุ่มโจมตี
     private const int InteractionCollect = 506;
     private const int InteractionRemoveNatural = 10268;
+    private const int InteractionBuildArtifact = 101;
     private const int InteractionWarp = 515;         // "워프" — เปิดแผนที่โหมดวาป (WorldMapGroup.OpenForWarp)
 
     private void HandleTouch(Touch msg, PacketHeader header)
@@ -130,6 +133,14 @@ public partial class ServerPlayer
         else if (RecipeData.BlueprintByType.TryGetValue(msg.EntityType, out string blueprintId))
         {
             var interactions = new List<int> { 103 };
+            // A placed blueprint is still Occupied. Expose BuildArtifact so the
+            // client opens the material ledger only when the player clicks it.
+            if (_world.TryGetArtifact(msg.EntityId, out AppearArtifact touchedArtifact)
+                && touchedArtifact.States.BuildingState == BuildingState.Occupied
+                && IsWithinReach(touchedArtifact.Tile))
+            {
+                interactions.Insert(0, InteractionBuildArtifact);
+            }
             // แปลงผัก — เมนู ปลูก/ใส่ปุ๋ย/รดน้ำ/ถอน มาจาก component "Growable"
             // และถ้าโตแล้วให้เมนู "เก็บ" ชุดเดียวกับของธรรมชาติ (client ไม่มีเมนูเก็บเกี่ยวแยก)
             if (ServerConfig.Current.Features.Farming && ServerWorld.IsFarmBlueprint(blueprintId))
@@ -173,7 +184,18 @@ public partial class ServerPlayer
                             // เมนู "วาป" (Interaction.Warp=515) เลยไม่โผล่ตอนแตะหลุมวาร์ปสักครั้ง — เพิ่มเข้าไป
                             // client กดแล้วจะส่ง IsWarpholeAvailable ตามมา (ดู HandleIsWarpholeAvailable ใน
                             // ServerPlayer.POI.cs) ก่อนเปิดแผนที่โหมดวาปจริง
-                            interactions.Add(InteractionWarp);
+                            // camp_warphole is the only warp implementation enabled
+                            // in this pass. neutral/cargo shares this component but
+                            // must not expose a usable Warp interaction.
+                            if (ServerConfig.Current.Features.IslandTravel
+                                && BlueprintPOIType.TryGetValue(blueprintId, out var warpType)
+                                && warpType == Shared.System.PointOfInterest.Warphole
+                                && _world.TryGetArtifact(msg.EntityId, out AppearArtifact warpArtifact)
+                                && (warpArtifact.States.BuildingState == BuildingState.Built
+                                    || warpArtifact.States.BuildingState == BuildingState.Completed))
+                            {
+                                interactions.Add(InteractionWarp);
+                            }
                             break;
                     }
                 }
@@ -535,6 +557,18 @@ public partial class ServerPlayer
             return;
         }
         // เฟส C: เก็บของกินสตามินา ความล้าสูงยิ่งเปลืองมากขึ้น — หักหลังผ่านเช็คเครื่องมือแล้ว
+        IModEventContext? gatherBefore = PluginManager.Instance?.FireEvent("gather.before", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["entity_id"] = msg.EntityId ?? "",
+                ["generator_id"] = msg.GeneratorId ?? ""
+            });
+        if (gatherBefore != null && gatherBefore.IsCancelled)
+        {
+            Send(new Info { Text = gatherBefore.CancelReason ?? "mod ยกเลิกการเก็บของ" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
         if (!TrySpendStamina(StaminaCostCollect))
         {
             Console.WriteLine("[survival] {0} สตามินาไม่พอสำหรับเก็บของ", Name);
@@ -593,6 +627,14 @@ public partial class ServerPlayer
             }
             MarkDirty();          // GP-07
             SendInventory();
+            PluginManager.Instance?.FireEvent("gather.completed", this, false, true,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["entity_id"] = msg.EntityId ?? "",
+                    ["generator_id"] = msg.GeneratorId ?? "",
+                    ["output_count"] = (bonusItem ? 2 : 1).ToString()
+                });
+            PluginManager.Instance?.FireEvent("inventory.added", this, false, true);
             GainExpForGather();
             NoteGatheredItem(item.Prototype);          // เควสที่เจาะจงของ เช่น "เก็บท่อนซุง 10 อัน"
             if (bonusItem)
@@ -651,6 +693,10 @@ public partial class ServerPlayer
         {
             return;
         }
+        IModEventContext? beforeButchery = PluginManager.Instance?.FireEvent("butchery.before", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["entity_id"] = corpse.EntityId, ["generator_id"] = msg.GeneratorId ?? "", ["tool_item_id"] = msg.ToolItemId ?? "" });
+        if (beforeButchery?.IsCancelled == true)
+        { Send(new Info { Text = beforeButchery.CancelReason ?? "การแล่ถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
         if (!TrySpendStamina(StaminaCostCollect))
         {
             Console.WriteLine("[survival] {0} สตามินาไม่พอสำหรับแล่เนื้อ", Name);
@@ -704,6 +750,8 @@ public partial class ServerPlayer
             }
             MarkDirty();          // GP-07
             SendInventory();
+            PluginManager.Instance?.FireEvent("butchery.completed", this, false, true);
+            PluginManager.Instance?.FireEvent("inventory.added", this, false, true);
             GainExpForButchery();
             WearTool(usedKnife);  // มีดสึกก็ต่อเมื่อแล่ได้ของจริง
             Console.WriteLine("[butchery] {0} ได้ {1} จากซาก {2}", Name, part.Name, corpse.EntityId);

@@ -58,8 +58,10 @@ public static class UiDump
             sb.Append("# หน้าจอ ").Append(Screen.width).Append("x").Append(Screen.height).Append("\n");
             sb.Append("# คอลัมน์: ชื่อ | คลาส | ตำแหน่ง x,y | กว้างxสูง | depth | anchor/pivot | ข้อความ\n\n");
             Walk(root.transform, 0, sb);
-            string path = Path.Combine(Dir, Safe(tag) + ".txt");
+            string fileName = Safe(tag) + ".txt";
+            string path = Path.Combine(Dir, fileName);
             File.WriteAllText(path, sb.ToString(), new UTF8Encoding(true));
+            AppendCaptureManifest(root, tag, fileName);
         }
         catch (Exception e)
         {
@@ -136,6 +138,42 @@ public static class UiDump
     }
 
     private static bool _assetsDone;
+
+    private static void AppendCaptureManifest(GameObject root, string tag, string fileName)
+    {
+        try
+        {
+            string path = Path.Combine(Dir, "_captures.tsv");
+            bool header = !File.Exists(path) || new FileInfo(path).Length == 0;
+            StringBuilder row = new StringBuilder();
+            if (header)
+            {
+                row.Append("schema\tutc\ttag\troot\tfile\tscreen\tunity\tproduct\n");
+            }
+            row.Append("uidump-capture-v1\t")
+               .Append(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
+               .Append('\t').Append(CleanTsv(tag))
+               .Append('\t').Append(CleanTsv(root.name))
+               .Append('\t').Append(CleanTsv(fileName))
+               .Append('\t').Append(Screen.width).Append('x').Append(Screen.height)
+               .Append('\t').Append(CleanTsv(Application.unityVersion))
+               .Append('\t').Append(CleanTsv(Application.productName))
+               .Append('\n');
+            using (StreamWriter writer = new StreamWriter(path, true, new UTF8Encoding(true)))
+            {
+                writer.Write(row.ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("[uidump] manifest: " + e.Message);
+        }
+    }
+
+    private static string CleanTsv(string value)
+    {
+        return string.IsNullOrEmpty(value) ? "" : value.Replace('\t', ' ').Replace('\r', ' ').Replace('\n', ' ');
+    }
 
     private static void Walk(Transform t, int depth, StringBuilder sb)
     {

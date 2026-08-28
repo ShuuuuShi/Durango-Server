@@ -1,98 +1,50 @@
-# สวิตช์เปิด/ปิดระบบ — ขอบเขต beta 1.0.0
+# สวิตช์เปิด/ปิดระบบ — standard beta profile
 
-ขอบเขตอ้างอิงจาก [`1.0.0 beta.txt`](../../1.0.0%20beta.txt) (สรุปรอบ LBT1 ของเกมต้นฉบับ ธ.ค. 2015)
-**อะไรที่ไม่ได้อยู่ในรายการนั้น ปิดไว้หมด** เปิดทีละอย่างตอนที่ระบบพร้อมจริง
+standard launcher (`tools/menu.ps1`) รัน server จาก `server/` ดังนั้น profile ที่ใช้จริงคือ [`../../server/data/config.json`](../../server/data/config.json). `Program.cs` อ่าน `<--data หรือ current working directory>/config.json`; `--island` จะใช้ `data/islands/<id>/config.json` แทน. `FeatureConfig.Defaults()` เป็น fallback/seed profile ไม่ใช่คำประกาศ rollout ของ standard launcher.
 
----
+สถานะ rollout อยู่ใน [`S0-FOUNDATION.md`](S0-FOUNDATION.md) และ [`plantServer.md`](plantServer.md). Flag `true` หมายถึง handler เปิดรับ packet; ไม่ได้แปลว่า Stable หรือเปิดให้ผู้เล่นสาธารณะเสมอไป.
 
-## เปิดอยู่ตอนนี้ (12 ระบบ)
+## เปิดอยู่ใน standard profile (13 ระบบ)
 
 | ระบบ | flag | หมายเหตุ |
 |---|---|---|
 | เก็บของจากธรรมชาติ | `Gathering` | ต้องมีเครื่องมือตามชนิดของ |
-| คราฟต์ | `Crafting` | 720 สูตร ตรวจ tag จริง |
+| คราฟต์ | `Crafting` | ตรวจสูตร/tag/material ฝั่ง server |
 | ต่อสู้ | `Combat` | |
 | แล่ซาก | `Butchery` | |
-| ก่อสร้าง/กล่องเก็บของ | `Building` | |
-| เลเวล + exp | `Progression` | **เพดาน 20** |
-| สกิล | `Skills` | 275 สกิล 12 หมวด |
+| ก่อสร้าง/กล่องเก็บของ | `Building` | material economy ยังไม่ Stable |
+| เลเวล + exp | `Progression` | เพดาน 20 |
+| สกิล | `Skills` | |
 | สวมใส่อุปกรณ์ | `Equipment` | |
 | เลือด/สตามินา/ความล้า | `Survival` | |
 | ความทนทานเครื่องมือ | `ToolDurability` | |
 | แชทช่องรวม | `Chat` | |
-| **ทำอาหาร** | `Cooking` | 152 สูตร · ต้องยืนที่กองไฟ/เตา + ถือเครื่องมือ ดู [Cooking.md](Cooking.md) |
+| ทำอาหาร | `Cooking` | ต้องใช้ workbench/tool ตามสูตร |
+| checklist เควสทีมทดสอบ | `QuestChecklist` | ไม่เปิดสาย quest ทั่วไป |
 
-## ปิดอยู่ (11 ระบบ)
+## ปิดอยู่ใน standard profile (12 ระบบ)
 
 | ระบบ | flag | สภาพ |
 |---|---|---|
-| เดินทางข้ามเกาะ | `IslandTravel` | **โค้ดเขียนแล้ว ยังไม่ได้เทสในเกม** — ใกล้เปิดที่สุด |
-| อาชีพ (Lv.10) | `Jobs` | ยังไม่ได้ทำ |
-| เพาะปลูก/ทำนา | `Farming` | ยังไม่ได้ทำ |
-| ปศุสัตว์ | `Livestock` | ยังไม่ได้ทำ |
-| จับ/ขี่ไดโน | `Taming` | ข้อมูลเกมมีครบ ยังไม่ได้ทำ |
-| ตลาด | `Market` | ยังไม่ได้ทำ |
-| เควส 4 กลุ่ม NPC | `Quests` | ยังไม่ได้ทำ |
-| PK เกาะ 20+ | `Pvp` | ยังไม่ได้ทำ |
-| สิทธิ์ที่ดิน | `LandPermission` | ยังไม่ได้ทำ |
-| ปาร์ตี้/แคลน | `PartyAndClan` | ยังไม่ได้ทำ |
-| อีโมติคอนผู้เล่น | `Emotes` | **ไม่ได้อยู่ในรายการ LBT1** จึงปิด (ระบบทำงานได้อยู่) |
+| เดินทางข้ามเกาะ | `IslandTravel` | Implemented แต่ต้องคงปิดจนผ่าน S2 handoff/reconnect/rollback + real-client evidence |
+| อาชีพ | `Jobs` | ไม่มี authoritative subsystem |
+| เพาะปลูก/ทำนา | `Farming` | Internal test; เปิดเฉพาะ profile test เมื่อมี acceptance evidence |
+| ปศุสัตว์ | `Livestock` | ไม่มี authoritative subsystem |
+| จับ/ขี่ไดโน | `Taming` | ไม่มี authoritative subsystem |
+| ตลาด | `Market` | ไม่มี ledger/service state |
+| Warp Accelerator | `WarpAccelerator` | Internal test; reward/abort/persistence acceptance ยังไม่ครบ |
+| เควส 4 กลุ่ม NPC | `Quests` | Internal test; project-authored reward/objective evidence ยังไม่ครบ |
+| PK เกาะ 20+ | `Pvp` | policy/anti-grief suite ยังไม่ครบ |
+| สิทธิ์ที่ดิน | `LandPermission` | permission model ยังไม่ครบ |
+| ปาร์ตี้/แคลน | `PartyAndClan` | ไม่มี authoritative subsystem |
+| อีโมติคอนผู้เล่น | `Emotes` | ปิดใน profile นี้ |
 
----
+## กฎการเปลี่ยน flag
 
-## เปิดระบบเพิ่ม 1 อย่างต้องทำ 2 ที่
+ห้ามเปิด `IslandTravel` ใน standard profile จนกว่า S2 ตาม `plantServer.md` จะผ่าน. สำหรับ feature อื่น ต้องมี server packet gate, UI decision, persistence/anti-abuse coverage และ rollout evidence ก่อนเปลี่ยน profile. การแก้ `server/data/config.json` hot-reload ได้ภายในประมาณ 5 วินาที แต่การเปิด flag ไม่แทน acceptance.
 
-ซ่อนเมนูอย่างเดียวไม่พอ (ยิง packet ตรงได้) · ปฏิเสธที่ server อย่างเดียวก็ไม่พอ
-(ผู้เล่นเห็นปุ่มที่กดแล้วไม่เกิดอะไร) — **ต้องแก้ให้ตรงกันทั้งคู่**
-
-**1. ฝั่ง server** — `data/config.json` หัวข้อ `Features`
-
-```json
-"Features": {
-  "IslandTravel": true,
-  "MaxPlayerLevel": 20
-}
-```
-
-เซฟไฟล์แล้วรอ 5 วินาที เซิร์ฟโหลดเอง **ไม่ต้อง build ไม่ต้องปิดเซิร์ฟ**
-
-**2. ฝั่ง client** — `client/MenuSystem.cs` → `NotImplementedYet`
-
-ลบชื่อเมนูของระบบนั้นออกจากรายการ แล้ว `powershell -File tools\build-client.ps1`
-
-| flag | เมนูที่ต้องเอาออก |
-|---|---|
-| `IslandTravel` | `MenuType.WarpShop` |
-| `Quests` | `MenuType.Quest`, `MenuType.CategoryToDo` |
-| `Taming` | `MenuType.Pet` |
-| `Market` | `MenuType.Market` |
-| `PartyAndClan` | `MenuType.Party`, `MenuType.Clan`, `MenuType.CategorySocial` |
-| `LandPermission` | `MenuType.Estate` |
-| `Pvp` | `MenuType.PvpIsland` |
-
----
-
-## เช็คว่าตั้งถูกไหม
-
-เปิดเซิร์ฟจะพิมพ์ตารางให้ทุกครั้ง:
-
-```
-[feature] เปิด (12): Gathering · Crafting · Combat · Butchery · Building · ... · Cooking
-          ปิด (11): IslandTravel · Jobs · Farming · Livestock · ...
-          เพดานเลเวล: 20
-```
-
-ในเกมเช็คได้จากบอท: `cheat travel isle02` → ต้องตอบ *"การเดินทางข้ามเกาะยังปิดอยู่ในรอบนี้"*
-
-ระบบทำอาหารมีตัวตรวจของตัวเอง — `dotnet run -- --recipe-check` (ตรวจข้อมูล)
-กับ `dotnet run -- --cook-check` ฝั่ง test-client (เทสกับเซิร์ฟจริง 11 ข้อ)
-
----
+เปิด server แล้วจะพิมพ์ inventory ของ effective config ผ่าน `[feature]` log; ใช้ log นั้นยืนยัน profile ที่ process ใช้จริงเสมอ.
 
 ## เพดานเลเวล
 
-`Features.MaxPlayerLevel` — beta 1.0.0 ตั้งไว้ **20** ตาม LBT1 (*"ปล่อยคอนเทนต์แค่ Lv.1–20"*)
-
-- ถึงเพดานแล้ว exp หยุดสะสม (ไม่เก็บไว้ให้ล้นตอนปลดเพดาน — ตั้งใจ เพื่อให้ทุกคนเริ่มแพทช์ถัดไปเท่ากัน)
-- ตารางเลเวลจริงมีถึง 81 · `LevelData.MaxLevel` (60) เป็นเพดานที่โค้ดรองรับ ห้ามเกิน
-- `0` = ไม่จำกัด
+`Features.MaxPlayerLevel` ตั้งไว้ `20` ใน standard profile. `0` คือไม่จำกัดภายในเพดานที่ code/data รองรับ.

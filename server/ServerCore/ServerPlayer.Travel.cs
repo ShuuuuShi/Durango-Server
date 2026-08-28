@@ -93,6 +93,120 @@ public partial class ServerPlayer
         return $"ส่ง {Name} ไป {dest.Name} ({dest.Address}) แล้ว";
     }
 
+    /// <summary>ตรวจว่าคำขอเดินทางมาจาก dock ที่มีอยู่จริงและผู้เล่นยืนอยู่ใกล้ dock</summary>
+    private bool IsAtPort(string entityId, Point2 tile)
+    {
+        if (!string.IsNullOrWhiteSpace(entityId))
+        {
+            if (!_world.TryGetArtifact(entityId, out AppearArtifact port)
+                || port.Tile != tile
+                || !_world.TryGetArtifactBlueprint(entityId, out string blueprintId)
+                || !BlueprintPOIType.TryGetValue(blueprintId ?? string.Empty, out var poiType)
+                || poiType != Shared.System.PointOfInterest.Port)
+            {
+                return false;
+            }
+            return IsWithinReach(port.Tile);
+        }
+
+        // WarpToPort does not expose the chosen dock entity id to the client.
+        // When the request carries no id, accept it only if the authoritative
+        // server position is actually next to one of this island's docks.
+        foreach (var poi in AllPOIs())
+        {
+            if (poi.Type == Shared.System.PointOfInterest.Port && IsWithinReach(poi.Tile))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void HandleGetIslandTravelOptions(GetIslandTravelOptions msg, PacketHeader header)
+    {
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "GetIslandTravelOptions", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
+        if (!IsAtPort(msg.EntityId, msg.Tile))
+        {
+            Console.WriteLine("[island] ปฏิเสธรายการเกาะของ {0}: ไม่ได้อยู่ที่ท่าเรือจริง", Name);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+
+        var ids = new List<string>();
+        var names = new List<string>();
+        var levels = new List<int>();
+        List<IslandInfo> reachable = IslandRegistry.ReachableFor(Level);
+        for (int i = 0; i < reachable.Count; i++)
+        {
+            IslandInfo island = reachable[i];
+            if (IslandRegistry.Current != null
+                && string.Equals(island.Id, IslandRegistry.Current.Id, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+            ids.Add(island.Id ?? string.Empty);
+            names.Add(island.Name ?? island.Id ?? string.Empty);
+            levels.Add(island.RequiredLevel);
+        }
+        Send(new IslandTravelOptions
+        {
+            Ids = ids.ToArray(),
+            Names = names.ToArray(),
+            RequiredLevels = levels.ToArray()
+        }, header.Seq);
+        Console.WriteLine("[island] {0} ขอรายการเกาะจากท่าเรือ — ตอบ {1} ปลายทาง", Name, ids.Count);
+    }
+
+    /// <summary>คำสั่งจากเมนูท่าเรือปกติ — ใช้ handoff เดียวกับคำสั่งเดินทางของ server</summary>
+    private void HandleTravelByRegion(TravelByRegion msg, PacketHeader header)
+    {
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "TravelByRegion", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
+        if (!IsAtPort(msg.EntityId, msg.Tile))
+        {
+            Send(new Info { Text = "ต้องอยู่ที่ท่าเรือก่อนจึงจะย้ายเกาะได้" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        IslandInfo destination = IslandRegistry.Find(msg.RegionId);
+        if (destination == null)
+        {
+            Send(new Info { Text = "ไม่พบเกาะปลายทาง" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        if (IslandRegistry.Current != null
+            && string.Equals(destination.Id, IslandRegistry.Current.Id, StringComparison.OrdinalIgnoreCase))
+        {
+            Send(new Info { Text = "คุณอยู่เกาะนี้อยู่แล้ว" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        if (Dead)
+        {
+            Send(new Info { Text = "ต้องฟื้นก่อนจึงจะเดินทางได้" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+        if (Level < destination.RequiredLevel)
+        {
+            Send(new Info { Text = $"เกาะนี้ต้องเลเวล {destination.RequiredLevel} ขึ้นไป" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
+
+        Send(default(OK), header.Seq);
+        Console.WriteLine("[island] {0} เดินทางจากท่าเรือไป {1}", Name, destination.Id);
+        TravelTo(destination.Id);
+    }
+
     // ───────────────────────── โหมดสอน → เกาะจริง ─────────────────────────
     //
     // ปัญหา: server เดิมไม่มี handler รับ DepartTutorial เลย — ถ้าผู้เล่นต่อแพ tutorial_boat
@@ -117,6 +231,11 @@ public partial class ServerPlayer
     /// </summary>
     private void HandleDepartTutorial(DepartTutorial msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "DepartTutorial", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
         Console.WriteLine("[tutorial] {0} สั่งออกเรือ (entity {1})", Name, msg.EntityId);
         Send(new DepartTutorialReady
         {
@@ -134,6 +253,11 @@ public partial class ServerPlayer
     /// </summary>
     private void HandleDepartTutorialFor(DepartTutorialFor msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.IslandTravel)
+        {
+            RejectFeatureDisabled("IslandTravel", "DepartTutorialFor", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
+            return;
+        }
         Console.WriteLine("[tutorial] {0} ออกเรือไป {1} — ส่ง Emigrated ให้กลับหน้า title", Name, msg.TargetRegionId);
         Save();
         Send(new Info { Text = "ออกเรือสำเร็จ — กลับหน้า title เพื่อเข้าเกาะจริง" }, header.Seq);

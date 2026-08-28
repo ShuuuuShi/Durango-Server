@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Durango OpenCode — Ranch Mockup 3 แบบ</title>
+<style>
+  :root{
+    --wood:#5a4632; --wood-dk:#3a2c1e; --wood-lt:#6f573c;
+    --stone:#8a8f7a; --parch:#e8dcc0; --parch-dim:#c9bda0;
+    --amber:#d9a441; --green:#7fae4e; --green-dk:#4c6b2f;
+    --red:#c05b48; --blue:#5f9ea8; --purple:#9a6fb8;
+    --ink:#241a10;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:"Segoe UI","Leelawadee UI",Tahoma,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #2e4030 0%, transparent 60%),
+      linear-gradient(180deg,#1c2419 0%,#141a12 100%);
+    color:var(--parch); min-height:100vh; padding-bottom:60px;
+  }
+  .banner{
+    text-align:center; padding:28px 16px 10px;
+  }
+  .banner h1{
+    font-size:26px; letter-spacing:1px; color:var(--amber);
+    text-shadow:0 2px 0 #00000088;
+  }
+  .banner p{color:var(--parch-dim); margin-top:6px; font-size:14px;}
+
+  /* ---------- Tabs ---------- */
+  .tabs{
+    display:flex; justify-content:center; gap:10px; margin:18px 0 8px; flex-wrap:wrap;
+  }
+  .tab{
+    padding:10px 22px; cursor:pointer; border-radius:6px 6px 0 0;
+    background:linear-gradient(180deg,var(--wood-lt),var(--wood));
+    border:2px solid var(--wood-dk); border-bottom:none;
+    color:var(--parch-dim); font-weight:600; font-size:15px;
+    transition:.15s;
+  }
+  .tab:hover{filter:brightness(1.12);}
+  .tab.active{
+    background:linear-gradient(180deg,#7d6547,#5f4a33);
+    color:var(--amber); box-shadow:inset 0 2px 0 var(--amber);
+  }
+  .panel{display:none;}
+  .panel.active{display:block; animation:fadein .25s;}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px);}to{opacity:1;}}
+
+  /* ---------- Shared window frame ---------- */
+  .win{
+    max-width:980px; margin:0 auto 14px;
+    background:linear-gradient(180deg,#63503a 0%,#52402d 100%);
+    border:3px solid var(--wood-dk); border-radius:10px;
+    box-shadow:0 10px 30px #000000aa, inset 0 1px 0 #ffffff22;
+  }
+  .win-head{
+    display:flex; align-items:center; gap:10px;
+    padding:12px 18px; border-bottom:2px solid var(--wood-dk);
+    background:linear-gradient(180deg,#6d5840,#59462f);
+    border-radius:8px 8px 0 0;
+  }
+  .win-head .icon{font-size:24px;}
+  .win-head h2{font-size:18px; color:var(--amber); flex:1;}
+  .win-head .close{
+    width:28px;height:28px;border-radius:5px; display:flex;align-items:center;justify-content:center;
+    background:var(--red); color:#fff; font-weight:bold; cursor:pointer; border:2px solid #7e3527;
+  }
+  .win-body{padding:18px;}
+
+  .concept{
+    max-width:980px; margin:20px auto 0; padding:12px 16px;
+    background:#00000033; border-left:4px solid var(--amber); border-radius:0 6px 6px 0;
+    font-size:14px; line-height:1.7; color:var(--parch-dim);
+  }
+  .concept b{color:var(--parch);}
+  .hooks{
+    max-width:980px; margin:10px auto 34px; padding:10px 16px;
+    background:#14231a55; border:1px dashed var(--green-dk); border-radius:6px;
+    font-size:13px; line-height:1.7; color:#a9c49a;
+  }
+  .hooks b{color:var(--green);}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 16px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:600;
+    background:linear-gradient(180deg,#7d6547,#5f4a33);
+    border:2px solid var(--wood-dk); color:var(--parch);
+    transition:.12s;
+  }
+  .btn:hover{filter:brightness(1.15);}
+  .btn.primary{background:linear-gradient(180deg,#8fae4e,#5c7a34); border-color:#3c521f;}
+  .btn.warn{background:linear-gradient(180deg,#c0765b,#96492f); border-color:#6b2f1c;}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+
+  .meter{height:10px; background:#00000055; border-radius:99px; overflow:hidden; border:1px solid #00000066;}
+  .meter i{display:block; height:100%; border-radius:99px;}
+
+  .tag{
+    display:inline-block; padding:2px 9px; border-radius:99px; font-size:11px; font-weight:700;
+    border:1px solid;
+  }
+  .t-common{color:#b9b3a4; border-color:#8a8577; background:#8a85771f;}
+  .t-rare{color:#7fd4de; border-color:#3f8894; background:#3f88941f;}
+  .t-epic{color:#cf9ff0; border-color:#7a4fa0; background:#7a4fa01f;}
+  .t-hungry{color:#f0b08f; border-color:#a05f38; background:#a05f381f;}
+  .t-ok{color:#b5dd8f; border-color:#5c7a34; background:#5c7a341f;}
+
+  /* ================= MOCKUP A : คอกปศุสัตว์ ================= */
+  .a-layout{display:grid; grid-template-columns:190px 1fr; gap:16px;}
+  .a-cages{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; align-content:start;}
+  .cage-slot{
+    aspect-ratio:1; border-radius:8px; border:2px solid var(--wood-dk);
+    background:#00000030; display:flex; align-items:center; justify-content:center;
+    font-size:30px; cursor:pointer; position:relative; opacity:.55;
+  }
+  .cage-slot.sel{opacity:1; border-color:var(--amber); box-shadow:0 0 0 2px #d9a44155;}
+  .cage-slot .lv{
+    position:absolute; bottom:2px; right:4px; font-size:10px; color:var(--amber); font-weight:700;
+    text-shadow:0 1px 2px #000;
+  }
+  .pen{
+    background:
+      radial-gradient(300px 120px at 70% 90%, #4c6b2f55 0%, transparent 70%),
+      linear-gradient(180deg,#87a86b33,#00000042);
+    border:2px solid var(--wood-dk); border-radius:8px; padding:14px; min-height:250px;
+    position:relative;
+  }
+  .pen-top{display:flex; justify-content:space-between; align-items:flex-start;}
+  .pen-name{font-size:17px; font-weight:700; color:var(--parch);}
+  .pen-sub{font-size:12px; color:var(--parch-dim); margin-top:2px;}
+  .animal-sprite{
+    font-size:74px; text-align:center; margin:8px 0 2px;
+    filter:drop-shadow(0 6px 8px #00000088);
+  }
+  .meters{max-width:420px; margin:0 auto;}
+  .m-row{display:grid; grid-template-columns:78px 1fr 44px; gap:8px; align-items:center; margin-top:8px; font-size:12px;}
+  .tray{
+    margin-top:14px; padding:10px 12px; border-radius:8px;
+    background:#00000038; border:1px solid var(--wood-dk);
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .tray .slot{
+    width:52px;height:52px; border-radius:8px; background:#3a2c1e88;
+    border:2px solid var(--wood-dk); display:flex;align-items:center;justify-content:center;
+    font-size:24px; position:relative;
+  }
+  .tray .slot .n{position:absolute;bottom:1px;right:4px;font-size:11px;color:#fff;font-weight:700;text-shadow:0 1px 2px#000;}
+  .actions{margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;}
+
+  /* ================= MOCKUP B : ศูนย์จัดการฝูง ================= */
+  .b-tabs{display:flex; gap:4px; margin-bottom:14px; flex-wrap:wrap;}
+  .b-tabs .bt{
+    padding:7px 18px; font-size:13px; border-radius:6px 6px 0 0; cursor:pointer;
+    background:#00000030; border:1px solid var(--wood-dk); border-bottom:2px solid var(--amber);
+    color:var(--parch-dim);
+  }
+  .b-tabs .bt.on{background:#00000055; color:var(--amber); font-weight:700;}
+  .b-summary{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px;}
+  .stat-card{
+    background:#00000033; border:1px solid var(--wood-dk); border-radius:8px;
+    padding:10px 12px; text-align:center;
+  }
+  .stat-card .v{font-size:22px; font-weight:800; color:var(--amber);}
+  .stat-card .l{font-size:11px; color:var(--parch-dim); margin-top:2px;}
+  table.herd{width:100%; border-collapse:collapse; font-size:13px;}
+  table.herd th{
+    text-align:left; padding:8px 10px; color:var(--amber); font-size:12px;
+    border-bottom:2px solid var(--wood-dk); white-space:nowrap;
+  }
+  table.herd td{padding:9px 10px; border-bottom:1px solid #ffffff10; vertical-align:middle;}
+  table.herd tr:hover td{background:#ffffff08;}
+  .herd-name{display:flex; align-items:center; gap:8px; font-weight:600;}
+  .herd-name em{font-style:normal; font-size:11px; color:var(--parch-dim); display:block; font-weight:400;}
+  .prod-chip{
+    display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:99px;
+    background:#00000038; border:1px solid var(--wood-dk); font-size:12px;
+  }
+  .timer{font-variant-numeric:tabular-nums; color:var(--blue);}
+
+  /* ================= MOCKUP C : บ่อผสมพันธุ์ ================= */
+  .c-breed{display:grid; grid-template-columns:1fr 90px 1fr; gap:12px; align-items:start;}
+  .parent{
+    background:#00000033; border:2px solid var(--wood-dk); border-radius:10px; padding:14px; text-align:center;
+  }
+  .parent.female{border-color:#a05f78;}
+  .parent .sprite{font-size:56px; filter:drop-shadow(0 5px 6px #00000088);}
+  .parent h3{font-size:15px; margin:6px 0 2px;}
+  .parent .sub{font-size:11px; color:var(--parch-dim);}
+  .genes{margin-top:10px; display:flex; flex-direction:column; gap:5px; text-align:left;}
+  .gene{display:flex; justify-content:space-between; font-size:11px; background:#00000030; border-radius:5px; padding:4px 8px;}
+  .heart{
+    text-align:center; font-size:34px; padding-top:34px;
+    animation:pulse 1.2s infinite;
+  }
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
+  .predict{
+    margin-top:14px; padding:12px 14px; border-radius:8px;
+    background:#1c153055; border:1px solid #7a4fa066;
+  }
+  .predict h4{font-size:13px; color:var(--purple); margin-bottom:8px;}
+  .pred-tags{display:flex; gap:6px; flex-wrap:wrap;}
+  .incub{
+    margin-top:14px; display:flex; align-items:center; gap:14px;
+    background:#00000033; border:1px solid var(--wood-dk); border-radius:8px; padding:10px 14px;
+  }
+
+  footer.note{
+    max-width:980px; margin:0 auto; text-align:center; color:#7d8a72; font-size:12px; line-height:1.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>🦕 ระบบรันเชอ (RANCH) — Mockup 3 แบบ</h1>
+  <p>Durango OpenCode · อ้างอิงสไตล์ GS / Ragnarok / เกมออนไลน์ทั่วไป แต่งให้เข้าธีมยุคหินของเรา</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="show(0,this)">🅰️ แบบ A — คอกปศุสัตว์</div>
+  <div class="tab" onclick="show(1,this)">🅱️ แบบ B — ศูนย์จัดการฝูง</div>
+  <div class="tab" onclick="show(2,this)">🅲 แบบ C — บ่อผสมพันธุ์</div>
+</div>
+
+<!-- ============ MOCKUP A ============ -->
+<section class="panel active">
+  <div class="concept">
+    <b>แนวคิด:</b> อิงสไตล์ <b>คอกสัตว์ (Domestic Cage)</b> ของ Durango ต้นฉบับ + Ragnarok pet —
+    ผู้เล่นวาง "คอก" เป็น artifact ลงบนพื้นฐานของตัวเอง จับสัตว์แทมได้ใส่คอก (1 คอก = 1 ตัว)
+    แล้วดูแลรายตัว: ให้อาหาร รีดนม เก็บไข่ เห็นสถานะหิว/อารมณ์/การเติบโตแบบเห็นภาพสัตว์ตรงหน้า
+    <br><b>เหมาะกับ:</b> ผู้เล่นเลี้ยงน้อยตัว (2–6 คอก) เน้น immersion ใกล้เคียงเกมจริงที่สุด
+  </div>
+
+  <div class="win">
+    <div class="win-head">
+      <span class="icon">🏕️</span><h2>คอกปศุสัตว์ — แรปเตอร์ไร้เขา</h2>
+      <div class="close">✕</div>
+    </div>
+    <div class="win-body">
+      <div class="a-layout">
+        <div class="a-cages">
+          <div class="cage-slot sel">🦖<span class="lv">Lv.12</span></div>
+          <div class="cage-slot">🦕<span class="lv">Lv.8</span></div>
+          <div class="cage-slot">🦣<span class="lv">Lv.20</span></div>
+          <div class="cage-slot">＋</div>
+          <div class="cage-slot">＋</div>
+          <div class="cage-slot">＋</div>
+        </div>
+        <div>
+          <div class="pen">
+            <div class="pen-top">
+              <div>
+                <div class="pen-name">🦖 แรปเตอร์ไร้เขา <span class="tag t-rare">หายาก</span></div>
+                <div class="pen-sub">Lv.12 · กินเนื้อ · อยู่คอกมา 2 วัน 4 ชม.</div>
+              </div>
+              <div class="tag t-ok">อารมณ์ดี 😊</div>
+            </div>
+            <div class="animal-sprite">🦖</div>
+            <div class="meters">
+              <div class="m-row"><span>🍖 ความหิว</span><div class="meter"><i style="width:68%;background:linear-gradient(90deg,#c98a3d,#e0a84f)"></i></div><span>68%</span></div>
+              <div class="m-row"><span>💚 อารมณ์</span><div class="meter"><i style="width:82%;background:linear-gradient(90deg,#5c8a34,#7fae4e)"></i></div><span>82%</span></div>
+              <div class="m-row"><span>📈 ความคุ้นมือ</span><div class="meter"><i style="width:45%;background:linear-gradient(90deg,#3f8894,#7fd4de)"></i></div><span>45%</span></div>
+            </div>
+          </div>
+
+          <div class="tray">
+            <b style="font-size:12px;">ผลผลิตรอเก็บ:</b>
+            <div class="slot">🥚<span class="n">×3</span></div>
+            <div class="slot">🥛<span class="n">×2</span></div>
+            <button class="btn primary" style="margin-left:auto;">📦 เก็บผลผลิตทั้งหมด</button>
+          </div>
+
+          <div class="actions">
+            <button class="btn">🍖 ให้อาหาร <small>(feed_carni_02 ×1)</small></button>
+            <button class="btn">🖐️ เลี้ยงใกล้ชิด (+อารมณ์)</button>
+            <button class="btn">📋 ดูข้อมูลสายพันธุ์</button>
+            <button class="btn warn">🕊️ ปล่อยคืนธรรมชาติ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hooks">
+    <b>ใช้ของที่มีในเกมแล้ว:</b> โครงสร้างคอกตรงกับ <code>DomesticCageGroup.cs</code>/<code>GrowCageGroup.cs</code> ฝั่ง client (มีอยู่จริง รอ packet) ·
+    อาหารใช้สูตร <code>feed_herb_01..03 / feed_carni_01..03</code> · ผลผลิต 🥛นม ปลดล็อกสูตร <code>cheese_01 / butter / cream</code> ที่ตอนนี้ยังตายอยู่ ·
+    สถานะหิว–อารมณ์ วางแบบเดียวกับระบบ Farming (รดน้ำ/เก็บเกี่ยว) ที่ทำเสร็จแล้ว
+  </div>
+</section>
+
+<!-- ============ MOCKUP B ============ -->
+<section class="panel">
+  <div class="concept">
+    <b>แนวคิด:</b> อิงสไตล์ <b>รายการ/ตารางจัดการ</b> แบบ GS / stable ของเกม MMO ทั่วไป —
+    เปิดจากเมนูหลัก (MenuType.Pet ที่ซ่อนอยู่) เห็นสัตว์ทั้งหมดเป็นตาราง พร้อมสรุปภาพรวม
+    เรียงตามความหิว/ผลผลิต กด "เก็บทั้งหมด" รวดเดียว เหมาะกับคอเล็กชันนิสต์ที่เลี้ยงเยอะ
+    <br><b>เหมาะกับ:</b> ผู้เล่นที่เลี้ยงหลายตัว (10+) จัดการไว เน้นประสิทธิภาพ คล้ายหน้า Quest/Recipe ของเรา
+  </div>
+
+  <div class="win">
+    <div class="win-head">
+      <span class="icon">📖</span><h2>ศูนย์จัดการฝูง — ของฉัน (7/12 ตัว)</h2>
+      <div class="close">✕</div>
+    </div>
+    <div class="win-body">
+      <div class="b-tabs">
+        <div class="bt on">🐾 สัตว์ของฉัน</div>
+        <div class="bt">🧺 ผลผลิต &amp; คลัง</div>
+        <div class="bt">📜 สมุดสายพันธุ์</div>
+        <div class="bt">⚙️ ตั้งค่าฝูง</div>
+      </div>
+
+      <div class="b-summary">
+        <div class="stat-card"><div class="v">7</div><div class="l">สัตว์ที่เลี้ยงอยู่</div></div>
+        <div class="stat-card"><div class="v" style="color:var(--red)">2</div><div class="l">กำลังหิว ⚠️</div></div>
+        <div class="stat-card"><div class="v">23</div><div class="l">ผลผลิตรอเก็บ</div></div>
+        <div class="stat-card"><div class="v">4h 12m</div><div class="l">ผลผลิตรอบถัดไป</div></div>
+      </div>
+
+      <table class="herd">
+        <thead><tr>
+          <th>สัตว์</th><th>สายพันธุ์</th><th>Lv</th><th>สถานะ</th><th>ผลผลิต</th><th>พร้อมใน</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="herd-name">🦖 นายแซ็ค<em>ตั้งชื่อโดยฉัน</em></div></td>
+            <td>แรปเตอร์ไร้เขา</td><td>12</td>
+            <td><span class="tag t-hungry">หิว ⚠️</span></td>
+            <td><span class="prod-chip">🥚 ×3</span></td>
+            <td class="timer">00:42:17</td>
+            <td><button class="btn">🍖 ให้อาหาร</button></td>
+          </tr>
+          <tr>
+            <td><div class="herd-name">🦕 ทับทิม<em>ตั้งชื่อโดยฉัน</em></div></td>
+            <td>ไทรเซอราทอปส์</td><td>8</td>
+            <td><span class="tag t-ok">ปกติ</span></td>
+            <td><span class="prod-chip">🥛 ×4</span> <span class="prod-chip">🥚 ×1</span></td>
+            <td class="timer">✅ พร้อมเก็บ!</td>
+            <td><button class="btn primary">📦 เก็บ</button></td>
+          </tr>
+          <tr>
+            <td><div class="herd-name">🦣 ภูเขาไฟ</div></td>
+            <td>แมมมอธ</td><td>20</td>
+            <td><span class="tag t-ok">ปกติ</span></td>
+            <td><span class="prod-chip">🦴 ×2</span></td>
+            <td class="timer">03:10:00</td>
+            <td><button class="btn">📋 ข้อมูล</button></td>
+          </tr>
+          <tr>
+            <td><div class="herd-name">🐈‍⬛ มืดมน</div></td>
+            <td>สไมโลดอน</td><td>15</td>
+            <td><span class="tag t-hungry">หิว ⚠️</span></td>
+            <td><span class="prod-chip">—</span></td>
+            <td class="timer">หยุดผลิต (หิว)</td>
+            <td><button class="btn warn">🍖 ให้อาหาร</button></td>
+          </tr>
+          <tr>
+            <td><div class="herd-name">🐦 โดโด้จอมกลัว</div></td>
+            <td>โดโด</td><td>3</td>
+            <td><span class="tag t-ok">ปกติ</span></td>
+            <td><span class="prod-chip">🥚 ×2</span></td>
+            <td class="timer">✅ พร้อมเก็บ!</td>
+            <td><button class="btn primary">📦 เก็บ</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:14px; display:flex; gap:8px;">
+        <button class="btn primary">📦 เก็บผลผลิตทั้งหมด (23)</button>
+        <button class="btn">🍖 ให้อาหารสัตว์ที่หิวทั้งหมด (2)</button>
+        <button class="btn" style="margin-left:auto;">🗺️ ไปที่คอก</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hooks">
+    <b>ใช้ของที่มีในเกมแล้ว:</b> หน้าต่างนี้ผูกกับ <code>PetGroup.cs / PetListWidget.cs</code> ที่ client มีอยู่แล้ว (เมนู <code>MenuType.Pet</code> ซ่อนอยู่หลัง flag <code>Taming=false</code>) ·
+    สไตล์ตาราง+แท็บ ตรงตาม convention <code>XxxGroup/XxxWidget/XxxNodeWidget</code> และ KInfiniteScrollView ของหน้า Quest/Recipe ·
+    ปุ่ม "ไปที่คอก" ใช้ waypoint เดียวกับระบบ warp ที่มีอยู่
+  </div>
+</section>
+
+<!-- ============ MOCKUP C ============ -->
+<section class="panel">
+  <div class="concept">
+    <b>แนวคิด:</b> อิงสไตล์ <b>ระบบผสมพันธุ์/ฮอมูนคูลัส</b> แบบ Ragnarok + gacha อันดับ —
+    เลือกพ่อ+แม่ 1 คู่ ระบบทำนายลักษณะลูก (ขนาด/สี/ความแข็งแรง) จากยีนของพ่อแม่
+    จากนั้นรอฟักไข่ สุ่มอันดับลูก (Common→Rare→Epic) แบบ PetMilestone ของเกมต้นฉบับ
+    ลูกที่ได้คุณภาพดีกว่าให้ผลผลิตมากกว่า/โตเร็วกว่า
+    <br><b>เหมาะกับ:</b> end-game content ให้ผู้เล่นไล่เพาะพันธุ์สาย elite · ใช้ UI ทำนายยีน (<code>PetTagsPredictWidget</code>) ที่มีอยู่จริง
+  </div>
+
+  <div class="win">
+    <div class="win-head">
+      <span class="icon">🪺</span><h2>บ่อผสมพันธุ์ — เพาะพันธุ์สายพันธุ์ใหม่</h2>
+      <div class="close">✕</div>
+    </div>
+    <div class="win-body">
+      <div class="c-breed">
+        <div class="parent">
+          <div class="sprite">🦖</div>
+          <h3>นายแซ็ค ♂</h3>
+          <div class="sub">แรปเตอร์ไร้เขา · Lv.12 · Rare</div>
+          <div class="genes">
+            <div class="gene"><span>ขนาดตัว</span><b>ใหญ่ ◆◆◇</b></div>
+            <div class="gene"><span>ความแข็งแรง</span><b>สูง ◆◆◆</b></div>
+            <div class="gene"><span>อัตราผลิตไข่</span><b>ปกติ ◆◇◇</b></div>
+          </div>
+        </div>
+        <div class="heart">❤️‍🔥</div>
+        <div class="parent female">
+          <div class="sprite">🦕</div>
+          <h3>ทับทิม ♀</h3>
+          <div class="sub">ไทรเซอราทอปส์ · Lv.8 · Common</div>
+          <div class="genes">
+            <div class="gene"><span>ขนาดตัว</span><b>ใหญ่ ◆◆◆</b></div>
+            <div class="gene"><span>ความแข็งแรง</span><b>ปกติ ◆◆◇</b></div>
+            <div class="gene"><span>อัตราผลิตไข่</span><b>ดี ◆◆◇</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="predict">
+        <h4>🔮 คาดการณ์ลักษณะลูก (PetTagsPredict)</h4>
+        <div class="pred-tags">
+          <span class="tag t-common">ขนาด: ใหญ่ (80%)</span>
+          <span class="tag t-rare">แข็งแรง: สูง (55%)</span>
+          <span class="tag t-common">ผลิตไข่: ดี (60%)</span>
+          <span class="tag t-epic">⭐ โอกาสได้อันดับ Epic: 12%</span>
+        </div>
+      </div>
+
+      <div class="incub">
+        <span style="font-size:30px;">🥚</span>
+        <div style="flex:1;">
+          <b style="font-size:14px;">ไข่ฟังอยู่ — เหลือเวลา <span class="timer" style="color:var(--amber)">01:23:45</span></b>
+          <div class="meter" style="margin-top:6px;"><i style="width:62%;background:linear-gradient(90deg,#7a4fa0,#cf9ff0)"></i></div>
+        </div>
+        <button class="btn">🔥 เติมฟืน (เร่งเวลา −30 นาที) <small>(ไม้ ×10)</small></button>
+      </div>
+
+      <div style="margin-top:14px; display:flex; gap:8px; align-items:center;">
+        <span style="font-size:12px; color:var(--parch-dim);">ค่าผสมพันธุ์:</span>
+        <span class="prod-chip">🌿 feed_herb_02 ×5</span>
+        <span class="prod-chip">🧬 เมล็ดพันธุ์โบราณ ×1</span>
+        <button class="btn primary" style="margin-left:auto;">💞 เริ่มผสมพันธุ์</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hooks">
+    <b>ใช้ของที่มีในเกมแล้ว:</b> ระบบอันดับ <code>PetRank</code> + กาชา <code>PetMilestone*</code> + หน้าทำนาย <code>PetTagsPredictWidget</code> / popup <code>SelectPetPopup</code> มีใน client ครบ ·
+    ยีนสัตว์ผูกกับ <code>SizeLevel/Difficulty</code> ใน <code>AnimalData.cs</code> (213 สายพันธุ์) ที่ extract มาแล้ว ·
+    "เมล็ดพันธุ์โบราณ" เป็นไอเทมใหม่ 1 ชิ้นที่ต้องเพิ่ม (หรือใช้ artifact จากระบบ ArtifactFactory)
+  </div>
+</section>
+
+<br>
+<footer class="note">
+  💡 ทั้ง 3 แบบใช้ backend เดียวกันได้ (RanchSave + ServerAnimal แบบมีเจ้าของ) — เลือกได้ว่าจะเปิด "หน้าต่าง" แบบไหน<br>
+  Server มี feature flag <code>Features.Livestock</code> / <code>Features.Taming</code> รอเปิดอยู่แล้วใน data/config.json
+</footer>
+
+<script>
+function show(i, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.panel')[i].classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>

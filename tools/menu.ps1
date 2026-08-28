@@ -1,4 +1,4 @@
-﻿# menu.ps1 — เมนูเทส + กล่องเครื่องมือ Durango Claude (เรียกจาก "เทสเกม.bat")
+# menu.ps1 — เมนูเทส + กล่องเครื่องมือ Durango Claude (เรียกจาก "เทสเกม.bat")
 #
 # ทำไมต้องมีไฟล์นี้: ขั้นตอนเทสจริงมีกับดักที่ลืมทีไรเสียเวลาทุกที
 #   1. ต้อง kill DurangoServer.exe ก่อน build ไม่งั้นไฟล์ล็อก (MSB3021)
@@ -20,6 +20,7 @@ $backups    = Join-Path $root 'saves-backup'
 $whitelist  = Join-Path $server 'data\whitelist.txt'
 $connectPs1 = Join-Path $PSScriptRoot 'connect-game.ps1'
 $gmTargetFile = Join-Path $PSScriptRoot 'gm-target.txt'
+. (Join-Path $PSScriptRoot 'SaveBackup.ps1')
 
 $GamePort    = 8191
 $GatewayPort = 8190
@@ -423,14 +424,31 @@ function Enter-ConfigEditor {
 # ───────────────────────── เครื่องมืออื่น ─────────────────────────
 
 function Backup-Saves {
-    if (-not (Test-Path $saves)) { Say 'ยังไม่มีโฟลเดอร์เซฟ' 'Red'; return $null }
-    if (-not (Test-Path $backups)) { New-Item -ItemType Directory -Path $backups | Out-Null }
-    $stamp = Get-Date -Format 'yyyyMMdd-HHmm'
-    $zip = Join-Path $backups "saves-$stamp.zip"
-    Compress-Archive -Path (Join-Path $saves '*') -DestinationPath $zip -Force
-    $kb = [math]::Round((Get-Item $zip).Length / 1KB)
-    Say "สำรองเซฟแล้ว: $zip ($kb KB)" 'Green'
-    return $zip
+    if (Get-ServerProc) { Say 'ต้องปิดเซิร์ฟแบบ graceful ก่อนสำรองเซฟ' 'Red'; return $null }
+    try {
+        $snapshot = New-SaveSnapshot $saves $backups
+        Say "สำรองเซฟครบ $($snapshot.FileCount) ไฟล์: $($snapshot.Archive)" 'Green'
+        Say "SHA256: $($snapshot.Sha256)" 'DarkGray'
+        return $snapshot.Archive
+    } catch {
+        Say "สำรองเซฟไม่สำเร็จ: $($_.Exception.Message)" 'Red'
+        return $null
+    }
+}
+
+function Test-SaveRestoreDrill {
+    if (Get-ServerProc) { Say 'ต้องปิดเซิร์ฟแบบ graceful ก่อนทำ restore drill' 'Red'; return }
+    $archives = @(Get-ChildItem -LiteralPath $backups -Filter 'saves-*.zip' -File -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending)
+    if ($archives.Count -eq 0) { Say 'ยังไม่มี archive เซฟ' 'Red'; return }
+    $archive = $archives[0]
+    $verifyRoot = Join-Path $backups ('restore-verify\' + $archive.BaseName + '-' + [guid]::NewGuid().ToString('N'))
+    try {
+        Expand-SaveSnapshot $archive.FullName $verifyRoot | Out-Null
+        Say "extract ตรวจสอบแล้ว: $verifyRoot" 'Green'
+        Say "ไม่แตะเซฟจริง — ตรวจได้ด้วย: dotnet run --project `"$server\DurangoServer.csproj`" -- --saves `"$verifyRoot`"" 'DarkGray'
+    } catch {
+        Say "restore drill ไม่ผ่าน: $($_.Exception.Message)" 'Red'
+    }
 }
 
 function Reset-World {
@@ -622,8 +640,13 @@ function Show-Menu {
     Say '   19 ย้อน DLL ตัวเกมกลับอันก่อนหน้า'
     Say '   10 บอทคอนโซล (พิมพ์คำสั่งเอง)'
     Say '   11 ดูใครออนไลน์'
-    Say '   12 สำรองเซฟเป็น .zip'
+    Say '   12 สำรอง save root ทั้งก้อน + ตรวจ archive'
     Say '   13 รีเซ็ตโลกใหม่ (สำรองให้ก่อน)'
+    Say '   26 restore drill จาก archive ล่าสุด (ไม่ทับเซฟจริง)'
+    Say '   27 ตรวจ save schema/recovery (ไม่ต้องเปิดเซิร์ฟ)'
+    Say '   28 เทส building economy + สิทธิ์ผู้เล่นอื่น'
+    Say '   29 ตรวจข้อมูล blueprint requirements (ไม่ต้องเปิดเซิร์ฟ)'
+    Say '   30 ตรวจ world persistence roundtrip (ไม่ต้องเปิดเซิร์ฟ)'
     Say '   14 จัดการรายชื่อที่อนุญาต (whitelist)'
     Say '   15 ดู log ของตัวเกม (ตอนเกมเด้ง)'
     Say '   16 เปิดโฟลเดอร์'
@@ -670,6 +693,20 @@ while ($true) {
         '11' { if (Start-TestServer) { Show-Who } }
         '12' { Backup-Saves | Out-Null }
         '13' { Reset-World }
+        '26' { Test-SaveRestoreDrill }
+        '27' {
+            Say 'ตรวจ schema migration, quarantine และ temp recovery (ไม่ต้องเปิดเซิร์ฟ)' 'Cyan'
+            Push-Location $tester
+            & dotnet run --no-build -- --save-check
+            Pop-Location
+        }
+        '28' { if (Start-TestServer) { Invoke-Tester @('--building-economy-check') 'เทส building economy + สิทธิ์ผู้เล่นอื่น' } }
+        '29' {
+            Say 'ตรวจ generated blueprint requirements (ไม่ต้องเปิดเซิร์ฟ)' 'Cyan'
+            Push-Location $tester
+            & dotnet run --no-build -- --blueprint-requirements-check
+            Pop-Location
+        }
         '14' { Manage-Whitelist }
         '15' { Show-GameLog }
         '16' { Open-Folder }
@@ -683,7 +720,7 @@ while ($true) {
         '99' {
             if (Get-ServerProc) { Say 'ปิดเซิร์ฟตัวเทสก่อน' 'Yellow'; Stop-Server }
             Start-Server @('--whitelist','data/whitelist.txt') 'โหมดเปิดจริง (whitelist, cheat ปิด)' | Out-Null
-            Say 'อ่าน docs/BETA-OPS.md ก่อนเปิดให้คนนอกเข้า' 'Yellow'
+            Say 'อ่าน docs/operations/BETA-OPS.md ก่อนเปิดให้คนนอกเข้า' 'Yellow'
         }
         '0'  { Say 'จบแล้ว (เซิร์ฟยังเปิดอยู่ถ้าไม่ได้กดข้อ 88)' 'DarkGray'; exit 0 }
         default { Say 'ไม่มีข้อนี้' 'Red' }

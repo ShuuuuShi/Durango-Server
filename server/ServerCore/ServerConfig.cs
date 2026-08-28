@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -232,6 +232,9 @@ public sealed class ConfigRoot
     /// <summary>สวิตช์เปิด/ปิดระบบทีละอย่าง — ขอบเขต beta 1.0.0 (ดู FeatureConfig)</summary>
     public FeatureConfig Features { get; set; }
 
+    /// <summary>รอบสภาพอากาศที่ server ส่งให้ client ทุกคนในเกาะเดียวกัน</summary>
+    public WeatherConfig Weather { get; set; }
+
     /// <summary>เลือด/สตามินา/ความล้า (ดู SurvivalConfig)</summary>
     public SurvivalConfig Survival { get; set; }
 
@@ -290,6 +293,7 @@ public sealed class ConfigRoot
             World = WorldConfig.Defaults(),
             Tools = ToolConfig.Defaults(),
             Features = FeatureConfig.Defaults(),
+            Weather = WeatherConfig.Defaults(),
             Survival = SurvivalConfig.Defaults(),
             Starter = StarterConfig.Defaults(),
             Food = FoodConfig.Defaults(),
@@ -350,6 +354,7 @@ public sealed class ConfigRoot
         if (World == null) { World = WorldConfig.Defaults(); filled = true; }
         if (Tools == null) { Tools = ToolConfig.Defaults(); filled = true; }
         if (Features == null) { Features = FeatureConfig.Defaults(); filled = true; }
+        if (Weather == null) { Weather = WeatherConfig.Defaults(); filled = true; }
         if (Survival == null) { Survival = SurvivalConfig.Defaults(); filled = true; }
         if (Starter == null || Starter.Recipes == null) { Starter = StarterConfig.Defaults(); filled = true; }
         if (Food == null) { Food = FoodConfig.Defaults(); filled = true; }
@@ -710,6 +715,33 @@ public sealed class FeatureConfig
     /// <summary>ท่าทาง/อีโมติคอนของผู้เล่น (ไม่ได้อยู่ในรายการ LBT1)</summary>
     public bool Emotes { get; set; }
 
+    // ───── ระบบสังคม/เศรษฐกิจ — ปิดเปิดจาก config.json ได้ ─────
+
+    /// <summary>ระบบเพื่อน (ส่ง/ตอบรับ/ยกเลิกคำขอ จัดประเภทเพื่อน ติดตาม)</summary>
+    public bool Friends { get; set; }
+    /// <summary>ระบบจดหมาย (ส่งข้อความ/ของแนบ รับ/ลบ/ทำเครื่องหมายอ่าน)</summary>
+    public bool Mail { get; set; }
+    /// <summary>ระบบกระเป๋าเงิน (โอน DurangoCoin ระหว่างผู้เล่น)</summary>
+    public bool Wallet { get; set; }
+    /// <summary>กลุ่ม Faction (เข้าร่วม ทำภารกิจรายวัน สนับสนุน)</summary>
+    public bool Factions { get; set; }
+    /// <summary>ระบบเควส/ภารกิจ (เข้าร่วม/ยกเลิก/สลับ/ชาร์จ)</summary>
+    public bool Missions { get; set; }
+    /// <summary>ระบบเข้าร่วมประจำวัน (รับรางวัล/ของแถม)</summary>
+    public bool Attendance { get; set; }
+    /// <summary>ระบบขนส่ง/คลังสินค้า (เปิดปิดประตู ส่งของ ป้องกันรู)</summary>
+    public bool Cargo { get; set; }
+    /// <summary>ระบบหมู่เกาะ (ท้าทาย/ทำความสะอาด/ล้างพื้นที่/วาร์ป)</summary>
+    public bool Archipelago { get; set; }
+    /// <summary>ระบบเพลง/ดนตรี (เล่น/หยุด/แชร์/บันทึก)</summary>
+    public bool Band { get; set; }
+    /// <summary>ระบบ AddOns (วาง/ซื้อ DLC)</summary>
+    public bool AddOns { get; set; }
+    /// <summary>ระบบย้อม/ฟอกสีไอเทม</summary>
+    public bool DyeAndBleach { get; set; }
+    /// <summary>แชทส่วนตัว/สร้าง/เข้าร่วมห้องสนทนา (ต้อง auth ผ่าน Tune ก่อน)</summary>
+    public bool PrivateConversation { get; set; }
+
     /// <summary>
     /// เพดานเลเวลของรอบนี้ — LBT1 ปล่อยคอนเทนต์แค่ Lv.1-20
     /// ตารางเลเวลจริงมีถึง 81 · ตั้ง 0 = ไม่จำกัด (ใช้เพดานเต็มของตาราง)
@@ -748,6 +780,20 @@ public sealed class FeatureConfig
             LandPermission = false,
             PartyAndClan = false,
             Emotes = false,
+
+            // ระบบสังคม/เศรษฐกิจ — ปิดเปิดจาก config.json ได้
+            Friends = false,
+            Mail = false,
+            Wallet = false,
+            Factions = false,
+            Missions = false,
+            Attendance = false,
+            Cargo = false,
+            Archipelago = false,
+            Band = false,
+            AddOns = false,
+            DyeAndBleach = false,
+            PrivateConversation = false,
 
             MaxPlayerLevel = 20
         };
@@ -1334,6 +1380,9 @@ public sealed class CraftMenuConfig
     /// </summary>
     public bool HideFreeItems { get; set; } = true;
 
+    /// <summary>อนุญาตการวาง/สร้างสิ่งก่อสร้างสำเร็จรูปโดยไม่ฝากวัตถุดิบ</summary>
+    public bool AllowFreeBuild { get; set; } = false;
+
     public static CraftMenuConfig Defaults()
     {
         return new CraftMenuConfig
@@ -1532,7 +1581,7 @@ public sealed class SpawnEntryConfig
         };
     }
 
-    /// <summary>ตารางเกาะเริ่มต้น Beta 1.0 — ที่มาของตัวเลขอยู่ใน docs/BETA-1.0-PLAN.md</summary>
+    /// <summary>ตารางเกาะเริ่มต้น Beta 1.0 — ที่มาของตัวเลขอยู่ใน docs/testing/BETA-1.0-PLAN.md</summary>
     public static List<SpawnEntryConfig> Defaults()
     {
         return new List<SpawnEntryConfig>
@@ -1628,6 +1677,37 @@ public sealed class FarmingConfig
 /// asset bundle ที่เข้ารหัส อ่านไม่ได้จากซอร์สที่มี) ⇒ ค่าเริ่มต้นทั้งหมดด้านล่างนี้ **ออกแบบเองใหม่**
 /// ให้เล่นได้จริงและสมเหตุสมผล ไม่ใช่ค่าจากเกมต้นฉบับ — ปรับได้อิสระผ่าน data/config.json (hot-reload)
 /// </summary>
+/// <summary>
+/// Server-driven weather cycle. The client already contains the visual weather
+/// presets; this section only controls which safe preset is broadcast and how
+/// long each preset lasts.
+/// </summary>
+public sealed class WeatherConfig
+{
+    public bool Enabled { get; set; }
+    public double CycleSeconds { get; set; }
+
+    [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+    public List<string> Sequence { get; set; }
+
+    public static WeatherConfig Defaults()
+    {
+        return new WeatherConfig
+        {
+            Enabled = true,
+            CycleSeconds = 90.0,
+            Sequence = new List<string>
+            {
+                "sunny",
+                "cloudy",
+                "rainy",
+                "heavy_rainy",
+                "sunny"
+            }
+        };
+    }
+}
+
 public sealed class WarpAcceleratorConfig
 {
     /// <summary>เวลารอก่อนคลื่นแรกเริ่ม (นับจากกด "เร่งวาร์ป") และเวลาพักระหว่างคลื่น (Waiting/Intermission)</summary>

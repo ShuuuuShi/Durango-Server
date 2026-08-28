@@ -25,6 +25,10 @@ $backups = Join-Path $root 'game-backup'
 # ต้องวางคู่กันใน Managed\ ด้วยเสมอ ไม่งั้น Mono resolve ไม่เจอตอนเกมรัน
 $builtSdk  = Join-Path $client 'bin\Release\net35\DurangoClientModSdk.dll'
 $targetSdk = Join-Path $root 'game\DurangoV2_Data\Managed\DurangoClientModSdk.dll'
+# ClientMethodOverrideManager uses Harmony at runtime.  The compiler copies the
+# package DLL beside Assembly-CSharp.dll, so deployment must copy it as well.
+$builtHarmony  = Join-Path $client 'bin\Release\net35\0Harmony.dll'
+$targetHarmony = Join-Path $root 'game\DurangoV2_Data\Managed\0Harmony.dll'
 
 function Say($t, $c = 'Gray') { Write-Host $t -ForegroundColor $c }
 
@@ -66,5 +70,6 @@ Get-ChildItem $backups -Filter 'Assembly-CSharp.2*.dll' | Sort-Object LastWriteT
 
 Copy-Item $built $target -Force
 if (Test-Path $builtSdk) { Copy-Item $builtSdk $targetSdk -Force }
+if (Test-Path $builtHarmony) { Copy-Item $builtHarmony $targetHarmony -Force }
 Say "วางลงเกมแล้ว: $target" 'Green'
 Say 'เปิดเกมได้เลย (เมนูข้อ 1 หรือ 3) — ถ้าพังให้ย้อนกลับด้วย -Restore' 'DarkGray'

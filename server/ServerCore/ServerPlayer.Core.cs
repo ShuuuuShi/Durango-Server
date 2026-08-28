@@ -8,6 +8,7 @@ using System.Threading;
 using Durango.Network;
 using Durango.Offline;
 using Durango.Utils;
+using DurangoServer.Modding;
 using Messages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -37,6 +38,10 @@ public partial class ServerPlayer
     public string Name { get; set; }
     public ushort EntityType { get; set; } = 1000;
     public int Level { get; set; } = 1;
+
+    // ── Party public accessors ────────────────────────────────────────
+    public string PartyId => _partyId;
+    public bool IsPartyLeader => _partyLeader;
 
     private readonly Durango.Offline.Connection _conn;
     private readonly ServerWorld _world;
@@ -315,6 +320,14 @@ public partial class ServerPlayer
         }
     }
 
+    /// <summary>ปฏิเสธ request ของ feature ที่ปิดก่อนเปลี่ยน state พร้อมหลักฐานใน server log</summary>
+    private void RejectFeatureDisabled(string feature, string action, string playerMessage, PacketHeader header)
+    {
+        Console.WriteLine("[feature] ปฏิเสธ feature={0} action={1} entity={2} name={3}: ปิดอยู่", feature, action, EntityId, Name);
+        Send(new Info { Text = playerMessage }, header.Seq);
+        Send(default(Abort), header.Seq);
+    }
+
     public void Send<T>(T msg, uint replyOf) where T : struct
     {
         try
@@ -327,9 +340,73 @@ public partial class ServerPlayer
         }
     }
 
+    // [แก้เอง] 27 ส.ค. 2026 — V1.1 mod-sdk: มุมมองกระเป๋าให้ ServerModPlayer เรียกผ่าน IModPlayer
+    // (CountItem/GiveItem/GetInventorySummary) — mod ไม่ได้แตะ _inventory ตรง ๆ
+    /// <summary>นับของติดตัวที่ prototype ตรงกัน</summary>
+    internal int ModCountItems(string prototypeId)
+    {
+        if (string.IsNullOrEmpty(prototypeId))
+        {
+            return 0;
+        }
+        lock (_inventory)
+        {
+            int n = 0;
+            for (int i = 0; i < _inventory.Count; i++)
+            {
+                if (_inventory[i].Prototype == prototypeId)
+                {
+                    n++;
+                }
+            }
+            return n;
+        }
+    }
+
+    /// <summary>สรุปของติดตัว key = prototype id, value = จำนวนชิ้น (สำเนา — mod แก้ของจริงไม่ได้)</summary>
+    internal IReadOnlyDictionary<string, int> ModInventorySummary()
+    {
+        Dictionary<string, int> summary = new(StringComparer.Ordinal);
+        lock (_inventory)
+        {
+            for (int i = 0; i < _inventory.Count; i++)
+            {
+                string proto = _inventory[i].Prototype ?? "(null)";
+                summary.TryGetValue(proto, out int n);
+                summary[proto] = n + 1;
+            }
+        }
+        return summary;
+    }
+
+    /// <summary>เพิ่มของเหมือนเก็บเอง (MakeGatheredItem → durability/tag/performance ครบ + sync client)</summary>
+    internal bool ModGiveItems(string prototypeId, int count)
+    {
+        if (count <= 0 || string.IsNullOrEmpty(prototypeId))
+        {
+            return false;
+        }
+        lock (_inventory)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                _inventory.Add(MakeGatheredItem(new Generator
+                {
+                    Id = prototypeId,
+                    Name = prototypeId,
+                    Icon = prototypeId
+                }));
+            }
+        }
+        MarkDirty();
+        SendInventory();
+        return true;
+    }
+
     public void RegisterHandlers()
     {
         _conn.Recv<Move>(HandleMove);
+        _conn.Recv<AnimalLoadFailed>(HandleAnimalLoadFailed);
         // ⚠️ ห้ามลงทะเบียน Messages.Say — struct นี้ไม่มี const TypeCode
         // จะถูกลงทะเบียนใต้ key 0 ซึ่งฝั่ง client ใช้ TypeCode 0 = "packet ตอบกลับ (reply)"
         // ผลคือ reply ใด ๆ ที่วิ่งเข้ามาจะถูกพยายาม deserialize เป็น Say (เจอตอนเทสกับเกมจริง)
@@ -337,6 +414,7 @@ public partial class ServerPlayer
         _conn.Recv<Cheat>(HandleCheat);
         _conn.Recv<GetStatistics>(delegate(GetStatistics msg, PacketHeader header) { SendStatistics(); });
         RegisterGroup2Handlers();
+        RegisterPartyHandlers();
         // เฟส C: GetInventory มี Target = ดูของในกล่อง, ไม่มี = กระเป๋าตัวเอง
         _conn.Recv<GetInventory>(HandleGetInventory);
         _conn.Recv<PutInItem>(HandlePutInItem);
@@ -414,6 +492,8 @@ public partial class ServerPlayer
         _conn.Recv<Warp>(HandleWarp);
         _conn.Recv<WarpBack>(HandleWarpBack);
         _conn.Recv<WarpToPort>(HandleWarpToPort);
+        _conn.Recv<GetIslandTravelOptions>(HandleGetIslandTravelOptions);
+        _conn.Recv<TravelByRegion>(HandleTravelByRegion);
         // [แก้เอง] 23 ส.ค. 2026 — เจ้าของรายงาน "ไม่มีเมนูกดวาป" ที่หลุมวาร์ป ต้นเหตุคือ 2 คำสั่งนี้ไม่มี
         // handler เลยมาตั้งแต่แรก (WorldMapGroup.cs ฝั่ง client ส่ง GetWarpCosts ก่อนแสดงปุ่ม/ป้ายราคาบนแผนที่
         // เสมอตอนเปิดโหมด "วาป" — ไม่ตอบกลับ = ป้ายราคา/สถานะกดได้ไม่ขึ้นเลย ดูเหมือนไม่มีเมนู) ดู HandleGetWarpCosts
@@ -467,7 +547,8 @@ public partial class ServerPlayer
         {
             if (!ServerConfig.Current.Features.Emotes)
             {
-                return;                 // ปิดอยู่ตามขอบเขต beta (Features.Emotes)
+                RejectFeatureDisabled("Emotes", "PlayEmoticon", "ระบบอีโมติคอนยังไม่เปิดในรอบนี้", header);
+                return;
             }
             // M-1: บังคับ EntityId เป็นของจริง ไม่งั้นสั่งให้ตัวละครคนอื่นเล่นท่าทางได้
             msg.EntityId = EntityId;
@@ -480,6 +561,9 @@ public partial class ServerPlayer
             {
                 return;
             }
+            IModEventContext? chatBefore = PluginManager.Instance?.FireEvent("chat.message", this, true, false,
+                new Dictionary<string, string>(StringComparer.Ordinal) { ["channel"] = "exclusive", ["body"] = msg.Message.Body as string ?? "" });
+            if (chatBefore?.IsCancelled == true) return;
             Console.WriteLine("[chat] {0}: {1}", Name, msg.Message.Body);
             msg.Message = StampSpeaker(msg.Message);
             // broadcast กลับหาคนส่งด้วยถูกแล้ว — client ไม่ได้เพิ่มข้อความตัวเองลง log ตอนส่ง
@@ -491,6 +575,9 @@ public partial class ServerPlayer
             {
                 return;
             }
+            IModEventContext? chatBefore = PluginManager.Instance?.FireEvent("chat.message", this, true, false,
+                new Dictionary<string, string>(StringComparer.Ordinal) { ["channel"] = "conversation", ["body"] = msg.Message.Body as string ?? "" });
+            if (chatBefore?.IsCancelled == true) return;
             Console.WriteLine("[chat-conv] {0}: {1}", Name, msg.Message.Body);
             msg.Message = StampSpeaker(msg.Message);
             _world.Broadcast(msg);
@@ -520,10 +607,7 @@ public partial class ServerPlayer
         RegisterFarmingHandlers();      // PlantSeed / WaterPlant / FertilizePlant / UprootPlant / DrawWater
         RegisterWarpAcceleratorHandlers();   // GetWarpAcceleratorCost / Accelerate / ParticipateAcceleration / ReceiveAcceleratorRewards
         _conn.Recv<OccupyArtifactSite>(HandleOccupyArtifactSite);
-        _conn.Recv<PutMaterialsIntoArtifact>(delegate(PutMaterialsIntoArtifact msg, PacketHeader header)
-        {
-            Send(default(OK), header.Seq);
-        });
+        _conn.Recv<PutMaterialsIntoArtifact>(HandlePutMaterials);
         _conn.Recv<BuildArtifact>(HandleBuildArtifact);
         _conn.Recv<GetArtifact>(HandleGetArtifact);
         _conn.Recv<DestructArtifact>(HandleDestructArtifact);
@@ -538,6 +622,25 @@ public partial class ServerPlayer
                 ArtifactPreview = default
             }, header.Seq);
         });
+        // ── S4-S7: Social / Economy / Misc systems ─────────────────────
+        RegisterSocialHandlers();     // GetSocial / RequestFriend / AcceptFriendRequest / ...
+        RegisterMailHandlers();       // GetMails / SendMail / AcceptMails / DeleteMails / ...
+        RegisterWalletHandlers();     // TransferDurangoCoin
+        RegisterClanHandlers();       // MakeClan / JoinClan / LeaveClan / ...
+        RegisterMarketHandlers();     // GetCommodities / SearchProducts / RegisterProduct / ...
+        RegisterPetHandlers();        // GetPetsInfo / StartDomestication / PutInCage / ...
+        RegisterFactionHandlers();    // GetFactions / ActivateFaction / ...
+        RegisterMissionHandlers();    // GetMissions / AcceptMission / ...
+        RegisterAttendanceHandlers(); // GetAttendanceRewards / GiveAttendanceReward / ...
+        RegisterCargoHandlers();      // GetCargoReceivers / ActivateCargoReceiver / ...
+        RegisterArchipelagoHandlers();// GetArchipelago / WarpToNextArchipelagoRegion / ...
+        RegisterBandHandlers();       // GetMusics / PlayMusic / StopMusic / ...
+        RegisterConversationHandlers();// InviteToConversation / ExitConversation / GetRecipients
+        RegisterAddOnsHandlers();     // GetAddOns / PlaceAddOns / ...
+        RegisterDyeHandlers();        // Dye / Bleach / EstimateDye / EstimateBleach
+        RegisterEstateHandlers();     // GetEstateLicenses / DeclareEstate / ...
+        RegisterEncyclopediaHandlers();// GetEncyclopedia / ChangeFarmingEncyclopediaMastery
+        RegisterEngagementHandlers(); // DeleteEngagementData (no-op)
     }
 
     /// <summary>
@@ -554,6 +657,25 @@ public partial class ServerPlayer
             Freq = 0
         };
         return message;
+    }
+
+    private void HandleAnimalLoadFailed(AnimalLoadFailed msg, PacketHeader header)
+    {
+        if (string.IsNullOrEmpty(msg.EntityId))
+        {
+            return;
+        }
+        if (!_world.Animals.TryGet(msg.EntityId, out ServerAnimal animal) || !animal.IsAlive)
+        {
+            return;
+        }
+        if (!_seenAnimals.Contains(msg.EntityId))
+        {
+            return;
+        }
+        // client ล้าง ghost แล้ว โหลดใหม่ได้; เอา id ออกจาก seen เพื่อให้ TickVisibility ส่ง Appear ซ้ำ
+        ForgetEntity(msg.EntityId);
+        Console.WriteLine("[animal] client {0} โหลด entity {1} ไม่สำเร็จ: {2} — จะส่ง Appear ใหม่", EntityId, msg.EntityId, msg.Reason ?? "unknown");
     }
 
     private void HandleMove(Move msg, PacketHeader header)
@@ -629,6 +751,11 @@ public partial class ServerPlayer
 
     private double _lastMoveAt;
     private double _lastSpeedWarnAt;
+    // เวลาที่เริ่มพักล่าสุด ใช้กัน Move packet ที่ถูกสร้างก่อนนั่งแต่ส่งมาช้ากว่า RestOn
+    private double _restStartedAt;
+    // Client snaps the character into the rest attachment and may send a Move packet.
+    // Keep that packet from cancelling rest immediately after RestOn.
+    private double _restMovementGraceUntil;
 
     /// <summary>เก็บจุดปลายทางของ movement ล่าสุดไว้เป็นตำแหน่งปัจจุบันของผู้เล่น (GP-02)
     /// คืน false ถ้าไม่ยอมรับ (เร็วเกินจริง — M-2)</summary>
@@ -646,8 +773,26 @@ public partial class ServerPlayer
             return true;
         }
         Location dest = path[path.Length - 1];
+        if (!float.IsFinite(dest.Position.x) || !float.IsFinite(dest.Position.y)
+            || !float.IsFinite(dest.Yaw) || !float.IsFinite(dest.Height)
+            || dest.Position.x < 0f || dest.Position.y < 0f
+            || dest.Position.x > _world.Terrain.Width * 200f
+            || dest.Position.y > _world.Terrain.Height * 200f)
+        {
+            Console.WriteLine("[move] ปฏิเสธ {0}: พิกัดไม่ถูกต้องหรือนอกแมพ", Name);
+            return false;
+        }
 
         double nowSec = Times.UnixTimeNow();
+        // client มีโอกาส flush path เก่าหลังส่ง RestOn โดยเฉพาะตอนลุกแล้วนั่งใหม่
+        // path ที่ timestamp เก่ากว่าเวลาเริ่มพักไม่ใช่การขยับหลังนั่ง จึงห้ามล้าง rest
+        if (_resting && _restStartedAt > 0.0 && dest.Time > 0.0
+            && dest.Time + 0.5 < _restStartedAt)
+        {
+            Console.WriteLine("[move] ทิ้ง path เก่าหลังเริ่มพัก {0}: path={1:F3} rest={2:F3}",
+                Name, dest.Time, _restStartedAt);
+            return false;
+        }
         float moveDx = dest.Position.x - _lastPosition.x;
         float moveDy = dest.Position.y - _lastPosition.y;
         float moveDistance = _hasPosition ? MathF.Sqrt(moveDx * moveDx + moveDy * moveDy) : 0f;
@@ -691,7 +836,7 @@ public partial class ServerPlayer
         _hasPosition = true;
         // Move packets ที่เกิดจากการ snap เข้า attachment/แก้ jitter ไม่ควรทำให้การพักหลุด
         // หยุดพักเฉพาะเมื่อผู้เล่นขยับจริงเกินระยะ epsilon
-        if (moveDistance > 10f)
+        if (moveDistance > 10f && !(_resting && nowSec <= _restMovementGraceUntil))
         {
             StopResting();        // ลุกเดินจริงแล้วเลิกพัก ความล้ากลับไปไต่ขึ้นตามเวลา
         }

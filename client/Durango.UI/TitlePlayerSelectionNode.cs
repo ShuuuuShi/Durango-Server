@@ -71,6 +71,10 @@ public class TitlePlayerSelectionNode : UIWidget
 
 	private UIWidget _previousState;
 
+	private int _requestVersion;
+
+	private string _boundPlayerEntityId;
+
 	private void ActiveWidget(UIWidget target)
 	{
 		if (_widgets == null)
@@ -90,6 +94,10 @@ public class TitlePlayerSelectionNode : UIWidget
 
 	public void Set([CanBeNull] Durango.Logic.Clusters.PlayerInfo player, Action<Durango.Logic.Clusters.PlayerInfo> clicked, Action<Durango.Logic.Clusters.PlayerInfo> doubleClicked, Action<Durango.Logic.Clusters.PlayerInfo> deleteClicked = null)
 	{
+		int requestVersion = ++_requestVersion;
+		_boundPlayerEntityId = (player == null) ? null : player.PlayerEntityId;
+		_portraitTexture.mainTexture = null;
+		MarkAsSoftDeleted(isDeleted: false);
 		_button.Clicked = delegate
 		{
 			if (clicked != null)
@@ -104,14 +112,10 @@ public class TitlePlayerSelectionNode : UIWidget
 				doubleClicked(player);
 			}
 		};
-		_deleteInEditable.SetActive(deleteClicked != null);
-		if (deleteClicked != null)
-		{
-			UIEventListener.Get(_deleteInEditable).onClick = delegate
-			{
-				deleteClicked(player);
-			};
-		}
+		// The delete action is shown in the bottom action bar by
+		// TitlePlayerSelectionGroupBase, not inside each character card.
+		_deleteInEditable.SetActive(value: false);
+		UIEventListener.Get(_deleteInEditable).onClick = null;
 		if (player == null)
 		{
 			ActiveWidget(_newCharacterWidget);
@@ -131,8 +135,21 @@ public class TitlePlayerSelectionNode : UIWidget
 			return;
 		}
 		ActiveWidget(_loadingRing);
-		Singleton<PlayerInfoManager>.Instance().RequestPlayerInfo(player.PlayerEntityId, delegate(Durango.Player.PlayerInfo info)
+		Singleton<PlayerInfoManager>.Instance().RequestNewPlayerInfo(player.PlayerEntityId, delegate(Durango.Player.PlayerInfo info)
 		{
+			if (requestVersion != _requestVersion || _boundPlayerEntityId != player.PlayerEntityId)
+			{
+				return;
+			}
+			if (info == null || !info.Valid)
+			{
+				ActiveWidget(_profileWidget);
+				SetTextContent(player.PlayerLevel, player.PlayerName, string.Empty, string.Empty);
+				MarkAsSoftDeleted(player.IsSoftDeleted);
+				_currentRegionLabel.text = string.Empty;
+				_homeRegionLabel.text = string.Empty;
+				return;
+			}
 			ActiveWidget(_profileWidget);
 			SetTextContent(info.Level, info.Name, info.GetFreq(20), info.ClanName);
 			MarkAsSoftDeleted(player.IsSoftDeleted);
@@ -166,6 +183,20 @@ public class TitlePlayerSelectionNode : UIWidget
 	public void MarkAsSoftDeleted(bool isDeleted)
 	{
 		_deletedPlayerSymbol.gameObject.SetActive(isDeleted);
+	}
+
+	public GameObject CreateDeleteButton(Transform parent)
+	{
+		if (_deleteInEditable == null || parent == null)
+		{
+			return null;
+		}
+		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(_deleteInEditable);
+		gameObject.name = "BottomDeleteButton";
+		gameObject.transform.SetParent(parent, worldPositionStays: false);
+		gameObject.transform.localScale = Vector3.one;
+		gameObject.transform.localRotation = Quaternion.identity;
+		return gameObject;
 	}
 
 	public void SetLoading(bool isLoading)

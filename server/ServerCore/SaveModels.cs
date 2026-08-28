@@ -20,8 +20,14 @@ namespace DurangoServer.Core;
 /// </summary>
 public abstract class SaveEnvelope
 {
-    /// <summary>เวอร์ชันไฟล์เซฟ — เพิ่มเลขเมื่อโครงสร้างเปลี่ยนจนอ่านของเก่าไม่ได้</summary>
-    public int Version { get; set; } = 1;
+    /// <summary>เวอร์ชันล่าสุดของ schema เซฟที่ server เขียนได้</summary>
+    public const int CurrentVersion = 2;
+
+    /// <summary>
+    /// เวอร์ชันของไฟล์เซฟ; 0 หมายถึงไฟล์ legacy ที่ยังไม่มีฟิลด์นี้
+    /// SaveStore จะ migrate 0 และ 1 ก่อนนำ state ไปใช้ และจะปฏิเสธเวอร์ชันที่ใหม่กว่า server นี้
+    /// </summary>
+    public int Version { get; set; }
 }
 
 public sealed class ItemSave
@@ -34,6 +40,9 @@ public sealed class ItemSave
     public int Level { get; set; } = 1;
     public int Size { get; set; } = 1;
     public string GeneratorId { get; set; }
+    public string ColorR { get; set; }
+    public string ColorG { get; set; }
+    public string ColorB { get; set; }
 
     /// <summary>ไม่ null = ไอเทมนี้เป็นแคปซูลของสิ่งปลูกสร้าง</summary>
     public string CapsuleBlueprintId { get; set; }
@@ -68,6 +77,9 @@ public sealed class ItemSave
             Level = item.Level,
             Size = item.Size,
             GeneratorId = item.GeneratorId,
+            ColorR = item.ColorR,
+            ColorG = item.ColorG,
+            ColorB = item.ColorB,
             CapsuleBlueprintId = capsule,
             // เก็บเฉพาะของที่มีความทนทานจริง ๆ ไฟล์เซฟจะได้ไม่รกด้วยเลข −1 ทุกบรรทัด
             Durability = ToolDurability.HasDurability(item) ? ToolDurability.RemainingOf(item) : -1f,
@@ -106,9 +118,9 @@ public sealed class ItemSave
             ModifiedCount = 0,
             Size = Size,
             Durability = ToolDurability.MakeGauge(current, max),
-            ColorR = "FFFFFF",
-            ColorG = "FFFFFF",
-            ColorB = "FFFFFF",
+            ColorR = string.IsNullOrEmpty(ColorR) ? "FFFFFF" : ColorR,
+            ColorG = string.IsNullOrEmpty(ColorG) ? "FFFFFF" : ColorG,
+            ColorB = string.IsNullOrEmpty(ColorB) ? "FFFFFF" : ColorB,
             Unstable = false,
             RepairRequirement = ToolDurability.RepairRequirementFor(Prototype),
             FounderId = null,
@@ -172,6 +184,7 @@ public sealed class PlayerSave : SaveEnvelope
     public string Name { get; set; }
     public int Level { get; set; }
     public ushort EntityType { get; set; }
+    public double? DeletesAt { get; set; }
 
     /// <summary>GP-14: หน้าตาที่ใช้ล่าสุด — ใช้ตอน login รอบหน้าถ้า client ไม่ได้ส่งมา</summary>
     public string DisplayJson { get; set; }
@@ -192,6 +205,10 @@ public sealed class PlayerSave : SaveEnvelope
     /// เข้ามาคนละเกาะกับที่จำไว้ = เกิดที่จุดเข้าเกมของเกาะใหม่ (ไม่ใช่พิกัดเดิมของอีกเกาะ)
     /// </summary>
     public string LastIsland { get; set; }
+
+    /// <summary>เวลาค้นหา POI ล่าสุด และ POI ที่ server ยืนยันว่าผู้เล่นค้นพบแล้ว</summary>
+    public double LastPOISearchedAt { get; set; }
+    public List<PoiDiscoverySave> ExploredPOIs { get; set; } = new List<PoiDiscoverySave>();
 
     /// <summary>เควส — ความคืบหน้า/ทำเสร็จแล้ว/รับรางวัลแล้ว (ดู ServerPlayer.Quests)</summary>
     public Dictionary<string, int> QuestProgress { get; set; } = new Dictionary<string, int>();
@@ -252,6 +269,88 @@ public sealed class PlayerSave : SaveEnvelope
 
     /// <summary>เวลาที่ตัวนับรายสัปดาห์จะรีเซ็ตครั้งถัดไป (unix seconds) — 0 = ยังไม่เคยตั้ง</summary>
     public double WeeklyWarpMatterRefreshAt { get; set; }
+
+    // ── Social: Party & Friends ────────────────────────────────────────
+
+    /// <summary>party id ที่ผู้เล่นอยู่ (null = ไม่ได้อยู่ใน party ใด)</summary>
+    public string PartyId { get; set; }
+
+    /// <summary>เป็น leader ของ party ที่อยู่ไหม</summary>
+    public bool PartyLeader { get; set; }
+
+    /// <summary>รายชื่อ friends (entity id)</summary>
+    public List<string> Friends { get; set; } = new List<string>();
+
+    /// <summary>คำขอเป็น friend ที่ได้รับมา (entity id ของผู้ส่ง)</summary>
+    public List<string> ReceivedFriendRequests { get; set; } = new List<string>();
+
+    /// <summary>คำขอเป็น friend ที่ส่งไปแล้ว (entity id ของผู้รับ)</summary>
+    public List<string> SentFriendRequests { get; set; } = new List<string>();
+
+    /// <summary>บล็อกลิสต์ (entity id)</summary>
+    public List<string> BlockedEntityIds { get; set; } = new List<string>();
+
+    /// <summary>รายชื่อที่กำลัง follow (entity id)</summary>
+    public List<string> FollowingEntityIds { get; set; } = new List<string>();
+
+    // ── Mail ──────────────────────────────────────────────────────────
+
+    /// <summary>จดหมายที่ได้รับ/ส่ง (player-sent mail + system mails)</summary>
+    public List<MailSave> Mails { get; set; } = new List<MailSave>();
+
+    // ── Wallet ────────────────────────────────────────────────────────
+
+    /// <summary>กระเป๋าเงินแบบจ่ายแล้ว (currency key → จำนวน)</summary>
+    public Dictionary<string, long> WalletPaid { get; set; } = new Dictionary<string, long>();
+
+    /// <summary>กระเป๋าเงินแบบยังไม่จ่าย</summary>
+    public Dictionary<string, long> WalletUnpaid { get; set; } = new Dictionary<string, long>();
+
+    // ── Clan ──────────────────────────────────────────────────────────
+
+    /// <summary>clan id ที่สังกัด (null = ไม่มีแคลน)</summary>
+    public string ClanId { get; set; }
+
+    /// <summary>ชื่อแคลน (cache จาก server-side clan registry)</summary>
+    public string ClanName { get; set; }
+
+    /// <summary>ตำแหน่งในแคลน (0=member, 1=officer, 2=leader — ดู ClanRoleId)</summary>
+    public int ClanRoleId { get; set; }
+}
+
+// ── Mail ────────────────────────────────────────────────────────────────
+
+public sealed class MailSave
+{
+    public string Id { get; set; }
+    public double SentAt { get; set; }
+    public string SenderId { get; set; }
+    public string SenderName { get; set; }
+    public int MailType { get; set; } = 1;         // 1 = user mail
+    public string Text { get; set; }
+    public Dictionary<string, long> Money { get; set; } = new Dictionary<string, long>();
+    public List<ItemSave> AttachedItems { get; set; } = new List<ItemSave>();
+    public bool Accepted { get; set; }
+    public bool Read { get; set; }
+    public double ExpiresAt { get; set; }
+}
+
+// ── Clan ────────────────────────────────────────────────────────────────
+
+public sealed class ClanSave
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string LeaderEntityId { get; set; }
+    public List<string> MemberEntityIds { get; set; } = new List<string>();
+    public List<string> ApplicantEntityIds { get; set; } = new List<string>();
+}
+
+public sealed class PoiDiscoverySave
+{
+    public int TileX { get; set; }
+    public int TileY { get; set; }
+    public int Type { get; set; }
 }
 
 public sealed class StatusEffectSave
@@ -335,11 +434,17 @@ public sealed class WorldSave : SaveEnvelope
     /// <summary>ต้นไม้/ก้อนหินที่ถูกเก็บจนหมดไปแล้ว (พิกัด tile) — เอาไปลบออกจาก Garden ตอนโหลด</summary>
     public List<int[]> RemovedNaturals { get; set; } = new List<int[]>();
 
-    /// <summary>เฟส C — ของในกล่องเก็บของ: entity id ของกล่อง → รายการไอเทม</summary>
+    /// <summary>ของในกล่องเก็บของ: entity id ของกล่อง → รายการไอเทม</summary>
     public Dictionary<string, List<ItemSave>> Boxes { get; set; } = new Dictionary<string, List<ItemSave>>();
+
+    /// <summary>วัสดุที่ฝากไว้ในสิ่งปลูกสร้าง: entity id → slot id → รายการไอเทม</summary>
+    public Dictionary<string, Dictionary<string, List<ItemSave>>> ArtifactMaterials { get; set; } = new Dictionary<string, Dictionary<string, List<ItemSave>>>();
 
     /// <summary>แปลงผักที่ปลูกไว้ (key อยู่ใน FarmSave.ArtifactId)</summary>
     public List<FarmSave> Farms { get; set; } = new List<FarmSave>();
+
+    /// <summary>แคลนทั้งหมดบนเกาะ (id → member list)</summary>
+    public List<ClanSave> Clans { get; set; } = new List<ClanSave>();
 }
 
 /// <summary>

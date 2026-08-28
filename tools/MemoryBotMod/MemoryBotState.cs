@@ -26,14 +26,16 @@ internal static class MemoryBotState
             case "game": return Game();
             case "player.local": return Player();
             case "survival": return Survival();
+            case "progress": return Progress();
+            case "skills": return Skills();
             case "inventory":
             case "inv": return Inventory(limit);
             case "status": return Status();
             case "interaction": return Interaction();
             case "combat": return Combat();
             case "world.nearby": return Nearby(limit);
+            case "bot": return MemoryBotAutopilot.StatusJson();
             case "screen": return ScreenState();
-            case "skill.debug": return SkillDebug();
             default: throw new InvalidOperationException("unknown_read_path");
         }
     }
@@ -152,22 +154,72 @@ internal static class MemoryBotState
     {
         if (PlayerBehavior.LocalPlayer == null || !GameManager.IsMainScene || !GameSystem<InteractionSystem>.HasInstance())
             return "{\"ready\":false,\"objects\":[]}";
-        var list = new List<GameObject>();
-        InteractionSystem.SearchPropObjects(list);
-        StringBuilder sb = new StringBuilder("{\"objects\":[");
+        var props = new List<GameObject>();
+        var movables = new List<GameObject>();
+        InteractionSystem.SearchPropObjects(props);
+        InteractionSystem.SearchMovableObjects(movables);
+        StringBuilder sb = new StringBuilder("{\"ready\":true,\"objects\":[");
         bool first = true;
         int count = 0;
-        foreach (GameObject go in list)
+        AppendNearbyList(sb, props, "prop", limit, ref first, ref count);
+        AppendNearbyList(sb, movables, "movable", limit, ref first, ref count);
+        return sb.Append("]}").ToString();
+    }
+
+    private static void AppendNearbyList(StringBuilder sb, List<GameObject> objects, string kind, int limit, ref bool first, ref int count)
+    {
+        foreach (GameObject go in objects)
         {
-            if (go == null || count++ >= limit) break;
+            if (go == null || count >= limit) break;
             InteractionObject obj = new InteractionObject(go);
             if (!first) sb.Append(',');
             first = false;
-            sb.Append("{\"id\":").Append(Q(obj.EntityId)).Append(",\"type\":").Append(obj.EntityType).Append(",\"distance\":").Append(F(obj.Distance)).Append('}');
+            Vector2 tile = obj.Tile;
+            bool isAnimal = go.GetComponentInParent<AnimalBehavior>() != null || go.GetComponentInParent<WildAnimalAI>() != null;
+            sb.Append("{\"kind\":").Append(Q(kind)).Append(",\"class\":").Append(Q(isAnimal ? "animal" : kind))
+                .Append(",\"id\":").Append(Q(obj.EntityId))
+                .Append(",\"type\":").Append(obj.EntityType)
+                .Append(",\"distance\":").Append(F(obj.Distance))
+                .Append(",\"tile\":[").Append(F(tile.x)).Append(',').Append(F(tile.y)).Append("]}");
+            count++;
+        }
+    }
+
+    private static string Progress()
+    {
+        StatisticsSystem stats = GameSystem<StatisticsSystem>.HasInstance() ? GameSystem<StatisticsSystem>.Instance() : null;
+        if (stats == null || !stats.Statistics.HasValue) return "{\"ready\":false}";
+        return "{\"ready\":true,\"level\":" + stats.Level + ",\"exp\":" + stats.Exp + "}";
+    }
+
+    private static string Skills()
+    {
+        SkillSystem system = GameSystem<SkillSystem>.HasInstance() ? GameSystem<SkillSystem>.Instance() : null;
+        if (system == null) return "{\"ready\":false,\"remaining\":0,\"skills\":[]}";
+        StringBuilder sb = new StringBuilder("{\"ready\":true,\"total\":" + system.SkillPoint
+            + ",\"remaining\":" + system.RemainSkillPoint + ",\"skills\":[");
+        bool first = true;
+        foreach (Durango.Logic.Skill.Bundle bundle in system.Skills)
+        {
+            if (bundle == null || bundle.Category != Shared.Skill.Category.MeleeCombat) continue;
+            AppendSkill(sb, bundle.Base, ref first);
+            if (bundle.Sub == null) continue;
+            foreach (Durango.Logic.Skill.Skill skill in bundle.Sub) AppendSkill(sb, skill, ref first);
         }
         return sb.Append("]}").ToString();
     }
 
+    private static void AppendSkill(StringBuilder sb, Durango.Logic.Skill.Skill skill, ref bool first)
+    {
+        if (skill == null) return;
+        Durango.Logic.Skill.Node next = skill.Level < skill.MaxLevel ? skill.Get(skill.Level + 1) : null;
+        if (!first) sb.Append(',');
+        first = false;
+        sb.Append("{\"id\":").Append(Q(skill.Id)).Append(",\"sub_id\":").Append(Q(skill.SubId))
+            .Append(",\"level\":").Append(skill.Level)
+            .Append(",\"next_state\":").Append(Q(next == null ? "max" : next.State.ToString()))
+            .Append(",\"next_cost\":").Append(next == null ? 0 : next.SkillPoints).Append('}');
+    }
     private static string ScreenState()
     {
         return "{\"width\":" + UnityEngine.Screen.width + ",\"height\":" + UnityEngine.Screen.height + "}";

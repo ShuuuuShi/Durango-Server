@@ -92,6 +92,8 @@ public class GameServer
 			_connectionDict[connection] = entityId;
 			SendWelcome(connection, entityId, playerContext2.PlayerInfo.PlayerName, header.Seq);
 		});
+		// M5 handshake is optional and has no meaning for the embedded offline server.
+		connection.Recv(delegate(ModHello hello, PacketHeader header) { });
 		connection.Recv(delegate(Ready ready, PacketHeader readyHeader)
 		{
 			string text = _connectionDict.Get(connection);

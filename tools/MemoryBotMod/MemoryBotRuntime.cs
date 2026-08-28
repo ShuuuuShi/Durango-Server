@@ -45,6 +45,7 @@ public sealed class MemoryBotRuntime : MonoBehaviour
         GameObject go = new GameObject("__DurangoMemoryBot");
         UnityEngine.Object.DontDestroyOnLoad(go);
         _instance = go.AddComponent<MemoryBotRuntime>();
+        MemoryBotAutopilot.Initialize(api);
         _listenerThread = new Thread(ListenLoop);
         _listenerThread.IsBackground = true;
         _listenerThread.Start();
@@ -108,6 +109,7 @@ public sealed class MemoryBotRuntime : MonoBehaviour
 
     private void Update()
     {
+        MemoryBotAutopilot.Tick(Time.deltaTime);
         MemoryBotPending pending = null;
         lock (Sync)
         {

@@ -43,6 +43,7 @@ public static class AccountStore
     {
         public string EntityId { get; set; }
         public string Name { get; set; }
+        public string OwnerKey { get; set; }
         /// <summary>IP ที่จอง id นี้ครั้งแรก</summary>
         public string ClaimedFromIp { get; set; }
         public double ClaimedAt { get; set; }
@@ -50,9 +51,40 @@ public static class AccountStore
         public int Logins { get; set; }
     }
 
+    private sealed class OwnerRecord
+    {
+        public string OwnerKey { get; set; }
+        public double FirstSeenAt { get; set; }
+    }
+
     private static string PathFor(string entityId)
     {
         return Path.Combine(SaveStore.Root, "accounts", SafeName(entityId) + ".json");
+    }
+
+    private static string OwnerPath(string ownerKey)
+    {
+        return Path.Combine(SaveStore.Root, "owners", SafeName(ownerKey) + ".json");
+    }
+
+    private static void RememberOwner(string ownerKey)
+    {
+        if (string.IsNullOrEmpty(ownerKey))
+        {
+            return;
+        }
+
+        string path = OwnerPath(ownerKey);
+        if (SaveStore.Peek<OwnerRecord>(path) != null)
+        {
+            return;
+        }
+
+        SaveStore.Save(path, new OwnerRecord
+        {
+            OwnerKey = ownerKey,
+            FirstSeenAt = Durango.Utils.Times.UnixTimeNow()
+        });
     }
 
     private static string SafeName(string raw)
@@ -154,7 +186,7 @@ public static class AccountStore
         return addr.ToString();
     }
 
-    public static bool TryClaim(string entityId, string name, string remoteIp, out string reason)
+    public static bool TryClaim(string entityId, string name, string remoteIp, string ownerKey, out string reason)
     {
         reason = null;
         if (Disabled || string.IsNullOrEmpty(entityId))
@@ -185,12 +217,14 @@ public static class AccountStore
             {
                 EntityId = entityId,
                 Name = name,
+                OwnerKey = ownerKey,
                 ClaimedFromIp = remoteIp,
                 ClaimedAt = now,
                 LastSeenAt = now,
                 Logins = 1
             };
             SaveStore.Save(path, acc);
+            RememberOwner(ownerKey);
             Console.WriteLine($"[account] จอง {entityId} ({name}) ให้ {remoteIp}");
             return true;
         }
@@ -204,10 +238,23 @@ public static class AccountStore
             return false;
         }
 
+        if (!string.IsNullOrEmpty(acc.OwnerKey)
+            && !string.IsNullOrEmpty(ownerKey)
+            && !string.Equals(acc.OwnerKey, ownerKey, StringComparison.Ordinal))
+        {
+            reason = "ตัวละครนี้เป็นของบัญชีอื่น";
+            return false;
+        }
+
         acc.Name = string.IsNullOrEmpty(name) ? acc.Name : name;
+        if (string.IsNullOrEmpty(acc.OwnerKey) && !string.IsNullOrEmpty(ownerKey))
+        {
+            acc.OwnerKey = ownerKey;
+        }
         acc.LastSeenAt = now;
         acc.Logins++;
         SaveStore.Save(path, acc);
+        RememberOwner(ownerKey);
         return true;
     }
 
@@ -244,6 +291,52 @@ public static class AccountStore
         // เจ้าของกำลังเล่นอยู่จริงมีโอกาสถูกเลือก/แสดงก่อนของเก่าที่ทิ้งไว้
         result.Sort((a, b) => b.LastSeenAt.CompareTo(a.LastSeenAt));
         return result;
+    }
+
+    /// <summary>
+    /// Return only characters owned by one persistent client installation.
+    /// Legacy saves did not have OwnerKey; on the first request, migrate only
+    /// the most recently used legacy character so old localhost test accounts
+    /// do not appear as somebody else's characters.
+    /// </summary>
+    public static List<Account> FindByOwner(string remoteIp, string ownerKey)
+    {
+        List<Account> byIp = FindByIp(remoteIp);
+        if (string.IsNullOrEmpty(ownerKey))
+        {
+            return byIp;
+        }
+
+        List<Account> owned = byIp.FindAll(account =>
+            !string.IsNullOrEmpty(account.OwnerKey)
+            && string.Equals(account.OwnerKey, ownerKey, StringComparison.Ordinal));
+        if (owned.Count > 0)
+        {
+            RememberOwner(ownerKey);
+            return owned;
+        }
+
+        // Once an installation has been seen, an empty list really means it has
+        // no characters. Do not migrate another old localhost test character
+        // after the owner deletes their final character.
+        if (SaveStore.Peek<OwnerRecord>(OwnerPath(ownerKey)) != null)
+        {
+            return owned;
+        }
+
+        Account legacy = byIp.Find(account => string.IsNullOrEmpty(account.OwnerKey));
+        if (legacy != null)
+        {
+            legacy.OwnerKey = ownerKey;
+            SaveStore.Save(PathFor(legacy.EntityId), legacy);
+            Console.WriteLine($"[account] migrated legacy owner {legacy.EntityId} -> {ownerKey}");
+            owned.Add(legacy);
+        }
+
+        // Remember even a brand-new owner with no legacy data so repeated empty
+        // account requests stay empty until that owner creates a character.
+        RememberOwner(ownerKey);
+        return owned;
     }
 
     /// <summary>ล้างการจองของ entity id (ให้เจ้าของเครื่องแก้เคสย้าย IP/เปลี่ยนเน็ต)</summary>

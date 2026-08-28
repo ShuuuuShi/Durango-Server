@@ -54,9 +54,11 @@ cd "C:\Users\thana\Desktop\Durango Opencode\server"
 dotnet build -c Debug                                              # เช็ค compile ก่อน (เร็ว)
 dotnet publish -c Release -r linux-x64 --self-contained true -o "../publish/linux-x64"
 
-# 2) อัปโหลดทับ (ระวัง: ต้อง kill โปรเซสเดิมก่อนไม่งั้น pscp ทับไบนารีที่กำลังรันอยู่ค้างกลางทางได้
-#    ถ้าเน็ตสะดุด — ปลอดภัยกว่าถ้า kill ก่อนอัป ไม่ใช่อัปแล้วค่อย kill)
-"$PLINK" ... "pkill -9 -f DurangoServer"
+# 2) หยุดแบบ graceful และสำรอง save ก่อนอัป
+#    ส่ง SIGINT แล้วรอให้ server เซฟ; ถ้า timeout ค่อย escalate และบันทึกว่า autosave interval ล่าสุดอาจหาย
+"$PLINK" ... "pkill -INT -f DurangoServer; sleep 10; pgrep -f DurangoServer && exit 1 || true"
+#    สร้าง archive ของ /root/durango/saves ไว้นอก live root แล้วตรวจว่ามีไฟล์จริง
+"$PLINK" ... "stamp=$(date -u +%Y%m%dT%H%M%SZ); mkdir -p /root/durango/backups; tar -C /root/durango -czf /root/durango/backups/saves-$stamp.tgz saves; test -s /root/durango/backups/saves-$stamp.tgz"
 "$PSCP" ... -r "C:\...\publish\linux-x64" root@187.127.208.20:/root/durango/
 "$PSCP" ... "C:\...\server\admin\index.html" root@187.127.208.20:/root/durango/linux-x64/admin/index.html
 "$PLINK" ... "chmod +x /root/durango/linux-x64/DurangoServer"

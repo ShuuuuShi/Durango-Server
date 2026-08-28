@@ -94,3 +94,19 @@ powershell -ExecutionPolicy Bypass -File tools/MemoryBotClient/memorybot-client.
 - ทุกคำสั่งทำบน Unity main thread
 - อย่าเปิด port นี้ออกอินเทอร์เน็ต
 - `tap` ของ `BotBridge` เดิมไม่ใช่ส่วนหนึ่งของ MemoryBot API
+
+## Real-client bridge verification (2026-08-27)
+
+`DurangoMemoryBot.dll` was rebuilt and installed to `game/mods/`, then loaded by the real `DurangoV2.exe` client together with `ExampleClientMod`. The bridge was enabled on `127.0.0.1:8193` with a token.
+
+Observed through the TCP bridge, without mouse, keyboard, screenshot, or desktop input automation:
+
+```text
+read game          -> scene=Main, ready=true, main_scene=true
+read player.local  -> position=[8100,35500], tile=[40.5,177.5], alive=true
+command player.move_to x=8200 y=35600 -> accepted
+read player.local  -> position=[8184.107,35584.11], tile=[40.921,177.921], moving=false
+command player.stop -> accepted
+```
+
+The position change confirms that the mod can drive the local player through the game's managed API while the user keeps control of the mouse. The server still validates the underlying gameplay requests.

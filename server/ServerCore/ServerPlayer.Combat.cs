@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Durango.Network;
 using Durango.Utils;
 using Messages;
+using DurangoServer.Modding;
 using Shared.Battle;
 
 namespace DurangoServer.Core;
@@ -136,7 +137,12 @@ public partial class ServerPlayer
         if (!targetIsAnimal)
         {
             ServerPlayer targetPlayer = _world.FindPlayer(msg.TargetEntityId);
-            if (!ServerConfig.Current.Features.Pvp || Level < 20 || targetPlayer == null || targetPlayer.Level < 20)
+            if (!ServerConfig.Current.Features.Pvp)
+            {
+                RejectFeatureDisabled("Pvp", "UseBattleAction", "PvP ยังไม่เปิดในรอบนี้", header);
+                return;
+            }
+            if (Level < 20 || targetPlayer == null || targetPlayer.Level < 20)
             {
                 Send(new Info { Text = "PvP เปิดสำหรับผู้เล่นเลเวล 20 ขึ้นไปเท่านั้น" }, header.Seq);
                 Send(default(Abort), header.Seq);
@@ -150,6 +156,11 @@ public partial class ServerPlayer
             Send(default(Abort), header.Seq);
             return;
         }
+
+        IModEventContext? beforeAttack = PluginManager.Instance?.FireEvent("combat.before_attack", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["target_id"] = msg.TargetEntityId ?? "", ["action_id"] = action.Id.ToString() });
+        if (beforeAttack?.IsCancelled == true)
+        { Send(new Info { Text = beforeAttack.CancelReason ?? "การโจมตีถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
 
         float staminaCost = Math.Max(action.Stamina, StaminaCostAttackMin);
         if (!TrySpendStamina(staminaCost))
@@ -185,6 +196,7 @@ public partial class ServerPlayer
         Send(default(OK), header.Seq);
 
         double hitAt = now + action.AttackTime;
+        PluginManager.Instance?.FireEvent("combat.attack", this, false, true);
         string victimId = msg.TargetEntityId;
         _deferred.Add((hitAt, () => ResolveHit(victimId, targetIsAnimal, action, hitAt, rangedAttack)));
     }
@@ -203,6 +215,11 @@ public partial class ServerPlayer
             AttackType = CurrentAttackType(),
             Effects = crit ? DamageEffects.Critical : DamageEffects.None
         };
+
+        IModEventContext? beforeDamage = PluginManager.Instance?.FireEvent("combat.before_damage", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["attacker_id"] = EntityId, ["victim_id"] = victimId, ["damage"] = dmg.Value.ToString(), ["critical"] = crit.ToString() });
+        if (beforeDamage?.IsCancelled == true)
+        { Console.WriteLine("[combat] damage cancelled by mod: " + (beforeDamage.CancelReason ?? "cancelled")); return; }
 
         _world.BroadcastToViewers(victimId, new Damaged
         {
@@ -236,6 +253,14 @@ public partial class ServerPlayer
             return;
         }
         Console.WriteLine("[combat] {0} ตี {1} {2} หน่วย{3}", Name, victim.Name, dmg.Value, crit ? " (คริ!)" : "");
+        PluginManager.Instance?.FireEvent("combat.damage", this, false, true,
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["attacker_id"] = EntityId,
+                ["victim_id"] = victimId,
+                ["damage"] = dmg.Value.ToString(),
+                ["critical"] = crit.ToString()
+            });
         WearCombatEquipment(wearWeapon: true, wearArmor: false);
         victim.WearCombatEquipment(wearWeapon: false, wearArmor: true);
         if (victim.ApplyDamage(damage))
@@ -314,6 +339,9 @@ public partial class ServerPlayer
         EndBattle();               // ตายแล้วต้องออกจากโหมดต่อสู้ ไม่งั้น client ค้างในโหมดนั้น
         Console.WriteLine("[combat] ☠ {0} ตายแล้ว", Name);
         _world.BroadcastToViewers(EntityId, new EntityDied { EntityId = EntityId, At = Times.UnixTimeNow() });
+        // [แก้เอง] 27 ส.ค. 2026 — V1.1 mod-sdk: แจ้ง mod ที่ลงทะเบียน OnPlayerDied (ท้ายสุดให้ state
+        // ภายในตัวละคร set ครบก่อน — Dead=true, เลือด=0, battle จบแล้ว)
+        PluginManager.Instance?.FirePlayerDied(this);
     }
 
     private void HandleRevive(Revive msg, PacketHeader header)
@@ -350,6 +378,7 @@ public partial class ServerPlayer
         Console.WriteLine("[combat] {0} ฟื้นที่จุดเกิด", Name);
         _world.BroadcastToViewers(EntityId, new EntityRevived { EntityId = EntityId, At = Times.UnixTimeNow() });
         SendSurvivalPublic();
+        PluginManager.Instance?.FireEvent("player.revived", this, false, true);
     }
 
     /// <summary>ส่งค่าสถานะให้ตัวเองและคนอื่น (ใช้หลังฟื้น เพื่อให้หลอดเลือดของทุกฝ่ายตรงกัน)</summary>

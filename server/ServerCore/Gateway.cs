@@ -47,6 +47,7 @@ public partial class Gateway
     private readonly string _reportsDir;
     private readonly string _clusterMode;
     private readonly string _adminToken;
+    private readonly CharacterService _characterService;
 
     /// <param name="radiotowerPort">พอร์ตจริงของ RadiotowerServer (ไม่ใช่ค่าคงที่)</param>
     /// <param name="publicHost">
@@ -79,6 +80,7 @@ public partial class Gateway
         _clusterMode = string.IsNullOrEmpty(clusterMode) ? "SingleMode" : clusterMode;
         _adminToken = adminToken;
         _webServer = new WebServer(port);
+        _characterService = new CharacterService(_gameServer);
 
         // /knock: client ใช้เช็กเวอร์ชัน + ที่อยู่ assetbundle (ตอบ URL ชี้มาที่ server ตัวเอง
         // เพราะ Nexon CDN ตายแล้ว; assetbundle serve จากโฟลเดอร์ของตัวเกมที่เครื่องนี้)
@@ -110,6 +112,7 @@ public partial class Gateway
         _webServer.PostRoute["/sessions"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
         {
             string entityId = Guid.NewGuid().ToString();
+            string generatedEntityId = entityId;
             string player = postData.Get("player");
             // [debug] ดูว่า client ส่ง player field มาไหม — ใช้ไล่ปัญหา token ไม่ตรง id
             Console.WriteLine($"[gateway] /sessions player field: {(string.IsNullOrEmpty(player) ? "(ไม่มี)" : player.Length + " bytes: " + player.Substring(0, Math.Min(player.Length, 300)))}");
@@ -178,6 +181,10 @@ public partial class Gateway
                     Console.WriteLine("[gateway] /sessions player parse failed: " + e.Message);
                 }
             }
+			// No selected id is the pre-character-creation flow.  Keep its session
+			// temporary; never fall back to the latest localhost character because
+			// that auto-connected an unrelated old save and attached it to this owner.
+			bool hasSelectedCharacter = !string.Equals(entityId, generatedEntityId, StringComparison.Ordinal);
             // client บางเส้นทาง (เช่นเพิ่งสร้างตัวละครเสร็จ) ส่ง player JSON มาแค่ entity id
             // ⇒ เติมชื่อ/เลเวล/หน้าตาจากไฟล์เซฟให้ครบ ไม่งั้น token ที่ออกไปพก PlayerData เปล่า
             //   (ตัว ServerPlayer โหลดเซฟเองอยู่แล้ว แต่ AccountStore.TryClaim ข้างล่างใช้ชื่อจากตรงนี้)
@@ -191,7 +198,7 @@ public partial class Gateway
             // แก้โดยแยก Level/EntityType ออกมาเช็ค+เติมเอง ไม่ผูกกับเงื่อนไข Name/DisplayJson อีกต่อไป
             if (!string.IsNullOrEmpty(data.EntityId))
             {
-                PlayerSave known = SaveStore.Load<PlayerSave>(SaveStore.PlayerPath(data.EntityId));
+                PlayerSave known = SaveStore.Peek<PlayerSave>(SaveStore.PlayerPath(data.EntityId));
                 if (known != null)
                 {
                     if (string.IsNullOrEmpty(data.Name) && !string.IsNullOrEmpty(known.Name))
@@ -219,8 +226,14 @@ public partial class Gateway
             }
             // H-1: entity id เป็นของสาธารณะ (มากับ AppearPlayer ที่ broadcast ให้ทุกคน)
             // ก่อนออก token ต้องเช็คก่อนว่า "คนขอเป็นเจ้าของ id นี้จริงไหม" (ดู AccountStore)
-            string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
-            if (!AccountStore.TryClaim(entityId, data.Name, remoteIp, out string denyReason))
+			string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
+			if (hasSelectedCharacter && SaveStore.Peek<PlayerSave>(SaveStore.PlayerPath(entityId)) == null)
+			{
+				return new WebServer.JsonResponse(
+					new JObject { ["error"] = "character_not_found" }.ToString(),
+					HttpStatusCode.NotFound);
+			}
+			if (hasSelectedCharacter && !AccountStore.TryClaim(entityId, data.Name, remoteIp, postData.Get("account_id"), out string denyReason))
             {
                 Console.WriteLine($"[account] ปฏิเสธ {remoteIp} ที่อ้างเป็น {entityId} ({data.Name}): {denyReason}");
                 return new WebServer.JsonResponse(
@@ -243,49 +256,7 @@ public partial class Gateway
         // ตัวแปรในหน่วยความจำแทน ซึ่งหายไปทุกครั้งที่ปิดเกม ⇒ ตัวละครเก่ายังอยู่ในเซฟจริง แต่บังคับสร้างใหม่
         // ตลอด — ใช้ IP เดียวกับที่ AccountStore ผูก entity id ไว้อยู่แล้ว (ดู AccountStore.FindByIp)
         _webServer.PostRoute["/accounts"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
-        {
-            string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
-            List<AccountStore.Account> accounts = AccountStore.FindByIp(remoteIp);   // เรียงเล่นล่าสุดก่อนแล้ว
-            // [แก้เอง] 25 ส.ค. 2026 — 🐛 `player_slot_count` **ไม่ใช่** "จำนวนตัวละครที่มีจริง" แต่คือ
-            // "จำนวนช่องที่ account นี้ได้รับ" (ดู client PlayerSelectionSystem.cs: PlayerSlotExceeded =
-            // PlayerSlotCount < size — เทียบกับจำนวนที่ส่งมาจริง) เดิม hardcode 7 คงที่ไม่สนจำนวนจริง —
-            // ตอนเทสสะสม account ไว้ 80+ อันจาก IP เดียว (127.0.0.1) ทำให้ 7 < 80 กลายเป็น "เกินโควตา"
-            // ทุกครั้ง ⇒ หน้าเลือกตัวละครน่าจะพังหรือ fallback ไปสร้างใหม่ (คือปัญหา "ทำไมบังคับสร้างตัวใหม่"
-            // ที่เจ้าของถาม) — ค่าอ้างอิงจริงจากเกม (client/Durango.Offline/Server.cs): MultiMode ให้ 3
-            // ช่อง, Editable (dev) ให้ 7 — ใช้ 3/7 เป็นค่าเริ่มต้น และ**ตัดรายการที่ส่งกลับให้เหลือแค่
-            // เท่าจำนวนช่องจริง** (เอาที่เล่นล่าสุดไว้ก่อน) จะได้ไม่ส่งของเก่าที่เกินโควตาปนไปด้วย
-            const int playerSlotCount = 3;
-            const int maxPlayerSlotCount = 7;
-            var players = new JArray();
-            foreach (AccountStore.Account acc in accounts)
-            {
-                if (players.Count >= playerSlotCount)
-                {
-                    break;
-                }
-                PlayerSave save = SaveStore.Load<PlayerSave>(SaveStore.PlayerPath(acc.EntityId));
-                if (save == null)
-                {
-                    // จองไว้แต่ยังไม่เคยเข้าเกมจริง (เช่น สร้างตัวละครค้างไว้กลางทาง) — ข้าม ไม่ให้โผล่
-                    // เป็นตัวเลือกว่าง ๆ กดแล้วพัง
-                    continue;
-                }
-                players.Add(new JObject
-                {
-                    ["player_entity_id"] = acc.EntityId,
-                    ["player_name"] = string.IsNullOrEmpty(save.Name) ? acc.Name : save.Name,
-                    ["player_level"] = save.Level,
-                    ["disconnected_at"] = acc.LastSeenAt,
-                    ["deletes_at"] = null
-                });
-            }
-            return new WebServer.JsonResponse(new JObject
-            {
-                ["players"] = players,
-                ["max_player_slot_count"] = maxPlayerSlotCount,
-                ["player_slot_count"] = playerSlotCount
-            }.ToString());
-        };
+            _characterService.ListAccounts(request, postData.Get("account_id"));
         _webServer.GetRoute["/admission"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
             new WebServer.JsonResponse(new JObject { ["admitted"] = true }.ToString());
         _webServer.GetRoute["/entry"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
@@ -297,7 +268,9 @@ public partial class Gateway
                 // เพราะ client ต่อผ่าน cloudflared access tcp บนเครื่องตัวเอง)
                 // ถ้าไม่ระบุ ใช้ host ที่ client เรียก gateway มา (กรณีเล่นในวงแลน)
                 ["frontend_addresses"] = new JArray(ResolveTcpHost(request) + ":" + _gameServer.Port),
-                ["radiotower_addresses"] = new JArray(ResolveTcpHost(request) + ":" + _radiotowerPort),
+                ["radiotower_addresses"] = _radiotowerPort > 0
+                    ? new JArray(ResolveTcpHost(request) + ":" + _radiotowerPort)
+                    : new JArray(),
                 ["cluster_mode"] = _clusterMode,
                 // [แก้เอง] 24 ส.ค. 2026 — ให้ "ข้ามฉากรถไฟไหม" เป็นค่าที่เซิร์ฟสั่งได้ (data/config.json
                 // → ServerConfig.SkipPrologueVideo) ไม่ต้อง build/แจก client ใหม่ทุกครั้งที่จะสลับ
@@ -312,42 +285,7 @@ public partial class Gateway
         //   ผู้เล่นจึงเข้าเกมมาพร้อมชื่อ+หน้าตาที่ถูกต้อง แม้ client จะส่ง JSON ขั้นต่ำมาก็ตาม
         //   (ServerPlayer.LoadPersistedState เป็นคนหยิบไปใช้ ดู ServerPlayer.Persistence.cs)
         _webServer.PostRoute["/players"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
-        {
-            string entityId = Guid.NewGuid().ToString();
-            string name = (postData.Get("name") ?? string.Empty).Trim();
-            bool isMale = !string.Equals(postData.Get("gender"), "female", StringComparison.OrdinalIgnoreCase);
-            ushort entityType = (ushort)(isMale ? 1000 : 1001);
-            string displayJson = BuildCreatedDisplayJson(entityId, isMale, postData.Get("model_info"));
-
-            GameServer.PlayerData data = new GameServer.PlayerData
-            {
-                EntityId = entityId,
-                Name = name,
-                Level = 1,
-                EntityType = entityType,
-                DisplayJson = displayJson
-            };
-            if (!string.IsNullOrEmpty(name))
-            {
-                _gameServer.RegisterName(entityId, name);
-            }
-            _gameServer.RegisterPlayerData(data);
-
-            PlayerSave save = new PlayerSave
-            {
-                EntityId = entityId,
-                Name = name,
-                Level = 1,
-                EntityType = entityType,
-                DisplayJson = displayJson
-            };
-            SaveStore.Save(SaveStore.PlayerPath(entityId), save);
-
-            Console.WriteLine($"[gateway] สร้างตัวละคร {entityId} name={(string.IsNullOrEmpty(name) ? "(ว่าง!)" : name)} " +
-                $"เพศ={(isMale ? "ชาย" : "หญิง")} display={(string.IsNullOrEmpty(displayJson) ? "no" : "yes")} " +
-                $"job={postData.Get("job")} region={postData.Get("region")}");
-            return new WebServer.JsonResponse(new JObject { ["entity_id"] = entityId }.ToString());
-        };
+            _characterService.Create(postData);
         _webServer.GetRoute["/terrains/1"] = (HttpListenerRequest request, Dictionary<string, string> postData) =>
         {
             string content = JsonConvert.SerializeObject(_world.Terrain.Info);
@@ -401,55 +339,15 @@ public partial class Gateway
         // ดูรายละเอียดที่ Gateway.Admin.cs — ตั้งใจแยก prefix ให้ชัดว่าเป็นโซน admin
         // ไม่มี auth ซับซ้อนเพราะ Gateway บินด์แค่ localhost/วงแลนของเจ้าของเซิร์ฟเอง (ดู WebServer bind fallback)
         RegisterAdminRoutes();
+
+        // /launcher/*: endpoint สำหรับ DinoWorld Launcher (tools/Launcher) — อ่านอย่างเดียว ไม่มี action
+        // ดูรายละเอียดที่ Gateway.Launcher.cs
+        RegisterLauncherRoutes();
     }
 
-    /// <summary>
-    /// แปลง <c>model_info</c> ที่หน้าสร้างตัวละครส่งมา (snake_case ดู PrologueManager.PlayerDisplay)
-    /// ให้เป็น <see cref="PlayerDisplay"/> ของโปรโตคอลเกม แล้วคืนเป็น JSON ที่เก็บลงไฟล์เซฟได้
-    ///
-    /// ตรรกะเดียวกับ offline gateway ของเกมเอง (Durango.Offline.Gateway.UpdateAppearPlayer)
-    /// บวกโมเดลร่างเปล่าตามเพศ ซึ่งฝั่งนั้นได้มาจากค่าตั้งต้นของ PlayerContext
-    /// </summary>
-    private static string BuildCreatedDisplayJson(string entityId, bool isMale, string modelInfoJson)
+    public void Close()
     {
-        PlayerDisplay display = default;
-        display.EntityId = entityId;
-        display.DefaultBody = isMale
-            ? "Models/PC/Male/Body/m_body_nothing.FBX"
-            : "Models/PC/Female/Body/f_body_nothing.FBX";
-        display.DefaultInner = isMale
-            ? "Models/PC/Male/Inner/m_inner_basic.FBX"
-            : "Models/PC/Female/Inner/f_inner_basic.FBX";
-        display.Body = display.DefaultBody;
-        display.BodySize = 1f;
-
-        if (!string.IsNullOrWhiteSpace(modelInfoJson))
-        {
-            try
-            {
-                JObject m = JObject.Parse(modelInfoJson);
-                display.Hair = m.Value<string>("hair");
-                display.Beard = m.Value<string>("beard");
-                display.SkinColor = m.Value<string>("skin_color");
-                display.HairColor = m.Value<string>("hair_color");
-                display.EyeColor = m.Value<string>("eye_color");
-                display.LipColor = m.Value<string>("lip_color");
-                display.PortraitBgColor = m.Value<string>("portrait_bg_color");
-                display.BodyColor = m["body_color"]?.ToObject<string[]>();
-                display.HeadColor = m["head_color"]?.ToObject<string[]>();
-                display.Portrait = m.Value<int?>("portrait") ?? 0;
-                display.PortraitBg = m.Value<int?>("portrait_bg") ?? 0;
-                display.VoiceType = m.Value<int?>("voice_type") ?? 0;
-                // ปั้นตัวเล็ก/ใหญ่ได้ในหน้าสร้าง — 0 แปลว่าไม่ได้ส่งมา ไม่ใช่ "ตัวหายไป"
-                float size = m.Value<float?>("body_size") ?? 0f;
-                display.BodySize = size > 0f ? size : 1f;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("[gateway] /players model_info อ่านไม่ออก: " + e.Message);
-            }
-        }
-        return JsonConvert.SerializeObject(display);
+        _webServer.Close();
     }
 
     /// <summary>
@@ -480,6 +378,52 @@ public partial class Gateway
 
     private WebServer.RouteFunction UnhandledUrl(string url)
     {
+        // Title-screen character selection requests /players/<entity-id> to build
+        // the preview model. Keep this backed by the same PlayerSave.DisplayJson
+        // that the in-game player uses, so the preview cannot drift from reality.
+        if (url.StartsWith("/players/", StringComparison.OrdinalIgnoreCase))
+        {
+            string entityId = url.Substring("/players/".Length);
+            bool cancelDeletion = entityId.EndsWith("/cancel_player_deletion", StringComparison.OrdinalIgnoreCase);
+            if (cancelDeletion)
+            {
+                entityId = entityId.Substring(0, entityId.Length - "/cancel_player_deletion".Length);
+            }
+            int queryIndex = entityId.IndexOf('?');
+            if (queryIndex >= 0)
+            {
+                entityId = entityId.Substring(0, queryIndex);
+            }
+            try
+            {
+                entityId = Uri.UnescapeDataString(entityId);
+            }
+            catch (Exception)
+            {
+                return (HttpListenerRequest request, Dictionary<string, string> postData) => new WebServer.BadRequestResponse();
+            }
+            if (string.IsNullOrWhiteSpace(entityId) || entityId.Contains('/') || entityId.Contains('\\') || entityId.Contains(".."))
+            {
+                return (HttpListenerRequest request, Dictionary<string, string> postData) => new WebServer.BadRequestResponse();
+            }
+
+            return (HttpListenerRequest request, Dictionary<string, string> postData) =>
+            {
+                if (cancelDeletion && request.HttpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase))
+                {
+                    return _characterService.CancelDeletion(entityId);
+                }
+                if (!cancelDeletion && request.HttpMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+                {
+                    return _characterService.Delete(entityId, request);
+                }
+                if (!cancelDeletion && request.HttpMethod.Equals("GET", StringComparison.OrdinalIgnoreCase))
+                {
+                    return _characterService.GetInfo(entityId);
+                }
+                return new WebServer.NotFountResponse();
+            };
+        }
         if (url.StartsWith("/assetbundles/"))
         {
             if (string.IsNullOrEmpty(_assetBundleDir) || !Directory.Exists(_assetBundleDir))

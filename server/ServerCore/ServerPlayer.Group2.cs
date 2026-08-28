@@ -5,6 +5,7 @@ using Durango.Network;
 using Durango.Utils;
 using Messages;
 using Shared.Ability;
+using Shared.StatusEffect;
 
 namespace DurangoServer.Core;
 
@@ -24,7 +25,9 @@ public partial class ServerPlayer
         Derived.VolcanicHeatResistant, Derived.BlowResistance
     };
 
-    private const string RestStatusEffectId = "away_from_keyboard";
+    // ใช้ status effect จริงของเกมสำหรับการพัก ไม่ปนกับ SleepChecker/AFK
+    // เพื่อให้ HUD แสดงไอคอนพัก (icon_se_rest) แทนไอคอน AFK
+    private const string RestStatusEffectId = "rest";
 
     /// <summary>อัปเดตไอคอนสถานะพักให้ตรงกับสถานะพักจริงของ server</summary>
     private void SetRestStatusEffect(bool enabled)
@@ -35,6 +38,14 @@ public partial class ServerPlayer
         bool changed = false;
         if (enabled)
         {
+            // ขณะพักจริงไม่ให้ไอคอน AFK บัง/ปนกับไอคอนพัก
+            StatusEffectSave afk = _statusEffects.FirstOrDefault(x =>
+                x.Id == "away_from_keyboard" || x.EffectId == "away_from_keyboard");
+            if (afk != null && afk.Enabled)
+            {
+                afk.Enabled = false;
+                changed = true;
+            }
             if (effect == null)
             {
                 double now = Times.UnixTimeNow();
@@ -66,6 +77,7 @@ public partial class ServerPlayer
         {
             MarkDirty();
         }
+        Console.WriteLine("[rest] {0} status={1} effect={2}", Name, enabled ? "on" : "off", RestStatusEffectId);
         SendStatusEffects();
     }
 
@@ -101,7 +113,17 @@ public partial class ServerPlayer
             Stacked = 1,
             DurationHidden = x.Until <= 0,
             NameGettext = null,
-            Effects = Array.Empty<EffectDetail>(),
+            Effects = string.Equals(x.EffectId, RestStatusEffectId, StringComparison.OrdinalIgnoreCase)
+                ? new[]
+                {
+                    new Messages.EffectDetail
+                    {
+                        Type = EffectType.Survival,
+                        Key = "fatigue",
+                        Value = -ServerConfig.Current.Survival.RestFatiguePerSec
+                    }
+                }
+                : Array.Empty<EffectDetail>(),
             DailyContents = null
         }).ToArray();
         var packet = new Messages.StatusEffects { EntityId = EntityId, _StatusEffects = values };
@@ -117,6 +139,51 @@ public partial class ServerPlayer
         }
         PruneStatusEffects();
         StatusEffectSave effect = _statusEffects.FirstOrDefault(x => x.Id == msg.Id || x.EffectId == msg.Id);
+        bool isRest = string.Equals(msg.Id, RestStatusEffectId, StringComparison.OrdinalIgnoreCase);
+        bool isAfk = string.Equals(msg.Id, "away_from_keyboard", StringComparison.OrdinalIgnoreCase);
+
+        // ระหว่างนั่งพัก server เป็น owner ของสองสถานะนี้ทั้งหมด:
+        // rest ต้องเปิดเสมอ ส่วน AFK ของ SleepChecker ต้องปิดเสมอ
+        // ไม่อย่างนั้น packet idle ที่มาช้าหลัง RestOn จะทับไอคอนหรือทำให้รอบสองดูเหมือนบัพหลุด
+        if (_resting && (isRest || isAfk))
+        {
+            bool changed = false;
+            if (isRest)
+            {
+                if (effect == null)
+                {
+                    effect = new StatusEffectSave
+                    {
+                        Id = RestStatusEffectId,
+                        EffectId = RestStatusEffectId,
+                        Level = 1,
+                        Since = Times.UnixTimeNow(),
+                        Until = 0,
+                        Enabled = true
+                    };
+                    _statusEffects.Add(effect);
+                    changed = true;
+                }
+                else if (!effect.Enabled)
+                {
+                    effect.Enabled = true;
+                    effect.Since = Times.UnixTimeNow();
+                    effect.Until = 0;
+                    changed = true;
+                }
+            }
+            else if (effect != null && effect.Enabled)
+            {
+                effect.Enabled = false;
+                changed = true;
+            }
+            if (changed) MarkDirty();
+            Send(default(OK), header.Seq);
+            SendStatusEffects();
+            SendStatistics();
+            return;
+        }
+
         if (effect == null && msg.Toggle)
         {
             effect = new StatusEffectSave
@@ -132,17 +199,7 @@ public partial class ServerPlayer
         }
         else if (effect != null)
         {
-            // SleepChecker ใช้ away_from_keyboard ร่วมกับบัพนั่งพัก
-            // wake-up packet ของ idle sleep ห้ามปิดไอคอนขณะ server ยังพักอยู่จริง
-            if (!msg.Toggle && _resting &&
-                string.Equals(msg.Id, RestStatusEffectId, StringComparison.OrdinalIgnoreCase))
-            {
-                effect.Enabled = true;
-            }
-            else
-            {
-                effect.Enabled = msg.Toggle;
-            }
+            effect.Enabled = msg.Toggle;
         }
         MarkDirty();
         Send(default(OK), header.Seq);

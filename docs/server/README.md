@@ -3,7 +3,7 @@
 `DurangoServer` — .NET 9, เธรดเดียว, ~5,600 บรรทัด (ไม่นับ `GameCode/`)
 เอกสารชุดนี้ **เขียนมือ** อธิบายว่าแต่ละไฟล์ทำอะไรและแต่ละเมทอดทำงานยังไงทีละขั้น
 
-> ภาพรวมว่าทุกอย่างต่อกันยังไง อ่าน [../ARCHITECTURE.md](../ARCHITECTURE.md) ก่อน
+> ภาพรวมว่าทุกอย่างต่อกันยังไง อ่าน [../project/ARCHITECTURE.md](../project/ARCHITECTURE.md) ก่อน
 > รายการบั๊กที่ยังค้าง + roadmap อยู่ที่ [../../server/GAMEPLAY-REVIEW.md](../../server/GAMEPLAY-REVIEW.md)
 
 ## โครงไฟล์
@@ -101,7 +101,7 @@ server/
 | GP-13 | ลบพารามิเตอร์ `excludeSelf` ที่ไม่ถูกใช้ | [ServerWorld.md](ServerWorld.md) |
 | GP-15 | `Listener` ทน bind ล้มเหลว + ปิด socket ปลอดภัย | [GameCode.md](GameCode.md) |
 
-รายละเอียดที่ [../CHANGELOG.md](../CHANGELOG.md)
+รายละเอียดที่ [../project/CHANGELOG.md](../project/CHANGELOG.md)
 
 ## เฟส B–C เสร็จแล้ว ✅
 

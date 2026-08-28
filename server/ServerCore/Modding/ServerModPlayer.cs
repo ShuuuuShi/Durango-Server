@@ -24,4 +24,11 @@ internal sealed class ServerModPlayer : IModPlayer
     public void SendMessage(string text) => _player.Send(new Info { Text = text });
 
     public void Teleport(int tileX, int tileY) => _player.ControlTeleport(tileX, tileY);
+
+    // [V1.1] 27 ส.ค. 2026 — มุมมองกระเป๋าให้ mod (อ่าน/เพิ่มเท่านั้น ยังไม่เปิดลบของให้ mod)
+    public int CountItem(string prototypeId) => _player.ModCountItems(prototypeId);
+
+    public IReadOnlyDictionary<string, int> GetInventorySummary() => _player.ModInventorySummary();
+
+    public bool GiveItem(string prototypeId, int count = 1) => _player.ModGiveItems(prototypeId, count);
 }

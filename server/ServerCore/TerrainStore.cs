@@ -19,6 +19,7 @@ public class TerrainStore
     public byte[] Ocean { get; }
     public byte[] Rivers { get; }
     public byte[] Garden { get; private set; }
+    public byte[] Elevations { get; }
 
     /// <summary>
     /// `oceans.dm` — **ระยะห่างจากชายฝั่งแบบมีเครื่องหมาย** 1 ไบต์ต่อ tile (อ่านเป็น signed −32..+32)
@@ -131,6 +132,24 @@ public class TerrainStore
         return !IsWaterOrBeach(BiomeAt(tx, ty));
     }
 
+    /// <summary>อ่านความสูงพื้นจาก whole.elevations (1 byte ต่อ tile)</summary>
+    public bool TryGetGroundHeight(float worldX, float worldY, out float height)
+    {
+        height = 0f;
+        if (Elevations == null || Elevations.Length < Width * Height)
+        {
+            return false;
+        }
+        int tileX = (int)Math.Floor(worldX / 200f);
+        int tileY = (int)Math.Floor(worldY / 200f);
+        if (tileX < 0 || tileY < 0 || tileX >= Width || tileY >= Height)
+        {
+            return false;
+        }
+        height = Elevations[tileX + tileY * Width];
+        return true;
+    }
+
     /// <summary>ระยะห่างชายฝั่งที่ลึกที่สุดบนเกาะนี้ (คำนวณครั้งเดียว)</summary>
     private int _deepestInland = -1;
     private float _deepestX;
@@ -202,6 +221,7 @@ public class TerrainStore
         LandMap = LoadOrEmpty(dir, "oceans.dm");
         Rivers = LoadOrEmpty(dir, "whole.rivers");
         Garden = LoadOrEmpty(dir, "whole.garden");
+        Elevations = LoadOrEmpty(dir, "whole.elevations");
 
         Info = new TerrainInfoJson();
         string infoPath = Path.Combine(dir, "info.yml");
@@ -237,6 +257,14 @@ public class TerrainStore
         if (Rivers.Length < vCount * 3)
         {
             Rivers = new byte[vCount * 3];
+        }
+        if (Elevations.Length < Width * Height)
+        {
+            Console.WriteLine("[terrain] whole.elevations missing or too short; animal height lookup will use client hint");
+        }
+        else
+        {
+            Console.WriteLine("[terrain] loaded whole.elevations ({0} tiles)", Elevations.Length);
         }
 
         BuildLandmarkChunks(dir);

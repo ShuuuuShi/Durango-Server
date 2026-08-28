@@ -64,6 +64,13 @@ public class Server
 			account.PlayerSlotCount = ((server.Cluster.Mode == Mode.Editable) ? 7 : ((server.Cluster.Mode == Mode.SingleMode) ? 3 : ((server.Cluster.Mode == Mode.MultiMode) ? 3 : account.Players.Count)));
 			action?.Invoke(account);
 		};
+		// The Online Server entry must load persistent accounts from the real gateway.
+		// Keeping the embedded callback here makes a fresh local player appear after restart.
+		if (key == "online")
+		{
+			Cluster.GatewayUrlRoot = "http://127.0.0.1:8190";
+			Cluster.OnRequestAccount = null;
+		}
 		Cluster.OnDeletePlayer = delegate(string entityId)
 		{
 			for (int i = 0; i < server.Contexts.Count; i++)
@@ -192,11 +199,7 @@ public class Server
 	/// </summary>
 	public static string AutoConnectTarget
 	{
-		get
-		{
-			string env = global::System.Environment.GetEnvironmentVariable("DURANGO_AUTOCONNECT");
-			return !string.IsNullOrEmpty(env) ? env : _defaultAutoConnectTarget;
-		}
+		get { return string.Empty; }
 	}
 
 	private static string _defaultAutoConnectTarget = "";
@@ -215,16 +218,9 @@ public class Server
 		}
 		else if (!_autoConnected)
 		{
-			string autoTarget = global::System.Environment.GetEnvironmentVariable("DURANGO_AUTOCONNECT");
-			if (string.IsNullOrEmpty(autoTarget))
-			{
-				autoTarget = AutoConnectTarget;
-			}
-			if (!string.IsNullOrEmpty(autoTarget))
-			{
-				_autoConnected = true;
-				ConnectTo(autoTarget);
-			}
+			// Deliberately wait for the normal title/menu flow.  Auto-connect is
+			// disabled so launching the EXE can never silently select a server.
+			_autoConnected = true;
 		}
 	}
 

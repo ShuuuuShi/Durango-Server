@@ -39,6 +39,12 @@ public class TitlePlayerSelectionGroupBase : MonoBehaviour
 
 	private Action _backFunc;
 
+	private GameObject _bottomDeleteButton;
+
+	private PlayerInfo _selectedPlayer;
+
+	private Action<PlayerInfo> _deleteClicked;
+
 	private void Awake()
 	{
 		_selectedWidgetMarker.gameObject.SetActive(value: false);
@@ -61,11 +67,20 @@ public class TitlePlayerSelectionGroupBase : MonoBehaviour
 	protected virtual void OnScreenResized()
 	{
 		_scroll.UpdateLayout();
+		PositionBottomDeleteButton();
 	}
 
 	public void Show(Account account, string serverName, int availableSlotCount, int maxSlotCount, [NotNull] Action<string, int> startWithExistingId, [NotNull] Action<int> startPrlogue, Action<PlayerInfo> deleteClicked)
 	{
 		base.gameObject.SetActive(value: true);
+		_selectedPlayer = null;
+		_deleteClicked = deleteClicked;
+		_confirmButton.Clicked = null;
+		_selectedWidgetMarker.gameObject.SetActive(value: false);
+		if (_bottomDeleteButton != null)
+		{
+			_bottomDeleteButton.SetActive(value: false);
+		}
 		Pair<string, int> recommendedPlayer = account.GetRecommendedPlayer();
 		List<PlayerInfo> list = ((account.Players == null) ? new List<PlayerInfo>() : account.Players);
 		_serverLabel.text = serverName;
@@ -98,7 +113,7 @@ public class TitlePlayerSelectionGroupBase : MonoBehaviour
 			{
 				bool wantClicked2 = !flag2 && string.IsNullOrEmpty(recommendedPlayer.Item1);
 				flag2 = true;
-				CreateNewCharacterButton(_scroll.Nodes, list.Count, startPrlogue, wantClicked2);
+				CreateNewCharacterButton(_scroll.Nodes, i, startPrlogue, wantClicked2);
 			}
 			else
 			{
@@ -115,6 +130,8 @@ public class TitlePlayerSelectionGroupBase : MonoBehaviour
 		TitlePlayerSelectionNode comp = next.GetComponent<TitlePlayerSelectionNode>();
 		comp.Set(player, delegate(PlayerInfo selectedPlayer)
 		{
+			_selectedPlayer = selectedPlayer;
+			EnsureBottomDeleteButton(comp, deleteClicked);
 			_confirmButton.Clicked = delegate
 			{
 				startWithExistingId(selectedPlayer.PlayerEntityId, idx);
@@ -122,11 +139,69 @@ public class TitlePlayerSelectionGroupBase : MonoBehaviour
 			};
 			_confirmButton.Text = T._("캐릭터 선택");
 			_selectedWidgetMarker.Set(comp);
-		}, DoubleClickNode, deleteClicked);
+		}, delegate(PlayerInfo doubleClickedPlayer)
+		{
+			if (doubleClickedPlayer != null && doubleClickedPlayer.PlayerEntityId == player.PlayerEntityId)
+			{
+				startWithExistingId(player.PlayerEntityId, idx);
+				base.gameObject.SetActive(value: false);
+			}
+		});
 		if (wantClicked)
 		{
 			comp.Clicked();
 		}
+	}
+
+	private void EnsureBottomDeleteButton(TitlePlayerSelectionNode source, Action<PlayerInfo> deleteClicked)
+	{
+		if (deleteClicked == null || source == null)
+		{
+			return;
+		}
+		if (_bottomDeleteButton == null)
+		{
+			_bottomDeleteButton = source.CreateDeleteButton(_confirmButton.transform.parent);
+			if (_bottomDeleteButton != null)
+			{
+				UIEventListener.Get(_bottomDeleteButton).onClick = delegate
+				{
+					if (_selectedPlayer != null && _deleteClicked != null)
+					{
+						_deleteClicked(_selectedPlayer);
+					}
+				};
+			}
+		}
+		_deleteClicked = deleteClicked;
+		if (_bottomDeleteButton != null)
+		{
+			_bottomDeleteButton.SetActive(value: true);
+			PositionBottomDeleteButton();
+		}
+	}
+
+	private void PositionBottomDeleteButton()
+	{
+		if (_bottomDeleteButton == null || _confirmButton == null || _confirmButton.Widget == null)
+		{
+			return;
+		}
+		UIWidget widget = _bottomDeleteButton.GetComponent<UIWidget>();
+		if (widget == null)
+		{
+			return;
+		}
+		Vector3 localPosition = _confirmButton.transform.localPosition;
+		if (TitleUIRootResizer.IsPortrait)
+		{
+			localPosition.y -= (_confirmButton.Widget.height + widget.height) * 0.5f + 24f;
+		}
+		else
+		{
+			localPosition.x += (_confirmButton.Widget.width + widget.width) * 0.5f + 24f;
+		}
+		_bottomDeleteButton.transform.localPosition = localPosition;
 	}
 
 	private void CreateNewCharacterButton(ListObjectPool nodes, int idx, [NotNull] Action<int> startPrlogue, bool wantClicked)
@@ -135,6 +210,11 @@ public class TitlePlayerSelectionGroupBase : MonoBehaviour
 		TitlePlayerSelectionNode comp = next.GetComponent<TitlePlayerSelectionNode>();
 		comp.Set(null, delegate
 		{
+			_selectedPlayer = null;
+			if (_bottomDeleteButton != null)
+			{
+				_bottomDeleteButton.SetActive(value: false);
+			}
 			_confirmButton.Clicked = delegate
 			{
 				int obj = idx;
@@ -143,7 +223,11 @@ public class TitlePlayerSelectionGroupBase : MonoBehaviour
 			};
 			_confirmButton.Text = T._("캐릭터 생성");
 			_selectedWidgetMarker.Set(comp);
-		}, DoubleClickNode);
+		}, delegate
+		{
+			startPrlogue(idx);
+			base.gameObject.SetActive(value: false);
+		});
 		if (wantClicked)
 		{
 			comp.Clicked();
@@ -164,14 +248,6 @@ public class TitlePlayerSelectionGroupBase : MonoBehaviour
 		{
 			OnReceiveBackMessage(null);
 		};
-	}
-
-	public void DoubleClickNode(PlayerInfo playerInfo)
-	{
-		if (_confirmButton.Clicked != null)
-		{
-			_confirmButton.Clicked();
-		}
 	}
 
 	public void OnReceiveBackMessage(InputCommandMessage message)

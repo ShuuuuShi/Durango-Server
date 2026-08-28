@@ -60,6 +60,10 @@ public partial class ServerWorld
     private readonly Dictionary<string, List<Item>> _boxes = new Dictionary<string, List<Item>>();
     private readonly object _boxLock = new object();
 
+    /// <summary>วัสดุที่ฝากไว้ในสิ่งปลูกสร้าง (entity id → slot id → รายการไอเทม)</summary>
+    private readonly Dictionary<string, Dictionary<string, List<Item>>> _artifactMaterials = new Dictionary<string, Dictionary<string, List<Item>>>();
+    private readonly object _artifactMaterialsLock = new object();
+
     // GP-07: blueprint id ของแต่ละ artifact — ไม่มีใน AppearArtifact แต่จำเป็นตอนสร้างกลับจากเซฟ
     // (ใช้หา default look / component ว่าเป็น Burnable ไหม)
     private readonly Dictionary<string, string> _artifactBlueprints = new Dictionary<string, string>();
@@ -77,6 +81,9 @@ public partial class ServerWorld
     /// <summary>เฟส C — ตัวจัดการสัตว์ในโลก</summary>
     public AnimalSpawner Animals { get; }
 
+    /// <summary>สภาพอากาศ authoritative ของเกาะนี้</summary>
+    public ServerWeather Weather { get; }
+
     /// <summary>รอยแยก/วาร์ปเรกเซเลอเรเตอร์ — state machine ของกิจกรรมป้องกันคลื่นสัตว์ (ดู WarpAcceleratorManager)</summary>
     public WarpAcceleratorManager WarpAccelerators { get; }
 
@@ -85,6 +92,7 @@ public partial class ServerWorld
         Terrain = terrain;
         ServerName = serverName;
         Animals = new AnimalSpawner(this);
+        Weather = new ServerWeather(this);
         WarpAccelerators = new WarpAcceleratorManager(this);
     }
 
@@ -111,6 +119,7 @@ public partial class ServerWorld
         // ส่งเฉพาะสิ่งที่อยู่ในระยะมองเห็น (ที่เหลือ TickVisibility จะทยอยส่งตอนเดินไปถึง)
         // เดิมส่งทั้งเกาะให้ทุกคนที่เข้ามา — ที่ 100 คนคือ ~4,000 AppearArtifact ในชุดเดียว
         player.SendInitialVision(others, animals, artifacts);
+        Weather.SendCurrent(player);
 
         // ให้คนที่อยู่ในระยะเห็นคนใหม่ทันที (คนไกลจะเห็นเองตอน TickVisibility รอบถัดไป)
         AnnouncePlayer(player);
@@ -657,6 +666,12 @@ public partial class ServerWorld
         {
             _boxes.Remove(entityId ?? string.Empty);
         }
+        // วัสดุที่ฝากไว้ — caller ควร TakeArtifactMaterials ก่อนเรียกเพื่อ refund
+        // แต่ถ้าไม่ได้ take ก็ต้อง cleanup ตรงนี้กัน leak
+        lock (_artifactMaterialsLock)
+        {
+            _artifactMaterials.Remove(entityId ?? string.Empty);
+        }
         // ทุบแปลงผัก = ต้นที่ปลูกไว้หายไปด้วย (ไม่งั้นแปลงค้างในตารางตลอดกาล)
         lock (_farmLock)
         {
@@ -709,6 +724,43 @@ public partial class ServerWorld
         AnnounceArtifact(moved);
         MarkDirty();
         return true;
+    }
+
+    /// <summary>เพิ่มผู้ร่วมแก้ไข artifact สำหรับการทดสอบสิทธิ์หลายผู้เล่น</summary>
+    public bool TryAddArtifactArchitect(string entityId, string architectEntityId, string founderEntityId, out AppearArtifact updated)
+    {
+        updated = default;
+        if (string.IsNullOrWhiteSpace(entityId) || string.IsNullOrWhiteSpace(architectEntityId))
+        {
+            return false;
+        }
+        lock (_artifactLock)
+        {
+            if (!_artifacts.TryGetValue(entityId, out AppearArtifact artifact)
+                || !string.Equals(artifact.FounderEntityId, founderEntityId, StringComparison.Ordinal))
+            {
+                return false;
+            }
+            var architects = new List<string>(artifact.ArchitectEntityIds ?? Array.Empty<string>());
+            bool exists = false;
+            for (int i = 0; i < architects.Count; i++)
+            {
+                if (string.Equals(architects[i], architectEntityId, StringComparison.Ordinal))
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists)
+            {
+                architects.Add(architectEntityId);
+                artifact.ArchitectEntityIds = architects.ToArray();
+                _artifacts[entityId] = artifact;
+                MarkDirty();
+            }
+            updated = artifact;
+            return true;
+        }
     }
 
     /// <summary>เปลี่ยนสถานะการสร้าง (Occupied → Built) ให้คนที่เข้ามาทีหลังเห็นสถานะถูกต้อง</summary>
@@ -787,6 +839,22 @@ public partial class ServerWorld
             save.Boxes[pair.Key] = list;
         }
 
+        // วัสดุที่ฝากไว้ในสิ่งปลูกสร้าง
+        foreach (var kv in SnapshotArtifactMaterials())
+        {
+            var slots = new Dictionary<string, List<ItemSave>>();
+            foreach (var slot in kv.Value)
+            {
+                var list = new List<ItemSave>(slot.Value.Count);
+                for (int i = 0; i < slot.Value.Count; i++)
+                {
+                    list.Add(ItemSave.From(slot.Value[i]));
+                }
+                slots[slot.Key] = list;
+            }
+            save.ArtifactMaterials[kv.Key] = slots;
+        }
+
         // แปลงผัก — เก็บ "จำนวนที่เหลือจริง" จาก generator ไปด้วย ไม่งั้นรีสตาร์ทแล้วผลผลิตเกิดใหม่
         FarmPlot[] plots = SnapshotFarms();
         for (int i = 0; i < plots.Length; i++)
@@ -825,9 +893,15 @@ public partial class ServerWorld
     /// <summary>โหลดโลกกลับมาตอนเปิดเซิร์ฟ เรียกก่อนรับ client</summary>
     public void Load()
     {
-        WorldSave save = SaveStore.Load<WorldSave>(SaveStore.WorldPath);
+        string worldPath = SaveStore.WorldPath;
+        bool hadSave = File.Exists(worldPath) || File.Exists(worldPath + ".tmp");
+        WorldSave save = SaveStore.Load<WorldSave>(worldPath);
         if (save == null)
         {
+            if (hadSave)
+            {
+                throw new InvalidDataException($"ไฟล์เซฟโลกอ่านไม่ได้หรือ JSON เสียและถูกกักกัน: {worldPath}");
+            }
             Console.WriteLine("[save] ยังไม่มีไฟล์เซฟโลก — เริ่มจากแมพเปล่า");
             EnsureNaturalPOIs();
             return;
@@ -837,7 +911,10 @@ public partial class ServerWorld
             Console.WriteLine($"[save] ⚠️ เซฟเป็นแมพ '{save.TerrainId}' แต่ตอนนี้โหลดแมพ '{Terrain.TerrainId}' — ตำแหน่งของอาจเพี้ยน");
         }
 
-        int naturals = Terrain.ApplyRemovedNaturals(save.RemovedNaturals);
+        int naturals = Terrain.ApplyRemovedNaturals(save.RemovedNaturals ?? new List<int[]>());
+        save.Artifacts ??= new List<ArtifactSave>();
+        save.Farms ??= new List<FarmSave>();
+        save.Boxes ??= new Dictionary<string, List<ItemSave>>();
 
         int loaded = 0;
         lock (_artifactLock)
@@ -888,11 +965,40 @@ public partial class ServerWorld
             }
         }
 
+        // วัสดุที่ฝากไว้ในสิ่งปลูกสร้าง
+        int depositedSlots = 0;
+        if (save.ArtifactMaterials != null)
+        {
+            foreach (var kv in save.ArtifactMaterials)
+            {
+                if (kv.Value == null || kv.Value.Count == 0) continue;
+                var slots = new Dictionary<string, List<Item>>();
+                foreach (var slot in kv.Value)
+                {
+                    if (slot.Value == null || slot.Value.Count == 0) continue;
+                    var items = new List<Item>(slot.Value.Count);
+                    for (int i = 0; i < slot.Value.Count; i++)
+                    {
+                        if (slot.Value[i] != null && !string.IsNullOrEmpty(slot.Value[i].Id))
+                        {
+                            items.Add(slot.Value[i].ToItem());
+                        }
+                    }
+                    if (items.Count > 0) slots[slot.Key] = items;
+                }
+                if (slots.Count > 0)
+                {
+                    RestoreArtifactMaterials(kv.Key, slots);
+                    depositedSlots += slots.Count;
+                }
+            }
+        }
+
         // แปลงผัก — ต้องหลัง artifact เพราะ ApplyFarmToArtifact ต้องเจอ artifact ในตารางแล้ว
         LoadFarms(save.Farms);
 
         _dirty = false;
-        Console.WriteLine($"[save] โหลดโลกแล้ว: สิ่งปลูกสร้าง {loaded} ชิ้น, ธรรมชาติที่ถูกเก็บไปแล้ว {naturals} จุด, กล่องที่มีของ {boxes} ใบ, แปลงผัก {FarmCount} แปลง");
+        Console.WriteLine($"[save] โหลดโลกแล้ว: สิ่งปลูกสร้าง {loaded} ชิ้น, ธรรมชาติที่ถูกเก็บไปแล้ว {naturals} จุด, กล่องที่มีของ {boxes} ใบ, วัสดุฝาก {depositedSlots} slots, แปลงผัก {FarmCount} แปลง");
         EnsureNaturalPOIs();
     }
 
@@ -919,15 +1025,10 @@ public partial class ServerWorld
         bool placed = EnsureNearEntryPOIs();
         placed |= PlacePOISpots(spots: new[]
         {
-            // [แก้เอง] เจ้าของสั่ง: หลุมวาร์ป/รอยแยกต้องอยู่บนเกาะ ไม่ใช่ริมน้ำ — minInland เดิม 2-3
-            // ปล่อยให้วางติดชายฝั่งได้ (เจอจริงตอนเทส 23 ส.ค.) ⇒ ยกขึ้นเป็น 10 กันไม่ให้ใกล้น้ำอีก
-            ("warp_accelerator", (ushort)6282, new Point2(4, 4), 10, 30, false),
-            ("warp_accelerator", (ushort)6282, new Point2(4, 4), 10, 30, false),
-            ("camp_warphole", (ushort)9101, new Point2(6, 6), 10, 25, false),
-            ("camp_warphole", (ushort)9101, new Point2(6, 6), 10, 25, false),
-            ("neutral_warphole", (ushort)9450, new Point2(6, 6), 10, 20, false),
-            // ท่าเรือ: ติดแม่น้ำเท่านั้น (ดู TouchesRiver)
+            // เจ้าของสั่ง: โลกใหม่ไม่วางหลุมวาร์ป/รอยแยกอัตโนมัติเลย
+            // ท่าเรือยังวางให้เป็นจุดเริ่มต้นการเดินทาง (ติดแม่น้ำเท่านั้น)
             ("dock", (ushort)7001, new Point2(3, 3), 0, 20, true),
+            ("camp_warphole", (ushort)9101, new Point2(6, 6), 0, 35, false),
         }, prefix: "poi_", nearEntry: false);
         if (placed || cleared)
         {
@@ -1001,12 +1102,10 @@ public partial class ServerWorld
     {
         bool placed = PlacePOISpots(spots: new[]
         {
-            // [แก้เอง] เดียวกับชุดไกลจุดเกิด — ยก minInland ให้พ้นชายฝั่งจริง ๆ (6 ไม่ใช่ 10 เพราะวงแหวน
-            // หาที่วางแคบแค่ 12-35 tile รอบจุดเกิด ซึ่งใกล้ชายหาด ยกเท่าชุดไกลจะหาที่วางไม่เจอเลย)
-            ("warp_accelerator", (ushort)6282, new Point2(4, 4), 6, 12, false),
-            ("camp_warphole", (ushort)9101, new Point2(6, 6), 6, 12, false),
-            // ท่าเรือ: ต้องอยู่ใกล้จุดเกิดและติดแม่น้ำเท่านั้น (ดู TouchesRiver)
+            // เจ้าของสั่ง: โลกใหม่ไม่วางหลุมวาร์ปใกล้จุดเกิด
+            // ท่าเรือยังวางให้เป็นจุดเริ่มต้นการเดินทาง (ติดแม่น้ำเท่านั้น)
             ("dock", (ushort)7001, new Point2(3, 3), 0, 12, true),
+            ("camp_warphole", (ushort)9101, new Point2(6, 6), 0, 20, false),
         }, prefix: "poi_near_", nearEntry: true);
         if (placed)
         {
@@ -1158,7 +1257,7 @@ public partial class ServerWorld
                 }
                 AppearArtifact artifact = ArtifactFactory.Make(
                     null, entityId, type, new Point2(tx, ty), size,
-                    Rotation.None, 0, 1, bp);
+                    Rotation.None, 0, 1, bp, BuildingState.Completed);
                 AddArtifact(artifact, bp);
                 Console.WriteLine("[world] วาง POI ธรรมชาติ {0} (tile {1},{2})", bp, tx, ty);
                 placed++;
@@ -1358,6 +1457,21 @@ public partial class ServerWorld
         return true;
     }
 
+    /// <summary>ดึงของทั้งหมดออกจากกล่อง (ใช้คืนเจ้าของก่อนทุบสิ่งปลูกสร้าง)</summary>
+    public List<Item> TakeAllFromBox(string boxId)
+    {
+        lock (_boxLock)
+        {
+            if (!_boxes.TryGetValue(boxId ?? string.Empty, out List<Item> box))
+            {
+                return new List<Item>();
+            }
+            _boxes.Remove(boxId);
+            MarkDirty();
+            return box;
+        }
+    }
+
     /// <summary>หยิบของออกจากกล่องตาม id ที่ขอ ไม่เกิน limit ชิ้น</summary>
     public List<Item> TakeFromBox(string boxId, string[] itemIds, int limit)
     {
@@ -1409,6 +1523,154 @@ public partial class ServerWorld
             _boxes[boxId] = items;
         }
     }
+
+    // ─────────────────── Artifact Materials ───────────────────
+
+    /// <summary>
+    /// จองวัสดุก่อสร้างทั้ง request โดยตรวจเพดานของทุก slot ใต้ lock เดียวกัน
+    /// ใช้หลัง caller ตรวจ item/tag แล้ว เพื่อกัน architect สองคนเติม slot เดียวกันเกินจำนวนพร้อมกัน.
+    /// </summary>
+    public bool TryReserveArtifactMaterials(string entityId, Dictionary<string, List<Item>> additions,
+        Dictionary<string, int> slotMaximums)
+    {
+        if (string.IsNullOrEmpty(entityId) || additions == null || additions.Count == 0 || slotMaximums == null)
+        {
+            return false;
+        }
+        lock (_artifactMaterialsLock)
+        {
+            if (!_artifactMaterials.TryGetValue(entityId, out Dictionary<string, List<Item>> slots))
+            {
+                slots = new Dictionary<string, List<Item>>();
+            }
+            foreach (var pair in additions)
+            {
+                if (!slotMaximums.TryGetValue(pair.Key, out int maximum) || pair.Value == null)
+                {
+                    return false;
+                }
+                int existing = slots.TryGetValue(pair.Key, out List<Item> reserved) ? reserved.Count : 0;
+                if (existing + pair.Value.Count > maximum)
+                {
+                    return false;
+                }
+            }
+            if (!_artifactMaterials.ContainsKey(entityId))
+            {
+                _artifactMaterials[entityId] = slots;
+            }
+            foreach (var pair in additions)
+            {
+                if (!slots.TryGetValue(pair.Key, out List<Item> reserved))
+                {
+                    reserved = new List<Item>();
+                    slots[pair.Key] = reserved;
+                }
+                reserved.AddRange(pair.Value);
+            }
+            _dirty = true;
+            return true;
+        }
+    }
+
+    /// <summary>ฝากวัสดุเข้า slot ของสิ่งปลูกสร้าง — คืน false ถ้า slot ไม่พบใน blueprint</summary>
+    public bool PutArtifactMaterials(string entityId, string slotId, List<Item> items)
+    {
+        lock (_artifactMaterialsLock)
+        {
+            if (!_artifactMaterials.TryGetValue(entityId, out Dictionary<string, List<Item>> slots))
+            {
+                slots = new Dictionary<string, List<Item>>();
+                _artifactMaterials[entityId] = slots;
+            }
+            if (!slots.TryGetValue(slotId, out List<Item> existing))
+            {
+                existing = new List<Item>();
+                slots[slotId] = existing;
+            }
+            existing.AddRange(items);
+            _dirty = true;
+            return true;
+        }
+    }
+
+    /// <summary>ดึงวัสดุทั้งหมดของสิ่งปลูกสร้าง (read-only snapshot) คืน null ถ้าไม่มี</summary>
+    public Dictionary<string, List<Item>> GetArtifactMaterials(string entityId)
+    {
+        lock (_artifactMaterialsLock)
+        {
+            if (!_artifactMaterials.TryGetValue(entityId, out Dictionary<string, List<Item>> slots))
+            {
+                return null;
+            }
+            var result = new Dictionary<string, List<Item>>();
+            foreach (var kv in slots)
+            {
+                result[kv.Key] = new List<Item>(kv.Value);
+            }
+            return result;
+        }
+    }
+
+    /// <summary>ตรวจว่าสิ่งปลูกสร้างมีวัสดุฝากไว้หรือไม่ (ใช้ตอน build gate)</summary>
+    public bool HasArtifactMaterials(string entityId)
+    {
+        lock (_artifactMaterialsLock)
+        {
+            return _artifactMaterials.TryGetValue(entityId ?? string.Empty, out var slots) && slots.Count > 0;
+        }
+    }
+
+    /// <summary>ดึงวัสดุทั้งหมดของสิ่งปลูกสร้างออก (ใช้ตอนทุบ/ยกเลิก) คืน null ถ้าไม่มี</summary>
+    public Dictionary<string, List<Item>> TakeArtifactMaterials(string entityId)
+    {
+        lock (_artifactMaterialsLock)
+        {
+            if (_artifactMaterials.TryGetValue(entityId ?? string.Empty, out Dictionary<string, List<Item>> slots))
+            {
+                _artifactMaterials.Remove(entityId);
+                _dirty = true;
+                return slots;
+            }
+            return null;
+        }
+    }
+
+    /// <summary>Snapshot สำหรับเซฟ — เรียกภายใต้ lock เท่านั้น (ผ่าน SnapshotArtifactMaterials)</summary>
+    private Dictionary<string, Dictionary<string, List<Item>>> SnapshotArtifactMaterialsInternal()
+    {
+        var result = new Dictionary<string, Dictionary<string, List<Item>>>();
+        foreach (var kv in _artifactMaterials)
+        {
+            var slots = new Dictionary<string, List<Item>>();
+            foreach (var slot in kv.Value)
+            {
+                slots[slot.Key] = new List<Item>(slot.Value);
+            }
+            result[kv.Key] = slots;
+        }
+        return result;
+    }
+
+    /// <summary>Snapshot วัสดุที่ฝากไว้ทุกชิ้น — เรียกตอน save</summary>
+    public Dictionary<string, Dictionary<string, List<Item>>> SnapshotArtifactMaterials()
+    {
+        lock (_artifactMaterialsLock)
+        {
+            return SnapshotArtifactMaterialsInternal();
+        }
+    }
+
+    /// <summary>Restore วัสดุจากเซฟ — เรียกตอน load</summary>
+    public void RestoreArtifactMaterials(string entityId, Dictionary<string, List<Item>> slots)
+    {
+        lock (_artifactMaterialsLock)
+        {
+            _artifactMaterials[entityId] = slots;
+        }
+    }
+
+    // ─────────────────── Generator ───────────────────
 
     /// <summary>
     /// GP-03: ขอ generator ของจุดนี้ ยังไม่เคยมีก็สร้างใหม่จาก factory
@@ -1652,16 +1914,186 @@ public partial class ServerWorld
         }
         for (int i = 0; i < snapshot.Length; i++)
         {
-            snapshot[i].Process();
+            try
+            {
+                snapshot[i].Process();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"[world] player {snapshot[i].EntityId} process failed: {e.Message}");
+            }
         }
-        Animals.Process();     // เฟส C
+        try { Animals.Process(); }
+        catch (Exception e) { Console.WriteLine($"[world] animals process failed: {e.Message}"); }
         double now = Durango.Utils.Times.UnixTimeNow();
+        try { Weather.Process(now, snapshot); }
+        catch (Exception e) { Console.WriteLine($"[world] weather process failed: {e.Message}"); }
         if (ServerConfig.Current.Features.WarpAccelerator)
         {
-            WarpAccelerators.Process(now);   // รอยแยก/วาร์ปเรกเซเลอเรเตอร์ — คลื่นสัตว์/เฟส
+            try { WarpAccelerators.Process(now); }
+            catch (Exception e) { Console.WriteLine($"[world] warp process failed: {e.Message}"); }
         }
-        TickFarms(now);        // ต้นไหนโตครบแล้วบ้าง
+        try { TickFarms(now); }
+        catch (Exception e) { Console.WriteLine($"[world] farms process failed: {e.Message}"); }
         // ใครเข้า/ออกระยะมองเห็นบ้าง — ต้องทำหลัง Process เพราะตำแหน่งเพิ่งขยับ
-        TickVisibility(now);
+        try { TickVisibility(now); }
+        catch (Exception e) { Console.WriteLine($"[world] visibility process failed: {e.Message}"); }
+    }
+
+    // ── Party management ──────────────────────────────────────────────
+
+    private readonly Dictionary<string, List<ServerPlayer>> _parties = new Dictionary<string, List<ServerPlayer>>();
+    private readonly object _partyLock = new object();
+
+    public void CreateParty(string partyId, ServerPlayer leader)
+    {
+        lock (_partyLock)
+        {
+            _parties[partyId] = new List<ServerPlayer> { leader };
+        }
+    }
+
+    /// <summary>
+    /// เพิ่มสมาชิกเข้า party แบบ atomic — ตรวจ capacity และ add ภายใต้ lock เดียว
+    /// กัน race ที่ invite สองคำสั่งพร้อมกันแล้ว party เกินโควตา
+    /// </summary>
+    public bool TryAddToParty(string partyId, ServerPlayer player, int maxMembers)
+    {
+        lock (_partyLock)
+        {
+            if (!_parties.TryGetValue(partyId, out List<ServerPlayer> members))
+            {
+                members = new List<ServerPlayer>();
+                _parties[partyId] = members;
+            }
+            if (members.Contains(player))
+            {
+                return true;
+            }
+            if (members.Count >= maxMembers)
+            {
+                return false;
+            }
+            members.Add(player);
+            return true;
+        }
+    }
+
+    public void RemoveFromParty(ServerPlayer player)
+    {
+        if (player.PartyId == null) return;
+        lock (_partyLock)
+        {
+            if (_parties.TryGetValue(player.PartyId, out List<ServerPlayer> members))
+            {
+                members.Remove(player);
+                if (members.Count == 0)
+                {
+                    _parties.Remove(player.PartyId);
+                }
+            }
+        }
+    }
+
+    public List<ServerPlayer> GetPartyMembers(string partyId)
+    {
+        if (partyId == null) return new List<ServerPlayer>();
+        lock (_partyLock)
+        {
+            if (_parties.TryGetValue(partyId, out List<ServerPlayer> members))
+            {
+                return new List<ServerPlayer>(members);
+            }
+        }
+        return new List<ServerPlayer>();
+    }
+
+    public int GetPartyMemberCount(string partyId)
+    {
+        if (partyId == null) return 0;
+        lock (_partyLock)
+        {
+            if (_parties.TryGetValue(partyId, out List<ServerPlayer> members))
+            {
+                return members.Count;
+            }
+        }
+        return 0;
+    }
+
+    public ServerPlayer GetPartyLeader(string partyId)
+    {
+        var members = GetPartyMembers(partyId);
+        for (int i = 0; i < members.Count; i++)
+        {
+            if (members[i].IsPartyLeader)
+            {
+                return members[i];
+            }
+        }
+        return null;
+    }
+
+    // ── Clan registry ─────────────────────────────────────────────────
+
+    private List<ClanSave> _clans = new List<ClanSave>();
+    private bool _clansDirty;
+
+    public void LoadClans(WorldSave worldSave)
+    {
+        if (worldSave.Clans != null)
+        {
+            _clans = worldSave.Clans;
+        }
+    }
+
+    public void FillClans(WorldSave worldSave)
+    {
+        worldSave.Clans = _clans;
+    }
+
+    public void AddClan(ClanSave clan)
+    {
+        lock (_lock)
+        {
+            _clans.Add(clan);
+            _clansDirty = true;
+        }
+        MarkDirty();
+    }
+
+    public ClanSave GetClan(string clanId)
+    {
+        lock (_lock)
+        {
+            for (int i = 0; i < _clans.Count; i++)
+            {
+                if (_clans[i].Id == clanId) return _clans[i];
+            }
+        }
+        return null;
+    }
+
+    public void RemoveFromClan(string clanId, string entityId)
+    {
+        lock (_lock)
+        {
+            ClanSave clan = GetClan(clanId);
+            if (clan == null) return;
+            clan.MemberEntityIds.Remove(entityId);
+            if (clan.MemberEntityIds.Count == 0)
+            {
+                _clans.Remove(clan);
+            }
+            _clansDirty = true;
+        }
+        MarkDirty();
+    }
+
+    public bool SaveClansIfDirty()
+    {
+        if (!_clansDirty) return false;
+        _clansDirty = false;
+        return true;
     }
 }

@@ -162,10 +162,15 @@ public class WeatherManager : Singleton<WeatherManager>
 		}
 		Connections.Frontend.On(delegate(Messages.Weather msg, PacketHeader header)
 		{
-			SetWeatherPopup();
+			Weather weather = GetWeatherFromString(msg._Weather);
+			if (weather == Weather.Invalid)
+			{
+				return;
+			}
 			if (!(_curWeatherString == msg._Weather))
 			{
 				_curWeatherString = msg._Weather;
+				SetWeather(weather);
 				if (WeatherChanged != null)
 				{
 					WeatherChanged(msg._Weather);

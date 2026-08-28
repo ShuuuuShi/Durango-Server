@@ -236,7 +236,7 @@ public partial class ServerPlayer
         switch (what)
         {
             case "axe":
-                GiveEquipTestItem("axe_onehand_stone_01", "ขวานหิน", "weapon_axe_onehand_stone", 0);
+                GiveEquipTestItem("axe_onehand_stone_01", "ขวานหิน", "weapon_axe_onehand_stone_2", 0);
                 return $"ให้ขวานหินกับ {Name}";
             case "clothes":
                 GiveEquipTestItem("clothes_builder_01", "ชุดช่าง", "clothes_builder_01", 0);
@@ -249,6 +249,32 @@ public partial class ServerPlayer
                 MarkDirty();
                 SendInventory();
                 return $"ให้กองไฟกับ {Name}";
+            case "tent":
+                lock (_inventory)
+                {
+                    _inventory.Add(MakeCapsuleItem("capsulated_tent", "เต็นท์", "building_house_tent"));
+                }
+                MarkDirty();
+                SendInventory();
+                return $"ให้เต็นท์กับ {Name}";
+            case "temptent":
+            case "temp tent":
+                lock (_inventory)
+                {
+                    _inventory.Add(MakeCapsuleItem("capsulated_temptent", "เต็นท์ชั่วคราว", "building_house_temp"));
+                }
+                MarkDirty();
+                SendInventory();
+                return $"ให้เต็นท์ชั่วคราวกับ {Name}";
+            case "worktable":
+            case "fur_table":
+                lock (_inventory)
+                {
+                    _inventory.Add(MakeCapsuleItem("capsulated_fur_table", "โต๊ะคราฟต์", "furniture_fur_table_01"));
+                }
+                MarkDirty();
+                SendInventory();
+                return $"ให้โต๊ะคราฟต์กับ {Name}";
             case "box":
                 lock (_inventory)
                 {

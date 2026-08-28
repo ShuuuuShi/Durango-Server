@@ -8,6 +8,7 @@ using System.Threading;
 using Durango.Network;
 using Durango.Offline;
 using Durango.Utils;
+using DurangoServer.Modding;
 using Messages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -38,7 +39,7 @@ public partial class ServerPlayer
     /// ไอเทมชิ้นนี้เข้าเงื่อนไขข้อไหนข้อหนึ่งไหม (สูตรขอแบบ "อย่างใดอย่างหนึ่ง")
     /// ไม่ได้ระบุอะไรมา = ผ่าน
     /// </summary>
-    private static bool MatchesAny(string prototype, string[] wanted)
+    private static bool MatchesAny(string prototype, TagRequirement[] wanted)
     {
         if (wanted == null || wanted.Length == 0)
         {
@@ -46,7 +47,7 @@ public partial class ServerPlayer
         }
         for (int i = 0; i < wanted.Length; i++)
         {
-            if (ItemTagData.LevelOf(prototype, wanted[i]) > 0)
+            if (ItemTagData.LevelOf(prototype, wanted[i].Id) >= wanted[i].Level)
             {
                 return true;
             }
@@ -151,12 +152,12 @@ public partial class ServerPlayer
                 // เป็น tag ของไอเทมเหมือนกัน ต่างกันแค่บทบาทในสูตร
                 if (!MatchesAny(proto, slot.Tags))
                 {
-                    reason = $"ช่อง '{slot.Id}' ต้องการ {string.Join("/", slot.Tags)} แต่ {proto} ไม่ใช่";
+                    reason = $"ช่อง '{slot.Id}' ต้องการ {string.Join("/", DescribeRequirements(slot.Tags))} แต่ {proto} ไม่ใช่";
                     return false;
                 }
                 if (!MatchesAny(proto, slot.Materials))
                 {
-                    reason = $"ช่อง '{slot.Id}' ต้องทำจาก {string.Join("/", slot.Materials)} แต่ {proto} ไม่ใช่";
+                    reason = $"ช่อง '{slot.Id}' ต้องทำจาก {string.Join("/", DescribeRequirements(slot.Materials))} แต่ {proto} ไม่ใช่";
                     return false;
                 }
                 itemIds.Add(id);
@@ -329,7 +330,7 @@ public partial class ServerPlayer
                     {
                         continue;           // client ระบุชิ้นไหนมา ก็ตรวจชิ้นนั้น
                     }
-                    if (ItemTagData.LevelOf(it.Prototype, need[i].Id) > 0
+                    if (ItemTagData.LevelOf(it.Prototype, need[i].Id) >= need[i].Level
                         && CraftToolTierOf(it.Prototype) >= wantTier)
                     {
                         usedToolId = it.Id;
@@ -616,16 +617,30 @@ public partial class ServerPlayer
         return MatchesAny(item.Prototype, slot.Tags) && MatchesAny(item.Prototype, slot.Materials);
     }
 
+    private static string[] DescribeRequirements(TagRequirement[] requirements)
+    {
+        if (requirements == null || requirements.Length == 0)
+        {
+            return Array.Empty<string>();
+        }
+        var result = new string[requirements.Length];
+        for (int i = 0; i < requirements.Length; i++)
+        {
+            result[i] = requirements[i].ToString();
+        }
+        return result;
+    }
+
     private static string DescribeSlotWants(RecipeRequirements.Slot slot)
     {
         var parts = new List<string>();
         if (slot.Tags != null)
         {
-            parts.AddRange(slot.Tags);
+            parts.AddRange(DescribeRequirements(slot.Tags));
         }
         if (slot.Materials != null)
         {
-            parts.AddRange(slot.Materials);
+            parts.AddRange(DescribeRequirements(slot.Materials));
         }
         return parts.Count == 0 ? "อะไรก็ได้" : string.Join(" / ", parts);
     }
@@ -766,9 +781,14 @@ public partial class ServerPlayer
 
         int outputCount = meta != null && meta.Count > 0 ? meta.Count : 1;
         // กระเป๋าเต็มแต่มีวัตถุดิบที่จะหักออกก่อน = ยังมีที่ว่างพอ (หัก n ชิ้น เพิ่ม outputCount ชิ้น)
-        if (InventoryFull && materialIds.Count < outputCount)
+        int inventoryCount;
+        lock (_inventory)
         {
-            Console.WriteLine("[inventory] {0} กระเป๋าเต็ม คราฟต์ไม่ได้", Name);
+            inventoryCount = _inventory.Count;
+        }
+        if (inventoryCount - materialIds.Count + outputCount > PlayerInventoryMaxSize)
+        {
+            Console.WriteLine("[inventory] {0} กระเป๋าไม่มีพื้นที่พอสำหรับผลลัพธ์", Name);
             Send(default(Abort), header.Seq);
             return;
         }
@@ -779,6 +799,19 @@ public partial class ServerPlayer
             return;
         }
 
+        // Event bus: ทุก validation ผ่านแล้ว แต่ยังไม่ consume stamina/material/tool
+        IModEventContext? craftBefore = PluginManager.Instance?.FireEvent("craft.before", this, true, false,
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["recipe_id"] = msg.RecipeId ?? "",
+                ["output_count"] = outputCount.ToString()
+            });
+        if (craftBefore != null && craftBefore.IsCancelled)
+        {
+            Send(new Info { Text = craftBefore.CancelReason ?? "mod ยกเลิกการคราฟต์" }, header.Seq);
+            Send(default(Abort), header.Seq);
+            return;
+        }
         // เฟส C — สตามินาที่เสียเป็นค่าจริงของสูตร (ต้มน้ำซุปเหนื่อยกว่าฟั่นเชือก)
         float staminaCost = meta != null && meta.Energy > 0f ? meta.Energy : StaminaCostCraft;
         if (!TrySpendStamina(staminaCost))
@@ -797,6 +830,7 @@ public partial class ServerPlayer
             : BuildCraftedOutput(msg.RecipeId, meta, slotProtos, outputCount);
         if (crafted.Count == 0)
         {
+            RestoreStamina(staminaCost, 0f);
             Console.WriteLine("[craft] ปฏิเสธ {0} สูตร {1}: หาผลลัพธ์ของสูตรแปรรูปไม่ได้", Name, msg.RecipeId);
             Send(default(Abort), header.Seq);
             return;
@@ -850,6 +884,13 @@ public partial class ServerPlayer
                 }
             }, header.Seq);
             SendInventory();
+            PluginManager.Instance?.FireEvent("craft.completed", this, false, true,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["recipe_id"] = msg.RecipeId ?? "",
+                    ["output_count"] = crafted.Count.ToString(),
+                    ["tool_item_id"] = usedToolId ?? ""
+                });
             GainExpForCraft(meta);
         };
         _deferred.Add((Times.UnixTimeNow() + craftSeconds + 0.1, craftFinish));

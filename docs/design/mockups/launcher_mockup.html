@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DinoWorld Launcher</title>
+<link id="favicon" rel="icon" type="image/svg+xml" href="">
+<style>
+  :root{
+    --bg0:#07070b; --bg1:#0d0d14;
+    --panel:#14141d; --panel2:#1a1a26;
+    --line:#2b2233;
+    --pink:#ff2e7e; --pink-dk:#c2185b; --pink-deep:#7d0f40;
+    --pink-soft:#ff7ab0; --pink-glow:#ff2e7e66;
+    --text:#f4e8ef; --dim:#a08ba0;
+    --ok:#ff2e7e; --warn:#ffb347; --err:#ff5566;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; font-family:"Segoe UI","Leelawadee UI",Tahoma,sans-serif;}
+  body{
+    background:
+      radial-gradient(900px 420px at 50% -8%, #3d0f2888 0%, transparent 60%),
+      radial-gradient(700px 500px at 85% 110%, #2a0a1e88 0%, transparent 65%),
+      linear-gradient(180deg,#0b0b11 0%,#060609 100%);
+    color:var(--text); min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:24px 12px; gap:14px;
+  }
+
+  /* ---------- demo control strip ---------- */
+  .demo{
+    width:min(960px,100%); font-size:12px; color:#d99ab8;
+    background:#1c0f1a66; border:1px dashed var(--pink-deep); border-radius:6px;
+    padding:8px 12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  .demo b{color:var(--pink-soft);}
+  .demo .dbtn{
+    padding:4px 12px; border-radius:5px; cursor:pointer; font-size:12px; font-weight:600;
+    background:#00000038; border:1px solid var(--pink-deep); color:#d99ab8;
+  }
+  .demo .dbtn.on{background:#7d0f4088; color:#ffd6e8; border-color:var(--pink);}
+
+  /* ---------- launcher window ---------- */
+  .launcher{
+    width:min(960px,100%); height:600px;
+    background:linear-gradient(180deg,#15151f 0%,#0c0c12 100%);
+    border:2px solid #000; outline:1px solid var(--pink-deep);
+    border-radius:12px;
+    box-shadow:0 0 0 1px #000, 0 20px 60px #000000dd, 0 0 42px #ff2e7e22, inset 0 1px 0 #ffffff10;
+    display:flex; flex-direction:column; overflow:hidden;
+  }
+  .titlebar{
+    display:flex; align-items:center; gap:10px; padding:10px 14px;
+    background:linear-gradient(180deg,#1c1622,#120d18);
+    border-bottom:1px solid var(--pink-deep);
+    box-shadow:inset 0 -1px 0 #000, 0 1px 0 #ff2e7e15;
+  }
+  .logo{display:flex; align-items:center;}
+  .gamename{
+    font-size:19px; font-weight:800; letter-spacing:2px;
+    background:linear-gradient(180deg,#ff7ab0,#ff2e7e);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 10px #ff2e7e44);
+  }
+  .gamename small{font-size:11px; color:var(--dim); font-weight:400; margin-left:8px; letter-spacing:.5px; -webkit-text-fill-color:var(--dim);}
+  .winbtns{margin-left:auto; display:flex; gap:6px;}
+  .winbtns .wb{
+    width:26px;height:24px;border-radius:5px;border:1px solid #3a2a36;
+    background:#00000045;color:var(--dim);cursor:pointer;font-size:12px;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .winbtns .wb.close{background:#7d0f40;border-color:var(--pink-deep);color:#ffd6e8;}
+  .winbtns .wb:hover{filter:brightness(1.35);}
+
+  .main{flex:1; display:flex; gap:12px; padding:12px; min-height:0;}
+
+  /* ---------- news panel ---------- */
+  .news{
+    flex:1.25; background:linear-gradient(180deg,#12121acc,#0d0d13ee);
+    border:1px solid var(--line); border-radius:8px; box-shadow:inset 0 0 30px #00000090;
+    display:flex; flex-direction:column; min-width:0;
+  }
+  .news-tabs{display:flex; gap:4px; padding:8px 8px 0;}
+  .ntab{
+    padding:6px 16px; font-size:13px; cursor:pointer; border-radius:6px 6px 0 0;
+    background:#00000035; border:1px solid transparent; border-bottom:none; color:var(--dim);
+  }
+  .ntab:hover{color:var(--pink-soft);}
+  .ntab.on{
+    background:linear-gradient(180deg,#241222,#181019);
+    color:var(--pink-soft); font-weight:700; border-color:var(--pink-deep);
+    box-shadow:inset 0 2px 0 var(--pink);
+  }
+  .news-list{flex:1; overflow-y:auto; padding:8px 10px 10px;}
+  .news-list::-webkit-scrollbar{width:8px;}
+  .news-list::-webkit-scrollbar-thumb{background:#7d0f4088; border-radius:99px;}
+  .news-item{
+    padding:9px 10px; border-radius:6px; margin-bottom:6px; cursor:pointer;
+    background:#ffffff06; border:1px solid #ffffff0d; transition:.12s;
+  }
+  .news-item:hover{background:#ff2e7e0d; border-color:#ff2e7e44; box-shadow:0 0 12px #ff2e7e14;}
+  .news-item .nhead{display:flex; align-items:center; gap:8px;}
+  .badge{
+    font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px; white-space:nowrap;
+  }
+  .b-news{background:#7d0f4055; color:#ffb1cf; border:1px solid var(--pink);}
+  .b-update{background:#4a124055; color:#e2a8ff; border:1px solid #b04fd6;}
+  .b-event{background:#7d2f0f55; color:#ffc9a8; border:1px solid #ff7a45;}
+  .news-item .ntitle{font-size:13px; font-weight:600; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .news-item .ndate{font-size:11px; color:var(--dim);}
+  .news-item .nbody{
+    display:none; font-size:12px; color:var(--dim); line-height:1.65;
+    margin-top:7px; padding-top:7px; border-top:1px dashed #ffffff1c;
+  }
+  .news-item.open .nbody{display:block;}
+
+  /* ---------- side column ---------- */
+  .side{flex:1; display:flex; flex-direction:column; gap:10px; min-width:0;}
+  .slider{
+    position:relative; height:190px; border-radius:8px; overflow:hidden;
+    border:1px solid var(--line); cursor:pointer;
+    box-shadow:inset 0 0 40px #000000aa;
+  }
+  .slide{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:6px;
+    opacity:0; transition:opacity .5s;
+  }
+  .slide.on{opacity:1;}
+  .slide .big{font-size:52px; filter:drop-shadow(0 0 18px #ff2e7e55); line-height:1;}
+  .slide .cap{font-size:14px; font-weight:700; color:#ffe4f0; text-shadow:0 2px 6px #000;}
+  .slide .sub{font-size:11px; color:var(--dim);}
+  .s1{background:radial-gradient(circle at 70% 25%, #ff2e7e33 0%, transparent 55%), linear-gradient(160deg,#220d1c,#0d0710);}
+  .s2{background:radial-gradient(circle at 30% 75%, #b04fd62e 0%, transparent 55%), linear-gradient(160deg,#170d22,#0a0710);}
+  .s3{background:radial-gradient(circle at 60% 30%, #ff7ab026 0%, transparent 55%), linear-gradient(160deg,#1c0f16,#0b070c);}
+  .slider .arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:28px;height:28px; border-radius:50%; border:1px solid var(--pink-deep); cursor:pointer;
+    background:#00000077; color:#ffb1cf; font-size:14px; z-index:2;
+  }
+  .slider .arrow:hover{background:#7d0f4088;}
+  .arrow.l{left:8px;} .arrow.r{right:8px;}
+  .dots{position:absolute; bottom:8px; left:0; right:0; display:flex; justify-content:center; gap:6px; z-index:2;}
+  .dot{width:8px;height:8px;border-radius:50%;background:#ffffff2a;cursor:pointer;}
+  .dot.on{background:var(--pink); box-shadow:0 0 8px var(--pink-glow);}
+
+  .status-card{
+    background:linear-gradient(180deg,#131320cc,#0e0e15ee);
+    border:1px solid var(--line); border-radius:8px; padding:12px 14px;
+    box-shadow:inset 0 0 30px #00000090;
+    display:flex; flex-direction:column; gap:8px; font-size:13px;
+  }
+  .st-row{display:flex; justify-content:space-between; align-items:center;}
+  .st-label{color:var(--dim); font-size:12px;}
+  .srv-name{font-weight:700; font-size:14px; color:#ffe4f0;}
+  .dot-live{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:var(--pink); box-shadow:0 0 8px var(--pink); animation:blink 2s infinite;}
+  .dot-dead{background:#553344; box-shadow:none; animation:none;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.45;}}
+  .pill{padding:2px 10px; border-radius:99px; font-size:11px; font-weight:700; border:1px solid;}
+  .p-online{color:#ffb1cf; border-color:var(--pink); background:#7d0f4044; text-shadow:0 0 8px #ff2e7e66;}
+  .p-offline{color:#8a7480; border-color:#463642; background:#20161e;}
+  .players-bar{height:8px; background:#00000066; border-radius:99px; overflow:hidden; border:1px solid #00000088;}
+  .players-bar i{display:block; height:100%; background:linear-gradient(90deg,var(--pink-deep),var(--pink)); box-shadow:0 0 8px var(--pink-glow); border-radius:99px; transition:width .6s;}
+  .addr{font-size:11px; color:var(--pink-soft); word-break:break-all;}
+
+  /* ---------- bottom bar ---------- */
+  .bottom{
+    display:flex; align-items:center; gap:10px; padding:10px 14px;
+    background:linear-gradient(180deg,#17101c,#0e0a12);
+    border-top:1px solid var(--pink-deep);
+    box-shadow:inset 0 1px 0 #000, 0 -1px 0 #ff2e7e18;
+  }
+  .lbtn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 14px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:600;
+    background:linear-gradient(180deg,#231722,#150e17);
+    border:1px solid var(--pink-deep); color:#e8ccd9;
+    box-shadow:inset 0 1px 0 #ffffff0d;
+  }
+  .lbtn:hover{filter:brightness(1.3); border-color:var(--pink);}
+  .progress-wrap{flex:1; min-width:120px;}
+  .progress-text{font-size:11px; color:var(--dim); margin-bottom:4px; display:flex; justify-content:space-between;}
+  .progress{height:12px; background:#00000066; border-radius:99px; overflow:hidden; border:1px solid #00000099;}
+  .progress i{
+    display:block; height:100%; width:0%;
+    background:repeating-linear-gradient(45deg,var(--pink) 0 12px,var(--pink-dk) 12px 24px);
+    box-shadow:0 0 12px var(--pink-glow);
+    animation:crawl 1s linear infinite; transition:width .2s;
+  }
+  @keyframes crawl{to{background-position:-34px 0;}}
+  .ver{font-size:11px; color:var(--dim); text-align:right; line-height:1.4;}
+  .play{
+    min-width:170px; padding:14px 26px; border-radius:8px; border:1px solid #ff5c98;
+    background:linear-gradient(180deg,#ff4d92,#a81353);
+    color:#fff; font-size:18px; font-weight:800; cursor:pointer; letter-spacing:1px;
+    text-shadow:0 2px 0 #00000055;
+    box-shadow:0 4px 0 #5c0a2e, 0 8px 22px #ff2e7e44, inset 0 1px 0 #ffffff55;
+    transition:.12s;
+  }
+  .play:hover:not(:disabled){filter:brightness(1.12); transform:translateY(-1px); box-shadow:0 5px 0 #5c0a2e, 0 10px 28px #ff2e7e66, inset 0 1px 0 #ffffff55;}
+  .play:active:not(:disabled){transform:translateY(2px); box-shadow:0 2px 0 #5c0a2e, 0 4px 12px #ff2e7e44;}
+  .play:disabled{filter:grayscale(.35) brightness(.7); cursor:wait;}
+  .shake{animation:shake .4s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  /* ---------- modal & toast ---------- */
+  .overlay{
+    position:fixed; inset:0; background:#050308bb; backdrop-filter:blur(2px);
+    display:none; align-items:center; justify-content:center; z-index:50;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    width:min(460px,92vw); background:linear-gradient(180deg,#181220,#0f0b13);
+    border:1px solid var(--pink-deep); border-radius:10px;
+    box-shadow:0 0 0 1px #000, 0 18px 60px #000000ee, 0 0 40px #ff2e7e1e;
+  }
+  .modal h3{
+    padding:12px 16px; font-size:15px; color:var(--pink-soft);
+    background:linear-gradient(180deg,#221526,#150e19);
+    border-bottom:1px solid var(--pink-deep); border-radius:9px 9px 0 0;
+  }
+  .modal .mbody{padding:16px; font-size:13px; line-height:1.7; max-height:340px; overflow-y:auto;}
+  .modal .mfoot{padding:12px 16px; display:flex; gap:8px; justify-content:flex-end; border-top:1px solid #ffffff0d;}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:12px; color:var(--dim); margin-bottom:5px;}
+  .field input[type=text], .field select{
+    width:100%; padding:8px 10px; border-radius:6px; border:1px solid #3a2a36;
+    background:#00000055; color:var(--text); font-size:13px; outline:none;
+  }
+  .field input:focus, .field select:focus{border-color:var(--pink); box-shadow:0 0 8px #ff2e7e33;}
+  .switch-row{display:flex; align-items:center; justify-content:space-between; padding:8px 0;}
+  .switch{position:relative; width:42px; height:22px; cursor:pointer; flex:none;}
+  .switch input{display:none;}
+  .switch .track{
+    position:absolute; inset:0; border-radius:99px; background:#00000066; border:1px solid #3a2a36; transition:.15s;
+  }
+  .switch .track::after{
+    content:""; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%;
+    background:#6b5566; transition:.15s;
+  }
+  .switch input:checked + .track{background:var(--pink-deep); border-color:var(--pink); box-shadow:0 0 10px #ff2e7e33;}
+  .switch input:checked + .track::after{left:22px; background:#ffd6e8;}
+
+  #toasts{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:8px; z-index:99;}
+  .toast{
+    min-width:230px; max-width:360px; padding:10px 14px; border-radius:8px; font-size:13px;
+    background:linear-gradient(180deg,#1a1220,#100b14); border:1px solid var(--line);
+    box-shadow:0 8px 24px #000000cc; animation:tin .25s;
+    display:flex; gap:8px; align-items:flex-start; line-height:1.5;
+  }
+  @keyframes tin{from{opacity:0; transform:translateY(10px);}to{opacity:1;}}
+  .toast.ok{border-color:var(--pink); box-shadow:0 8px 24px #000000cc, 0 0 16px #ff2e7e22;}
+  .toast.err{border-color:var(--err);} .toast.info{border-color:#b04fd6;}
+</style>
+</head>
+<body>
+
+<!-- ===== แถบควบคุมสาธิต (เฉพาะ mockup — ของจริงไม่มี) ===== -->
+<div class="demo">
+  <b>🧪 โหมดทดลอง:</b>
+  <button class="dbtn on" id="demoOnline" onclick="toggleOnline()">🟢 เซิฟออนไลน์</button>
+  <button class="dbtn on" id="demoUpdate" onclick="toggleUpdate()">📦 มีอัปเดตรอ</button>
+  <span style="flex:1"></span>
+  <span style="opacity:.7">* ทุกปุ่มใน launcher กดได้จริง · การตั้งค่าบันทึกลง localStorage</span>
+</div>
+
+<!-- ===== ตัว Launcher ===== -->
+<div class="launcher">
+  <div class="titlebar">
+    <span class="logo" id="logoSlot"></span>
+    <span class="gamename">DINOWORLD<small>Launcher</small></span>
+    <div class="winbtns">
+      <button class="wb" onclick="toast('info','➖ จำลอง: ย่อหน้าต่างลง taskbar')">–</button>
+      <button class="wb close" onclick="toast('err','✕ จำลอง: ปิด Launcher (เกมยังไม่เปิด)')">✕</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- ข่าว/ประกาศ -->
+    <div class="news">
+      <div class="news-tabs" id="newsTabs"></div>
+      <div class="news-list" id="newsList"></div>
+    </div>
+
+    <!-- สไลด์ + สถานะเซิฟ -->
+    <div class="side">
+      <div class="slider" id="slider">
+        <button class="arrow l" onclick="slide(-1,event)">‹</button>
+        <button class="arrow r" onclick="slide(1,event)">›</button>
+        <div class="dots" id="dots"></div>
+      </div>
+      <div class="status-card">
+        <div class="st-row">
+          <span class="srv-name"><span class="dot-live" id="srvDot"></span><span id="srvName">DinoWorld — เกาะหลัก</span></span>
+          <span class="pill p-online" id="srvPill">ออนไลน์</span>
+        </div>
+        <div class="st-row">
+          <span class="st-label">ผู้เล่น</span><span id="srvPlayers">5 / 20</span>
+        </div>
+        <div class="players-bar"><i id="playersFill" style="width:25%"></i></div>
+        <div class="st-row">
+          <span class="st-label">Ping</span><span id="srvPing">23 ms</span>
+        </div>
+        <div class="st-row">
+          <span class="st-label">เวอร์ชันล่าสุด</span><span id="srvVer">v1.2.4</span>
+        </div>
+        <hr style="border:none;border-top:1px solid #ffffff10;">
+        <div class="st-row"><span class="st-label">เซิร์ฟเวอร์</span><span class="addr" id="cfgAddr">127.0.0.1:8190</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- แถบล่าง -->
+  <div class="bottom">
+    <button class="lbtn" onclick="openSettings()">⚙️ ตั้งค่า</button>
+    <button class="lbtn" onclick="repairFiles()">🔧 ซ่อมไฟล์</button>
+    <div class="progress-wrap">
+      <div class="progress-text"><span id="progLabel">พร้อมเล่น</span><span id="progPct"></span></div>
+      <div class="progress"><i id="progFill"></i></div>
+    </div>
+    <div class="ver">ติดตั้ง <b id="localVer">v1.2.3</b><br><span id="needUpdate" style="color:var(--pink-soft);">มีอัปเดตใหม่!</span></div>
+    <button class="play" id="playBtn" onclick="onPlay()">▶ เข้าเกม</button>
+  </div>
+</div>
+
+<!-- ===== Modal: ตั้งค่า ===== -->
+<div class="overlay" id="ovSettings">
+  <div class="modal">
+    <h3>⚙️ ตั้งค่า Launcher</h3>
+    <div class="mbody">
+      <div class="field">
+        <label>เลือกเกาะ (Server)</label>
+        <select id="setIsland" onchange="islandChanged()">
+          <option value="127.0.0.1:8190|DinoWorld — เกาะหลัก">🦋 เกาะหลัก — 127.0.0.1:8190</option>
+          <option value="127.0.0.1:8290|DinoWorld — เกาะรอง">🦋 เกาะรอง — 127.0.0.1:8290</option>
+          <option value="192.168.1.50:8190|LAN บ้านเพื่อน">🏠 LAN บ้านเพื่อน — 192.168.1.50:8190</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>ที่อยู่เซิร์ฟเวอร์ (แก้เองได้)</label>
+        <input type="text" id="setAddr" placeholder="ip:port เช่น 127.0.0.1:8190">
+      </div>
+      <div class="switch-row">
+        <span>อัปเดตเกมอัตโนมัติก่อนเข้าเล่น</span>
+        <label class="switch"><input type="checkbox" id="setAutoPatch" checked><span class="track"></span></label>
+      </div>
+      <div class="switch-row">
+        <span>เปิด Launcher แล้วเช็คอัปเดตทันที</span>
+        <label class="switch"><input type="checkbox" id="setCheckOnStart" checked><span class="track"></span></label>
+      </div>
+      <div class="switch-row">
+        <span>เก็บ log การแพตช์ไว้ดูภายหลัง</span>
+        <label class="switch"><input type="checkbox" id="setKeepLog"><span class="track"></span></label>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="lbtn" onclick="closeModal('ovSettings')">ยกเลิก</button>
+      <button class="lbtn" style="background:linear-gradient(180deg,#a81353,#7d0f40);border-color:var(--pink);" onclick="saveSettings()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal: ยืนยันอัปเดต ===== -->
+<div class="overlay" id="ovConfirm">
+  <div class="modal">
+    <h3 id="confirmTitle">📦 พบอัปเดตใหม่</h3>
+    <div class="mbody" id="confirmBody"></div>
+    <div class="mfoot">
+      <button class="lbtn" onclick="closeModal('ovConfirm'); setBusy(false)">ยกเลิก (เข้าเวอร์ชันเดิม)</button>
+      <button class="lbtn" style="background:linear-gradient(180deg,#a81353,#7d0f40);border-color:var(--pink);" onclick="confirmUpdate()">⬇️ อัปเดตเลย</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal: อ่านข่าวเต็ม ===== -->
+<div class="overlay" id="ovNews">
+  <div class="modal">
+    <h3 id="newsModalTitle"></h3>
+    <div class="mbody" id="newsModalBody"></div>
+    <div class="mfoot"><button class="lbtn" onclick="closeModal('ovNews')">ปิด</button></div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+/* ================= ไอคอนผีเสื้อ 8-bit ================= */
+const BUTTERFLY_MAP = [   // A=ชมพูหลัก B=ชมพูเข้ม H=ไฮไลต์ K=ตัว(ดำ)
+  "...K....K...",
+  ".AAA....AAA.",
+  "AHAAA..AAAHAA".slice(0,12),
+  "AAHAB..BAHAA",
+  ".AABKKKKBAA.",
+  "..ABKKKKBA..",
+  "..ABBKKBBA..",
+  "...BAKKAB...",
+  ".....KK.....",
+];
+const BF_COLORS = {A:'#ff2e7e', B:'#a81353', H:'#ff9ec7', K:'#1c0913'};
+function butterflySVG(px){
+  let cells='';
+  BUTTERFLY_MAP.forEach((row,y)=>{
+    for(let x=0;x<row.length;x++){
+      const c=row[x];
+      if(c!=='.'&&BF_COLORS[c]) cells+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${BF_COLORS[c]}"/>`;
+    }
+  });
+  return `<svg width="${px}" height="${px}" viewBox="0 0 12 ${BUTTERFLY_MAP.length}" shape-rendering="crispEdges">${cells}</svg>`;
+}
+document.getElementById('logoSlot').innerHTML=butterflySVG(28);
+document.getElementById('favicon').href='data:image/svg+xml,'+encodeURIComponent(butterflySVG(64));
+
+/* ================= ข้อมูลจำลอง ================= */
+const NEWS = [
+  {cat:'update', date:'26 ส.ค. 2026', title:'อัปเดต v1.2.4 — ระบบเกาะหลายเกาะ (Beta)',
+   body:'• เพิ่มการย้ายเกาะระหว่างเซิร์ฟ\n• แก้บั๊กตอนเซิฟ restart แล้วโดนเด้งกลับหน้า Title\n• ปรับสมดุลสัตว์โซน highland'},
+  {cat:'event', date:'25 ส.ค. 2026', title:'🎉 อีเวนต์ x2 EXP ทั่วทั้งเกาะ — ถึง 30 ส.ค.',
+   body:'ช่วงสุดสัปดาห์นี้ ได้ EXP ทุกอย่าง x2 ทั้งเก็บเกี่ยว คราฟต์ และฆ่าสัตว์\nมาตีกันให้เต็มฝูง!'},
+  {cat:'news', date:'24 ส.ค. 2026', title:'ประกาศ: เปิดเซิร์ฟเวอร์สาธารณะ 24 ชม.',
+   body:'เซิร์ฟหลัก 127.0.0.1:8190 เปิดตลอด 24 ชม. เซฟอัตโนมัติทุก 1 นาที'},
+  {cat:'news', date:'22 ส.ค. 2026', title:'กฎการเล่นร่วมกัน (อ่านก่อนเข้าเกาะ)',
+   body:'1) ห้ามกินของเพื่อนโดยไม่ขอ\n2) สร้างบ้านห่างจาก Spawn อย่างน้อย 200 ม.\n3) อย่าตีม้าของคนอื่น… มันไม่ใช่ม้า มันคือแรปเตอร์'},
+  {cat:'update', date:'20 ส.ค. 2026', title:'Hotfix v1.2.3b — แก้ความหิวสัตว์เลี้ยง',
+   body:'แก้สัตว์ในคอกหิวตายเร็วเกินจริง ปรับเป็นหิวทุก 6 ชม.'},
+];
+const SLIDES = [
+  {cls:'s1', icon:null, cap:'ยินดีต้อนรับสู่ DinoWorld', sub:'โลกไดโนเสาร์ของเราเอง · ธีมผีเสื้อสายชมพู'},
+  {cls:'s2', icon:'🌋', cap:'อีเวนต์ภูเขาไฟระเบิด!', sub:'ไอเทมพิเศษตกราว 25–31 ส.ค.'},
+  {cls:'s3', icon:'🦕', cap:'ฤดูล่าใหญ่', sub:'EXP x2 ทุกกิจกรรมสุดสัปดาห์'},
+];
+const ISLANDS = {
+  '127.0.0.1:8190':'DinoWorld — เกาะหลัก',
+  '127.0.0.1:8290':'DinoWorld — เกาะรอง',
+  '192.168.1.50:8190':'LAN บ้านเพื่อน',
+};
+const LATEST_VER = 'v1.2.4';
+
+/* ================= state ================= */
+let S = {
+  online:true, hasUpdate:true,
+  addr:'127.0.0.1:8190', islandName:ISLANDS['127.0.0.1:8190'],
+  autoPatch:true, checkOnStart:true, keepLog:false,
+  localVer:'v1.2.3', busy:false,
+};
+try{ Object.assign(S, JSON.parse(localStorage.getItem('dinoworld_launcher')||'{}')); }catch(e){}
+function persist(){
+  const {addr,islandName,autoPatch,checkOnStart,keepLog} = S;
+  localStorage.setItem('dinoworld_launcher', JSON.stringify({addr,islandName,autoPatch,checkOnStart,keepLog}));
+}
+
+/* ================= helpers ================= */
+const $ = id => document.getElementById(id);
+function toast(type,msg){
+  const t=document.createElement('div'); t.className='toast '+type;
+  t.innerHTML='<span>'+(type==='ok'?'✅':type==='err'?'⚠️':'ℹ️')+'</span><span>'+msg+'</span>';
+  $('toasts').appendChild(t);
+  setTimeout(()=>t.remove(),4200);
+}
+function openModal(id){ $(id).classList.add('show'); }
+function closeModal(id){ $(id).classList.remove('show'); }
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('show'); }));
+
+function setProgress(pct,label){
+  $('progFill').style.width=pct+'%';
+  $('progPct').textContent = pct>0 ? pct+'%' : '';
+  if(label!==undefined) $('progLabel').textContent=label;
+}
+function setBusy(b){
+  S.busy=b;
+  const btn=$('playBtn');
+  btn.disabled=b;
+  btn.innerHTML=b?'<span style="font-size:14px;">⏳ กำลังดำเนินการ…</span>':'▶ เข้าเกม';
+}
+function refreshVerUI(){
+  $('localVer').textContent=S.localVer;
+  const need=S.localVer!==LATEST_VER;
+  $('needUpdate').textContent=need?'มีอัปเดตใหม่!':'เป็นเวอร์ชันล่าสุด';
+  $('needUpdate').style.color=need?'var(--pink-soft)':'#8fdc9f';
+  $('srvVer').textContent=LATEST_VER;
+}
+
+/* ================= news ================= */
+const CATS=[['all','📰 ทั้งหมด'],['news','📢 ประกาศ'],['update','📦 อัปเดต'],['event','🎁 อีเวนต์']];
+let curCat='all';
+function renderTabs(){
+  $('newsTabs').innerHTML=CATS.map(([id,name])=>
+    `<div class="ntab ${curCat===id?'on':''}" onclick="curCat='${id}';renderTabs();renderNews()">${name}</div>`).join('');
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');}
+function renderNews(){
+  const list=NEWS.filter(n=>curCat==='all'||n.cat===curCat);
+  $('newsList').innerHTML=list.map(n=>`
+    <div class="news-item" onclick="readNews(${NEWS.indexOf(n)})">
+      <div class="nhead">
+        <span class="badge ${'b-'+n.cat}">${n.cat==='news'?'ประกาศ':n.cat==='update'?'อัปเดต':'อีเวนต์'}</span>
+        <span class="ntitle">${n.title}</span>
+        <span class="ndate">${n.date}</span>
+      </div>
+      <div class="nbody">${esc(n.body)}</div>
+    </div>`).join('');
+}
+function readNews(i){
+  const n=NEWS[i];
+  $('newsModalTitle').textContent=n.title;
+  $('newsModalBody').innerHTML=`<div style="color:var(--dim);font-size:11px;margin-bottom:8px;">${n.date}</div>${esc(n.body)}`;
+  openModal('ovNews');
+}
+
+/* ================= slider ================= */
+let curSlide=0, slideTimer;
+function buildSlider(){
+  $('slider').insertAdjacentHTML('afterbegin', SLIDES.map((s,i)=>`
+    <div class="slide ${s.cls} ${i===0?'on':''}" onclick="readSlide(${i})">
+      <div class="big">${s.icon?s.icon:butterflySVG(84)}</div><div class="cap">${s.cap}</div><div class="sub">${s.sub}</div>
+    </div>`).join(''));
+  $('dots').innerHTML=SLIDES.map((_,i)=>`<span class="dot ${i===0?'on':''}" onclick="goSlide(${i},event)"></span>`).join('');
+  slideTimer=setInterval(()=>goSlide((curSlide+1)%SLIDES.length),4000);
+}
+function goSlide(i,ev){
+  if(ev){ev.stopPropagation();}
+  curSlide=i;
+  document.querySelectorAll('.slide').forEach((el,j)=>el.classList.toggle('on',j===i));
+  document.querySelectorAll('.dot').forEach((el,j)=>el.classList.toggle('on',j===i));
+}
+function slide(dir,ev){ ev.stopPropagation(); goSlide((curSlide+dir+SLIDES.length)%SLIDES.length,ev); clearInterval(slideTimer); slideTimer=setInterval(()=>goSlide((curSlide+1)%SLIDES.length),4000);}
+function readSlide(i){
+  const s=SLIDES[i];
+  $('newsModalTitle').textContent=s.cap;
+  $('newsModalBody').innerHTML=`<div style="text-align:center;font-size:44px;margin-bottom:8px;">${s.icon? s.icon : butterflySVG(96)}</div><div style="text-align:center;">${s.sub}<br><br><i style="font-size:11px;color:var(--dim);">(แบนเนอร์อีเวนต์ — กดเพื่ออ่านรายละเอียด)</i></div>`;
+  openModal('ovNews');
+}
+
+/* ================= สถานะเซิฟ (จำลอง live) ================= */
+let players=5, maxPlayers=20;
+function tickStatus(){
+  if(S.online){
+    players=Math.max(2,Math.min(maxPlayers,players+(Math.random()<.5?-1:1)));
+    $('srvPlayers').textContent=`${players} / ${maxPlayers}`;
+    $('playersFill').style.width=(players/maxPlayers*100)+'%';
+    $('srvPing').textContent=(18+Math.floor(Math.random()*14))+' ms';
+  }
+}
+setInterval(tickStatus,2500);
+
+function renderStatus(){
+  $('srvDot').className='dot-live'+(S.online?'':' dot-dead');
+  $('srvPill').className='pill '+(S.online?'p-online':'p-offline');
+  $('srvPill').textContent=S.online?'ออนไลน์':'ออฟไลน์';
+  $('srvName').textContent=S.islandName||ISLANDS[S.addr]||'เซิร์ฟเวอร์';
+  $('cfgAddr').textContent=S.addr;
+  if(!S.online){
+    $('srvPlayers').textContent='— / '+maxPlayers;
+    $('srvPing').textContent='—';
+    $('playersFill').style.width='0%';
+  }
+}
+
+/* ================= ปุ่มหลัก: เข้าเกม ================= */
+function onPlay(){
+  if(S.busy) return;
+
+  if(!S.online){
+    const btn=$('playBtn');
+    btn.classList.add('shake'); setTimeout(()=>btn.classList.remove('shake'),450);
+    toast('err','เชื่อมต่อเซิร์ฟเวอร์ ('+S.addr+') ไม่ได้ — โปรดตรวจสอบว่าเซิร์ฟเปิดอยู่');
+    return;
+  }
+
+  if(S.localVer!==LATEST_VER && S.autoPatch){
+    openConfirm(); return;
+  }
+  if(S.localVer!==LATEST_VER && !S.autoPatch){
+    $('confirmTitle').textContent='📦 พบอัปเดตใหม่';
+    $('confirmBody').innerHTML=`เวอร์ชันล่าสุด <b>${LATEST_VER}</b> (คุณใช้ ${S.localVer})<br>คุณปิด "อัปเดตอัตโนมัติ" ไว้ — จะเข้าเกมเวอร์ชันเดิมเลย หรืออัปเดตก่อน?`;
+    openModal('ovConfirm');
+    return;
+  }
+  launch();
+}
+
+function openConfirm(){
+  $('confirmTitle').textContent='📦 พบอัปเดตใหม่ '+LATEST_VER;
+  $('confirmBody').innerHTML=
+    `เวอร์ชันปัจจุบัน <b>${S.localVer}</b> → ใหม่ <b>${LATEST_VER}</b><br>`+
+    `<span style="font-size:12px;color:var(--dim);">ขนาดไฟล์ ~214 MB · ตรวจ hash ทุกไฟล์อัตโนมัติ · ถ้าพลาดจะข้ามแล้วเปิดเวอร์ชันเดิมให้เสมอ</span>`;
+  openModal('ovConfirm');
+}
+function confirmUpdate(){
+  closeModal('ovConfirm');
+  setBusy(true);
+  patchDownload(()=>{ S.localVer=LATEST_VER; refreshVerUI(); toast('ok','อัปเดตเป็น '+LATEST_VER+' เรียบร้อย'); launch(); });
+}
+
+function patchDownload(done){
+  let pct=0;
+  setProgress(0,'⬇️ กำลังโหลดอัปเดต…');
+  const iv=setInterval(()=>{
+    pct=Math.min(100,pct+2+Math.random()*5);
+    setProgress(Math.floor(pct),'⬇️ กำลังโหลดอัปเดต… ('+(pct*2.1).toFixed(0)+' MB / 214 MB · '+(4+Math.random()*6).toFixed(1)+' MB/s)');
+    if(pct>=100){
+      clearInterval(iv);
+      setProgress(100,'🔍 ตรวจสอบไฟล์…');
+      setTimeout(()=>{ setProgress(100,'🔁 ติดตั้งไฟล์…');
+        setTimeout(()=>{ setProgress(100,'พร้อมเล่น'); done&&done(); },900);
+      },900);
+    }
+  },140);
+}
+
+function launch(){
+  setBusy(true);
+  setProgress(0,'🎮 กำลังเปิดเกม…');
+  toast('info','กำลังเปิด DinoWorld.exe … ส่ง DURANGO_AUTOCONNECT='+S.addr+' (จำลอง)');
+  setTimeout(()=>{
+    toast('ok','เข้าสู่ '+S.islandName+' สำเร็จ — ขอให้สนุก! 🦋');
+    setProgress(0,'พร้อมเล่น'); setBusy(false);
+  },2200);
+}
+
+/* ================= ซ่อมไฟล์ ================= */
+function repairFiles(){
+  if(S.busy){ toast('err','กำลังทำงานอื่นอยู่ รอแป๊บ'); return; }
+  setBusy(true);
+  let pct=0;
+  setProgress(0,'🔧 กำลังตรวจสอบไฟล์…');
+  const iv=setInterval(()=>{
+    pct=Math.min(100,pct+4+Math.random()*4);
+    setProgress(Math.floor(pct),'🔧 กำลังตรวจสอบไฟล์… '+Math.floor(12000*pct/100)+'/'+12000+' ไฟล์');
+    if(pct>=100){
+      clearInterval(iv);
+      setProgress(100,'🔧 พบไฟล์เสีย 2 — กำลังดาวน์โหลดซ่อม…');
+      setTimeout(()=>{
+        setProgress(100,'พร้อมเล่น');
+        setBusy(false);
+        toast('ok','ซ่อมไฟล์เสร็จ: ตรวจ 12,000 ไฟล์ แทนที่เสีย 2 ไฟล์');
+      },1600);
+    }
+  },110);
+}
+
+/* ================= ตั้งค่า ================= */
+function openSettings(){
+  $('setAddr').value=S.addr;
+  $('setAutoPatch').checked=S.autoPatch;
+  $('setCheckOnStart').checked=S.checkOnStart;
+  $('setKeepLog').checked=S.keepLog;
+  const sel=$('setIsland');
+  sel.value=[...sel.options].some(o=>o.value.startsWith(S.addr)) ? sel.querySelector(`option[value^="${CSS.escape(S.addr)}"]`).value : '';
+  openModal('ovSettings');
+}
+function islandChanged(){
+  const v=$('setIsland').value;
+  if(v){ $('setAddr').value=v.split('|')[0]; }
+}
+function saveSettings(){
+  const addr=$('setAddr').value.trim();
+  if(!/^[\w.\-]+(:\d+)?$/.test(addr)){ toast('err','ที่อยู่เซิร์ฟไม่ถูกต้อง (รูปแบบ ip:port)'); return; }
+  S.addr=addr;
+  S.islandName=ISLANDS[addr]||('เซิร์ฟของฉัน — '+addr);
+  S.autoPatch=$('setAutoPatch').checked;
+  S.checkOnStart=$('setCheckOnStart').checked;
+  S.keepLog=$('setKeepLog').checked;
+  persist(); renderStatus();
+  closeModal('ovSettings');
+  toast('ok','บันทึกการตั้งค่าแล้ว — เซิร์ฟ: '+S.addr);
+}
+
+/* ================= แถบโหมดทดลอง ================= */
+function toggleOnline(){
+  S.online=!S.online;
+  $('demoOnline').classList.toggle('on',S.online);
+  $('demoOnline').textContent=S.online?'🟢 เซิฟออนไลน์':'🔴 เซิฟออฟไลน์';
+  renderStatus();
+  toast(S.online?'ok':'err', S.online?'จำลอง: เซิร์ฟกลับมาออนไลน์':'จำลอง: เซิร์ฟล่ม/ปิดปรับปรุง');
+}
+function toggleUpdate(){
+  S.hasUpdate=!S.hasUpdate;
+  S.localVer=S.hasUpdate?'v1.2.3':LATEST_VER;
+  $('demoUpdate').classList.toggle('on',S.hasUpdate);
+  refreshVerUI();
+  toast('info', S.hasUpdate?('จำลอง: มีอัปเดตใหม่ '+LATEST_VER+' รออยู่'):'จำลอง: เกมเป็นเวอร์ชันล่าสุดแล้ว');
+}
+
+/* ================= init ================= */
+renderTabs(); renderNews(); buildSlider(); renderStatus(); refreshVerUI(); setBusy(false);
+$('demoUpdate').classList.toggle('on',S.hasUpdate);
+tickStatus();
+if(S.checkOnStart){ setTimeout(()=>{ if(S.hasUpdate) toast('info','พบอัปเดตใหม่ '+LATEST_VER+' — กด "เข้าเกม" เพื่ออัปเดต'); },800); }
+</script>
+</body>
+</html>

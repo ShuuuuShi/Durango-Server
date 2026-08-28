@@ -13,13 +13,11 @@ public class PlayerSelectionSystem : GameSystem<PlayerSelectionSystem>
 {
 	private class DeletePlayer
 	{
-		[JsonProperty(PropertyName = "deletes_at")]
-		public float? DeletesAt;
+		[JsonProperty(PropertyName = "deleted")]
+		public bool Deleted;
 	}
 
 	private List<PlayerInfo> _players;
-
-	private readonly PlayerContext _playerContext;
 
 	public int EmptySlotCount { get; private set; }
 
@@ -33,15 +31,30 @@ public class PlayerSelectionSystem : GameSystem<PlayerSelectionSystem>
 
 	public event Action<List<PlayerInfo>> AccountsUpdated;
 
+	// Character data is hosted by the separate character server.  In local
+	// SingleMode GameManager.GatewayUrl can point at the gameplay gateway (8390),
+	// which does not own /accounts or /players.
+	public static string CharacterGatewayUrl
+	{
+		get
+		{
+			string gatewayUrl = GameManager.GatewayUrl;
+			if (string.IsNullOrEmpty(gatewayUrl) || gatewayUrl.IndexOf(":8390", StringComparison.OrdinalIgnoreCase) >= 0)
+			{
+				return "http://127.0.0.1:8190";
+			}
+			return gatewayUrl.TrimEnd('/');
+		}
+	}
+
 	public void UpdateAccounts(Action updated = null)
 	{
-		Clusters.RequestAccounts(GameManager.GatewayUrl, delegate(Account account)
+		Clusters.RequestAccounts(CharacterGatewayUrl, delegate(Account account)
 		{
 			if (account != null)
 			{
-				_players = account.Players;
-				account.Players.Add(_playerContext.PlayerInfo);
-				int size = KUtility.GetSize(account.Players);
+				_players = account.Players ?? new List<PlayerInfo>();
+				int size = KUtility.GetSize(_players);
 				PlayerSlotExceeded = account.PlayerSlotCount < size;
 				PlayerSlotCount = account.PlayerSlotCount;
 				EmptySlotCount = Mathf.Max(account.PlayerSlotCount - size, 0);
@@ -49,7 +62,7 @@ public class PlayerSelectionSystem : GameSystem<PlayerSelectionSystem>
 				LockedSlotCount = Mathf.Max(account.MaxPlayerSlotCount - num, 0);
 				if (this.AccountsUpdated != null)
 				{
-					this.AccountsUpdated(account.Players);
+					this.AccountsUpdated(_players);
 				}
 				if (updated != null)
 				{
@@ -61,11 +74,14 @@ public class PlayerSelectionSystem : GameSystem<PlayerSelectionSystem>
 
 	public PlayerInfo FindPlayerInfo(string entityId)
 	{
-		_players.Add(_playerContext.PlayerInfo);
+		if (_players == null)
+		{
+			return null;
+		}
 		for (int i = 0; i < KUtility.GetSize(_players); i++)
 		{
 			PlayerInfo playerInfo = _players[i];
-			if (playerInfo.PlayerEntityId == entityId)
+			if (playerInfo != null && playerInfo.PlayerEntityId == entityId)
 			{
 				return playerInfo;
 			}
@@ -75,10 +91,13 @@ public class PlayerSelectionSystem : GameSystem<PlayerSelectionSystem>
 
 	private int IndexOf(string entityId)
 	{
-		_players.Add(_playerContext.PlayerInfo);
+		if (_players == null)
+		{
+			return -1;
+		}
 		for (int i = 0; i < KUtility.GetSize(_players); i++)
 		{
-			if (_players[i].PlayerEntityId == entityId)
+			if (_players[i] != null && _players[i].PlayerEntityId == entityId)
 			{
 				return i;
 			}
@@ -96,7 +115,10 @@ public class PlayerSelectionSystem : GameSystem<PlayerSelectionSystem>
 
 	public void CreateNewPlayer(bool skipPrologue)
 	{
-		_players.Add(_playerContext.PlayerInfo);
+		if (_players == null)
+		{
+			_players = new List<PlayerInfo>();
+		}
 		GameManager.IsPlayerIdSelected = true;
 		GameManager.PlayerId = string.Empty;
 		GameManager.PlayerSlotIndex = KUtility.GetSize(_players);
@@ -106,12 +128,16 @@ public class PlayerSelectionSystem : GameSystem<PlayerSelectionSystem>
 
 	public void RequestDeletePlayer(PlayerInfo playerInfo, Action<bool> action)
 	{
-		RequestDeletePlayer(playerInfo.PlayerEntityId, delegate(double? d)
+		RequestDeletePlayer(playerInfo.PlayerEntityId, delegate(bool success)
 		{
+			if (success && _players != null)
+			{
+				_players.RemoveAll((PlayerInfo player) => player != null && player.PlayerEntityId == playerInfo.PlayerEntityId);
+			}
 			UpdateAccounts();
 			if (action != null)
 			{
-				action(d.HasValue);
+				action(success);
 			}
 		});
 	}
@@ -128,31 +154,25 @@ public class PlayerSelectionSystem : GameSystem<PlayerSelectionSystem>
 		});
 	}
 
-	public static void RequestDeletePlayer(string playerEntityId, Action<double?> callback)
+	public static void RequestDeletePlayer(string playerEntityId, Action<bool> callback)
 	{
-		string url = GameManager.GatewayUrl + "/players/" + playerEntityId;
 		string capturedNpsn = Platform.Instance.NPSN;
+		string url = CharacterGatewayUrl + "/players/" + playerEntityId + "?account_id=" + Uri.EscapeDataString(capturedNpsn);
 		Http.Request(url, delegate(byte[] result, HTTPResponse response)
 		{
-			if (capturedNpsn != Platform.Instance.NPSN)
+			if (capturedNpsn != Platform.Instance.NPSN || response == null || !response.IsSuccess)
 			{
-				callback(null);
+				if (callback != null)
+				{
+					callback(obj: false);
+				}
 			}
 			else
 			{
 				DeletePlayer deletePlayer = Json.Read<DeletePlayer>(result);
-				if (deletePlayer != null)
+				if (callback != null)
 				{
-					if (callback != null)
-					{
-						Action<double?> action = callback;
-						float? deletesAt = deletePlayer.DeletesAt;
-						action((!deletesAt.HasValue) ? null : new double?(deletesAt.Value));
-					}
-				}
-				else if (callback != null)
-				{
-					callback(null);
+					callback(deletePlayer != null && deletePlayer.Deleted);
 				}
 			}
 		}, disableCache: true, addSession: true, null, HTTPMethods.Delete);
@@ -160,7 +180,7 @@ public class PlayerSelectionSystem : GameSystem<PlayerSelectionSystem>
 
 	public static void RequestCancelDeletion(string playerEntityId, Action<bool> callback)
 	{
-		string url = $"{GameManager.GatewayUrl}/players/{playerEntityId}/cancel_player_deletion";
+		string url = $"{CharacterGatewayUrl}/players/{playerEntityId}/cancel_player_deletion";
 		string capturedNpsn = Platform.Instance.NPSN;
 		Http.Request(url, delegate(byte[] result, HTTPResponse response)
 		{

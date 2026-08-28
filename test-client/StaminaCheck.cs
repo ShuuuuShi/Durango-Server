@@ -56,7 +56,7 @@ public static class StaminaCheck
     private static bool HasRestBuff(Messages.StatusEffects msg)
     {
         return msg._StatusEffects != null && Array.Exists(msg._StatusEffects,
-            effect => effect.Id == "away_from_keyboard" || effect.EffectId == "away_from_keyboard");
+            effect => effect.Id == "rest" || effect.EffectId == "rest");
     }
 
 
@@ -345,7 +345,7 @@ public static class StaminaCheck
         float tiredAfterRest = _fatigue;
         Check("พักจริงแล้วความล้าลดลง", tiredBeforeRest > 0f && tiredAfterRest < tiredBeforeRest - 1f,
             $"ก่อน {tiredBeforeRest:F1} → หลัง {tiredAfterRest:F1}");
-        Check("พักจริงเปิดไอคอนบัพ away_from_keyboard", _restBuffEnabled,
+        Check("พักจริงเปิดบัพ rest (ไอคอน icon_se_rest)", _restBuffEnabled,
             _restBuffEnabled ? "ได้รับ StatusEffects แล้ว" : (_lastInfo ?? "ไม่ได้รับ StatusEffects"));
         conn.Send(new Cheat { _Cheat = "survival" });
         Pump(conn, 500);

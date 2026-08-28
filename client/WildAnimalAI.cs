@@ -945,17 +945,30 @@ public class WildAnimalAI : StateBasedAI<WildAnimalAI.State>
 
 	private IEnumerator BattleBeginDoing()
 	{
-		yield return new WaitForSeconds(TargetAnimal.CurAnimState.length);
+		// Some server-spawned animals do not have the threat clip in their
+		// client bundle.  CrossFade then leaves CurAnimState null; do not let
+		// the AI coroutine die while entering combat.
+		float duration = (TargetAnimal != null && TargetAnimal.CurAnimState != null)
+			? TargetAnimal.CurAnimState.length : 0.1f;
+		yield return new WaitForSeconds(duration);
 		base.CurState = State.Normal;
 	}
 
 	private void BattleBeginEntered()
 	{
+		if (TargetAnimal == null || _victim == null)
+		{
+			base.CurState = State.Normal;
+			return;
+		}
 		float yaw = Maths.CalcYawWithTarget(_victim.transform.position, base.transform.position);
-		MoveMotionInfo moveMotion = ((TargetAnimal.AnimalFrameworkResource.GetAnimationElements("move_motion_sets") is AnimationElemMoveSet animationElemMoveSet) ? animationElemMoveSet.elems.FirstOrDefault() : null).GetMoveMotion(0f);
-		TargetAnimal.SetRotateSpeed(moveMotion.rot_speed);
+		AnimationElemMoveSet moveSet = TargetAnimal.AnimalFrameworkResource == null
+			? null : TargetAnimal.AnimalFrameworkResource.GetAnimationElements("move_motion_sets") as AnimationElemMoveSet;
+		MoveSet moveElement = moveSet == null ? null : moveSet.elems.FirstOrDefault();
+		MoveMotionInfo moveMotion = moveElement == null ? null : moveElement.GetMoveMotion(0f);
+		if (moveMotion != null) TargetAnimal.SetRotateSpeed(moveMotion.rot_speed);
 		TargetAnimal.TurnToYaw(yaw, bSnap: false);
-		TargetAnimal.CrossFade(_threatMotion);
+		if (!string.IsNullOrEmpty(_threatMotion)) TargetAnimal.CrossFade(_threatMotion);
 	}
 
 	private void BattleBeginExited()

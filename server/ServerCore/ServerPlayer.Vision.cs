@@ -99,7 +99,11 @@ public partial class ServerPlayer
         // ความสูงพื้น: server ไม่มี heightmap เอง ใช้ค่าที่ผู้เล่นรายงานมา ไม่งั้นสัตว์จมใต้พื้น
         if (a.Height == 0f)
         {
-            a.Height = CurrentHeight != 0f ? CurrentHeight : _world.GroundHeightHint;
+            if (!_world.Terrain.TryGetGroundHeight(a.Position.x, a.Position.y, out float groundHeight))
+            {
+                groundHeight = CurrentHeight != 0f ? CurrentHeight : _world.GroundHeightHint;
+            }
+            a.Height = groundHeight;
         }
         Send(a.MakeAppear());
         if (!a.IsAlive)

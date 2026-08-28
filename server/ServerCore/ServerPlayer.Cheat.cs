@@ -137,6 +137,31 @@ public partial class ServerPlayer
             }
         }
 
+        // shutdown — test-only graceful stop สำหรับ restart acceptance harness
+        if (cmd == "shutdown")
+        {
+            _world.SaveAll(force: true);
+            Send(new Info { Text = "เซฟเสร็จแล้ว กำลังปิดเซิร์ฟ" }, header.Seq);
+            Environment.Exit(0);
+            return;
+        }
+
+        // architect add <artifactId> <entityId> — test-only grant สำหรับตรวจ shared storage contention
+        if (cmd.StartsWith("architect add ", StringComparison.Ordinal))
+        {
+            string[] parts = raw.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 4 && _world.TryAddArtifactArchitect(parts[2], parts[3], EntityId, out AppearArtifact updated))
+            {
+                _world.AnnounceArtifact(updated);
+                Send(new Info { Text = $"เพิ่ม architect {parts[3]} ให้ {parts[2]} แล้ว" }, header.Seq);
+            }
+            else
+            {
+                Send(new Info { Text = "ใช้: cheat architect add <artifactId> <entityId> (ต้องเป็นเจ้าของ artifact)" }, header.Seq);
+            }
+            return;
+        }
+
         // tp <tileX> <tileY> — วาร์ปตัวเองไปพิกัดที่ระบุ
         // ไว้เทสระยะการมองเห็น (เดินจริงติดเพดานความเร็ว M-2 ต้องเดินหลายรอบกว่าจะพ้นระยะ)
         if (cmd.StartsWith("tp ", StringComparison.Ordinal) && cmd != "tp spawn")
@@ -401,10 +426,41 @@ public partial class ServerPlayer
                 Send(new Info { Text = $"วางกองไฟทดสอบที่ tile {tile.x},{tile.y} แล้ว" }, header.Seq);
                 break;
             }
+            // ใช้ตรวจ render ของ blueprint ที่ประกอบจากหลาย slot โดยตรง
+            // (คำสั่งทดสอบเท่านั้น ไม่ใช่เส้นทางเล่นจริง)
+            case "place real tent":
+            case "place_real_tent":
+            {
+                if (!AllowFreeBuild)
+                {
+                    Send(new Info { Text = "การสร้างฟรีถูกปิดอยู่ — เปิด CraftMenu.AllowFreeBuild เฉพาะตอนทดสอบ" }, header.Seq);
+                    break;
+                }
+                const string blueprintId = "tent";
+                if (!RecipeData.BlueprintType.TryGetValue(blueprintId, out ushort entityType))
+                {
+                    Send(new Info { Text = $"ไม่มีข้อมูล blueprint '{blueprintId}'" }, header.Seq);
+                    break;
+                }
+                Point2 tile = new Point2((int)(CurrentPosition.x / 200f), (int)(CurrentPosition.y / 200f));
+                if (_world.HasArtifactAt(tile))
+                {
+                    tile = new Point2(tile.x + 1, tile.y);
+                }
+                Point2 size = RecipeData.BlueprintSize.TryGetValue(blueprintId, out var bpSize)
+                    ? new Point2(bpSize.x, bpSize.y) : new Point2(1, 1);
+                string entityId = Guid.NewGuid().ToString();
+                AppearArtifact placed = ArtifactFactory.Make(EntityId, entityId, entityType, tile, size,
+                    default, null, 1, blueprintId, BuildingState.Completed);
+                _world.AddArtifact(placed, blueprintId);
+                _world.AnnounceArtifact(placed);
+                Send(new Info { Text = $"วางเต็นท์ทดสอบที่ tile {tile.x},{tile.y} แล้ว" }, header.Seq);
+                break;
+            }
             // เฟส C — ของสำหรับทดสอบระบบสวมใส่
             case "add axe":
             case "add_axe":
-                GiveEquipTestItem("axe_onehand_stone_01", "ขวานหิน", "weapon_axe_onehand_stone", header.Seq);
+                GiveEquipTestItem("axe_onehand_stone_01", "ขวานหิน", "weapon_axe_onehand_stone_2", header.Seq);
                 break;
             case "add stone":
             case "add_stone":

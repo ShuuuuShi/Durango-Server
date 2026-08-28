@@ -17,8 +17,6 @@ public class PlayerSelectionGroup : UIBase
 	[SerializeField]
 	private PlayerPreviewPage _playerPreviewPage;
 
-	private readonly PlayerContext _playerContext;
-
 	private void Start()
 	{
 		_playerList.ButtonClicked += OnPlayerSlotActionButtonClicked;
@@ -33,9 +31,13 @@ public class PlayerSelectionGroup : UIBase
 		UIManager.Popup.LoadingRing.AttachToWidget(base.gameObject);
 		GameSystem<PlayerSelectionSystem>.Instance().UpdateAccounts(delegate
 		{
-			_playerList.Select(_playerContext.EntityId);
+			string selectedEntityId = GameManager.PlayerId;
+			if (string.IsNullOrEmpty(selectedEntityId) && Server._localPlayer != null)
+			{
+				selectedEntityId = Server._localPlayer.EntityId;
+			}
+			_playerList.Select(selectedEntityId);
 		});
-		UIManager.SystemMsg("Test");
 		return base.Open();
 	}
 

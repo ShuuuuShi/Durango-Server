@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Durango.Offline;
 
@@ -111,14 +112,19 @@ public class Listener
 		{
 			return;
 		}
-		if (_acceptedSocket != null)
-		{
-			if (this.ClientAccepted != null)
+			Socket accepted = _acceptedSocket;
+			if (accepted != null && ReferenceEquals(Interlocked.CompareExchange(ref _acceptedSocket, null, accepted), accepted))
 			{
-				this.ClientAccepted(_acceptedSocket);
+				try
+				{
+					ClientAccepted?.Invoke(accepted);
+				}
+				catch (Exception exception)
+				{
+					Debug.LogException(exception);
+					try { accepted.Close(); } catch (Exception) { }
+				}
 			}
-			_acceptedSocket = null;
-		}
 		if (!_acceptWaiting)
 		{
 			Accept();

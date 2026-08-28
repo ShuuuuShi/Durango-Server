@@ -145,7 +145,7 @@ SetEnergy((gauge == null) ? character.GetGauge("energy") : gauge);
 
 - จุดพักยึดจาก `RecipeData.BlueprintComponents[blueprintId]` ที่มี component `Shelter` เหมือนเกณฑ์ที่ client ใช้เพิ่ม `Interaction.Rest` ไม่เดาจากชื่อ blueprint อีกต่อไป
 - ครอบคลุมกองไฟ เต็นท์ เก้าอี้ โซฟา เตียง เสื่อ สระ/เฟอร์นิเจอร์ และจุดพักอื่นที่มี `Shelter` ในข้อมูลเกม
-- เริ่มพักเปิด `away_from_keyboard` ผ่าน `Messages.StatusEffects`; หยุดพักปิด effect และส่ง packet ใหม่
+- เริ่มพักเปิด status effect `rest` ผ่าน `Messages.StatusEffects` ซึ่งใช้ไอคอนเกม `icon_se_rest`; `away_from_keyboard` ของ SleepChecker ยังเป็นคนละสถานะและไม่ใช้แทนบัพพัก
 - `Move` ที่เป็น jitter/snap เข้า attachment ไม่ทำให้พักหลุด; หยุดเฉพาะการขยับจริงเกิน 10 world units
-- `RestFatiguePerSec=4` ทำงานจริงและถูกตรวจด้วย `test-client/StaminaCheck.cs`
+- `RestFatiguePerSec=4` ทำงานจริงและถูกตรวจด้วย `test-client/StaminaCheck.cs`; เมื่อ fatigue เหลือ 0 จะหยุดลดค่าแต่คงบัพ `rest` จนกว่าจะลุก/ขยับ/ทำกิจกรรม
 - ผลล่าสุด: `--stamina-check` **19/19** ผ่าน (fatigue ลด, buff เปิด, buff ปิดเมื่อหยุดพัก)

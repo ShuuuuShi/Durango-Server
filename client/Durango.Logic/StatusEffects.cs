@@ -51,6 +51,20 @@ public class StatusEffects
 			if (statusEffect == null)
 			{
 				StatusEffectTemplate statusEffectTemplate = StatusEffectTemplateYaml.GetStatusEffectTemplate(effectId, level);
+				// Some asset sets do not contain a template for the server-owned rest effect.
+				// Do not drop the packet: the player must still see the rest buff and icon.
+				if (statusEffectTemplate == null && string.Equals(effectId, "rest", StringComparison.OrdinalIgnoreCase))
+				{
+					statusEffectTemplate = new StatusEffectTemplate
+					{
+						MinLevel = 1,
+						MaxLevel = int.MaxValue,
+						Name = "Resting",
+						Description = "Resting at a shelter",
+						Icon = "icon_se_rest",
+						Effects = new Yaml.EffectDetail[0]
+					};
+				}
 				if (statusEffectTemplate != null)
 				{
 					statusEffect = new StatusEffect(msg, statusEffectTemplate);

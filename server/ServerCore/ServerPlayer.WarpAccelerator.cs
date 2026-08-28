@@ -80,6 +80,11 @@ public partial class ServerPlayer
 
     private void HandleAccelerate(Messages.Accelerate msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.WarpAccelerator)
+        {
+            RejectFeatureDisabled("WarpAccelerator", "Accelerate", "วาร์ปเรกเซเลอเรเตอร์ยังไม่เปิดในรอบนี้", header);
+            return;
+        }
         if (!CheckWarpAcceleratorAccess(msg.EntityId, out _))
         {
             return;
@@ -94,6 +99,11 @@ public partial class ServerPlayer
 
     private void HandleParticipateAcceleration(ParticipateAcceleration msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.WarpAccelerator)
+        {
+            RejectFeatureDisabled("WarpAccelerator", "ParticipateAcceleration", "วาร์ปเรกเซเลอเรเตอร์ยังไม่เปิดในรอบนี้", header);
+            return;
+        }
         if (!CheckWarpAcceleratorAccess(msg.EntityId, out _))
         {
             return;
@@ -108,6 +118,11 @@ public partial class ServerPlayer
 
     private void HandleReceiveAcceleratorRewards(ReceiveAcceleratorRewards msg, PacketHeader header)
     {
+        if (!ServerConfig.Current.Features.WarpAccelerator)
+        {
+            RejectFeatureDisabled("WarpAccelerator", "ReceiveAcceleratorRewards", "วาร์ปเรกเซเลอเรเตอร์ยังไม่เปิดในรอบนี้", header);
+            return;
+        }
         if (!CheckWarpAcceleratorAccess(msg.EntityId, out _))
         {
             return;

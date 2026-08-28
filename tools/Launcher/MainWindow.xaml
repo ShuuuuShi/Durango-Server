@@ -1,0 +1,176 @@
+<Window x:Class="DinoWorld.Launcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:DinoWorld.Launcher"
+        Title="DinoWorld Launcher" Height="620" Width="980"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BgDark}"
+        WindowStyle="SingleBorderWindow">
+    <Window.Resources>
+        <!-- ผีเสื้อ 8-bit — วาดจากพิกเซลแมป 12x10 (แถวละ Canvas ทับกัน) -->
+        <local:PixelButterfly x:Key="Butterfly"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>   <!-- titlebar -->
+            <RowDefinition Height="*"/>      <!-- main -->
+            <RowDefinition Height="Auto"/>   <!-- bottom bar -->
+        </Grid.RowDefinitions>
+
+        <!-- ═══════ Titlebar ═══════ -->
+        <Border Grid.Row="0" Background="#1C1622" BorderBrush="{StaticResource PinkDeep}" BorderThickness="0,0,0,1" Padding="14,8">
+            <StackPanel Orientation="Horizontal">
+                <ContentControl Content="{StaticResource Butterfly}" Width="28" Height="24" VerticalAlignment="Center"/>
+                <TextBlock Text="DINOWORLD" FontSize="19" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#FF7AB0" Offset="0"/>
+                            <GradientStop Color="#FF2E7E" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <TextBlock Text="Launcher" FontSize="11" Foreground="{StaticResource TextDim}" Margin="10,4,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ═══════ Main ═══════ -->
+        <Grid Grid.Row="1" Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" MinWidth="380"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="4*" MinWidth="300"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ── ประกาศ ── -->
+            <Border Grid.Column="0" Background="{StaticResource BgPanel}" BorderBrush="{StaticResource LineDim}" BorderThickness="1" CornerRadius="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="8,8,8,0">
+                        <RadioButton x:Name="TabAll" Content="📰 ทั้งหมด" Style="{StaticResource NewsTab}" GroupName="nt" IsChecked="True" Checked="NewsTab_Checked" Tag="all"/>
+                        <RadioButton Content="📢 ประกาศ" Style="{StaticResource NewsTab}" GroupName="nt" Checked="NewsTab_Checked" Tag="news" Margin="4,0,0,0"/>
+                        <RadioButton Content="📦 อัปเดต" Style="{StaticResource NewsTab}" GroupName="nt" Checked="NewsTab_Checked" Tag="update" Margin="4,0,0,0"/>
+                        <RadioButton Content="🎁 อีเวนต์" Style="{StaticResource NewsTab}" GroupName="nt" Checked="NewsTab_Checked" Tag="event" Margin="4,0,0,0"/>
+                    </StackPanel>
+                    <ListBox x:Name="NewsList" Grid.Row="1" Margin="8,4,8,10" Background="Transparent"
+                             BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             SelectionMode="Single" Cursor="Hand">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#FFFFFF06" BorderBrush="#FFFFFF0D" BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,3">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding BadgeText}" FontSize="10" FontWeight="Bold" Padding="7,2"
+                                                       Background="#7D0F4055" Foreground="#FFB1CF" VerticalAlignment="Center">
+                                                <TextBlock.Resources><Style TargetType="Border"/></TextBlock.Resources>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextMain}"
+                                                       Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Date}" FontSize="11" Foreground="{StaticResource TextDim}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Body}" FontSize="12" Foreground="{StaticResource TextDim}" TextWrapping="Wrap"
+                                                   Margin="0,7,0,0" Visibility="{Binding BodyVisibility}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- ── คอลัมน์ขวา: สไลด์ + สถานะ ── -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- สไลด์โปรโมชั่น -->
+                <Border Grid.Row="0" Background="{StaticResource BgPanel}" BorderBrush="{StaticResource LineDim}" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
+                    <Grid MouseLeftButtonDown="Slide_Click">
+                        <Grid x:Name="SlideHost"/>
+                        <Button HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" Content="‹" FontSize="16" Width="30" Height="30"
+                                Style="{StaticResource SideButton}" Click="PrevSlide_Click"/>
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" Content="›" FontSize="16" Width="30" Height="30"
+                                Style="{StaticResource SideButton}" Click="NextSlide_Click"/>
+                        <StackPanel x:Name="SlideDots" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,8"/>
+                    </Grid>
+                </Border>
+
+                <!-- การ์ดสถานะเซิร์ฟ -->
+                <Border Grid.Row="1" Background="{StaticResource BgPanel}" BorderBrush="{StaticResource LineDim}" BorderThickness="1" CornerRadius="8" Padding="14,10" Margin="0,10,0,0">
+                    <StackPanel>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse x:Name="SrvDot" Width="10" Height="10" Fill="{StaticResource Pink}" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="SrvName" Text="DinoWorld" FontSize="14" FontWeight="Bold" Foreground="#FFE4F0" Margin="7,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock x:Name="SrvPill" Text="กำลังเชื่อมต่อ…" FontSize="11" FontWeight="Bold" Foreground="{StaticResource PinkSoft}"
+                                       HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="ผู้เล่น" Style="{StaticResource DimText}"/>
+                            <ProgressBar Grid.Column="1" x:Name="PlayersBar" Height="8" Margin="10,0,10,0" Minimum="0" Maximum="100"
+                                         Foreground="{StaticResource PinkDark}" Background="#11000000" BorderBrush="#33000000"/>
+                            <TextBlock Grid.Column="2" x:Name="SrvPlayers" Text="—" Style="{StaticResource DimText}"/>
+                        </Grid>
+                        <Grid Margin="0,7,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <TextBlock Text="Ping" Style="{StaticResource DimText}"/>
+                            <TextBlock Grid.Column="2" x:Name="SrvPing" Text="—" Style="{StaticResource DimText}"/>
+                        </Grid>
+                        <Grid Margin="0,7,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <TextBlock Text="เวอร์ชันล่าสุด" Style="{StaticResource DimText}"/>
+                            <TextBlock Grid.Column="2" x:Name="SrvVer" Text="—" Style="{StaticResource DimText}"/>
+                        </Grid>
+                        <Separator Background="#15FFFFFF" Margin="0,9,0,2"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <TextBlock Text="เซิร์ฟเวอร์" Style="{StaticResource DimText}"/>
+                            <TextBlock Grid.Column="1" x:Name="CfgAddr" Text="—" FontSize="11" Foreground="{StaticResource PinkSoft}" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- ═══════ Bottom bar ═══════ -->
+        <Border Grid.Row="2" Background="#17101C" BorderBrush="{StaticResource PinkDeep}" BorderThickness="0,1,0,0" Padding="14,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="⚙️ ตั้งค่า" Style="{StaticResource SideButton}" Click="Settings_Click"/>
+                <Button Grid.Column="1" Content="🔧 ซ่อมไฟล์" Style="{StaticResource SideButton}" Click="Repair_Click" Margin="8,0,0,0"/>
+
+                <StackPanel Grid.Column="2" Margin="14,0" VerticalAlignment="Center">
+                    <Grid>
+                        <TextBlock x:Name="ProgLabel" Text="พร้อมเล่น" FontSize="11" Foreground="{StaticResource TextDim}"/>
+                        <TextBlock x:Name="ProgPct" Text="" FontSize="11" Foreground="{StaticResource TextDim}" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <ProgressBar x:Name="Progress" Height="12" Minimum="0" Maximum="100" Margin="0,4,0,0"
+                                 Foreground="{StaticResource Pink}" Background="#22000000" BorderBrush="#44000000"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" VerticalAlignment="Center" Margin="0,0,14,0">
+                    <TextBlock FontSize="11" Foreground="{StaticResource TextDim}" HorizontalAlignment="Right">
+                        <Run Text="ติดตั้ง "/><Run x:Name="LocalVer" Text="—"/>
+                    </TextBlock>
+                    <TextBlock x:Name="NeedUpdate" Text="" FontSize="11" Foreground="{StaticResource PinkSoft}" HorizontalAlignment="Right"/>
+                </StackPanel>
+
+                <Button Grid.Column="4" x:Name="PlayBtn" Content="▶ เข้าเกม" Style="{StaticResource PinkButton}"
+                        FontSize="17" MinWidth="170" Padding="20,13" Click="Play_Click"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

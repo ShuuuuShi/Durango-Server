@@ -160,7 +160,12 @@ public partial class ServerPlayer
 
     private void HandleEquip(Equip msg, PacketHeader header)
     {
-        if (!ServerConfig.Current.Features.Equipment || !IsPlayablePreset(msg.SlotType))
+        if (!ServerConfig.Current.Features.Equipment)
+        {
+            RejectFeatureDisabled("Equipment", "Equip", "ระบบอุปกรณ์ยังไม่เปิดในรอบนี้", header);
+            return;
+        }
+        if (!IsPlayablePreset(msg.SlotType))
         {
             Send(default(Abort), header.Seq);
             return;
@@ -234,7 +239,12 @@ public partial class ServerPlayer
 
     private void HandleChangeEquipSlotType(ChangeEquipSlotType msg, PacketHeader header)
     {
-        if (!ServerConfig.Current.Features.Equipment || !IsPlayablePreset(msg.SlotType))
+        if (!ServerConfig.Current.Features.Equipment)
+        {
+            RejectFeatureDisabled("Equipment", "ChangeEquipSlotType", "ระบบอุปกรณ์ยังไม่เปิดในรอบนี้", header);
+            return;
+        }
+        if (!IsPlayablePreset(msg.SlotType))
         {
             Send(default(Abort), header.Seq);
             return;
@@ -250,8 +260,12 @@ public partial class ServerPlayer
 
     private void HandleAttachAccessory(AttachAccessory msg, PacketHeader header)
     {
-        if (!ServerConfig.Current.Features.Equipment || string.IsNullOrWhiteSpace(msg.AccessoryId)
-            || msg.AccessoryId.Length > 128)
+        if (!ServerConfig.Current.Features.Equipment)
+        {
+            RejectFeatureDisabled("Equipment", "AttachAccessory", "ระบบอุปกรณ์ยังไม่เปิดในรอบนี้", header);
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(msg.AccessoryId) || msg.AccessoryId.Length > 128)
         {
             Send(default(Abort), header.Seq);
             return;
@@ -267,7 +281,7 @@ public partial class ServerPlayer
     {
         if (!ServerConfig.Current.Features.Equipment)
         {
-            Send(default(Abort), header.Seq);
+            RejectFeatureDisabled("Equipment", "ResetAccessory", "ระบบอุปกรณ์ยังไม่เปิดในรอบนี้", header);
             return;
         }
         _accessoryId = null;
@@ -315,7 +329,10 @@ public partial class ServerPlayer
         // รีเซ็ตส่วนที่อุปกรณ์คุมก่อน แล้วค่อยทาทับตามของที่ใส่
         display.Body = display.DefaultBody;
         display.Head = null;
-        display.BodyColor = new[] { "FFFFFF", "FFFFFF", "FFFFFF" };
+        if (display.BodyColor == null || display.BodyColor.Length < 3)
+        {
+            display.BodyColor = new[] { "FFFFFF", "FFFFFF", "FFFFFF" };
+        }
         display.WeaponInfo = default;
         display.Equip = null;
         display.EquipColor = null;

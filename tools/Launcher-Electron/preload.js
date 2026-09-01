@@ -26,4 +26,6 @@ contextBridge.exposeInMainWorld('mapEditor', {
   exportTerrain: (payload) => ipcRenderer.invoke('editor-export-terrain', payload),
   listBackups: (payload) => ipcRenderer.invoke('editor-list-backups', payload),
   rollbackTerrain: (payload) => ipcRenderer.invoke('editor-rollback-terrain', payload),
+  applyBiomeBrush: (payload) => ipcRenderer.invoke('editor-apply-biome-brush', payload),
+  applyCoastBrush: (payload) => ipcRenderer.invoke('editor-apply-coast-brush', payload),
 });

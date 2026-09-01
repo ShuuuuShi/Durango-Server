@@ -389,6 +389,40 @@ ipcMain.handle('editor-rollback-terrain', async (_event, payload) => {
       backupDir: payload && payload.backupDir,
       backupId: payload && payload.backupId,
     });
+
+function catchMutate(fn) {
+  try { return fn(); }
+  catch (error) { return { ok: false, error: String(error.message || error) }; }
+}
+
+ipcMain.handle('editor-apply-biome-brush', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  return catchMutate(() => {
+    const p = payload || {};
+    const biomes = bufferFromBase64(p.biomes);
+    const width = p.width;
+    const height = p.height;
+    const result = mapEditorCore.applyBiomeBrush(biomes, width, height, {
+      x: p.x, y: p.y, radius: p.radius, biomeType: p.biomeType,
+    });
+    return { ok: true, changed: result.changed, biomes: biomes.toString('base64') };
+  });
+});
+
+ipcMain.handle('editor-apply-coast-brush', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  return catchMutate(() => {
+    const p = payload || {};
+    const buf = bufferFromBase64(p.coastDistance || p.buf);
+    const width = p.width;
+    const height = p.height;
+    const result = mapEditorCore.applyCoastBrush(buf, width, height, {
+      x: p.x, y: p.y, radius: p.radius, value: p.value,
+    });
+    return { ok: true, changed: result.changed, coastDistance: buf.toString('base64') };
+  });
+});
+
     return { canceled: false, ...result };
   } catch (error) {
     return { canceled: false, ok: false, error: String(error.message || error) };

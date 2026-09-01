@@ -424,6 +424,79 @@ ipcMain.handle('editor-apply-coast-brush', async (_event, payload) => {
   });
 });
 
+ipcMain.handle('editor-place-garden', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  return catchMutate(() => {
+    const p = payload || {};
+    const records = Array.isArray(p.records) ? p.records.map((row) => ({ ...row })) : [];
+    try {
+      mapEditorCore.placeGarden(records, p.width, p.height, { x: p.x, y: p.y, entityType: p.entityType });
+      return { ok: true, records, conflict: false };
+    } catch (error) {
+      const conflict = /occupied|already/i.test(String(error.message || error));
+      return { ok: false, conflict, error: String(error.message || error), records: p.records || [] };
+    }
+  });
+});
+
+ipcMain.handle('editor-erase-garden', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  return catchMutate(() => {
+    const p = payload || {};
+    const records = Array.isArray(p.records) ? p.records.map((row) => ({ ...row })) : [];
+    const result = mapEditorCore.eraseGarden(records, { x: p.x, y: p.y });
+    return { ok: true, records: result.records, removed: result.removed };
+  });
+});
+
+ipcMain.handle('editor-place-landmark', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  return catchMutate(() => {
+    const p = payload || {};
+    const records = Array.isArray(p.records) ? p.records.map((row) => ({ ...row })) : [];
+    try {
+      mapEditorCore.placeLandmark(records, p.width, p.height, p);
+      return { ok: true, records };
+    } catch (error) {
+      return { ok: false, error: String(error.message || error), records: p.records || [] };
+    }
+  });
+});
+
+ipcMain.handle('editor-move-landmark', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  return catchMutate(() => {
+    const p = payload || {};
+    const records = Array.isArray(p.records) ? p.records.map((row) => ({ ...row })) : [];
+    mapEditorCore.moveLandmark(records, p.width, p.height, p);
+    return { ok: true, records };
+  });
+});
+
+ipcMain.handle('editor-erase-landmark', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  return catchMutate(() => {
+    const p = payload || {};
+    const records = Array.isArray(p.records) ? p.records.map((row) => ({ ...row })) : [];
+    const result = mapEditorCore.eraseLandmarkAt(records, { x: p.x, y: p.y });
+    return { ok: true, records: result.records, removed: result.removed };
+  });
+});
+
+ipcMain.handle('editor-build-occupancy', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  return catchMutate(() => {
+    const p = payload || {};
+    const grid = mapEditorCore.buildOccupancy({
+      width: p.width, height: p.height, garden: p.garden || [], landmarks: p.landmarks || [],
+      artifacts: p.artifacts || [], padTiles: p.padTiles || 0,
+    });
+    let blocked = 0;
+    for (let i = 0; i < grid.length; i++) if (grid[i]) blocked += 1;
+    return { ok: true, occupancy: grid.toString('base64'), blocked };
+  });
+});
+
 // ───── path helpers ─────
 const gameDir = (() => {
   // portable app บน Windows แตกตัวเองไว้ temp; PORTABLE_EXECUTABLE_DIR คือโฟลเดอร์ที่ผู้ใช้วาง exe จริง

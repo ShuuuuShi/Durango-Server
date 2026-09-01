@@ -9,9 +9,13 @@
 .canvas{display:flex;flex-direction:column;min-width:0}.canvas-head{height:44px;padding:0 11px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}.canvas-head b{font-size:13px}.canvas-head span{color:var(--muted);font-size:10px}.canvas-actions{margin-left:auto;display:flex;gap:5px}.stage{flex:1;min-height:0;overflow:auto;padding:35px;background:#0b1219;background-image:linear-gradient(#ffffff06 1px,transparent 1px),linear-gradient(90deg,#ffffff06 1px,transparent 1px);background-size:24px 24px}.wrap{position:relative;width:max-content;height:max-content;margin:auto;border:1px solid #71937b;box-shadow:0 0 0 8px #0002,0 15px 35px #0009}.wrap canvas{display:block;cursor:crosshair}.hint,.coords{position:absolute;z-index:2;top:8px;padding:5px 8px;background:#0d151dcc;border:1px solid #354655;border-radius:5px;color:#b4c1c6;font-size:10px;pointer-events:none}.hint{left:10px}.coords{right:10px;color:var(--cyan);border-color:#2d6265}
 .inspector{padding:12px;overflow:auto}.section{color:var(--cyan);font-size:10px;letter-spacing:1px;text-transform:uppercase;margin:2px 0 9px}.empty{text-align:center;line-height:1.8;color:var(--muted);padding:18px 8px;border:1px dashed #354555;border-radius:7px}.preview{display:flex;gap:9px;align-items:center;padding:9px;border:1px solid #45465b;background:#1d1c2d;border-radius:7px;margin-bottom:13px}.big{width:40px;height:40px;display:grid;place-items:center;background:#302844;border-radius:7px;font-size:25px}.preview b{font-size:12px}.preview small{display:block;color:var(--muted);margin-top:3px}.field{margin:10px 0}.field label{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-bottom:5px}.field input,.field select{width:100%;padding:7px 8px;background:#0b1219;border:1px solid #394a5a;border-radius:5px;outline:0;font-size:11px}.field input:focus{border-color:var(--cyan)}.two{display:grid;grid-template-columns:1fr 1fr;gap:7px}.wide{width:100%}.danger{color:#ff9cac;border-color:#994352}.foot{height:28px;padding:0 12px;display:flex;align-items:center;gap:14px;color:var(--muted);border-top:1px solid var(--line);background:#0b1219;font-size:10px}.foot strong{color:#dce9e9}.rightalign{margin-left:auto}
 
-.rail{display:flex;flex-direction:column;gap:6px;padding:8px;overflow:auto}.rail-btn{width:100%;min-height:42px;padding:6px 4px;border:1px solid #384959;border-radius:7px;background:linear-gradient(#202b37,#141c25);font-size:10px;line-height:1.2}.rail-btn.active{background:linear-gradient(#ae1d5d,#70153f);border-color:#ff6d9f}.modes{display:flex;flex-wrap:wrap;gap:4px;padding:8px;border-top:1px solid var(--line)}.modes .btn{flex:1;min-width:36px;padding:6px 4px;font-size:10px}.foot .btn{padding:3px 8px;font-size:10px}.badge{color:#ffd166}
+.rail{display:flex;flex-direction:column;gap:6px;padding:8px;overflow:auto}.rail-btn{width:100%;min-height:42px;padding:6px 4px;border:1px solid #384959;border-radius:7px;background:linear-gradient(#202b37,#141c25);font-size:10px;line-height:1.2}.rail-btn.active{background:linear-gradient(#ae1d5d,#70153f);border-color:#ff6d9f}.modes{display:flex;flex-wrap:wrap;gap:4px;padding:8px;border-top:1px solid var(--line)}.modes .btn{flex:1;min-width:36px;padding:6px 4px;font-size:10px}.foot .btn{padding:3px 8px;font-size:10px}.badge{color:#ffd166}.modal-back{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;z-index:30}.modal-back.show{display:flex}.modal{width:min(560px,92vw);max-height:80vh;overflow:auto;background:#121a24;border:1px solid #3a4c5d;border-radius:10px;padding:16px}.modal h3{margin:0 0 10px}.modal pre{white-space:pre-wrap;background:#0b1219;border:1px solid #2c3b4a;padding:8px;border-radius:6px;font-size:11px}.warn{color:#ffd166}
 </style></head>
 <body><div class="app">
+<div class="modal" id="exportModal"><div class="box"><b id="modalTitle">Export</b><pre id="modalBody"></pre>
+<label id="forceRow" style="display:none;color:#ffd166"><input type="checkbox" id="forceOverwrite"> force overwrite (source hash drift)</label>
+<div class="row"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" id="modalOk">Confirm write</button></div></div></div>
+
 <div class="title"><div class="logo">⌘</div><div class="brand">DINOWORLD <small>MAP LAB</small></div><div class="path" id="path">แผนที่ใหม่ · ยังไม่ได้บันทึก</div><div class="win"><button onclick="window.mapEditor.minimize()">−</button><button class="close" onclick="window.mapEditor.close()">×</button></div></div>
 <div class="toolbar"><div class="group"><button class="btn primary" onclick="newMap()">＋ ใหม่</button><button class="btn" onclick="openMap()">เปิด</button><button class="btn" onclick="importTerrain()">นำเข้า terrain</button><button class="btn" onclick="scanGame()">ตรวจโฟลเดอร์เกม</button><button class="btn" onclick="saveMap()">บันทึก</button><button class="btn cyan" onclick="exportPng()">PNG</button><button class="btn" onclick="exportReport()">รายงาน</button></div><div class="group"><button class="btn" onclick="undo()">↶</button><button class="btn" onclick="redo()">↷</button></div><div class="group"><button class="btn active" data-tool="select" onclick="setTool('select')">⌁ เลือก</button><button class="btn" data-tool="terrain" onclick="setTool('terrain')">▦ พื้นดิน</button><button class="btn" data-tool="place" onclick="setTool('place')">＋ วาง</button><button class="btn" data-tool="erase" onclick="setTool('erase')">⌫ ลบ</button></div><div class="spacer"></div><span class="dot"></span><span id="state" style="color:var(--muted);font-size:10px">พร้อมทำงาน</span><span class="zoom" id="zoom">100%</span><button class="btn" onclick="zoomBy(-.1)">−</button><button class="btn" onclick="zoomBy(.1)">＋</button></div>
 <div class="work">
@@ -35,7 +39,8 @@
 </div></aside>
 <main class="panel canvas"><div class="canvas-head"><b id="mapTitle">New Island</b><span>/ world / editable layer</span><div class="canvas-actions"><button class="btn" onclick="gridOn=!gridOn;draw()"># Grid</button><button class="btn" onclick="fitMap()">Fit</button></div></div><div class="stage" id="stage"><div class="hint" id="hint">เลือกวัตถุจากคลัง แล้วคลิกเพื่อวาง · Delete ลบ · Ctrl+S บันทึก</div><div class="coords" id="coords">X 0 · Y 0</div><div class="wrap" id="wrap"><canvas id="canvas"></canvas></div></div></main>
 <aside class="panel right"><div class="head"><div><b>Inspector</b><small>รายละเอียดของสิ่งที่เลือก</small></div></div><div class="inspector" id="inspector"></div></aside>
-</div><div class="foot"><span>Map Lab v1 · <strong id="importMode">mock</strong></span><span>dirty <strong id="dirtyLayers">none</strong></span><span>วัตถุ <strong id="objects">0</strong></span><span>ขนาด <strong id="size">64 × 40</strong> tiles</span><span>chunks <strong id="chunks">—</strong></span><span class="rightalign"><button class="btn" onclick="setLayer('export')">Export</button> <button class="btn" onclick="setLayer('rollback')">Rollback</button></span></div></div>
+</div><div class="foot"><span>Map Lab v1 · <strong id="importMode">mock</strong></span><span>dirty <strong id="dirtyLayers">none</strong></span><span>วัตถุ <strong id="objects">0</strong></span><span>ขนาด <strong id="size">64 × 40</strong> tiles</span><span>chunks <strong id="chunks">—</strong></span><span class="rightalign"><button class="btn cyan" onclick="openExportDialog()">Export</button> <button class="btn" onclick="openRollbackDialog()">Rollback</button></span></div></div>
+<div class="modal-back" id="modalBack"><div class="modal" id="modalBox"></div></div>
 <script>
 const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),wrap=document.getElementById('wrap'),stage=document.getElementById('stage');
 const catalog=[
@@ -69,7 +74,7 @@ function push(){history.push(JSON.stringify(map));if(history.length>50)history.s
 function status(s){document.getElementById('state').textContent=s;document.getElementById('path').textContent=(path||'แผนที่ใหม่')+(dirty?' · แก้ไขแล้ว':'')}
 function setTool(t){tool=t;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===t));document.getElementById('hint').textContent=t==='select'?'คลิกวัตถุเพื่อเลือก แล้วแก้ค่าที่ Inspector':t==='terrain'?'เลือก Terrain แล้วลาก/คลิกเพื่อทาสีพื้น':'เลือกวัตถุ แล้วคลิกบนแผนที่เพื่อวาง · Delete ลบ'}
 function markDirtyLayer(name){dirtyLayerSet.add(name);dirty=true;document.getElementById('dirtyLayers').textContent=[...dirtyLayerSet].join(',')||'none';status('มีการแก้ไขที่ยังไม่ได้บันทึก')}
-function setLayer(name){activeLayer=name;document.querySelectorAll('[data-layer]').forEach(b=>b.classList.toggle('active',b.dataset.layer===name));if(name==='biome'||name==='coast')setMode('brush');if(name==='garden'||name==='landmark')setMode('place');if(name==='inspect'||name==='measure')setMode('select');if(name==='occupancy'){occupancyOn=!occupancyOn;refreshOccupancy()}if(name==='export')status('Export: ใช้ปุ่มด้านล่างหลัง import');if(name==='rollback')status('Rollback: เลือก backup หลัง export');renderInspector();document.getElementById('hint').textContent='layer '+name+' · mode '+editMode}
+function setLayer(name){activeLayer=name;document.querySelectorAll('[data-layer]').forEach(b=>b.classList.toggle('active',b.dataset.layer===name));if(name==='biome'||name==='coast')setMode('brush');if(name==='garden'||name==='landmark')setMode('place');if(name==='inspect'||name==='measure')setMode('select');if(name==='occupancy'){occupancyOn=!occupancyOn;refreshOccupancy()}if(name==='export'){openExportDialog();return}if(name==='rollback'){openRollbackDialog();return}renderInspector();document.getElementById('hint').textContent='layer '+name+' · mode '+editMode}
 function setMode(name){editMode=name;tool=name==='erase'?'erase':name==='place'?'place':name==='select'?'select':name==='brush'?'terrain':'select';document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===name));document.getElementById('hint').textContent='layer '+activeLayer+' · mode '+editMode}
 let occupancyOn=false;
 let layerBuffers={biomes:null,coast:null};
@@ -183,5 +188,69 @@ function customAsset(){const name=prompt('ชื่อวัตถุใหม�
 canvas.addEventListener('pointerdown',e=>{const t=tile(e);document.getElementById('coords').textContent='X '+t.x+' · Y '+t.y;if(e.button===1){canvas.setPointerCapture(e.pointerId);return}if(e.button!==0)return;if(editMode==='pan'||e.button===1){panning=true;panStart={x:stage.scrollLeft+e.clientX,y:stage.scrollTop+e.clientY};canvas.setPointerCapture(e.pointerId);return}if(activeLayer==='inspect'||activeLayer==='measure'||(editMode==='select'&&activeLayer!=='landmark'&&activeLayer!=='garden')){inspectTile={x:t.x,y:t.y};selectedObject=hit(t)?.id||null;selectedLandmark=landmarkAt(t.x,t.y);renderInspector();draw();return}painting=true;canvas.setPointerCapture(e.pointerId);apply(t)})
 canvas.addEventListener('pointermove',e=>{const t=tile(e);document.getElementById('coords').textContent='X '+t.x+' · Y '+t.y;if(panning&&panStart){stage.scrollLeft=panStart.x-e.clientX;stage.scrollTop=panStart.y-e.clientY;return}if(painting)apply(t)});canvas.addEventListener('pointerup',()=>{painting=false;panning=false;counts()});stage.addEventListener('wheel',e=>{if(e.ctrlKey||e.shiftKey){e.preventDefault();zoomBy(e.deltaY>0?-.1:.1)}},{passive:false});
 document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key.toLowerCase()==='s'){e.preventDefault();saveMap()}if(e.ctrlKey&&e.key.toLowerCase()==='z'){e.preventDefault();undo()}if(e.ctrlKey&&e.key.toLowerCase()==='y'){e.preventDefault();redo()}if(e.key==='Delete')deleteSelected();if(e.key.toLowerCase()==='g'){gridOn=!gridOn;draw()}});
+
+function closeModal(){document.getElementById('exportModal').classList.remove('show')}
+function showModal(title, body, okLabel, onOk, showForce){
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalBody').textContent=body;
+  document.getElementById('forceRow').style.display=showForce?'block':'none';
+  document.getElementById('modalOk').textContent=okLabel||'OK';
+  document.getElementById('modalOk').onclick=onOk;
+  document.getElementById('exportModal').classList.add('show');
+}
+async function openExportDialog(){
+  if(!importedTerrain) return status('นำเข้า terrain ก่อน export');
+  syncImportedLayers();
+  const dry=await window.mapEditor.exportTerrain(Object.assign(currentTerrainPayload(),{confirm:false}));
+  if(dry&&dry.error) return alert(dry.error);
+  const issues=(dry.validation&&dry.validation.issues)||[];
+  const drift=dry.hashDrift&&dry.hashDrift.drifted;
+  const body=[
+    'dry-run '+(dry.ok?'OK':'FAIL'),
+    'dest: '+(dry.destDir||''),
+    'files: '+((dry.filesToWrite||[]).join(', ')||'none'),
+    'dirty layers: '+([...(dirtyLayerSet||[])].join(', ')||'none'),
+    'hash drift: '+(drift?JSON.stringify(dry.hashDrift.files):'no'),
+    issues.slice(0,8).map(x=>x.severity+': '+x.message).join('\n')
+  ].filter(Boolean).join('\n');
+  document.getElementById('forceOverwrite').checked=false;
+  showModal('Export dry-run', body, 'Confirm write', async function(){
+    if(!dry.ok){status('validate ยังไม่ผ่าน');return}
+    const force=document.getElementById('forceOverwrite').checked;
+    const written=await window.mapEditor.exportTerrain(Object.assign(currentTerrainPayload(),{confirm:true,force:force}));
+    closeModal();
+    if(written&&written.error==='SOURCE_HASH_DRIFT'){
+      status('hash drift — เปิด force แล้ว Confirm อีกครั้ง');
+      document.getElementById('forceOverwrite').checked=true;
+      showModal('Hash drift', 'ไฟล์บนดิสก์เปลี่ยนตั้งแต่ import\n'+JSON.stringify(written.hashDrift,null,2)+'\nติ๊ก force overwrite เพื่อเขียนทับ', 'Force write', async function(){
+        const again=await window.mapEditor.exportTerrain(Object.assign(currentTerrainPayload(),{confirm:true,force:true}));
+        closeModal();
+        if(again&&again.ok){dirtyLayerSet=new Set();document.getElementById('dirtyLayers').textContent='none';dirty=false;status('export แล้ว backup '+again.backupId)}
+        else alert((again&&again.error)||'export ล้มเหลว');
+      }, true);
+      return;
+    }
+    if(written&&written.ok){dirtyLayerSet=new Set();document.getElementById('dirtyLayers').textContent='none';dirty=false;status('export แล้ว backup '+(written.backupId||''))}
+    else alert((written&&(written.error||((written.issues||[])[0]&&written.issues[0].message)))||'export ล้มเหลว');
+  }, drift);
+}
+async function openRollbackDialog(){
+  if(!path&&!importedTerrain) return status('ยังไม่มี target terrain');
+  const listed=await window.mapEditor.listBackups({destDir:path,terrainFolder:path});
+  if(listed&&listed.error) return alert(listed.error);
+  const backups=listed.backups||[];
+  if(!backups.length) return alert('ยังไม่มี backup ที่ '+listed.destDir);
+  const pick=prompt('เลือก backup id:\n'+backups.map(b=>b.id+'  files='+(b.files||[]).join(',')).join('\n'), backups[0].id);
+  if(!pick) return;
+  const chosen=backups.find(b=>b.id===pick)||{id:pick};
+  showModal('Rollback '+chosen.id, 'จะ restore ไฟล์จาก\n'+(chosen.backupDir||chosen.id)+'\nไปที่ '+listed.destDir+'\nจากนั้นควร import terrain ใหม่', 'Restore', async function(){
+    const r=await window.mapEditor.rollbackTerrain({destDir:listed.destDir,backupId:chosen.id,backupDir:chosen.backupDir});
+    closeModal();
+    if(r&&r.ok){
+      status('rollback แล้ว '+((r.filesRestored||[]).join(', ')));
+      alert('Rollback สำเร็จ\nกรุณา Import terrain อีกครั้งเพื่อโหลด Map Project จากไฟล์ที่ restore');
+    } else alert((r&&r.error)||'rollback ล้มเหลว');
+  }, false);
+}
 setLayer('inspect');setMode('select');resize();renderInspector();counts();fitMap();
 </script></body></html>

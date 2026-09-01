@@ -407,6 +407,55 @@ function applyBiomeBrush(biomes, width, height, options) {
   return { changed };
 }
 
+function encodeSignedByte(n) {
+  if (!Number.isInteger(n) || n < -128 || n > 127) throw new RangeError('signed byte must be -128..127');
+  return n & 0xff;
+}
+
+function decodeSignedByte(b) {
+  const v = Number(b) & 0xff;
+  return v > 127 ? v - 256 : v;
+}
+
+function applyCoastBrush(buf, width, height, options) {
+  if (!Buffer.isBuffer(buf)) throw new TypeError('buf must be a Buffer');
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width <= 0 || height <= 0) {
+    throw new RangeError('width and height must be positive integers');
+  }
+  if (buf.length !== width * height) {
+    throw new RangeError('buf length must equal width * height');
+  }
+  const params = options || {};
+  const x = params.x;
+  const y = params.y;
+  const radius = params.radius;
+  const value = params.value;
+  if (!Number.isInteger(x) || !Number.isInteger(y)) throw new TypeError('x and y must be integers');
+  if (!Number.isFinite(radius) || radius < 0) throw new RangeError('radius must be a non-negative number');
+
+  const encoded = encodeSignedByte(value);
+  const r2 = radius * radius;
+  let changed = 0;
+  const minX = Math.max(0, Math.floor(x - radius));
+  const maxX = Math.min(width - 1, Math.ceil(x + radius));
+  const minY = Math.max(0, Math.floor(y - radius));
+  const maxY = Math.min(height - 1, Math.ceil(y + radius));
+
+  for (let py = minY; py <= maxY; py++) {
+    for (let px = minX; px <= maxX; px++) {
+      const dx = px - x;
+      const dy = py - y;
+      if ((dx * dx) + (dy * dy) > r2) continue;
+      const index = px + py * width;
+      if (buf[index] !== encoded) {
+        buf[index] = encoded;
+        changed += 1;
+      }
+    }
+  }
+  return { changed };
+}
+
 function validateTerrain(terrain) {
   const report = { ok: true, issues: [] };
   if (!terrain || !Number.isInteger(terrain.width) || !Number.isInteger(terrain.height)) {
@@ -581,6 +630,9 @@ module.exports = {
   encodeLandmarks,
   setBiomeType,
   applyBiomeBrush,
+  encodeSignedByte,
+  decodeSignedByte,
+  applyCoastBrush,
   sha256File,
   sha256Buffer,
   createProjectModel,

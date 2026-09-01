@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { buildOccupancy } = require('./occupancy');
 
 const TILE_SIZE = 16;
 const WORLD_UNITS_PER_TILE = 200;
@@ -746,6 +747,7 @@ module.exports = {
   encodeSignedByte,
   decodeSignedByte,
   applyCoastBrush,
+  buildOccupancy,
   sha256File,
   sha256Buffer,
   createProjectModel,

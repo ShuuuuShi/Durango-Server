@@ -389,6 +389,11 @@ ipcMain.handle('editor-rollback-terrain', async (_event, payload) => {
       backupDir: payload && payload.backupDir,
       backupId: payload && payload.backupId,
     });
+    return { canceled: false, ...result };
+  } catch (error) {
+    return { canceled: false, ok: false, error: String(error.message || error) };
+  }
+});
 
 function catchMutate(fn) {
   try { return fn(); }
@@ -398,12 +403,10 @@ function catchMutate(fn) {
 ipcMain.handle('editor-apply-biome-brush', async (_event, payload) => {
   if (!mapEditorCore) return mapEditorUnavailable();
   return catchMutate(() => {
-    const p = payload || {};
-    const biomes = bufferFromBase64(p.biomes);
-    const width = p.width;
-    const height = p.height;
-    const result = mapEditorCore.applyBiomeBrush(biomes, width, height, {
-      x: p.x, y: p.y, radius: p.radius, biomeType: p.biomeType,
+    const pld = payload || {};
+    const biomes = bufferFromBase64(pld.biomes);
+    const result = mapEditorCore.applyBiomeBrush(biomes, pld.width, pld.height, {
+      x: pld.x, y: pld.y, radius: pld.radius, biomeType: pld.biomeType,
     });
     return { ok: true, changed: result.changed, biomes: biomes.toString('base64') };
   });
@@ -412,21 +415,13 @@ ipcMain.handle('editor-apply-biome-brush', async (_event, payload) => {
 ipcMain.handle('editor-apply-coast-brush', async (_event, payload) => {
   if (!mapEditorCore) return mapEditorUnavailable();
   return catchMutate(() => {
-    const p = payload || {};
-    const buf = bufferFromBase64(p.coastDistance || p.buf);
-    const width = p.width;
-    const height = p.height;
-    const result = mapEditorCore.applyCoastBrush(buf, width, height, {
-      x: p.x, y: p.y, radius: p.radius, value: p.value,
+    const pld = payload || {};
+    const buf = bufferFromBase64(pld.coastDistance || pld.buf);
+    const result = mapEditorCore.applyCoastBrush(buf, pld.width, pld.height, {
+      x: pld.x, y: pld.y, radius: pld.radius, value: pld.value,
     });
     return { ok: true, changed: result.changed, coastDistance: buf.toString('base64') };
   });
-});
-
-    return { canceled: false, ...result };
-  } catch (error) {
-    return { canceled: false, ok: false, error: String(error.message || error) };
-  }
 });
 
 // ───── path helpers ─────

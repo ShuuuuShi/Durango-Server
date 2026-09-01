@@ -28,4 +28,10 @@ contextBridge.exposeInMainWorld('mapEditor', {
   rollbackTerrain: (payload) => ipcRenderer.invoke('editor-rollback-terrain', payload),
   applyBiomeBrush: (payload) => ipcRenderer.invoke('editor-apply-biome-brush', payload),
   applyCoastBrush: (payload) => ipcRenderer.invoke('editor-apply-coast-brush', payload),
+  placeGarden: (payload) => ipcRenderer.invoke('editor-place-garden', payload),
+  eraseGarden: (payload) => ipcRenderer.invoke('editor-erase-garden', payload),
+  placeLandmark: (payload) => ipcRenderer.invoke('editor-place-landmark', payload),
+  moveLandmark: (payload) => ipcRenderer.invoke('editor-move-landmark', payload),
+  eraseLandmark: (payload) => ipcRenderer.invoke('editor-erase-landmark', payload),
+  buildOccupancy: (payload) => ipcRenderer.invoke('editor-build-occupancy', payload),
 });

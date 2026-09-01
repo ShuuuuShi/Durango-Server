@@ -636,7 +636,7 @@ class ProjectStore {
   static save(projectDir, terrain, sourceReport, options = {}) {
     const validation = validateTerrain(terrain);
     if (!validation.ok) {
-      const error = new Error('ไม่สามารถบันทึก project ที่ validation ไม่ผ่าน');
+      const error = new Error('??????????????? project ??? validation ???????');
       error.report = validation;
       throw error;
     }
@@ -680,37 +680,108 @@ class ProjectStore {
     return { projectDir: path.resolve(projectDir), model, validation };
   }
 
+  static saveFromTerrain(projectDir, terrain, report, options = {}) {
+    const validation = validateTerrain(terrain);
+    if (!validation.ok) {
+      const error = new Error('??????????????? project ??? validation ???????');
+      error.report = validation;
+      throw error;
+    }
+    const opts = options || {};
+    const sourceTerrainDir = opts.sourceTerrainDir
+      ? path.resolve(opts.sourceTerrainDir)
+      : (report && report.sourceDir ? path.resolve(report.sourceDir) : null);
+    const sourceHashes = opts.sourceHashes
+      ? clone(opts.sourceHashes)
+      : (report && report.hashes ? clone(report.hashes) : {});
+
+    ensureDir(projectDir);
+    ensureDir(path.join(projectDir, 'terrain'));
+    ensureDir(path.join(projectDir, 'world'));
+    ensureDir(path.join(projectDir, 'backup'));
+    ensureDir(path.join(projectDir, 'exports'));
+
+    const terrainDir = path.join(projectDir, 'terrain');
+    const layers = terrain.layers || {};
+    if (layers.biomes) fs.writeFileSync(path.join(terrainDir, 'whole.biomes'), layers.biomes);
+    if (layers.ocean) fs.writeFileSync(path.join(terrainDir, 'whole.ocean'), layers.ocean);
+    if (layers.rivers) fs.writeFileSync(path.join(terrainDir, 'whole.rivers'), layers.rivers);
+    if (layers.coastDistance) fs.writeFileSync(path.join(terrainDir, 'oceans.dm'), layers.coastDistance);
+    fs.writeFileSync(path.join(terrainDir, 'whole.garden'), encodeGarden(terrain.garden || []));
+    fs.writeFileSync(path.join(terrainDir, 'whole.landmarks'), encodeLandmarks(terrain.landmarks || []));
+    if (terrain.metadataRaw != null) fs.writeFileSync(path.join(terrainDir, 'info.yml'), terrain.metadataRaw, 'utf8');
+    if (sourceTerrainDir) {
+      for (const name of OPAQUE_TERRAIN_FILES) copyIfPresent(sourceTerrainDir, name, path.join(terrainDir, name));
+    }
+
+    const model = {
+      schema: 1,
+      editorVersion: opts.editorVersion || 'map-editor-core/0.1.0',
+      terrainId: terrain.mapId,
+      mapId: terrain.mapId,
+      sourceTerrainDir,
+      sourceWorldPath: opts.sourceWorldPath || null,
+      sourceHashes,
+      mapVersion: 0,
+      dirtyLayers: [],
+      lastExportAt: null,
+      lastExportTarget: null,
+      dimensions: { width: terrain.width, height: terrain.height, chunkSize: TILE_SIZE },
+      metadata: terrain.metadata,
+      metadataUnknown: terrain.metadataUnknown,
+      layers: {
+        opaque: terrain.opaque,
+      },
+    };
+    writeJsonAtomic(path.join(projectDir, 'project.json'), model);
+    return { projectDir: path.resolve(projectDir), model, validation };
+  }
+
   static load(projectDir) {
-    const readJson = (name) => JSON.parse(fs.readFileSync(path.join(projectDir, name), 'utf8'));
-    const project = readJson('project.json');
-    const map = readJson('map.json');
-    const objects = readJson('objects.json');
-    const spawnPoints = readJson('spawn-points.json');
+    const readJsonIfPresent = (name) => {
+      const filePath = path.join(projectDir, name);
+      return fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : null;
+    };
+    const project = JSON.parse(fs.readFileSync(path.join(projectDir, 'project.json'), 'utf8'));
+    const map = readJsonIfPresent('map.json');
+    const objects = readJsonIfPresent('objects.json') || {};
+    const spawnPoints = readJsonIfPresent('spawn-points.json');
     const terrainDir = path.join(projectDir, 'terrain');
     const readBuffer = (name) => {
       const filePath = path.join(terrainDir, name);
       return fs.existsSync(filePath) ? fs.readFileSync(filePath) : null;
     };
     const infoRaw = fs.existsSync(path.join(terrainDir, 'info.yml')) ? fs.readFileSync(path.join(terrainDir, 'info.yml'), 'utf8') : null;
+    const biomes = readBuffer('whole.biomes') || readBuffer('biome.bin');
+    const ocean = readBuffer('whole.ocean') || readBuffer('ocean.bin');
+    const rivers = readBuffer('whole.rivers') || readBuffer('river.bin');
+    const coastDistance = readBuffer('oceans.dm') || readBuffer('coast-distance.bin');
+    const width = map && map.width != null ? map.width : (project.dimensions && project.dimensions.width);
+    const height = map && map.height != null ? map.height : (project.dimensions && project.dimensions.height);
+    const decodeReport = { issues: [] };
+    const gardenBuf = readBuffer('whole.garden');
+    const landmarkBuf = readBuffer('whole.landmarks');
+    const garden = gardenBuf ? decodeGarden(gardenBuf, width, height, decodeReport) : (objects.garden || []);
+    const landmarks = landmarkBuf ? decodeLandmarks(landmarkBuf, width, height, decodeReport) : (objects.landmarks || []);
     return {
       project,
       terrain: {
-        mapId: project.mapId,
-        width: map.width,
-        height: map.height,
-        chunkSize: map.chunkSize,
+        mapId: project.terrainId || project.mapId,
+        width,
+        height,
+        chunkSize: (map && map.chunkSize) || (project.dimensions && project.dimensions.chunkSize) || TILE_SIZE,
         worldUnitsPerTile: WORLD_UNITS_PER_TILE,
-        metadata: map.metadata,
+        metadata: (map && map.metadata) || project.metadata,
         metadataRaw: infoRaw,
-        metadataUnknown: map.metadataUnknown || {},
+        metadataUnknown: (map && map.metadataUnknown) || project.metadataUnknown || {},
         layers: {
-          biomes: readBuffer('biome.bin'),
-          ocean: readBuffer('ocean.bin'),
-          rivers: readBuffer('river.bin'),
-          coastDistance: readBuffer('coast-distance.bin'),
+          biomes,
+          ocean,
+          rivers,
+          coastDistance,
         },
-        garden: objects.garden || [],
-        landmarks: objects.landmarks || [],
+        garden,
+        landmarks,
         opaque: project.layers && project.layers.opaque ? project.layers.opaque : [],
       },
       spawnPoints,

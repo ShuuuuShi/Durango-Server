@@ -718,6 +718,8 @@ class ProjectStore {
   }
 }
 
+const exportTerrainMod = require('./export-terrain');
+
 module.exports = {
   TILE_SIZE,
   WORLD_UNITS_PER_TILE,
@@ -748,6 +750,9 @@ module.exports = {
   decodeSignedByte,
   applyCoastBrush,
   buildOccupancy,
+  validateExport: exportTerrainMod.validateExport,
+  exportTerrain: exportTerrainMod.exportTerrain,
+  rollbackTerrain: exportTerrainMod.rollbackTerrain,
   sha256File,
   sha256Buffer,
   createProjectModel,

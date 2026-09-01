@@ -368,6 +368,45 @@ function setBiomeType(rawByte, biomeType) {
   return (rawByte & BIOME_FLAGS_MASK) | (biomeType & BIOME_TYPE_MASK);
 }
 
+function applyBiomeBrush(biomes, width, height, options) {
+  if (!Buffer.isBuffer(biomes)) throw new TypeError('biomes must be a Buffer');
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width <= 0 || height <= 0) {
+    throw new RangeError('width and height must be positive integers');
+  }
+  if (biomes.length !== width * height) {
+    throw new RangeError('biomes length must equal width * height');
+  }
+  const params = options || {};
+  const x = params.x;
+  const y = params.y;
+  const radius = params.radius;
+  const biomeType = params.biomeType;
+  if (!Number.isInteger(x) || !Number.isInteger(y)) throw new TypeError('x and y must be integers');
+  if (!Number.isFinite(radius) || radius < 0) throw new RangeError('radius must be a non-negative number');
+
+  const r2 = radius * radius;
+  let changed = 0;
+  const minX = Math.max(0, Math.floor(x - radius));
+  const maxX = Math.min(width - 1, Math.ceil(x + radius));
+  const minY = Math.max(0, Math.floor(y - radius));
+  const maxY = Math.min(height - 1, Math.ceil(y + radius));
+
+  for (let py = minY; py <= maxY; py++) {
+    for (let px = minX; px <= maxX; px++) {
+      const dx = px - x;
+      const dy = py - y;
+      if ((dx * dx) + (dy * dy) > r2) continue;
+      const index = px + py * width;
+      const next = setBiomeType(biomes[index], biomeType);
+      if (next !== biomes[index]) {
+        biomes[index] = next;
+        changed += 1;
+      }
+    }
+  }
+  return { changed };
+}
+
 function validateTerrain(terrain) {
   const report = { ok: true, issues: [] };
   if (!terrain || !Number.isInteger(terrain.width) || !Number.isInteger(terrain.height)) {
@@ -541,6 +580,7 @@ module.exports = {
   decodeLandmarks,
   encodeLandmarks,
   setBiomeType,
+  applyBiomeBrush,
   sha256File,
   sha256Buffer,
   createProjectModel,

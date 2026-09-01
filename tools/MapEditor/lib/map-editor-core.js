@@ -298,6 +298,79 @@ function encodeLandmarks(records) {
   return buffer;
 }
 
+
+function placeLandmark(records, width, height, fields) {
+  if (!Array.isArray(records)) throw new TypeError('records must be an array');
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width <= 0 || height <= 0) {
+    throw new RangeError('width and height must be positive integers');
+  }
+  const params = fields || {};
+  const x = params.x;
+  const y = params.y;
+  const id = params.id;
+  if (!Number.isInteger(x) || !Number.isInteger(y)) throw new TypeError('x and y must be integers');
+  if (!Number.isInteger(id) || id < 0 || id > 0xffff) {
+    throw new RangeError('id must be an integer 0..65535');
+  }
+  if (x < 0 || y < 0 || x >= width || y >= height) {
+    throw new RangeError('landmark coordinate is out of bounds');
+  }
+  if (records.some((record) => record.x === x && record.y === y)) {
+    throw new RangeError('landmark tile already occupied');
+  }
+  records.push({
+    x,
+    y,
+    id,
+    rotate: params.rotate || 0,
+    offsetX: params.offsetX || 0,
+    offsetY: params.offsetY || 0,
+    offsetZ: params.offsetZ || 0,
+    scaleX: params.scaleX || 0,
+    scaleY: params.scaleY || 0,
+    scaleZ: params.scaleZ || 0,
+  });
+  return { records };
+}
+
+function moveLandmark(records, width, height, options) {
+  if (!Array.isArray(records)) throw new TypeError('records must be an array');
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width <= 0 || height <= 0) {
+    throw new RangeError('width and height must be positive integers');
+  }
+  const params = options || {};
+  const fromX = params.fromX !== undefined ? params.fromX : params.x;
+  const fromY = params.fromY !== undefined ? params.fromY : params.y;
+  const toX = params.toX;
+  const toY = params.toY;
+  if (!Number.isInteger(fromX) || !Number.isInteger(fromY) || !Number.isInteger(toX) || !Number.isInteger(toY)) {
+    throw new TypeError('from and to coordinates must be integers');
+  }
+  if (toX < 0 || toY < 0 || toX >= width || toY >= height) {
+    throw new RangeError('landmark destination is out of bounds');
+  }
+  const index = records.findIndex((record) => record.x === fromX && record.y === fromY);
+  if (index === -1) throw new RangeError('landmark source tile not found');
+  if (!(toX === fromX && toY === fromY) && records.some((record) => record.x === toX && record.y === toY)) {
+    throw new RangeError('landmark tile already occupied');
+  }
+  records[index].x = toX;
+  records[index].y = toY;
+  return { records };
+}
+
+function eraseLandmarkAt(records, options) {
+  if (!Array.isArray(records)) throw new TypeError('records must be an array');
+  const params = options || {};
+  const x = params.x;
+  const y = params.y;
+  if (!Number.isInteger(x) || !Number.isInteger(y)) throw new TypeError('x and y must be integers');
+  const index = records.findIndex((record) => record.x === x && record.y === y);
+  if (index === -1) return { records, removed: 0 };
+  records.splice(index, 1);
+  return { records, removed: 1 };
+}
+
 function readTerrainSource(sourceDir, options = {}) {
   const report = { ok: true, issues: [], sourceDir: path.resolve(sourceDir), files: {}, hashes: {}, opaque: [], dimensions: null };
   if (!sourceDir || !fs.existsSync(sourceDir) || !fs.statSync(sourceDir).isDirectory()) {
@@ -665,6 +738,9 @@ module.exports = {
   eraseGarden,
   decodeLandmarks,
   encodeLandmarks,
+  placeLandmark,
+  moveLandmark,
+  eraseLandmarkAt,
   setBiomeType,
   applyBiomeBrush,
   encodeSignedByte,

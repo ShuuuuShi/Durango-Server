@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer } = require('electron');
+﻿const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('launcher', {
   minimize: () => ipcRenderer.send('win-minimize'),
@@ -22,4 +22,8 @@ contextBridge.exposeInMainWorld('mapEditor', {
   importTerrain: () => ipcRenderer.invoke('editor-import-terrain'),
   exportReport: (data) => ipcRenderer.invoke('editor-export-report', data),
   clearCache: () => ipcRenderer.invoke('editor-clear-cache'),
+  saveProject: (payload) => ipcRenderer.invoke('editor-save-project', payload),
+  exportTerrain: (payload) => ipcRenderer.invoke('editor-export-terrain', payload),
+  listBackups: (payload) => ipcRenderer.invoke('editor-list-backups', payload),
+  rollbackTerrain: (payload) => ipcRenderer.invoke('editor-rollback-terrain', payload),
 });

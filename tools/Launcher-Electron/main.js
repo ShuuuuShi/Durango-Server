@@ -120,6 +120,16 @@ function mapEditorUnavailable() {
   return { canceled: false, error: 'ไม่พบ MapEditor core' };
 }
 
+const WRITABLE_TERRAIN_FILES = Object.freeze([
+  'whole.biomes',
+  'oceans.dm',
+  'whole.garden',
+  'whole.landmarks',
+  'info.yml',
+]);
+
+let lastImport = { terrainFolder: null, hashes: {}, mapId: null };
+
 function serializeTerrainImport(result) {
   if (!result || !result.terrain) return result;
   const terrain = result.terrain;
@@ -147,6 +157,91 @@ function serializeTerrainImport(result) {
   };
 }
 
+function bufferFromBase64(value) {
+  if (value == null || value === '') return null;
+  if (Buffer.isBuffer(value)) return value;
+  return Buffer.from(String(value), 'base64');
+}
+
+function deserializeTerrain(payload) {
+  if (!payload) return null;
+  const terrain = payload.terrain || payload;
+  if (!terrain || typeof terrain !== 'object') return null;
+  const layers = terrain.layers || {};
+  return {
+    mapId: terrain.mapId,
+    width: terrain.width,
+    height: terrain.height,
+    chunkSize: terrain.chunkSize,
+    worldUnitsPerTile: terrain.worldUnitsPerTile,
+    metadata: terrain.metadata,
+    metadataRaw: terrain.metadataRaw,
+    metadataUnknown: terrain.metadataUnknown,
+    layers: {
+      biomes: bufferFromBase64(layers.biomes),
+      ocean: bufferFromBase64(layers.ocean),
+      rivers: bufferFromBase64(layers.rivers),
+      coastDistance: bufferFromBase64(layers.coastDistance),
+    },
+    garden: Array.isArray(terrain.garden) ? terrain.garden : [],
+    landmarks: Array.isArray(terrain.landmarks) ? terrain.landmarks : [],
+    opaque: terrain.opaque || [],
+  };
+}
+
+function defaultExportDir(payload, terrain) {
+  if (payload && typeof payload.destDir === 'string' && payload.destDir) return payload.destDir;
+  if (payload && typeof payload.terrainFolder === 'string' && payload.terrainFolder) return payload.terrainFolder;
+  if (lastImport.terrainFolder) return lastImport.terrainFolder;
+  const mapId = (terrain && terrain.mapId) || (payload && payload.mapId) || lastImport.mapId;
+  if (mapId) return path.join(projectRoot, 'server', 'data', 'terrains', 'extracted', String(mapId));
+  return path.join(projectRoot, 'server', 'data', 'terrains', 'extracted');
+}
+
+function filesToWrite(terrain) {
+  const files = [];
+  const layers = (terrain && terrain.layers) || {};
+  if (Buffer.isBuffer(layers.biomes)) files.push('whole.biomes');
+  if (Buffer.isBuffer(layers.coastDistance)) files.push('oceans.dm');
+  if (Array.isArray(terrain.garden)) files.push('whole.garden');
+  if (Array.isArray(terrain.landmarks)) files.push('whole.landmarks');
+  if (terrain.metadataRaw != null || terrain.metadata != null) files.push('info.yml');
+  return files.filter((name) => WRITABLE_TERRAIN_FILES.includes(name));
+}
+
+function checkHashDrift(destDir, sourceHashes) {
+  const files = [];
+  if (!destDir || !sourceHashes || typeof sourceHashes !== 'object') {
+    return { drifted: false, files };
+  }
+  for (const [name, expected] of Object.entries(sourceHashes)) {
+    const filePath = path.join(destDir, name);
+    if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) continue;
+    const actual = mapEditorCore.sha256File(filePath);
+    if (String(actual).toLowerCase() !== String(expected).toLowerCase()) {
+      files.push({ name, expected, actual });
+    }
+  }
+  return { drifted: files.length > 0, files };
+}
+
+function listBackupFolders(destDir) {
+  const backupRoot = path.join(path.resolve(destDir), 'backup');
+  if (!fs.existsSync(backupRoot) || !fs.statSync(backupRoot).isDirectory()) return [];
+  return fs.readdirSync(backupRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => {
+      const dir = path.join(backupRoot, entry.name);
+      const files = fs.readdirSync(dir).filter((name) => {
+        try { return fs.statSync(path.join(dir, name)).isFile(); } catch { return false; }
+      });
+      let mtime = null;
+      try { mtime = fs.statSync(dir).mtime.toISOString(); } catch { mtime = null; }
+      return { id: entry.name, backupDir: dir, files, mtime };
+    })
+    .sort((a, b) => String(b.id).localeCompare(String(a.id)));
+}
+
 ipcMain.handle('editor-scan-game', async () => {
   if (!mapEditorCore) return mapEditorUnavailable();
   const result = await dialog.showOpenDialog(mapEditorWin, {
@@ -171,6 +266,11 @@ ipcMain.handle('editor-import-terrain', async () => {
   if (result.canceled || !result.filePaths[0]) return { canceled: true };
   try {
     const imported = mapEditorCore.readTerrainSource(result.filePaths[0]);
+    lastImport = {
+      terrainFolder: result.filePaths[0],
+      hashes: (imported.report && imported.report.hashes) || {},
+      mapId: imported.terrain && imported.terrain.mapId,
+    };
     return { canceled: false, terrainFolder: result.filePaths[0], ...serializeTerrainImport(imported) };
   } catch (error) {
     return { canceled: false, error: String(error.message || error) };
@@ -194,6 +294,106 @@ ipcMain.handle('editor-export-report', async (_event, payload) => {
 });
 
 ipcMain.handle('editor-clear-cache', () => ({ canceled: false, cleared: false, message: 'ระยะ read-only ยังไม่มี cache ที่ต้องลบ' }));
+
+ipcMain.handle('editor-save-project', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  try {
+    const terrain = deserializeTerrain(payload);
+    if (!terrain) return { canceled: false, error: 'terrain is required' };
+    let projectDir = payload && payload.projectDir;
+    if (!projectDir) {
+      const picked = await dialog.showOpenDialog(mapEditorWin, {
+        title: 'เลือกโฟลเดอร์ Map Project',
+        defaultPath: editorMapsDir,
+        properties: ['openDirectory', 'createDirectory'],
+      });
+      if (picked.canceled || !picked.filePaths[0]) return { canceled: true };
+      projectDir = picked.filePaths[0];
+    }
+    const sourceReport = {
+      sourceDir: (payload && payload.terrainFolder) || lastImport.terrainFolder,
+      hashes: (payload && payload.sourceHashes) || lastImport.hashes || {},
+    };
+    const saved = mapEditorCore.ProjectStore.save(projectDir, terrain, sourceReport, {
+      sourceGameFolder: payload && payload.sourceGameFolder,
+      mapVersion: (payload && payload.mapVersion) || 0,
+    });
+    return { canceled: false, ok: true, projectDir: saved.projectDir, model: saved.model, validation: saved.validation };
+  } catch (error) {
+    return { canceled: false, ok: false, error: String(error.message || error), report: error.report || null };
+  }
+});
+
+ipcMain.handle('editor-export-terrain', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  try {
+    const terrain = deserializeTerrain(payload);
+    if (!terrain) return { canceled: false, ok: false, error: 'terrain is required' };
+    const destDir = defaultExportDir(payload, terrain);
+    const confirm = !!(payload && payload.confirm === true);
+    const force = !!(payload && payload.force === true);
+    const sourceHashes = (payload && payload.sourceHashes) || lastImport.hashes || {};
+    const validation = mapEditorCore.validateExport(terrain);
+    const hashDrift = checkHashDrift(destDir, sourceHashes);
+    const planned = filesToWrite(terrain);
+    if (!confirm) {
+      const core = mapEditorCore.exportTerrain({ destDir, terrain, confirm: false });
+      return {
+        canceled: false,
+        ok: validation.ok,
+        dryRun: true,
+        destDir: path.resolve(destDir),
+        filesToWrite: planned,
+        validation,
+        hashDrift,
+        core,
+      };
+    }
+    if (!validation.ok) {
+      return { canceled: false, ok: false, destDir: path.resolve(destDir), validation, issues: validation.issues };
+    }
+    if (hashDrift.drifted && !force) {
+      return {
+        canceled: false,
+        ok: false,
+        error: 'SOURCE_HASH_DRIFT',
+        destDir: path.resolve(destDir),
+        hashDrift,
+        validation,
+      };
+    }
+    const result = mapEditorCore.exportTerrain({ destDir, terrain, confirm: true });
+    return { canceled: false, ...result, validation, hashDrift };
+  } catch (error) {
+    return { canceled: false, ok: false, error: String(error.message || error) };
+  }
+});
+
+ipcMain.handle('editor-list-backups', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  try {
+    const destDir = defaultExportDir(payload, payload && payload.terrain);
+    const backups = listBackupFolders(destDir);
+    return { canceled: false, ok: true, destDir: path.resolve(destDir), backups };
+  } catch (error) {
+    return { canceled: false, ok: false, error: String(error.message || error) };
+  }
+});
+
+ipcMain.handle('editor-rollback-terrain', async (_event, payload) => {
+  if (!mapEditorCore) return mapEditorUnavailable();
+  try {
+    const destDir = defaultExportDir(payload, payload && payload.terrain);
+    const result = mapEditorCore.rollbackTerrain({
+      destDir,
+      backupDir: payload && payload.backupDir,
+      backupId: payload && payload.backupId,
+    });
+    return { canceled: false, ...result };
+  } catch (error) {
+    return { canceled: false, ok: false, error: String(error.message || error) };
+  }
+});
 
 // ───── path helpers ─────
 const gameDir = (() => {

@@ -245,6 +245,41 @@ function encodeGarden(records) {
   return buffer;
 }
 
+function placeGarden(records, width, height, options) {
+  if (!Array.isArray(records)) throw new TypeError('records must be an array');
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width <= 0 || height <= 0) {
+    throw new RangeError('width and height must be positive integers');
+  }
+  const params = options || {};
+  const x = params.x;
+  const y = params.y;
+  const entityType = params.entityType;
+  if (!Number.isInteger(x) || !Number.isInteger(y)) throw new TypeError('x and y must be integers');
+  if (!Number.isInteger(entityType) || entityType < 0 || entityType > 0xffff) {
+    throw new RangeError('entityType must be an integer 0..65535');
+  }
+  if (x < 0 || y < 0 || x >= width || y >= height) {
+    throw new RangeError('garden coordinate is out of bounds');
+  }
+  if (records.some((record) => record.x === x && record.y === y)) {
+    throw new RangeError('garden tile already occupied');
+  }
+  records.push({ x, y, entityType });
+  return { records };
+}
+
+function eraseGarden(records, options) {
+  if (!Array.isArray(records)) throw new TypeError('records must be an array');
+  const params = options || {};
+  const x = params.x;
+  const y = params.y;
+  if (!Number.isInteger(x) || !Number.isInteger(y)) throw new TypeError('x and y must be integers');
+  const index = records.findIndex((record) => record.x === x && record.y === y);
+  if (index === -1) return { records, removed: 0 };
+  records.splice(index, 1);
+  return { records, removed: 1 };
+}
+
 function encodeLandmarks(records) {
   const buffer = Buffer.alloc(records.length * 16);
   records.forEach((record, index) => {
@@ -626,6 +661,8 @@ module.exports = {
   getTerrainChunk,
   decodeGarden,
   encodeGarden,
+  placeGarden,
+  eraseGarden,
   decodeLandmarks,
   encodeLandmarks,
   setBiomeType,

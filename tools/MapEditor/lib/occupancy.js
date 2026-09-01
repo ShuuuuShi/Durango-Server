@@ -30,10 +30,10 @@ function artifactFootprintTiles(art) {
     }
     return tiles;
   }
-  const ox = art.x;
-  const oy = art.y;
-  const wRaw = art.width;
-  const hRaw = art.height;
+  const ox = art.x != null ? art.x : art.TileX;
+  const oy = art.y != null ? art.y : art.TileY;
+  const wRaw = art.width != null ? art.width : art.SizeX;
+  const hRaw = art.height != null ? art.height : art.SizeY;
   const w = Number.isFinite(wRaw) ? Math.trunc(wRaw) : 1;
   const h = Number.isFinite(hRaw) ? Math.trunc(hRaw) : 1;
   const ww = Math.max(1, w);

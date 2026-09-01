@@ -790,6 +790,7 @@ class ProjectStore {
 }
 
 const exportTerrainMod = require('./export-terrain');
+const worldArtifactsMod = require('./world-artifacts');
 
 module.exports = {
   TILE_SIZE,
@@ -824,6 +825,13 @@ module.exports = {
   validateExport: exportTerrainMod.validateExport,
   exportTerrain: exportTerrainMod.exportTerrain,
   rollbackTerrain: exportTerrainMod.rollbackTerrain,
+  parseWorldJson: worldArtifactsMod.parseWorldJson,
+  serializeWorldJson: worldArtifactsMod.serializeWorldJson,
+  placeArtifact: worldArtifactsMod.placeArtifact,
+  moveArtifact: worldArtifactsMod.moveArtifact,
+  removeArtifact: worldArtifactsMod.removeArtifact,
+  validateWorldArtifacts: worldArtifactsMod.validateWorldArtifacts,
+  exportWorldJson: worldArtifactsMod.exportWorldJson,
   sha256File,
   sha256Buffer,
   createProjectModel,

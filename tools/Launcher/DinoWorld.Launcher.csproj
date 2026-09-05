@@ -24,6 +24,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <InvariantGlobalization>false</InvariantGlobalization>
     <PublishSingleFile>true</PublishSingleFile>
+    <!-- [4 ก.ย. 2026] WPF + single-file ต้องแตก native DLL (PresentationNative/wpfgfx) ตอนรัน
+         ไม่งั้นเปิดหน้าต่างแล้วล้ม DllNotFoundException ใน HwndSubclass (เจอจริงตอนเทส) -->
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <!-- บีบอัด assemblies ในตัว single-file — ลดขนาดจาก ~120MB เหลือ ~60-70MB สำหรับแจก -->
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <SelfContained>true</SelfContained>

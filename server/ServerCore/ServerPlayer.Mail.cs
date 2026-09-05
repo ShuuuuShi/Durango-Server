@@ -35,7 +35,7 @@ public partial class ServerPlayer
     private bool RejectMailDisabled(PacketHeader header)
     {
         Send(new Info { Text = "ระบบจดหมายยังไม่เปิดใช้งาน" }, header.Seq);
-        Send(default(Abort), header.Seq);
+        Send(Aborts.Reason(), header.Seq);
         return false;
     }
 
@@ -64,14 +64,14 @@ public partial class ServerPlayer
         string recipientId = msg.RecipientId;
         if (string.IsNullOrEmpty(recipientId) || recipientId == EntityId)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         string text = msg.Text ?? "";
         if (text.Length > 500)
         {
             Send(new Info { Text = "ข้อความยาวเกิน 500 ตัวอักษร" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -88,7 +88,7 @@ public partial class ServerPlayer
                     if (idx < 0)
                     {
                         Send(new Info { Text = $"ไม่มีไอเทม {itemId}" }, header.Seq);
-                        Send(default(Abort), header.Seq);
+                        Send(Aborts.Reason(), header.Seq);
                         return;
                     }
                     Item item = _inventory[idx];
@@ -147,7 +147,7 @@ public partial class ServerPlayer
 
     private void HandleAcceptMailsInternal(string[] mailIds, PacketHeader header)
     {
-        if (mailIds == null || mailIds.Length == 0) { Send(default(Abort), header.Seq); return; }
+        if (mailIds == null || mailIds.Length == 0) { Send(Aborts.Reason(), header.Seq); return; }
 
         foreach (string mailId in mailIds)
         {
@@ -189,7 +189,7 @@ public partial class ServerPlayer
 
     private void HandleDeleteMailsInternal(string[] mailIds, PacketHeader header)
     {
-        if (mailIds == null) { Send(default(Abort), header.Seq); return; }
+        if (mailIds == null) { Send(Aborts.Reason(), header.Seq); return; }
         foreach (string mailId in mailIds)
         {
             _mails.RemoveAll(m => m.Id == mailId);

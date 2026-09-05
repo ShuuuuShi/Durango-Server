@@ -1,0 +1,2039 @@
+{
+  "level_2": {
+    "abilities": {
+      "0": 1,
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "undefined",
+    "description": {
+      "레벨업을 해 보았다.": null
+    },
+    "name": {
+      "성장하는": null
+    }
+  },
+  "level_5": {
+    "abilities": {
+      "0": 2,
+      "1": 0,
+      "2": 2,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "undefined",
+    "description": {
+      "넓은 세계에 나와 자유의 몸이 되었다.": null
+    },
+    "name": {
+      "세계로 나아간": null
+    }
+  },
+  "level_10": {
+    "abilities": {
+      "0": 3,
+      "1": 0,
+      "2": 3,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "undefined",
+    "description": {
+      "자신의 행동에 책임을 질 수 있게 되었다.": null
+    },
+    "name": {
+      "성인": null
+    }
+  },
+  "grade_1": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 7,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 3,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "신입생의 마음으로.": null
+    },
+    "name": {
+      "1학년": null
+    }
+  },
+  "grade_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 15,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 5,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "신입생을 우습게 보는 마음으로.": null
+    },
+    "name": {
+      "2학년": null
+    }
+  },
+  "grade_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 22,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 8,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "학문을 뭔가 알아가는 것 같다.": null
+    },
+    "name": {
+      "3학년": null
+    }
+  },
+  "grade_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 30,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 10,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "계속 보니 학문이 어렵도다.": null
+    },
+    "name": {
+      "4학년": null
+    }
+  },
+  "committee_1": {
+    "abilities": {
+      "0": 7,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 3,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "\"X\"가 보시기에 아직 아는 게 없다.": null
+    },
+    "name": {
+      "아는 게 없는": null
+    }
+  },
+  "committee_2": {
+    "abilities": {
+      "0": 15,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 5,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "\"X\"가 시키시면 한다.": null
+    },
+    "name": {
+      "하라면 하는": null
+    }
+  },
+  "committee_3": {
+    "abilities": {
+      "0": 22,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 8,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "\"X\"에게 시달린지 한 세월이다.": null
+    },
+    "name": {
+      "상사에 시달리는": null
+    }
+  },
+  "committee_4": {
+    "abilities": {
+      "0": 30,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 10,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "\"X\"에게 달관했다.": null
+    },
+    "name": {
+      "달관한": null
+    }
+  },
+  "firm_1": {
+    "abilities": {
+      "0": 0,
+      "1": 7,
+      "2": 3,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "회사에서 준 무전기가 있다.": null
+    },
+    "name": {
+      "무전기를 든": null
+    }
+  },
+  "firm_2": {
+    "abilities": {
+      "0": 0,
+      "1": 15,
+      "2": 5,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "\"K\"랑 안다.": null
+    },
+    "name": {
+      "K랑 아는": null
+    }
+  },
+  "firm_3": {
+    "abilities": {
+      "0": 0,
+      "1": 22,
+      "2": 8,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "사람은 좋다는 평가를 받는다.": null
+    },
+    "name": {
+      "사람은 좋은": null
+    }
+  },
+  "firm_4": {
+    "abilities": {
+      "0": 0,
+      "1": 30,
+      "2": 10,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "이제 믿을 만한 인물이 되었다.": null
+    },
+    "name": {
+      "믿을 만한": null
+    }
+  },
+  "forum_1": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 7,
+      "4": 0,
+      "5": 3,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "녹색 세포가 세상에 번져간다.": null
+    },
+    "name": {
+      "녹색 세포의": null
+    }
+  },
+  "forum_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 15,
+      "4": 0,
+      "5": 5,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "엽록소 세상의 아기가 되었다.": null
+    },
+    "name": {
+      "아기 엽록소": null
+    }
+  },
+  "forum_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 22,
+      "4": 0,
+      "5": 8,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "세상 천지에 할 일이 많다.": null
+    },
+    "name": {
+      "할 일이 많은": null
+    }
+  },
+  "forum_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 30,
+      "4": 0,
+      "5": 10,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "생태 활동에 경력이 많이 쌓였다.": null
+    },
+    "name": {
+      "경력이 쌓인": null
+    }
+  },
+  "chamber_1": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 7,
+      "5": 0,
+      "6": 3,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "인정받을 만한 커리어가 없다.": null
+    },
+    "name": {
+      "경력이 일천한": null
+    }
+  },
+  "chamber_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 15,
+      "5": 0,
+      "6": 5,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "인턴 생활을 끝냈다.": null
+    },
+    "name": {
+      "굿바이 인턴": null
+    }
+  },
+  "chamber_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 22,
+      "5": 0,
+      "6": 8,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "본사의 직원 입장에선 굴러 들어왔다.": null
+    },
+    "name": {
+      "굴러 들어온": null
+    }
+  },
+  "chamber_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 30,
+      "5": 0,
+      "6": 10,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "다른 임원들 비위를 맞춰주느라 그랬다.": null
+    },
+    "name": {
+      "임원 대우를 받는": null
+    }
+  },
+  "combat_basic_1": {
+    "abilities": {
+      "0": 5,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 5,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "max_health_plus": 40.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "기초사냥전술 과정을 완료하였다.": null
+    },
+    "name": {
+      "기초사냥전술": null
+    }
+  },
+  "combat_melee_onehand_2": {
+    "abilities": {
+      "0": 15,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "life_recovery": 0.5
+    },
+    "reward_from": "advisor",
+    "description": {
+      "한손전투와 마음읽기 과정을 완료하였다.": null
+    },
+    "name": {
+      "한손전투와 마음읽기": null
+    }
+  },
+  "combat_melee_onehand_3": {
+    "abilities": {
+      "0": 23,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "life_recovery": 1.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "한손전투와 인지심리 과정을 완료하였다.": null
+    },
+    "name": {
+      "한손전투와 인지심리": null
+    }
+  },
+  "combat_melee_onehand_4": {
+    "abilities": {
+      "0": 30,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "life_recovery": 1.5
+    },
+    "reward_from": "advisor",
+    "description": {
+      "한손전투와 범죄심리 과정을 완료하였다.": null
+    },
+    "name": {
+      "한손전투와 범죄심리": null
+    }
+  },
+  "combat_melee_twohand_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 15,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "max_health_plus": 60.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "양손전투와 비판적사고 과정을 완료하였다.": null
+    },
+    "name": {
+      "양손전투와 비판적사고": null
+    }
+  },
+  "combat_melee_twohand_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 23,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "max_health_plus": 80.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "양손전투와 운동철학 과정을 완료하였다.": null
+    },
+    "name": {
+      "양손전투와 운동철학": null
+    }
+  },
+  "combat_melee_twohand_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 30,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "max_health_plus": 100.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "양손전투와 전투윤리 과정을 완료하였다.": null
+    },
+    "name": {
+      "양손전투와 전투윤리": null
+    }
+  },
+  "combat_ranged_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 15,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "accuracy_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "궁술과 미적분학 과정을 완료하였다.": null
+    },
+    "name": {
+      "궁술과 미적분학": null
+    }
+  },
+  "combat_ranged_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 23,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "accuracy_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "궁술과 고전역학 과정을 완료하였다.": null
+    },
+    "name": {
+      "궁술과 고전역학": null
+    }
+  },
+  "combat_ranged_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 30,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "accuracy_plus": 5.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "궁술과 상대성이론 과정을 완료하였다.": null
+    },
+    "name": {
+      "궁술과 상대성이론": null
+    }
+  },
+  "combat_butchery_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "butchering_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "동물 해부학 과정을 완료하였다.": null
+    },
+    "name": {
+      "동물 해부학": null
+    }
+  },
+  "combat_butchery_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "butchering_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "동물 해부실습 과정을 완료하였다.": null
+    },
+    "name": {
+      "동물 해부실습": null
+    }
+  },
+  "combat_butchery_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "butchering_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "동물 분자영양학 과정을 완료하였다.": null
+    },
+    "name": {
+      "동물 분자영양학": null
+    }
+  },
+  "weaponcrafting_basic_1": {
+    "abilities": {
+      "0": 3,
+      "1": 0,
+      "2": 7,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "weaponcraft_plus": 1.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "무기제작개론 과정을 완료하였다.": null
+    },
+    "name": {
+      "무기제작개론": null
+    }
+  },
+  "weaponcrafting_sword_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 15,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "weaponcraft_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "도검 제작공정 기초 과정을 완료하였다.": null
+    },
+    "name": {
+      "도검 제작공정 기초": null
+    }
+  },
+  "weaponcrafting_sword_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 23,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "weaponcraft_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "도검 제작공정 숙련 과정을 완료하였다.": null
+    },
+    "name": {
+      "도검 제작공정 숙련": null
+    }
+  },
+  "weaponcrafting_sword_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 30,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "weaponcraft_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "도검 제작공정 전문 과정을 완료하였다.": null
+    },
+    "name": {
+      "도검 제작공정 전문": null
+    }
+  },
+  "weaponcrafting_axe_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 10,
+      "3": 0,
+      "4": 0,
+      "5": 5,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "smith_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "도끼 제작공정 기초 과정을 완료하였다.": null
+    },
+    "name": {
+      "도끼 제작공정 기초": null
+    }
+  },
+  "weaponcrafting_axe_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 15,
+      "3": 0,
+      "4": 0,
+      "5": 8,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "smith_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "도끼 제작공정 숙련 과정을 완료하였다.": null
+    },
+    "name": {
+      "도끼 제작공정 숙련": null
+    }
+  },
+  "weaponcrafting_axe_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 20,
+      "3": 0,
+      "4": 0,
+      "5": 10,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "smith_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "도끼 제작공정 전문 과정을 완료하였다.": null
+    },
+    "name": {
+      "도끼 제작공정 전문": null
+    }
+  },
+  "weaponcrafting_hammer_2": {
+    "abilities": {
+      "0": 10,
+      "1": 0,
+      "2": 5,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "handicraft_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "둔기 제작공정 기초 과정을 완료하였다.": null
+    },
+    "name": {
+      "둔기 제작공정 기초": null
+    }
+  },
+  "weaponcrafting_hammer_3": {
+    "abilities": {
+      "0": 15,
+      "1": 0,
+      "2": 8,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "handicraft_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "둔기 제작공정 숙련 과정을 완료하였다.": null
+    },
+    "name": {
+      "둔기 제작공정 숙련": null
+    }
+  },
+  "weaponcrafting_hammer_4": {
+    "abilities": {
+      "0": 20,
+      "1": 0,
+      "2": 10,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "handicraft_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "둔기 제작공정 전문 과정을 완료하였다.": null
+    },
+    "name": {
+      "둔기 제작공정 전문": null
+    }
+  },
+  "weaponcrafting_bow_2": {
+    "abilities": {
+      "0": 5,
+      "1": 0,
+      "2": 10,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "weaponcraft_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "활 제작공정 기초 과정을 완료하였다.": null
+    },
+    "name": {
+      "활 제작공정 기초": null
+    }
+  },
+  "weaponcrafting_bow_3": {
+    "abilities": {
+      "0": 8,
+      "1": 0,
+      "2": 15,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "weaponcraft_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "활 제작공정 숙련 과정을 완료하였다.": null
+    },
+    "name": {
+      "활 제작공정 숙련": null
+    }
+  },
+  "weaponcrafting_bow_4": {
+    "abilities": {
+      "0": 10,
+      "1": 0,
+      "2": 20,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "weaponcraft_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "활 제작공정 전문 과정을 완료하였다.": null
+    },
+    "name": {
+      "활 제작공정 전문": null
+    }
+  },
+  "armorcrafting_basic_1": {
+    "abilities": {
+      "0": 0,
+      "1": 3,
+      "2": 7,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "armorcraft_plus": 1.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "의상제작입문 과정을 완료하였다.": null
+    },
+    "name": {
+      "의상제작입문": null
+    }
+  },
+  "armorcrafting_basic_2": {
+    "abilities": {
+      "0": 0,
+      "1": 5,
+      "2": 10,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "armorcraft_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "의류소재의 이해 과정을 완료하였다.": null
+    },
+    "name": {
+      "의류소재의 이해": null
+    }
+  },
+  "armorcrafting_settler_3": {
+    "abilities": {
+      "0": 0,
+      "1": 8,
+      "2": 15,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "tailor_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "정착의류와 일반사회학 과정을 완료하였다.": null
+    },
+    "name": {
+      "정착의류와 일반사회학": null
+    }
+  },
+  "armorcrafting_settler_4": {
+    "abilities": {
+      "0": 0,
+      "1": 10,
+      "2": 20,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "tailor_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "정착의류와 사회조직론 과정을 완료하였다.": null
+    },
+    "name": {
+      "정착의류와 사회조직론": null
+    }
+  },
+  "armorcrafting_explorer_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 23,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "armorcraft_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "탐험의류와 지리학입문 과정을 완료하였다.": null
+    },
+    "name": {
+      "탐험의류와 지리학입문": null
+    }
+  },
+  "armorcrafting_explorer_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 30,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "armorcraft_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "탐험의류와 기후지리학 과정을 완료하였다.": null
+    },
+    "name": {
+      "탐험의류와 기후지리학": null
+    }
+  },
+  "armorcrafting_hunter_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 15,
+      "3": 0,
+      "4": 0,
+      "5": 8,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "handicraft_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "전투의류와 지구전쟁사 과정을 완료하였다.": null
+    },
+    "name": {
+      "전투의류와 지구전쟁사": null
+    }
+  },
+  "armorcrafting_hunter_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 20,
+      "3": 0,
+      "4": 0,
+      "5": 10,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "handicraft_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "전투의류와 국가안보론 과정을 완료하였다.": null
+    },
+    "name": {
+      "전투의류와 국가안보론": null
+    }
+  },
+  "cooking_basic_1": {
+    "abilities": {
+      "0": 0,
+      "1": 7,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 3,
+      "7": 0
+    },
+    "modifiers": {
+      "cook_plus": 1.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "생존요리의 세계 과정을 완료하였다.": null
+    },
+    "name": {
+      "생존요리의 세계": null
+    }
+  },
+  "cooking_basic_2": {
+    "abilities": {
+      "0": 0,
+      "1": 10,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 5,
+      "7": 0
+    },
+    "modifiers": {
+      "cook_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "논리적 식품가공 과정을 완료하였다.": null
+    },
+    "name": {
+      "논리적 식품가공": null
+    }
+  },
+  "cooking_cooking_3": {
+    "abilities": {
+      "0": 0,
+      "1": 23,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "cook_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "음식과 인류문화 과정을 완료하였다.": null
+    },
+    "name": {
+      "음식과 인류문화": null
+    }
+  },
+  "cooking_cooking_4": {
+    "abilities": {
+      "0": 0,
+      "1": 30,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "cook_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "주방행동론 과정을 완료하였다.": null
+    },
+    "name": {
+      "주방행동론": null
+    }
+  },
+  "cooking_baking_3": {
+    "abilities": {
+      "0": 0,
+      "1": 15,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 8,
+      "7": 0
+    },
+    "modifiers": {
+      "cook_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "제빵기능사 2급 과정을 완료하였다.": null
+    },
+    "name": {
+      "제빵기능사 2급": null
+    }
+  },
+  "cooking_baking_4": {
+    "abilities": {
+      "0": 0,
+      "1": 20,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 10,
+      "7": 0
+    },
+    "modifiers": {
+      "cook_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "제빵기능사 1급 과정을 완료하였다.": null
+    },
+    "name": {
+      "제빵기능사 1급": null
+    }
+  },
+  "cooking_pharmacy_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 8,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 15,
+      "7": 0
+    },
+    "modifiers": {
+      "max_energy_plus": 20.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "약학개론 과정을 완료하였다.": null
+    },
+    "name": {
+      "약학개론": null
+    }
+  },
+  "cooking_pharmacy_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 10,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 20,
+      "7": 0
+    },
+    "modifiers": {
+      "max_energy_plus": 30.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "자연생약학 과정을 완료하였다.": null
+    },
+    "name": {
+      "자연생약학": null
+    }
+  },
+  "constructing_basic_1": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 7,
+      "5": 0,
+      "6": 3,
+      "7": 0
+    },
+    "modifiers": {
+      "furnishing_plus": 1.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "생활건축실습 과정을 완료하였다.": null
+    },
+    "name": {
+      "생활건축실습": null
+    }
+  },
+  "constructing_basic_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 10,
+      "5": 0,
+      "6": 5,
+      "7": 0
+    },
+    "modifiers": {
+      "furnishing_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "건축학개론 과정을 완료하였다.": null
+    },
+    "name": {
+      "건축학개론": null
+    }
+  },
+  "constructing_furniture_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 23,
+      "7": 0
+    },
+    "modifiers": {
+      "furnishing_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "가구제작의 이해 과정을 완료하였다.": null
+    },
+    "name": {
+      "가구제작의 이해": null
+    }
+  },
+  "constructing_furniture_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 30,
+      "7": 0
+    },
+    "modifiers": {
+      "furnishing_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "가구개발공학 과정을 완료하였다.": null
+    },
+    "name": {
+      "가구개발공학": null
+    }
+  },
+  "constructing_building_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 8,
+      "5": 0,
+      "6": 15,
+      "7": 0
+    },
+    "modifiers": {
+      "construction_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "마을설계와 법규 과정을 완료하였다.": null
+    },
+    "name": {
+      "마을설계와 법규": null
+    }
+  },
+  "constructing_building_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 10,
+      "5": 0,
+      "6": 20,
+      "7": 0
+    },
+    "modifiers": {
+      "construction_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "도시건축과 인문 과정을 완료하였다.": null
+    },
+    "name": {
+      "도시건축과 인문": null
+    }
+  },
+  "gathering_basic_1": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 3,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 7
+    },
+    "modifiers": {
+      "gathering_plus": 1.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "채집의 이해 과정을 완료하였다.": null
+    },
+    "name": {
+      "채집의 이해": null
+    }
+  },
+  "gathering_basic_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 5,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 10
+    },
+    "modifiers": {
+      "gathering_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "채집과 생물과학 과정을 완료하였다.": null
+    },
+    "name": {
+      "채집과 생물과학": null
+    }
+  },
+  "gathering_plants_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 23
+    },
+    "modifiers": {
+      "gathering_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "응용식물학 과정을 완료하였다.": null
+    },
+    "name": {
+      "응용식물학": null
+    }
+  },
+  "gathering_plants_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 30
+    },
+    "modifiers": {
+      "gathering_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "산림생태학 과정을 완료하였다.": null
+    },
+    "name": {
+      "산림생태학": null
+    }
+  },
+  "gathering_mineral_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 8,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 15
+    },
+    "modifiers": {
+      "mining_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "광물과 지구화학 과정을 완료하였다.": null
+    },
+    "name": {
+      "광물과 지구화학": null
+    }
+  },
+  "gathering_mineral_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 10,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 20
+    },
+    "modifiers": {
+      "mining_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "특수광물학 과정을 완료하였다.": null
+    },
+    "name": {
+      "특수광물학": null
+    }
+  },
+  "farming_basic_1": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 10,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "farming_plus": 1.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "농사의 기본 과정을 완료하였다.": null
+    },
+    "name": {
+      "농사의 기본": null
+    }
+  },
+  "farming_basic_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 15,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "farming_plus": 2.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "농사와 실전 과정을 완료하였다.": null
+    },
+    "name": {
+      "농사와 실전": null
+    }
+  },
+  "farming_basic_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 23,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "farming_plus": 3.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "농업과 미래사회 과정을 완료하였다.": null
+    },
+    "name": {
+      "농업과 미래사회": null
+    }
+  },
+  "farming_basic_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 30,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "farming_plus": 4.0
+    },
+    "reward_from": "advisor",
+    "description": {
+      "작물생산농업학 과정을 완료하였다.": null
+    },
+    "name": {
+      "작물생산농업학": null
+    }
+  },
+  "rescue_01": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 10,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "구조자TF의 백업 요원으로 지원 임무를 마쳤다.": null
+    },
+    "name": {
+      "수습 구조대원": null
+    }
+  },
+  "rescue_02": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 15,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "구조자TF의 현장 요원으로 실제 구조 임무를 마쳤다.": null
+    },
+    "name": {
+      "전문 구조대원": null
+    }
+  },
+  "rescue_03": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 23,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "faction",
+    "description": {
+      "구조자TF의 정보 요원으로 지시받지 않은 임무까지 마쳤다.": null
+    },
+    "name": {
+      "구조TF장": null
+    }
+  },
+  "rescue_04": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 30,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "random_tag_mul": 0.2
+    },
+    "reward_from": "faction",
+    "description": {
+      "알로사우루스를 사냥하고 적을 구원했다.": null
+    },
+    "name": {
+      "알로사우루스 사냥꾼": null
+    }
+  },
+  "hunt_recruiter_lead": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 20,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "defense_cooldown_reduction": 0.1,
+      "defense_stamina_reduction": -0.1
+    },
+    "reward_from": "undefined",
+    "description": {
+      "피와 땀만이 정의에 가장 근접한 존재이다.": null
+    },
+    "name": {
+      "무자비한 정의": null
+    }
+  },
+  "s03_season_ranking_1": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "random_tag_mul": 0.3
+    },
+    "reward_from": "undefined",
+    "description": {
+      "기름독섬 탐험끝에 기름독 그 자체가 되버린 존재이다.": null
+    },
+    "name": {
+      "기름독 그 자체": null
+    }
+  },
+  "s03_season_ranking_2": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "random_tag_mul": 0.25
+    },
+    "reward_from": "undefined",
+    "description": {
+      "기름독에 대해서 완벽히 이해를 했다.": null
+    },
+    "name": {
+      "기름독 지배자": null
+    }
+  },
+  "s03_season_ranking_3": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "random_tag_mul": 0.22
+    },
+    "reward_from": "undefined",
+    "description": {
+      "기름독이 더 이상 두렵지 않다.": null
+    },
+    "name": {
+      "기름독 전문가": null
+    }
+  },
+  "s03_season_ranking_4": {
+    "abilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {
+      "random_tag_mul": 0.1
+    },
+    "reward_from": "undefined",
+    "description": {
+      "기름독은 여전히 위협적이고, 두려운 대상이다.": null
+    },
+    "name": {
+      "기름독 조사자": null
+    }
+  },
+  "summerclub_2019": {
+    "abilities": {
+      "0": 0,
+      "1": 30,
+      "2": 0,
+      "3": 10,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "undefined",
+    "description": {
+      "2019 여름 클럽섬 이벤트, 춤으로 불태웠다.": null
+    },
+    "name": {
+      "댄 스 머 신": null
+    }
+  },
+  "top_predator": {
+    "abilities": {
+      "0": 30,
+      "1": 30,
+      "2": 30,
+      "3": 30,
+      "4": 30,
+      "5": 30,
+      "6": 30,
+      "7": 30
+    },
+    "modifiers": {
+      "max_health_plus": 150.0,
+      "life_recovery": 2.0,
+      "accuracy_plus": 20.0,
+      "max_energy_plus": 50.0
+    },
+    "reward_from": "undefined",
+    "description": {
+      "모든 동물보다 높이 선 사람이 되었다.": null
+    },
+    "name": {
+      "최상위 포식자": null
+    }
+  },
+  "pvp_01": {
+    "abilities": {
+      "0": 15,
+      "1": 15,
+      "2": 0,
+      "3": 0,
+      "4": 10,
+      "5": 10,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "undefined",
+    "description": {
+      "원치 않은 싸움이었다.": null
+    },
+    "name": {
+      "주먹다짐": null
+    }
+  },
+  "pvp_02": {
+    "abilities": {
+      "0": 30,
+      "1": 0,
+      "2": 30,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    "modifiers": {},
+    "reward_from": "undefined",
+    "description": {
+      "맞으면 꽤 아픈 주먹을 가졌다.": null
+    },
+    "name": {
+      "뼈주먹": null
+    }
+  },
+  "pvp_03": {
+    "abilities": {
+      "0": 50,
+      "1": 30,
+      "2": 40,
+      "3": 30,
+      "4": 50,
+      "5": 30,
+      "6": 30,
+      "7": 30
+    },
+    "modifiers": {
+      "max_health_plus": 150.0,
+      "accuracy_plus": 40.0
+    },
+    "reward_from": "undefined",
+    "description": {
+      "임무라는 명분이 필요했다.": null
+    },
+    "name": {
+      "처형인": null
+    }
+  }
+}

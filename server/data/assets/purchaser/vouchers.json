@@ -1,0 +1,382 @@
+{
+  "test_voucher_01": {
+    "name": {
+      "(테스트) 행복 이용권": null
+    },
+    "visible": false,
+    "count_max": 10,
+    "link": {
+      "구매하러 가기": null
+    },
+    "icon_colors": [
+      "5A7116"
+    ],
+    "icon": "cashshop_tortoise_ankylosaurus_pack",
+    "guide_type": 1,
+    "expires_on": "2028-02-08",
+    "description": {
+      "이 이용권으로 행복을 살 수 있습니다.": null
+    }
+  },
+  "test_voucher_02": {
+    "name": {
+      "(테스트) 이용 불가권": null
+    },
+    "visible": false,
+    "count_max": 10,
+    "link": {
+      "구매하러 가기": null
+    },
+    "icon_colors": [
+      "F5F2EE"
+    ],
+    "icon": "cashshop_retriever_pack",
+    "guide_type": 0,
+    "expires_on": "2010-01-01",
+    "description": {
+      "이 이용권은 쓸 수 없습니다.": null
+    }
+  },
+  "test_voucher_03": {
+    "name": {
+      "(테스트) 무기한 이용권": null
+    },
+    "visible": false,
+    "count_max": 10,
+    "link": {
+      "구매하러 가기": null
+    },
+    "icon_colors": [
+      "F5F2EE"
+    ],
+    "icon": "cashshop_retriever_pack",
+    "guide_type": 2,
+    "expires_on": "",
+    "description": {
+      "이 이용권은 무기한 쓸 수 있습니다.": null
+    }
+  },
+  "voucher_balloon": {
+    "name": {
+      "열기구 이용권": null
+    },
+    "visible": false,
+    "count_max": 3,
+    "link": {
+      "구매하러 가기": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_balloon",
+    "guide_type": 1,
+    "expires_on": "",
+    "description": {
+      "열기구를 무료로 탑승할 수 있습니다.": null
+    }
+  },
+  "voucher_emotion": {
+    "name": {
+      "감정표현 특송화물 이용권": null
+    },
+    "visible": true,
+    "count_max": 3,
+    "link": {
+      "<ref>ui://Shop/Category/emotionrandom,사용하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_emotion",
+    "guide_type": 2,
+    "expires_on": "",
+    "description": {
+      "감정표현 특송화물을 구매할 수 있습니다.": null
+    }
+  },
+  "voucher_clothes": {
+    "name": {
+      "패션 특송화물 이용권": null
+    },
+    "visible": true,
+    "count_max": 3,
+    "link": {
+      "<ref>ui://Shop/Category/fashionrandom,사용하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_clothes",
+    "guide_type": 2,
+    "expires_on": "",
+    "description": {
+      "패션 특송화물을 구매할 수 있습니다.": null
+    }
+  },
+  "voucher_artifact": {
+    "name": {
+      "가구 특송화물 이용권": null
+    },
+    "visible": true,
+    "count_max": 3,
+    "link": {
+      "<ref>ui://Shop/Category/artifactrandom,사용하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_artifact",
+    "guide_type": 2,
+    "expires_on": "",
+    "description": {
+      "가구 특송화물을 구매할 수 있습니다.": null
+    }
+  },
+  "voucher_dye": {
+    "name": {
+      "염색약 특송화물 이용권": null
+    },
+    "visible": true,
+    "count_max": 3,
+    "link": {
+      "<ref>ui://Shop/Category/dyerandom,사용하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_dye",
+    "guide_type": 2,
+    "expires_on": "",
+    "description": {
+      "염색약 특송화물을 구매할 수 있습니다.": null
+    }
+  },
+  "voucher_avatar": {
+    "name": {
+      "외형장비 특송화물 이용권": null
+    },
+    "visible": true,
+    "count_max": 3,
+    "link": {
+      "<ref>ui://Shop/Category/avatarrandom,사용하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_avatar",
+    "guide_type": 2,
+    "expires_on": "",
+    "description": {
+      "외형장비 특송화물을 구매할 수 있습니다.": null
+    }
+  },
+  "voucher_event01": {
+    "name": {
+      "추석 특송화물 이용권": null
+    },
+    "visible": false,
+    "count_max": 3,
+    "link": {
+      "": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_event",
+    "guide_type": 2,
+    "expires_on": "2018-10-10",
+    "description": {
+      "추석 특송화물을 구매할 수 있습니다. (특송화물 판매기간에 사용하세요)": null
+    }
+  },
+  "voucher_revert_milestone": {
+    "name": {
+      "속성 재발견권": null
+    },
+    "visible": true,
+    "count_max": 10,
+    "link": {
+      "<ref>ui://PetConstant,사용하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_revert_milestone",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "길들인 동물의 속성을 다시 발견할 수 있습니다.": null
+    }
+  },
+  "voucher_revert_active_skill": {
+    "name": {
+      "특수 행동 재발견권": null
+    },
+    "visible": true,
+    "count_max": 10,
+    "link": {
+      "<ref>ui://PetConstant,사용하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_revert_active_skill",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "길들인 동물의 특수 행동을 다시 발견할 수 있습니다.": null
+    }
+  },
+  "voucher_revert_rank": {
+    "name": {
+      "등급 초기화권": null
+    },
+    "visible": true,
+    "count_max": 10,
+    "link": {
+      "<ref>ui://PetConstant,사용하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_revert_rank",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "길들인 동물의 등급을 초기화 할 수 있습니다. 속성과 특수행동도 초기화되니 주의하세요.": null
+    }
+  },
+  "voucher_open_map_hidden": {
+    "name": {
+      "지도 열기 이용권": null
+    },
+    "visible": false,
+    "count_max": 3,
+    "link": {
+      "": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_open_map",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "불안정섬 지도의 안개를 걷어내고 주요 구조물의 위치를 표시합니다. 상점에서 패키지 구매시 획득할 수 있습니다.": null
+    }
+  },
+  "voucher_open_map": {
+    "name": {
+      "지도 열기 이용권": null
+    },
+    "visible": true,
+    "count_max": 10,
+    "link": {
+      "<ref>ui://Shop/Commodity/voucher_open_map,구매하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_open_map",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "불안정섬 지도의 안개를 걷어내고 주요 구조물의 위치를 표시합니다.": null
+    }
+  },
+  "voucher_skill_untrain_hidden": {
+    "name": {
+      "스킬 습득 취소 이용권": null
+    },
+    "visible": false,
+    "count_max": 15,
+    "link": {
+      "": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_skill_untrain",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "습득한 스킬 한 가지를 무료로 취소할 수 있는 횟수를 1회 늘려줍니다. 상점에서 패키지 구매시 획득할 수 있습니다.": null
+    }
+  },
+  "voucher_revive_hidden": {
+    "name": {
+      "즉시 부활 이용권": null
+    },
+    "visible": false,
+    "count_max": 5,
+    "link": {
+      "": null
+    },
+    "icon_colors": [],
+    "icon": "act_Revive",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "일정량의 생명력과 에너지를 회복하며 현재 위치에서 즉시 부활합니다. 상점에서 패키지 구매시 획득할 수 있습니다.": null
+    }
+  },
+  "voucher_revive": {
+    "name": {
+      "즉시 부활 이용권": null
+    },
+    "visible": true,
+    "count_max": 10,
+    "link": {
+      "": null
+    },
+    "icon_colors": [],
+    "icon": "act_Revive",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "일정량의 생명력과 에너지를 회복하며 현재 위치에서 즉시 부활합니다.": null
+    }
+  },
+  "voucher_warprush_entrance": {
+    "name": {
+      "워프러시 입장권": null
+    },
+    "visible": true,
+    "count_max": 100,
+    "link": {
+      "<ref>ui://Shop/Commodity/voucher_warprush_entrance_package_01,구매하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_warprush_entrance",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "워프러시 대기열에 등록하고, 기름독 섬을 탐험할 수 있습니다.": null
+    }
+  },
+  "voucher_resource_induced_stone": {
+    "name": {
+      "자원유도석": null
+    },
+    "visible": true,
+    "count_max": 240,
+    "link": {
+      "<ref>ui://Quest, 획득하기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_resource_induced_stone",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "닫힌 크레이터에 사용하면 특정 자원을 워프시킬 수 있습니다. 퀘스트 또는 출석부를 통해 얻을 수 있습니다.": null
+    }
+  },
+  "voucher_event_attendance": {
+    "name": {
+      "특별보급 재출석 이용권": null
+    },
+    "visible": true,
+    "count_max": 10,
+    "link": {
+      "<ref>ui://Event?Tab=Event,사용하러 가기</ref>": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_event_attendance",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "특별보급 재출석에 사용할 수 있습니다.": null
+    }
+  },
+  "voucher_skill_untrain": {
+    "name": {
+      "스킬 습득 취소 이용권": null
+    },
+    "visible": false,
+    "count_max": 10,
+    "link": {
+      "": null
+    },
+    "icon_colors": [],
+    "icon": "voucher_skill_untrain_01",
+    "guide_type": 0,
+    "expires_on": "",
+    "description": {
+      "습득한 스킬 한 가지를 취소하는 데 사용 할 수 있습니다.": null
+    }
+  }
+}

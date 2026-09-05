@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
@@ -14,7 +14,7 @@ namespace DurangoTestClient;
 ///
 /// สิ่งที่วัด — ทุกข้อวัดจากตัวเลขที่ server ส่งมาจริง ไม่ใช่จากการเดา
 ///   1. เกิดใหม่ต้องได้สตามินาเต็ม 100
-///   2. เก็บของ 1 ครั้ง หัก 6 หน่วย (ค่าคงที่ StaminaCostCollect)
+///   2. เก็บของ 1 ครั้ง หัก 2 หน่วย (StaminaCostCollect — ลดมาให้ใกล้ต้นฉบับ 3 ก.ย. 2026)
 ///   3. สตามินาฟื้นเอง ~4 หน่วย/วินาที
 ///   4. สตามินาไม่พอ = server **ปฏิเสธ** ไม่ใช่ให้ติดลบ
 ///   5. ความล้า ≥60 ทำให้แพงขึ้น 1.5 เท่า · ≥85 แพงขึ้น 2 เท่า
@@ -117,8 +117,19 @@ public static class StaminaCheck
 
         // ชื่อไม่ซ้ำทุกรอบ = ได้ตัวละครเกิดใหม่จริง ๆ เสมอ
         // (ใช้ชื่อเดิมแล้วโหลดเซฟเก่ามา ความล้าจะค้างจากรอบก่อนแล้วข้อ 5 วัดไม่ได้)
-        string id = "stamina-" + Guid.NewGuid().ToString("N").Substring(0, 8);
-        string token = SessionClient.Fetch(host, gatewayPort, id, id);
+        // ต้องสร้างตัวละครจริงก่อน — ถ้าขอ token ด้วย id ที่ยังไม่มีไฟล์เซฟ gateway จะออก token
+        // ผูกกับ id ชั่วคราวแทน แล้ว Auth ปฏิเสธ ("token เป็นของ X แต่อ้างเป็น Y")
+        string modelInfo =
+            "{\"hair\":\"hair_f_01\",\"body_color\":[\"484E36\",\"F0D9B7\",\"29130D\"]," +
+            "\"head_color\":[\"FF0000\",\"FFFFFF\",\"0000FF\"],\"skin_color\":\"F0D9B7\"," +
+            "\"hair_color\":\"471513\",\"lip_color\":\"E88295\",\"eye_color\":\"52353F\"," +
+            "\"portrait\":3,\"portrait_bg\":2,\"portrait_bg_color\":\"C5A293\",\"beard\":null," +
+            "\"voice_type\":1,\"body_size\":1.0}";
+        string id = CreateCharacterCheck.CreatePlayer(host, gatewayPort,
+            "stamina-" + Guid.NewGuid().ToString("N").Substring(0, 6), isMale: false, modelInfo);
+        if (string.IsNullOrEmpty(id)) { Console.WriteLine("สร้างตัวละครไม่ได้"); return 2; }
+        string token = SessionClient.FetchRaw(host, gatewayPort,
+            "{\"appear_player\":{\"entity_id\":\"" + id + "\"}}");
         if (string.IsNullOrEmpty(token))
         {
             Console.WriteLine("ขอ token ไม่ได้ — เซิร์ฟเปิดอยู่ไหม");
@@ -225,7 +236,7 @@ public static class StaminaCheck
             Pump(conn, 500);
             float after = StaminaAtSend();
             float spent = before - after;
-            Check("เก็บของ 1 ครั้งหักสตามินา 6 หน่วย", spent > 5.5f && spent < 6.5f,
+            Check("เก็บของ 1 ครั้งหักสตามินา 2 หน่วย", spent > 1.5f && spent < 2.5f,
                 $"{before:F1} → {after:F1} (หัก {spent:F1})");
 
             // ── วัดอัตราฟื้น **ทันที** ตอนหลอดยังไม่เต็ม ──────────────────
@@ -269,7 +280,7 @@ public static class StaminaCheck
                 Pump(conn, 500);
                 float after2 = StaminaAtSend();
                 float spent2 = before2 - after2;
-                Check("ล้ามาก (≥85) เก็บของเปลืองขึ้น 2 เท่า = 12 หน่วย", spent2 > 11.5f && spent2 < 12.5f,
+                Check("ล้ามาก (≥85) เก็บของเปลืองขึ้น 2 เท่า = 4 หน่วย", spent2 > 3.5f && spent2 < 4.5f,
                     $"{before2:F1} → {after2:F1} (หัก {spent2:F1})");
                 Pump(conn, 4000);
             }
@@ -279,6 +290,7 @@ public static class StaminaCheck
             _aborts = 0;
             int tries = 0;
             bool refused = false;
+            float fatigueBeforeSpam = _fatigue;
             while (tries < 25 && !refused)
             {
                 (int x, int y)? s = FindSpot(conn, id, naturals, touched, ref px, ref py);
@@ -292,8 +304,15 @@ public static class StaminaCheck
                 tries++;
             }
             Check("สตามินาไม่เคยติดลบ", _stamina >= -0.01f, $"ต่ำสุดที่เห็น {_stamina:F1}");
-            Check("เก็บของต่อเนื่องแล้วสตามินาลดจริง (ไม่ฟื้นทันเสมอไป)", _stamina < 90f,
-                $"เก็บ {tries} ครั้งแล้วเหลือ {_stamina:F1}");
+            // [แก้เกณฑ์ 3 ก.ย. 2026] เดิมเช็คว่า "เก็บรัวแล้วสตามินาต้องร่อยหรอ" — เขียนไว้ตอนเก็บของ
+            // ครั้งละ 6 หน่วย · ตอนนี้ใช้ค่าใกล้ต้นฉบับ (2 หน่วย) สตามินาจึงฟื้นทันเกือบตลอด
+            //
+            // ซึ่ง **ถูกตามดีไซน์ต้นฉบับ**: สตามินาคุมการรัวสั้น ๆ ส่วนตัวคุมระยะยาวคือ "ความล้า"
+            // (fatigue_cost/collect = 0.4·√e ⇒ เก็บของครั้งละ ~0.57 · เต็ม 100 ที่ ~176 ครั้ง)
+            // จึงเปลี่ยนมาเช็คว่าเก็บรัวแล้ว **ความล้าขึ้นจริง** แทน
+            Check("เก็บของต่อเนื่องแล้วความล้าเพิ่มขึ้นจริง (ตัวคุมระยะยาวของต้นฉบับ)",
+                _fatigue > fatigueBeforeSpam + 0.4f * tries * 0.5f,
+                $"เก็บ {tries} ครั้ง · ความล้า {fatigueBeforeSpam:F1} → {_fatigue:F1}");
             if (refused)
             {
                 Check("สตามินาหมดแล้ว server ปฏิเสธการเก็บของ", true, $"หลังพยายาม {tries} ครั้ง (เหลือ {_stamina:F1})");
@@ -343,8 +362,13 @@ public static class StaminaCheck
         conn.Send(new Cheat { _Cheat = "test rest" });
         Pump(conn, 1200);
         float tiredAfterRest = _fatigue;
-        Check("พักจริงแล้วความล้าลดลง", tiredBeforeRest > 0f && tiredAfterRest < tiredBeforeRest - 1f,
-            $"ก่อน {tiredBeforeRest:F1} → หลัง {tiredAfterRest:F1}");
+        // สูตรจริงของเกม (status_effects.json → rest): -(0.15 + 0.0015 × level)
+        // ที่ level 1 = -0.1515/วิ — ช้ากว่าของเดิมที่เราตั้งเอง (4.0/วิ) มาก จึงวัดจาก "ความชัน"
+        // แทนผลต่างดิบ ไม่งั้นต้องรอเป็นนาทีถึงจะเห็นตัวเลขขยับพอให้เทียบได้
+        float restSlope = SlopeOf(_fatigueG);
+        Check("พักจริงแล้วความล้าลดลงตามสูตรต้นฉบับ (~-0.15/วิ)",
+            tiredBeforeRest > 0f && restSlope < -0.10f && restSlope > -0.25f,
+            $"ก่อน {tiredBeforeRest:F1} → หลัง {tiredAfterRest:F1} · ความชัน {restSlope:F3}/วิ");
         Check("พักจริงเปิดบัพ rest (ไอคอน icon_se_rest)", _restBuffEnabled,
             _restBuffEnabled ? "ได้รับ StatusEffects แล้ว" : (_lastInfo ?? "ไม่ได้รับ StatusEffects"));
         conn.Send(new Cheat { _Cheat = "survival" });

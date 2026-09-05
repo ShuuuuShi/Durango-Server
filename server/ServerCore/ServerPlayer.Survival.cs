@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Durango.Network;
 using Durango.Utils;
 using Messages;
+using Shared.StatusEffect;
 
 namespace DurangoServer.Core;
 
@@ -83,7 +84,67 @@ public partial class ServerPlayer
     private static float LifeRegenPerSec => Cfg.LifeRegenPerSec;
     private static float StaminaRegenPerSec => Cfg.StaminaRegenPerSec;
     private static float FatigueMax => Cfg.FatigueMax;
-    private static float FatiguePerSec => Cfg.FatiguePerSec;
+    /// <summary>
+    /// อัตราความล้าพื้นฐาน — **สูตรจริงของเกม** (constants.json → `fatigue_velocity`)
+    ///   <c>(0.04 + 0.001·sl) × max(0.5, 1 − 0.05·(sl − rl))</c>
+    /// sl = เลเวลตัวละคร · rl = เลเวลเกาะ ⇒ ยิ่งเลเวลเราสูงกว่าเกาะ ยิ่งล้าช้าลง (ลดได้ถึงครึ่ง)
+    ///
+    /// แล้วคูณตาม role ของเกาะตามที่เกมกำหนด:
+    ///   Tutorial(1)/Safehouse(7) = 0 (ไม่ล้าเลย) · Rural(3)/Urban(6) = ×0.5 · ที่เหลือ = ×1
+    /// </summary>
+    private float BaseFatigueVelocity
+    {
+        get
+        {
+            int sl = Math.Max(1, Level);
+            int rl = Math.Max(1, Cfg.RegionLevel);
+            float v = (Cfg.FatigueVelocityBase + Cfg.FatigueVelocityPerLevel * sl)
+                      * Math.Max(0.5f, 1f - 0.05f * (sl - rl));
+            switch (GameServer.RegionRole)
+            {
+                case Shared.Region.Role.Tutorial:
+                case Shared.Region.Role.Safehouse:
+                    v = 0f;
+                    break;
+                case Shared.Region.Role.Rural:
+                case Shared.Region.Role.Urban:
+                    v *= 0.5f;
+                    break;
+            }
+            // ป่วย = ล้าไวขึ้น (บวกหลังคูณตาม role — เกาะปลอดล้าก็ยังล้าเมื่อป่วย)
+            if (IsSick) { v += Math.Max(0f, SickCfg.FatiguePerSec); }
+            return v;
+        }
+    }
+
+    /// <summary>ความล้าที่ลดลงตอนพัก — สูตรจริง <c>−(0.15 + 0.0015·level)</c> (status_effects.json → rest)</summary>
+    private static float RestFatigueVelocity(int level = 1)
+        => Cfg.RestFatigueBase + Cfg.RestFatiguePerLevel * Math.Max(1, level);
+
+    /// <summary>เลือดที่ฟื้นตอนพัก — สูตรจริง <c>0.45 + 0.05·level</c></summary>
+    private static float RestLifeVelocity(int level = 1)
+        => Cfg.RestLifeBase + Cfg.RestLifePerLevel * Math.Max(1, level);
+
+    /// <summary>ประเภทการกระทำ — ใช้เลือกสูตรความล้าตาม constants.json → `fatigue_cost`</summary>
+    public enum ActionKind { Default, Collect, Craft, Build, Combat }
+
+    /// <summary>
+    /// ความล้าที่ได้จากการกระทำ 1 ครั้ง — **สูตรจริงของเกม** โดย e = สตามินาที่ใช้
+    ///   เก็บของ <c>0.4·√e</c> · คราฟต์ <c>2·√e</c> · ก่อสร้าง <c>4·√e</c> · ต่อสู้ <c>4·e</c> · อื่น ๆ <c>e</c>
+    /// (เดิมเป็นค่าคงที่ 0.35 ต่อครั้งไม่ว่าจะทำอะไร)
+    /// </summary>
+    private static float FatigueCostOf(ActionKind kind, float energy)
+    {
+        float e = Math.Max(0f, energy);
+        switch (kind)
+        {
+            case ActionKind.Collect: return Cfg.FatigueCostCollect * MathF.Sqrt(e);
+            case ActionKind.Craft:   return Cfg.FatigueCostCraft   * MathF.Sqrt(e);
+            case ActionKind.Build:   return Cfg.FatigueCostBuild   * MathF.Sqrt(e);
+            case ActionKind.Combat:  return Cfg.FatigueCostCombat  * e;
+            default:                 return e;
+        }
+    }
     private static float FatigueCaution => Cfg.FatigueCaution;
     private static float FatigueDanger => Cfg.FatigueDanger;
 
@@ -100,11 +161,22 @@ public partial class ServerPlayer
     private GaugeState _life;
     private GaugeState _stamina;
     private GaugeState _fatigue;
-    private GaugeState _hungry;
 
-    private const float HungryMax = 100f;
-    // Full to empty in roughly 100 minutes. Gauge means satiety: food raises it.
-    private const float HungryVelocity = -1f / 60f;
+    /// <summary>
+    /// 🐛 [แก้เอง 3 ก.ย. 2026] เดิมเป็น gauge `hungry` ที่ส่งให้ client ด้วย — **ต้นฉบับไม่มี**
+    ///
+    /// ตรวจจากตัวเกมแล้ว: HUD (`PlayerHudGroupBase`) ผูกหลอดไว้แค่ 3 ตัวคือ
+    /// `_lifeViewer`(life) / `_energyViewer`(stamina) / `_fatigueGauge`(fatigue) เท่านั้น
+    /// ส่วน `Derived.HungryMax/HungryVelocity` (56/57) เป็นของ **สัตว์เลี้ยง**
+    /// (constants.json → `pet/battle/hungry_ratio_enter_battle`, GrowCageGroup, PetAI)
+    /// และใน status_effects.json ของเกมจริง **ไม่มี effect ไหนใช้ไอคอน `icon_se_satietylow` เลย**
+    /// มีแต่ `satiety_high` (배부름 = อิ่มจนกินต่อไม่ได้) ที่ไม่มีตัวเลขผลอะไร
+    ///
+    /// ⇒ เก็บ "ความอิ่ม" ไว้เป็นตัวเลขในเซิร์ฟอย่างเดียว ใช้กันกินรัว ไม่ส่งเป็น gauge
+    /// </summary>
+    private GaugeState _satiety;
+
+    private static float SatietyMax => Cfg.SatietyMax;
 
     private void EnsureSurvival()
     {
@@ -115,8 +187,8 @@ public partial class ServerPlayer
         double now = Times.UnixTimeNow();
         _life = new GaugeState(LifeMax, LifeMax, 0f, now);
         _stamina = new GaugeState(StaminaMax, StaminaMax, 0f, now);
-        _fatigue = new GaugeState(0f, FatigueMax, FatiguePerSec, now);
-        _hungry = new GaugeState(HungryMax, HungryMax, HungryVelocity, now);
+        _fatigue = new GaugeState(0f, FatigueMax, BaseFatigueVelocity, now);
+        _satiety = new GaugeState(SatietyMax, SatietyMax, -Cfg.SatietyDecayPerSec, now);
     }
 
     public float CurrentLife
@@ -138,8 +210,7 @@ public partial class ServerPlayer
         {
             ["life"] = _life.ToGauge(now),
             ["stamina"] = _stamina.ToGauge(now),
-            ["fatigue"] = _fatigue.ToGauge(now),
-            ["hungry"] = _hungry.ToGauge(now)
+            ["fatigue"] = _fatigue.ToGauge(now)
         };
     }
 
@@ -177,7 +248,6 @@ public partial class ServerPlayer
                 case "life": updated["life"] = _life.ToGauge(now); break;
                 case "stamina": updated["stamina"] = _stamina.ToGauge(now); break;
                 case "fatigue": updated["fatigue"] = _fatigue.ToGauge(now); break;
-                case "hungry": updated["hungry"] = _hungry.ToGauge(now); break;
             }
         }
         if (updated.Count == 0)
@@ -203,7 +273,7 @@ public partial class ServerPlayer
     /// พยายามใช้สตามินา คืน false ถ้าไม่พอ (ผู้เรียกควรตอบ Abort)
     /// ความล้าสูงทำให้ค่าใช้จ่ายแพงขึ้น
     /// </summary>
-    private bool TrySpendStamina(float cost)
+    private bool TrySpendStamina(float cost, ActionKind kind = ActionKind.Default)
     {
         EnsureSurvival();
         // สกิลหมวดเอาชีวิตรอดช่วยประหยัดสตามินาทุกอย่าง (ดู ServerPlayer.SkillEffects)
@@ -218,17 +288,6 @@ public partial class ServerPlayer
         {
             cost *= 1.5f;
         }
-        float satiety = _hungry.ValueAt(now);
-        if (satiety <= 0.01f)
-        {
-            cost *= 2f;
-        }
-        else if (satiety <= HungryMax * 0.25f)
-        {
-            cost *= 1.25f;
-        }
-        RefreshHungerStatus();
-
         _stamina.Settle(now);
         if (_stamina.Value < cost)
         {
@@ -240,8 +299,15 @@ public partial class ServerPlayer
         //    ตอนนี้หยุดฟื้นไว้ก่อน แล้วค่อยเริ่มนับใหม่เมื่อ "หยุดทำงาน" ครบเวลาที่ตั้งไว้
         _stamina.Velocity = 0f;
         _staminaResumeAt = now + Cfg.StaminaRegenDelaySeconds;
-        StopResting();
-        AddFatigue(Cfg.FatiguePerAction, now);     // ทำงานแล้วล้าสะสม ไม่ใช่แค่เวลาผ่านไป
+        // [4 ก.ย. 2026] บั๊ก #17 "นั่งพักแล้วคราฟต์ของไม่ได้ สถานะพักหลุด (แต่กินข้าวไม่หลุด)"
+        // เดิมหยุดพักทุก action ⇒ นั่งพักแล้วคราฟต์อะไรก็เด้งลุกทันที
+        // คราฟต์เป็นงานมือทำตอนนั่งได้ — คงสถานะพักไว้ · ที่ต้องลุกจริงคือ เก็บของ/ก่อสร้าง/ต่อสู้
+        if (kind != ActionKind.Craft)
+        {
+            StopResting();
+        }
+        // ความล้าต่อการกระทำ = สูตรจริงของเกม ผูกกับสตามินาที่ใช้ (ดู FatigueCostOf)
+        AddFatigue(FatigueCostOf(kind, cost), now);
         PushGauges("stamina", "fatigue");
         return true;
     }
@@ -333,6 +399,46 @@ public partial class ServerPlayer
         }
     }
 
+    /// <summary>
+    /// คำนวณความเร็วความล้าใหม่ = ฐานตามเลเวล/เกาะ + ผลรวมจาก status effect ที่ติดอยู่
+    ///
+    /// ตรงกับที่ client ทำใน `FatigueSystem.UpdateFatigue`:
+    ///   <c>FatigueVelocity += item.GetDetail(EffectType.Survival, "fatigue")</c>
+    /// บวกกับหมวดสภาพแวดล้อม (`EffectType.Fatigue` key = ชื่อหมวด) — เกาะเรายังเป็นหมวด `default` อย่างเดียว
+    /// เรียกทุกครั้งที่ status effect เปลี่ยน ไม่งั้นหลอดจะเดินด้วยความเร็วเก่า
+    /// </summary>
+    public void RefreshFatigueFromStatusEffects()
+    {
+        EnsureSurvival();
+        if (_resting)
+        {
+            return;   // ตอนพักใช้ความเร็วของบัพพักอย่างเดียว
+        }
+        double now = Times.UnixTimeNow();
+        float velocity = BaseFatigueVelocity;
+        foreach (StatusEffectSave e in _statusEffects)
+        {
+            if (!e.Enabled) continue;
+            if (e.Until > 0 && e.Until <= now) continue;
+            foreach (EffectDetail d in BuildEffectDetails(e))
+            {
+                bool survivalFatigue = d.Type == EffectType.Survival && d.Key == "fatigue";
+                bool categoryDefault = d.Type == EffectType.Fatigue && d.Key == "default";
+                if (survivalFatigue || categoryDefault)
+                {
+                    velocity += d.Value;
+                }
+            }
+        }
+        velocity = Math.Max(0f, velocity);
+        _fatigue.Settle(now);
+        if (Math.Abs(_fatigue.Velocity - velocity) > 0.00001f)
+        {
+            _fatigue.Velocity = velocity;
+            PushGauges("fatigue");
+        }
+    }
+
     /// <summary>เพิ่มความล้า (ไม่ push gauge เอง — ผู้เรียกรวบไปส่งทีเดียว)</summary>
     private void AddFatigue(float amount, double now)
     {
@@ -372,7 +478,8 @@ public partial class ServerPlayer
         _resting = true;
         _restStartedAt = now;
         _restMovementGraceUntil = now + 2.0;
-        _fatigue.Velocity = -Cfg.RestFatiguePerSec;
+        _fatigue.Velocity = -RestFatigueVelocity();
+        QuestProgress(QuestData.Goal.Rest);
         // นั่งพัก = สตามินาฟื้นไวขึ้นทันที ไม่ต้องรอเวลาหน่วง
         _staminaResumeAt = 0.0;
         _stamina.Settle(now);
@@ -396,7 +503,7 @@ public partial class ServerPlayer
         _restMovementGraceUntil = 0.0;
         double now = Times.UnixTimeNow();
         _fatigue.Settle(now);
-        _fatigue.Velocity = FatiguePerSec;
+        _fatigue.Velocity = BaseFatigueVelocity;
         _stamina.Settle(now);
         _stamina.Velocity = _stamina.Value < StaminaMax ? StaminaRegenPerSec : 0f;
         SetRestStatusEffect(enabled: false);
@@ -437,7 +544,7 @@ public partial class ServerPlayer
         {
             _fatigue.Settle(now);
             _fatigue.Value = Math.Max(0f, _fatigue.Value - fatigueRelief);
-            _fatigue.Velocity = FatiguePerSec;
+            _fatigue.Velocity = BaseFatigueVelocity;
             PushGauges("stamina", "fatigue");
         }
         else
@@ -446,17 +553,29 @@ public partial class ServerPlayer
         }
     }
 
+    /// <summary>ความอิ่มตอนนี้ (0-100) — ไม่ได้ส่งเป็น gauge เพราะต้นฉบับไม่มีหลอดนี้ให้ผู้เล่น</summary>
+    public float CurrentSatiety
+    {
+        get
+        {
+            EnsureSurvival();
+            return _satiety.ValueAt(Times.UnixTimeNow());
+        }
+    }
+
+    /// <summary>อิ่มจนกินต่อไม่ได้แล้วหรือยัง (ตรงกับ status effect `satiety_high` ของต้นฉบับ)</summary>
+    public bool IsFullySatiated => CurrentSatiety >= SatietyMax - 0.01f;
+
     public void RestoreSatiety(float amount)
     {
         if (amount <= 0f) return;
         EnsureSurvival();
         double now = Times.UnixTimeNow();
-        _hungry.Settle(now);
-        _hungry.Value = Math.Min(HungryMax, _hungry.Value + amount);
-        _hungry.Velocity = HungryVelocity;
-        PushGauges("hungry");
+        _satiety.Settle(now);
+        _satiety.Value = Math.Min(SatietyMax, _satiety.Value + amount);
+        _satiety.Velocity = -Cfg.SatietyDecayPerSec;
         MarkDirty();
-        RefreshHungerStatus();
+        RefreshSatietyStatus();
     }
 
     /// <summary>ฟื้นเลือด (อาหารบางอย่าง/ยา) — ไม่เกินหลอด</summary>
@@ -484,7 +603,7 @@ public partial class ServerPlayer
         double now = Times.UnixTimeNow();
         _fatigue.Settle(now);
         _fatigue.Value = Math.Min(FatigueMax, _fatigue.Value + amount);
-        _fatigue.Velocity = FatiguePerSec;
+        _fatigue.Velocity = BaseFatigueVelocity;
         PushGauges("fatigue");
     }
 
@@ -546,7 +665,7 @@ public partial class ServerPlayer
         if (clearFatigue)
         {
             _fatigue.Value = 0f;
-            _fatigue.Velocity = FatiguePerSec;
+            _fatigue.Velocity = BaseFatigueVelocity;
             _fatigue.UpdatedAt = now;
             PushGauges("life", "stamina", "fatigue");
         }
@@ -579,7 +698,7 @@ public partial class ServerPlayer
         // จะมี velocity=0 ค้าง แล้วค่าเหนื่อยที่เด้งขึ้นมาจะไม่ลดต่อ
         if (key == "fatigue" && _resting)
         {
-            g.Velocity = -Cfg.RestFatiguePerSec;
+            g.Velocity = -RestFatigueVelocity();
         }
         PushGauges(key);
     }
@@ -595,7 +714,8 @@ public partial class ServerPlayer
             Life = _life.ValueAt(now),
             Stamina = _stamina.ValueAt(now),
             Fatigue = _fatigue.ValueAt(now),
-            Hungry = _hungry.ValueAt(now),
+            // ฟิลด์ชื่อ Hungry ในเซฟ = "ความอิ่ม" (เก็บชื่อเดิมไว้ให้เซฟเก่าอ่านได้)
+            Hungry = _satiety.ValueAt(now),
             HasHungry = true
         };
     }
@@ -611,8 +731,8 @@ public partial class ServerPlayer
         // ออกเกมไปแล้วกลับมา: เลือดกับสตามินาฟื้นเต็ม (ถือว่าได้พัก) แต่ความล้ายังอยู่
         _life = new GaugeState(Math.Clamp(save.Life <= 0f ? LifeMax : save.Life, 0f, LifeMax), LifeMax, 0f, now);
         _stamina = new GaugeState(StaminaMax, StaminaMax, 0f, now);
-        _fatigue = new GaugeState(Math.Clamp(save.Fatigue, 0f, FatigueMax), FatigueMax, FatiguePerSec, now);
-        float hungry = save.HasHungry ? save.Hungry : HungryMax;
-        _hungry = new GaugeState(Math.Clamp(hungry, 0f, HungryMax), HungryMax, HungryVelocity, now);
+        _fatigue = new GaugeState(Math.Clamp(save.Fatigue, 0f, FatigueMax), FatigueMax, BaseFatigueVelocity, now);
+        float satiety = save.HasHungry ? save.Hungry : SatietyMax;
+        _satiety = new GaugeState(Math.Clamp(satiety, 0f, SatietyMax), SatietyMax, -Cfg.SatietyDecayPerSec, now);
     }
 }

@@ -56,25 +56,33 @@ public static class Program
     {
         // admin web panel: เก็บสำเนา console log ล่าสุดไว้ใน memory ให้ /admin/log อ่านได้ (ดู LiveLog.cs)
         Console.SetOut(new LiveLogTextWriter(Console.Out));
+        CrashLog.Install();
 
         string dataDir = "data";
+        string gameFilesDir = null;   // [4 ก.ย. 2026] --gamefiles · ว่าง = <data>/gamefiles
         string terrainId = "ri35te";
-        string serverName = "Multi Play Server";
+        string serverName = "DurangoTH Community Server";
         int gamePort = GameServer.DefaultPort;
         int gatewayPort = Gateway.DefaultPort;
         string assetBundleDir = null;
         bool insecureAuth = false;
         bool enableRadiotower = false;      // GP-12
+        int radiotowerPort = 0;             // 0 = ยังไม่ระบุ ⇒ ใช้ gamePort + 1 (ค่าเดิม 8191+1 = 8192)
         string publicHost = null;
         string islandId = null;         // Beta 1.1: โหมดหลายเกาะ
         bool recipeCheck = false;       // --recipe-check: ตรวจข้อมูลคราฟต์/ทำอาหารแล้วออก
+        bool dataCheck = false;         // --data-check: เทียบตาราง C# กับ data/assets/*.json แล้วออก
         bool modPackCheck = false;
         string modsDir = "mods";        // ระบบ mod: โฟลเดอร์ .dll (ดู ServerCore/Modding/PluginManager.cs)
         bool requireMods = false;
         bool allowUnknownOptionalMods = true;
         bool requireModSignatures = false;
         string modPublicKey = null;
-        string clusterMode = "SingleMode";  // /entry ตอบ cluster_mode อะไร — --cluster-mode Online เพื่อเทสโหมดออนไลน์
+        string clientModAllowlist = null;
+        // Retail client enum does not contain the decompiled-source name SingleMode.
+        // Custom remote gateways use Offline transport mode; the client mod selectively
+        // enables server-managed menus after joining the remote world.
+        string clusterMode = "Offline";
         string adminToken = null;       // กัน /admin/* — ว่าง = ไม่ auth (ค่าเดิม เหมาะกับรันในเครื่อง/LAN เท่านั้น)
 
         for (int i = 0; i < args.Length; i++)
@@ -83,6 +91,10 @@ public static class Program
             {
                 case "--data":
                     dataDir = args[++i];
+                    break;
+                case "--gamefiles":
+                    // [4 ก.ย. 2026] โฟลเดอร์ไฟล์เกมฉบับจริง (มี filelist.json) ให้ launcher ตรวจ/ซ่อมทีละไฟล์
+                    gameFilesDir = args[++i];
                     break;
                 case "--terrain":
                     terrainId = args[++i];
@@ -98,6 +110,10 @@ public static class Program
                     break;
                 case "--assetbundles":
                     assetBundleDir = args[++i];
+                    break;
+                case "--assetbundles-android":
+                    // [Android] ชุด bundle ของ Android (จาก cache เครื่องผู้เล่น — ดู TodoList/ROADMAP-ANDROID.md)
+                    Gateway.AssetBundleAndroidDir = args[++i];
                     break;
                 case "--player-save":
                     GameServer.PlayerSavePath = args[++i];
@@ -131,6 +147,11 @@ public static class Program
                     // H-1: ไม่ผูก entity id กับ IP แรกที่จอง (ใช้เมื่อผู้เล่นเน็ตเปลี่ยน IP บ่อย)
                     AccountStore.BindToFirstIp = false;
                     break;
+                case "--loose-ip-match":
+                    // เทียบ IP แบบวงเดียวกัน (/24) แทนตรงเป๊ะ — สำหรับผู้เล่นที่ใช้ VPN/เน็ตมือถือ
+                    // ที่สลับ IP ในวงเดิมตลอด (เช่น Cloudflare WARP) ดู AccountStore.LooseIpMatch
+                    AccountStore.LooseIpMatch = true;
+                    break;
                 case "--no-account-check":
                     // H-1: ปิดการตรวจเจ้าของทั้งหมด (เทสในเครื่องเดียว)
                     AccountStore.Disabled = true;
@@ -148,7 +169,12 @@ public static class Program
                     GameServer.TrustClientProfile = true;
                     break;
                 case "--radiotower":
-                    // M-5: เปิดพอร์ตแชทส่วนตัว 8192 (default = ปิด เพราะไม่มี auth ปลอมชื่อได้)
+                    // M-5: เปิดพอร์ตแชทส่วนตัว (ตอนนี้ตรวจ session token แล้ว ปลอมชื่อไม่ได้)
+                    enableRadiotower = true;
+                    break;
+                case "--radiotower-port":
+                    // ไม่ระบุ = gamePort + 1 — ต้องเลื่อนตามชุดพอร์ตที่ใช้ (เช่นเกม 8291 ⇒ แชท 8292)
+                    radiotowerPort = int.Parse(args[++i]);
                     enableRadiotower = true;
                     break;
                 case "--insecure-auth":
@@ -162,6 +188,10 @@ public static class Program
                     break;
                 case "--recipe-check":
                     recipeCheck = true;
+                    break;
+                case "--data-check":
+                    // ตรวจว่าตารางที่ hardcode ไว้ยังตรงกับข้อมูลของเกมไหม (ดู DataDriftCheck.cs)
+                    dataCheck = true;
                     break;
                 case "--mod-pack-check":
                     modPackCheck = true;
@@ -183,6 +213,9 @@ public static class Program
                 case "--mod-public-key":
                     modPublicKey = args[++i];
                     break;
+                case "--client-mod-allowlist":
+                    clientModAllowlist = args[++i];
+                    break;
                 case "--public-host":
                     // ที่อยู่ที่ client ใช้ต่อ TCP (พอร์ตเกม/แชท) — เช่น 127.0.0.1 เมื่อเล่น
                     // ผ่าน Cloudflare Tunnel (client ต่อผ่าน cloudflared access tcp บนเครื่องตัวเอง)
@@ -194,6 +227,17 @@ public static class Program
                     // client มีจุดเช็ค ClusterMode == Mode.Online เกือบ 30 จุด — Online ยังไม่ได้เทสครบทุกจุด
                     // ใช้ค่า default "SingleMode" ถ้าไม่ระบุ (เซิร์ฟที่รันอยู่แล้วไม่กระทบ)
                     clusterMode = args[++i];
+                    break;
+                case "--url-prefix":
+                    // [3 ก.ย. 2026] เซิร์ฟ "ทดสอบ" บนพอร์ตอื่นสำหรับมือถือ: APK แพตช์ gateway เป็น http://ip:8290/p
+                    // แล้วเกมต่อท้าย "8190" เอง ⇒ request มาเป็น /p8190/... — ตัดคำนำหน้านี้ก่อน route
+                    // (ดู Durango.Offline.WebServer.PathPrefix) · client PC ที่ไม่มี prefix ยังใช้ได้ปกติ
+                    {
+                        string prefix = args[++i].Trim();
+                        if (!prefix.StartsWith("/")) prefix = "/" + prefix;
+                        Durango.Offline.WebServer.PathPrefix = prefix.TrimEnd('/');
+                        Console.WriteLine($"[web] ตัด URL prefix \"{Durango.Offline.WebServer.PathPrefix}\" ก่อน route (เซิร์ฟทดสอบสำหรับมือถือ)");
+                    }
                     break;
                 case "--admin-token":
                     // กัน /admin/* (สถานะเซิร์ฟ/log สด/เตะผู้เล่น/สั่ง cheat/แก้ config) — ไม่ระบุ = ไม่ auth
@@ -230,6 +274,11 @@ public static class Program
         Console.WriteLine("=== DurangoServer ===");
 
         // Beta 1.1: โหมดหลายเกาะ — ทุกอย่างของเกาะมาจากทะเบียนเดียวกัน
+        // [เพิ่มเอง] มาโครคำสั่งทดสอบที่ตัวเกมนิยามมาเอง (data/cheat_macros.json)
+        CheatMacros.Load(dataDir);
+        // [4 ก.ย. 2026] รายชื่อคนที่ถูกระงับ — อยู่ที่ data/bans.json ที่ทุกเกาะใช้ร่วมกัน
+        // (โหลดก่อนเปิดพอร์ต ไม่งั้นคนแรกที่ต่อเข้ามาจะยังไม่ถูกตรวจ)
+        BanList.Load(dataDir);
         string configPath = Path.Combine(dataDir, "config.json");
         if (!string.IsNullOrEmpty(islandId))
         {
@@ -252,11 +301,20 @@ public static class Program
 
         // ค่าปรับสมดุล (เรทเกิดสัตว์ · เลือด/ดาเมจ · exp) อยู่ในไฟล์ JSON แก้ได้ระหว่างเซิร์ฟรัน
         ServerConfig.Load(configPath);
+        GatheringTools.Load(dataDir);
+        JobCatalog.Load(dataDir);
+        SkillParity.Report();
 
         if (recipeCheck)
         {
             // ตรวจข้อมูลอย่างเดียว ไม่ต้องโหลด terrain / เปิดพอร์ต
             Environment.ExitCode = RecipeCheck.Run();
+            return;
+        }
+        if (dataCheck)
+        {
+            // เทียบข้อมูลอย่างเดียว ไม่ต้องโหลด terrain / เปิดพอร์ต
+            Environment.ExitCode = DataDriftCheck.Run(dataDir);
             return;
         }
         if (modPackCheck)
@@ -292,6 +350,8 @@ public static class Program
         gameServer.ModPolicy.AllowUnknownOptional = allowUnknownOptionalMods;
         gameServer.ModPolicy.RequireSignatures = requireModSignatures;
         gameServer.ModPolicy.TrustedPublicKey = modPublicKey;
+        if (!string.IsNullOrWhiteSpace(clientModAllowlist))
+            gameServer.ModPolicy.ClientAllowlist = ModNegotiation.LoadClientAllowlist(clientModAllowlist);
         Console.WriteLine($"[mods] negotiation={(requireMods ? "required" : "optional")} · unknown optional={(allowUnknownOptionalMods ? "allowed" : "rejected")} · signatures={(requireModSignatures ? "required" : "optional")}");
         Console.WriteLine($"[gameserver] เพดาน connection {GameServer.MaxConnections} เส้น (จาก IP เดียวกัน {GameServer.MaxConnectionsPerIp})");
         Console.WriteLine(GameServer.RegionRole == Shared.Region.Role.Sandbox || GameServer.RegionRole == Shared.Region.Role.Invalid
@@ -323,22 +383,25 @@ public static class Program
             Console.WriteLine($"[fatal] เปิดพอร์ตเกม {gamePort} ไม่ได้ — พอร์ตถูกใช้อยู่ (เปิดเซิร์ฟซ้ำ?) หรือไม่มีสิทธิ์");
             return;
         }
-        // Radiotower = server แชทแยก (พอร์ต 8192, client ต่อตาม radiotower_addresses ใน /entry)
+        // Radiotower = server แชทแยก (พอร์ตเกม + 1, client ต่อตาม radiotower_addresses ใน /entry)
         //
-        // M-5: พอร์ตนี้ **ไม่มี auth เลย** — ใครต่อเข้ามาก็ประกาศตัวเป็นใครก็ได้แล้วพูดแทนคนนั้น
-        // beta 1.0 จึงปิดไว้เป็นค่าเริ่มต้น (แชทช่องรวมวิ่งบน connection เกมที่ Auth แล้ว ไม่ได้ใช้พอร์ตนี้)
-        // เปิดด้วย --radiotower ถ้าจะกลับมาทำแชทส่วนตัว
-        RadiotowerServer radiotower = new RadiotowerServer();
+        // M-5 (แก้แล้ว): เดิมพอร์ตนี้ไม่มี auth เลย ใครต่อเข้ามาก็ประกาศตัวเป็นใครก็ได้แล้วพูดแทนคนนั้น
+        // ตอนนี้ Tune ต้องยื่น session token ที่ /sessions ออกให้ (เหมือน Auth ของพอร์ตเกม)
+        // และ server เติมชื่อคนพูดเอง (GP-05) — เปิดได้แล้วบนเซิร์ฟสาธารณะ
+        RadiotowerServer radiotower = new RadiotowerServer(gameServer);
         if (enableRadiotower)
         {
-            if (!radiotower.Start(RadiotowerServer.DefaultPort))
+            // ไม่ระบุ --radiotower-port = เกาะไปกับพอร์ตเกม (8191 ⇒ 8192 เท่าค่าเดิม, 8291 ⇒ 8292)
+            int chatPort = radiotowerPort > 0 ? radiotowerPort : gamePort + 1;
+            if (!radiotower.Start(chatPort))
             {
-                Console.WriteLine($"[warn] เปิดพอร์ต radiotower {RadiotowerServer.DefaultPort} ไม่ได้ — แชทส่วนตัวจะใช้ไม่ได้ แต่เล่นต่อได้");
+                Console.WriteLine($"[warn] เปิดพอร์ต radiotower {chatPort} ไม่ได้ — แชทส่วนตัวจะใช้ไม่ได้ แต่เล่นต่อได้");
+                enableRadiotower = false;
             }
         }
         else
         {
-            Console.WriteLine("[radiotower] ปิดอยู่ (M-5: ไม่มี auth) — เปิดด้วย --radiotower");
+            Console.WriteLine("[radiotower] ปิดอยู่ — เปิดด้วย --radiotower (หรือ --radiotower-port <พอร์ต>)");
         }
 
         if (!string.Equals(clusterMode, "SingleMode", StringComparison.OrdinalIgnoreCase))
@@ -355,6 +418,34 @@ public static class Program
         {
             // ข่าว/ประกาศบน DinoWorld Launcher อ่านจาก data/launcher_news.json (แก้ไฟล์ได้ตลอดไม่ต้อง restart)
             Gateway.LauncherNewsPath = Path.Combine(dataDir, "launcher_news.json");
+            Gateway.AssetsDir = Path.Combine(dataDir, "assets");
+            Gateway.GameFilesDir = string.IsNullOrWhiteSpace(gameFilesDir)
+                ? Path.Combine(dataDir, "gamefiles")
+                : gameFilesDir;
+            Console.WriteLine("[launcher] ไฟล์เกมสำหรับตรวจ/ซ่อม: {0} ({1})",
+                Path.GetFullPath(Gateway.GameFilesDir),
+                File.Exists(Path.Combine(Gateway.GameFilesDir, "filelist.json")) ? "มี filelist.json" : "ยังไม่มี filelist.json");
+
+            // [4 ก.ย. 2026] "ทุกเครื่องใช้ไฟล์เดียวกัน" — เซิร์ฟอ่านข้อมูลเกม (สูตรคราฟต์ + สิ่งปลูกสร้าง)
+            // จาก JSON ตัวเดียวกับที่เสิร์ฟให้ client ผ่าน /assets/* + สร้าง manifest ให้เทียบชุดข้อมูลได้
+            GameData.LoadAll(Gateway.AssetsDir);
+
+            // [เพิ่มเอง] 31 ส.ค. 2026 — ผูก "ระยะที่ client วาด" กับ "ระยะที่เซิร์ฟส่งจริง"
+            // ตัวเกมเอา world_chunk_range ไปสร้าง ChunkPool ตรง ๆ ถ้ามันกว้างกว่า ChunkSendRange
+            // วงนอกจะเป็นที่ว่างสีเทาตัดตรง ๆ (ดู ClientModPolicy.ServerChunkSendRange)
+            ClientModPolicy.ServerChunkSendRange = ServerConfig.Current.World.ChunkSendRange;
+
+            // 1 chunk = 16 tile ⇒ รัศมีที่ผู้เล่นมองเห็น = (range*2+1)*16/2
+            // ถ้า ViewRangeTiles แคบกว่านี้ สัตว์/ผู้เล่นที่อยู่ในจอแต่นอกระยะจะไม่ได้รับแพ็กเก็ต
+            // อัปเดต ⇒ **ยืนแข็งอยู่กับที่จนกว่าจะมีอะไรไปกระตุ้น** (เจ้าของเจอ: "ไดโนถูกสตัน")
+            float renderRadiusTiles = (ServerConfig.Current.World.ChunkSendRange * 2 + 1) * 16f / 2f;
+            float view = ServerConfig.Current.World.ViewRangeTiles;
+            if (view > renderRadiusTiles + 1f)
+            {
+                Console.WriteLine($"[world] ⚠️ ViewRangeTiles={view} กว้างกว่าระยะ terrain ที่ส่ง " +
+                    $"({renderRadiusTiles} tile จาก ChunkSendRange={ServerConfig.Current.World.ChunkSendRange}) " +
+                    "— ส่งข้อมูลสัตว์เกินพื้นดินที่ผู้เล่นมี (เรดาร์) ลด ViewRangeTiles ให้ใกล้กล้องจริง (~12–16)");
+            }
             gateway = new Gateway(gameServer, world, gatewayPort, assetBundleDir,
                 enableRadiotower ? radiotower.Port : 0, publicHost, Path.Combine(dataDir, "reports"), clusterMode, adminToken);
             Console.WriteLine($"[gateway] listening on {gateway.BindPrefix} (UDP knock: {gatewayPort + 1})");
@@ -415,6 +506,9 @@ public static class Program
         int ticksSincePanelUpdate = 0;
         double lastPanelUpdateAt = 0.0;
         double lastModsTickAt = 0.0;    // ระบบ mod: ไว้คำนวณ deltaSeconds ให้ OnTick
+
+        // แบ็กอัพเซฟตามรอบ (config → Save) · BackupOnStartup = มีจุดย้อนกลับตั้งแต่เพิ่งเปิดเซิร์ฟ
+        SaveBackup.Schedule(0.0, ServerConfig.Current.Save?.BackupOnStartup ?? true);
         try
         {
             while (true)
@@ -459,7 +553,10 @@ public static class Program
                 // (ล้าเต็มแล้วเลือดไหลลงจนตายได้ ต้องมีคนคอยนับให้)
                 SafeProcess("survival", () => world.TickSurvival(Durango.Utils.Times.UnixTimeNow()));
 
-                if (AutoSaveIntervalSeconds > 0 && now - lastSaveAt >= AutoSaveIntervalSeconds * 1000.0)
+                // [4 ก.ย. 2026] รอบ autosave ย้ายไปตั้งใน config.json → Save.AutoSaveSeconds
+                // (เดิมเป็นค่าคงที่ 60 วิในโค้ด แก้ไม่ได้เลยถ้าไม่ build ใหม่)
+                int autoSaveSeconds = ServerConfig.Current.Save?.AutoSaveSeconds ?? AutoSaveIntervalSeconds;
+                if (autoSaveSeconds > 0 && now - lastSaveAt >= autoSaveSeconds * 1000.0)
                 {
                     lastSaveAt = now;
                     SafeProcess("autosave", () =>
@@ -471,6 +568,17 @@ public static class Program
                         }
                     });
                 }
+
+                // แบ็กอัพตามรอบ (ค่าเริ่มต้นทุก 4 ชม. เก็บย้อนหลัง 12 ชุด = 2 วัน)
+                // เซฟก่อนเสมอ ไม่งั้นได้ภาพเก่ากว่าที่ควร
+                SafeProcess("backup", () =>
+                {
+                    if (SaveBackup.Due(now))
+                    {
+                        world.SaveAll(force: true);
+                        SaveBackup.Tick(now);
+                    }
+                });
 
                 if (StatsIntervalSeconds > 0 && now - lastReportAt >= StatsIntervalSeconds * 1000.0)
                 {

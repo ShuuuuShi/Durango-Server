@@ -13,9 +13,6 @@ public class TitleMessageBox : TitleMessageBoxBase
 	{
 		_controller.HideExceptForMe(hide: true, "MessageBox");
 		base.Show(title, message, onClick, onCancel, okButtonLabel, cancelButtonLabel);
-		_okButton.Widget.bottomAnchor.absolute = ((onCancel == null) ? 54 : 140);
-		_okButton.Widget.topAnchor.absolute = ((onCancel == null) ? 120 : 206);
-		_okButton.Widget.UpdateAnchors();
 	}
 
 	public override void Close()

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Durango.Utils;
 using Messages;
@@ -13,7 +13,7 @@ namespace DurangoServer.Core;
 ///
 /// ดูรายละเอียดที่ docs/server/Animals.md
 /// </summary>
-public sealed class AnimalSpawner
+public sealed partial class AnimalSpawner
 {
     // Beta 1.0: จำนวน/ชนิด/เลเวล มาจาก SpawnTable ไม่ใช่การสุ่มแล้ว (ดู docs/testing/BETA-1.0-PLAN.md)
 
@@ -96,6 +96,12 @@ public sealed class AnimalSpawner
     public void SpawnInitial()
     {
         double now = Times.UnixTimeNow();
+        // [TodoList/08] เกาะที่มี region template ของเกม → เกิดเป็นฝูงตามใบสั่งจริง (AnimalSpawner.Herds.cs)
+        if (SpawnInitialHerds(now))
+        {
+            ReportSpawnDepth();
+            return;
+        }
         WorldPosition center = _world.GetEntryPosition();
         for (int i = 0; i < SpawnTable.Entries.Length; i++)
         {
@@ -138,6 +144,59 @@ public sealed class AnimalSpawner
         for (int i = 0; i < lines.Count; i++)
         {
             Console.WriteLine("[animal]   {0}", lines[i]);
+        }
+
+        // [แก้เอง] ตรวจซ้ำว่าไม่มีตัวไหนไปยืนอยู่ในก้อนหิน — ต้องเป็น 0 เสมอ
+        // (ก่อนแก้: จุดที่ด่านเดิมยอมให้เกิด 22-28% เป็นเนื้อหิน)
+        int inRock = 0;
+        int onHerd = 0;
+        TerrainHerds? herds = _world.Terrain.Herds;
+        var herdTiles = new HashSet<(int, int)>();
+        if (herds != null)
+        {
+            foreach (string g in TerrainHerds.LandGroups)
+            {
+                foreach (Point2 t in herds.Group(g)) { herdTiles.Add((t.x, t.y)); }
+            }
+        }
+        foreach (ServerAnimal a in Snapshot())
+        {
+            int tx = (int)(a.Position.x / 200f);
+            int ty = (int)(a.Position.y / 200f);
+            if (_world.Terrain.IsCliff(tx, ty)) { inRock++; }
+            if (herdTiles.Contains((tx, ty))) { onHerd++; }
+        }
+        Console.WriteLine("[animal] ตรวจจุดเกิด: อยู่ในก้อนหิน {0} ตัว (ต้องเป็น 0) · ตรงจุดที่เกมกำหนดไว้ {1} ตัว",
+            inRock, onHerd);
+
+        // [3 ก.ย. 2026] ให้เห็นว่าสูตรรายชนิดมีผลจริงไหม — อัตราส่วนเทียบสัตว์อ้างอิง ที่เลเวลต่ำสุดของแต่ละชนิด
+        if (ServerConfig.Current.Animals.SpeciesStats)
+        {
+            var parts = new List<string>();
+            foreach (SpawnTable.Entry e in SpawnTable.Entries)
+            {
+                float lr = SpawnTable.LifeRatio(e.EntityType, e.MinLevel);
+                float dr = SpawnTable.DamageRatio(e.EntityType, e.MinLevel);
+                parts.Add($"{e.Name} เลือด×{lr:F2} ดาเมจ×{dr:F2}");
+            }
+            Console.WriteLine("[animal] พลังรายชนิด (เทียบ {0}): {1}",
+                ServerConfig.Current.Animals.SpeciesReference, string.Join(" · ", parts));
+        }
+        // [TodoList/05] เกราะสัตว์ — บอกว่าแต่ละชนิดลดดาเมจกี่ % ที่เลเวลต่ำสุดของมัน (สูตรเดียวกับเกราะผู้เล่น)
+        AnimalDefenseConfig defCfg = ServerConfig.Current.Animals.Defense;
+        if (defCfg != null && defCfg.Enabled)
+        {
+            var seen = new HashSet<ushort>();
+            var defParts = new List<string>();
+            foreach (ServerAnimal a in Snapshot())
+            {
+                if (!seen.Add(a.EntityType)) { continue; }
+                float def = SpawnTable.DefenseFor(a.EntityType, a.Level);
+                float reduce = 1f - ServerPlayer.ArmorScaleFor(def);
+                defParts.Add($"{NameOf(a.EntityType)} lv{a.Level} def {def:F0} ลด {reduce:P0}");
+            }
+            Console.WriteLine("[animal] เกราะรายชนิด (K={0}, scale={1}, cap {2:P0}): {3}",
+                ServerConfig.Current.Combat.ArmorDefenseK, defCfg.Scale, ServerConfig.Current.Combat.ArmorMaxReduce, string.Join(" · ", defParts));
         }
     }
 
@@ -183,6 +242,12 @@ public sealed class AnimalSpawner
     }
 
     /// <summary>โซนหนึ่งต้องลึกเท่าตัวที่ใหญ่ที่สุดในโซนนั้น</summary>
+    /// <summary>[TodoList/08] ความลึกที่ตัวนี้ต้องใช้ — สมาชิกฝูงหาดใช้ค่าของฝูง (1) ตัวอื่นคิดจาก size_level</summary>
+    private static int InlandOf(ServerAnimal a)
+    {
+        return a.MinInland >= 0 ? a.MinInland : InlandFor(a.EntityType);
+    }
+
     private static int InlandForZone(ZoneConfig zone)
     {
         int need = ServerConfig.Current.Animals.MinTilesInland;
@@ -370,6 +435,16 @@ public sealed class AnimalSpawner
         ZoneConfig zone = ZoneOf(e.EntityType);
         int minInland = InlandFor(e.EntityType);      // ตัวใหญ่ต้องลึกกว่า
         bool ok = false;
+
+        // [แก้เอง] ใช้จุดเกิดที่มากับเกาะ (herds.yml) ก่อนเสมอ — ทีมสร้างเกมวางไว้ให้แล้ว
+        // และไม่มีจุดไหนอยู่ในหิน  ถ้าเกาะไม่มีไฟล์นี้ค่อยตกไปสุ่มเองแบบเดิมข้างล่าง
+        WorldPosition herdPreferred = zone != null ? ZoneCenter(zone, center) : center;
+        if (TryHerdSpawnSpot(herdPreferred, zone, center, minDist, minInland, out WorldPosition herdSpot))
+        {
+            home = herdSpot;
+            ok = true;
+        }
+
         for (int tries = 0; tries < 80 && !ok; tries++)
         {
             if (zone != null)
@@ -384,7 +459,8 @@ public sealed class AnimalSpawner
             //    (ใช้ oceans.dm ของ terrain ดู TerrainStore.LandDistance)
             ok = _world.Terrain.IsLand(home.x, home.y, minInland)
                  && (zone != null || minDist <= 0f || Distance(home, center) >= minDist)
-                 && !TooCloseToOther(home);
+                 && !TooCloseToOther(home)
+                 && IsSpawnSpotClear(home);
         }
         if (!ok && TryFindValidSpawnPosition(home, zone, center, minDist, minInland, out WorldPosition fallback))
         {
@@ -400,7 +476,7 @@ public sealed class AnimalSpawner
 
         ServerAnimal animal = new ServerAnimal(
             "animal_" + Guid.NewGuid().ToString("N").Substring(0, 12),
-            e.EntityType, level, scale, home, SpawnTable.LifeFor(level), now);
+            e.EntityType, level, scale, home, SpawnTable.LifeFor(e.EntityType, level), now);
         animal.NextMoveAt = now + NextInterval();
         animal.Height = GroundHeightAt(home);
 
@@ -418,9 +494,67 @@ public sealed class AnimalSpawner
             : _world.GroundHeightHint;
     }
 
+    /// <summary>
+    /// จุดนี้ว่างพอให้ไดโนเสาร์ยืนไหม — ต้องไม่ทับสิ่งปลูกสร้างและไม่ทับของธรรมชาติ (หิน/ต้นไม้)
+    ///
+    /// 🐛 [แก้เอง 1 ก.ย. 2026] เจ้าของแจ้ง: "ไดโนเสาร์มันเกิดในที่ที่เป็นสิ่งก่อสร้าง บอทเลยตีไม่ได้
+    ///    มันเกิดในวาร์ปและในหิน" — เดิมเช็คแค่ 3 ข้อ (เป็นบก · ไกลจุดเข้าเกม · ไม่ชิดตัวอื่น)
+    ///    ไม่เคยดูว่าช่องนั้นมีของตั้งอยู่หรือเปล่า ⇒ โผล่ทับจุดรับส่ง/กองหิน แล้วคลิกตีไม่โดน
+    ///    เพราะ hitbox ของสิ่งปลูกสร้างบังอยู่ (เกมเลือกเป้าเป็นตัวสิ่งปลูกสร้างแทน)
+    ///
+    /// ช่องตัวเอง: ห้ามมีทั้ง artifact และ natural
+    /// รอบตัว 3×3: ห้ามมี artifact (สิ่งปลูกสร้างกินพื้นที่หลายช่อง + ต้องมีที่ให้ขยับ)
+    /// ไม่ห้าม natural รอบตัว เพราะเกาะมีต้นไม้/หินหนาแน่น จะหาที่เกิดไม่ได้เลย
+    /// </summary>
+    private bool IsSpawnSpotClear(WorldPosition pos)
+    {
+        int tx = (int)MathF.Floor(pos.x / 200f);
+        int ty = (int)MathF.Floor(pos.y / 200f);
+        // จุดศูนย์กลางห้ามทับของธรรมชาติ (หิน/ต้นไม้) — เกิดในหินไม่ได้
+        // (การเดินยังกันรัศมี 3x3 ผ่าน IsSafeLand แยกต่างหาก)
+        if (HasNaturalAt(tx, ty))
+        {
+            return false;
+        }
+        // [แก้เอง] 2 ก.ย. 2026 — ก้อนหินใหญ่/หน้าผา ต้นเหตุอาการ "สัตว์เกิดในหิน"
+        //
+        // ⚠️ ด่านนี้ต่างหากที่เป็นทางเกิดจริง (SpawnFromTable เรียกตัวนี้)
+        //    ส่วน IsSafeLand ใช้ตอน *เดิน* — ใส่ไว้ที่นั่นอย่างเดียวไม่พอ แก้รอบแรกพลาดตรงนี้
+        //
+        // `whole.garden` (ที่ HasNaturalAt ดู) เก็บแค่ต้นไม้/หินเล็กที่เก็บได้
+        // ก้อนหินใหญ่อยู่ใน `cliffs.dm` + ธง 0xC0 ของ `whole.biomes` ซึ่งเดิมไม่มีใครอ่าน
+        if (_world.Terrain.IsCliff(tx, ty, CliffAvoidTiles))
+        {
+            return false;
+        }
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                if (_world.HasArtifactAt(new Point2(tx + dx, ty + dy)))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private bool TryFindValidSpawnPosition(WorldPosition preferred, ZoneConfig zone, WorldPosition entry, float minDist, int minInland, out WorldPosition result)
     {
         result = default;
+
+        // [แก้เอง] 2 ก.ย. 2026 — ลองจุดเกิดที่ "มากับเกาะ" ก่อน (herds.yml)
+        //
+        // เกาะของเกมทุกใบมี herds.yml ที่ทีมสร้างเกมกำหนดจุดเกิดสัตว์ไว้ให้ แบ่งตามถิ่นที่อยู่
+        // (ri35te: land 200 · beach 200 · ocean 200 · lake_shallow 200 · lake_deep 11 = 811 จุด)
+        // **ไม่มีจุดไหนอยู่ในหินเลย** ต่างจากการสุ่มเองที่ 22-28% ของจุดที่ผ่านด่านเป็นเนื้อหิน
+        // ถ้าไม่มีไฟล์ (เกาะที่ปั่นเอง) หรือจุดที่มีใช้ไม่ได้ ค่อยถอยไปกวาดหาแบบเดิม
+        if (TryHerdSpawnSpot(preferred, zone, entry, minDist, minInland, out result))
+        {
+            return true;
+        }
+
         int minX = 0, maxX = _world.Terrain.Width - 1, minY = 0, maxY = _world.Terrain.Height - 1;
         if (zone != null)
         {
@@ -441,6 +575,47 @@ public sealed class AnimalSpawner
                 if (zone != null && Distance(candidate, zoneCenter) > zone.RadiusTiles * 200f) continue;
                 if (minDist > 0f && Distance(candidate, entry) < minDist) continue;
                 if (!_world.Terrain.IsLand(candidate.x, candidate.y, minInland) || TooCloseToOther(candidate)) continue;
+                if (!IsSpawnSpotClear(candidate)) continue;
+                double score = DistSq(candidate, preferred);
+                if (score < best)
+                {
+                    best = score;
+                    result = candidate;
+                    found = true;
+                }
+            }
+        }
+        return found;
+    }
+
+    /// <summary>
+    /// เลือกจุดเกิดจาก `herds.yml` ที่ใกล้จุดที่อยากได้ที่สุด และผ่านด่านเดียวกับการสุ่มเอง
+    ///
+    /// ใช้เฉพาะกลุ่มบก (land/beach) เพราะตัวนี้เรียกมาเพื่อหาที่ให้สัตว์บก
+    /// กลุ่ม ocean/lake_* ยังไม่ได้ใช้ — เก็บไว้ให้ระบบสัตว์น้ำในอนาคต
+    /// </summary>
+    private bool TryHerdSpawnSpot(WorldPosition preferred, ZoneConfig zone, WorldPosition entry,
+                                  float minDist, int minInland, out WorldPosition result)
+    {
+        result = default;
+        TerrainHerds? herds = _world.Terrain.Herds;
+        if (herds == null)
+        {
+            return false;
+        }
+        WorldPosition zoneCenter = zone == null ? default : ZoneCenter(zone, entry);
+        double best = double.MaxValue;
+        bool found = false;
+
+        foreach (string group in TerrainHerds.LandGroups)
+        {
+            foreach (Point2 tile in herds.Group(group))
+            {
+                var candidate = new WorldPosition(tile.x * 200f + 100f, tile.y * 200f + 100f);
+                if (zone != null && Distance(candidate, zoneCenter) > zone.RadiusTiles * 200f) { continue; }
+                if (minDist > 0f && Distance(candidate, entry) < minDist) { continue; }
+                if (!_world.Terrain.IsLand(candidate.x, candidate.y, minInland)) { continue; }
+                if (TooCloseToOther(candidate) || !IsSpawnSpotClear(candidate)) { continue; }
                 double score = DistSq(candidate, preferred);
                 if (score < best)
                 {
@@ -498,7 +673,7 @@ public sealed class AnimalSpawner
         int level = entry != null
             ? entry.MinLevel + _rng.Next(entry.MaxLevel - entry.MinLevel + 1)
             : 1 + _rng.Next(10);
-        float lifeMax = SpawnTable.LifeFor(level);
+        float lifeMax = SpawnTable.LifeFor(type, level);
 
         ServerAnimal animal = new ServerAnimal(
             "animal_" + Guid.NewGuid().ToString("N").Substring(0, 12),
@@ -542,10 +717,10 @@ public sealed class AnimalSpawner
     /// (สัตว์ที่วิ่งหนีควรวิ่งเลียบชายฝั่ง ไม่ใช่วิ่งลงทะเล)
     /// คืน false ถ้าไม่มีทิศไหนเป็นบกเลย — ผู้เรียกควรอยู่เฉย ๆ รอบนั้น
     /// </summary>
-    private bool TryLandDestination(WorldPosition from, WorldPosition dest, int minInland, out WorldPosition result)
+    private bool TryLandDestination(WorldPosition from, WorldPosition dest, int minInland, out WorldPosition result, bool allowBeach = false)
     {
         result = dest;
-        if (_world.Terrain.IsLand(dest.x, dest.y, minInland))
+        if (IsSafeLand(dest.x, dest.y, minInland, allowBeach) && PathIsClear(from, dest, minInland, allowBeach))
         {
             return true;
         }
@@ -568,9 +743,187 @@ public sealed class AnimalSpawner
                 float nx = (dx * cos - dy * sin) / len * reach;
                 float ny = (dx * sin + dy * cos) / len * reach;
                 var cand = new WorldPosition(from.x + nx, from.y + ny);
-                if (_world.Terrain.IsLand(cand.x, cand.y, minInland))
+                if (IsSafeLand(cand.x, cand.y, minInland, allowBeach) && PathIsClear(from, cand, minInland, allowBeach))
                 {
                     result = cand;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /// <summary>ระยะกันชนรอบ footprint ของ POI/สิ่งปลูกสร้าง (หน่วย tile)</summary>
+    private static float ArtifactAvoidTiles => ServerConfig.Current.Animals.ArtifactAvoidTiles;
+
+    /// <summary>หิน/ต้นไม้กินพื้นที่กว้างกว่า 1 ช่อง — กันรอบปลายทางด้วยรัศมีนี้</summary>
+    private static int NaturalAvoidRadius => ServerConfig.Current.Animals.NaturalAvoidRadius;
+
+    /// <summary>เว้นระยะรอบก้อนหินเพิ่มอีกกี่ tile (0 = ห้ามเฉพาะ tile ที่เป็นเนื้อหิน)</summary>
+    private static int CliffAvoidTiles => ServerConfig.Current.Animals.CliffAvoidTiles;
+
+    /// <summary>
+    /// เดินสุ่ม/ไล่/หนี ต้องเลี่ยงไม่ให้ปลายทางอยู่บนบก+ใกล้ POI/สิ่งปลูกสร้างเกินไป
+    ///
+    /// 🐛 ที่มา: `Process()` เดิมเช็คแค่ `Terrain.IsLand()` (บก vs ทะเล) — ไม่รู้จักก้อนหิน/พุ่มไม้
+    /// ที่ client สุ่มวางตอนรัน (ข้อมูลฝั่ง client ล้วน ๆ เซิร์ฟไม่มีทางรู้ตำแหน่งจริง) ผลคือสัตว์เดินทะลุ
+    /// เข้าไปในโขดหินได้ตรง ๆ (เจอจริงกับ `poi_near_camp_warphole_0` ที่วางทับก้อนหินใหญ่)
+    ///
+    /// ยังเช็ค collision รายก้อนหินไม่ได้ (เซิร์ฟไม่มีข้อมูล) — แต่ POI/สิ่งปลูกสร้างเป็นพิกัดที่เซิร์ฟ
+    /// รู้แน่นอน (`SnapshotArtifacts`) และมักเป็นจุดที่ของตกแต่งหนาแน่นพอดี ⇒ กันชนรอบ footprint
+    /// ไว้ก่อน ลดโอกาสเดินเข้าไปติดหินได้เยอะโดยไม่ต้องรู้ตำแหน่งหินจริง
+    /// </summary>
+    private bool IsSafeLand(float x, float y, int minInland)
+    {
+        return IsSafeLand(x, y, minInland, out _);
+    }
+
+    private bool IsSafeLand(float x, float y, int minInland, bool allowBeach)
+    {
+        return IsSafeLand(x, y, minInland, out _, allowBeach);
+    }
+
+    /// <summary>เวอร์ชันที่บอกด้วยว่าตกเพราะอะไร (ไว้ทำสถิติ "ทำไมสัตว์ไม่เดิน")</summary>
+    /// <param name="reason">0 = ผ่าน · 1 = ไม่ใช่พื้นดิน/ริมน้ำเกิน · 2 = ใกล้สิ่งปลูกสร้าง · 3 = ใกล้ของธรรมชาติ · 4 = อยู่ใน/ติดหิน</param>
+    private bool IsSafeLand(float x, float y, int minInland, out int reason, bool allowBeach = false)
+    {
+        reason = 0;
+        if (!_world.Terrain.IsLand(x, y, minInland, allowBeach))
+        {
+            reason = 1;
+            return false;
+        }
+        float pad = ArtifactAvoidTiles * 200f;
+        foreach (Messages.AppearArtifact art in _world.SnapshotArtifacts())
+        {
+            float minX = art.Tile.x * 200f - pad;
+            float maxX = (art.Tile.x + art.Size.x) * 200f + pad;
+            float minY = art.Tile.y * 200f - pad;
+            float maxY = (art.Tile.y + art.Size.y) * 200f + pad;
+            if (x >= minX && x <= maxX && y >= minY && y <= maxY)
+            {
+                reason = 2;
+                return false;
+            }
+        }
+        // ปลายทางกันหินเป็นรัศมี 3×3 — ก้อนใหญ่กินหลายช่อง เช็คช่องเดียวไม่พอ
+        int tx = (int)MathF.Floor(x / 200f);
+        int ty = (int)MathF.Floor(y / 200f);
+        if (HasNaturalNearby(tx, ty, NaturalAvoidRadius))
+        {
+            reason = 3;
+            return false;
+        }
+        // [แก้เอง] หน้าผา/ก้อนหินใหญ่ — ต้นเหตุของอาการ "สัตว์เกิดในหิน"
+        //
+        // `whole.garden` เก็บแค่ต้นไม้/หินเล็กที่เก็บได้ ส่วนก้อนหินใหญ่ที่เดินทะลุไม่ได้
+        // เป็นคนละชุดข้อมูล (`cliffs.dm` + ธง 0xC0 ใน `whole.biomes`) ซึ่งเดิมเซิร์ฟไม่เคยอ่าน
+        // ⇒ ด่านนี้จึงมองไม่เห็นหินเลย สัตว์เกิดทับได้ตามปกติ
+        // เกาะจริงมีหิน 5.8-7.8% ของพื้นที่ ไม่ใช่จำนวนน้อย ๆ
+        if (_world.Terrain.IsCliff(tx, ty, CliffAvoidTiles))
+        {
+            reason = 4;
+            return false;
+        }
+        return true;
+    }
+
+    private bool HasNaturalAt(int tx, int ty)
+    {
+        return _world.Terrain.TryGetNatural(tx, ty, out _);
+    }
+
+    private bool HasNaturalNearby(int tx, int ty, int radius)
+    {
+        for (int dy = -radius; dy <= radius; dy++)
+        {
+            for (int dx = -radius; dx <= radius; dx++)
+            {
+                if (HasNaturalAt(tx + dx, ty + dy)) return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// ช่องระหว่างทางเดินได้ไหม — เช็คช่องนั้นช่องเดียว (ไม่ใช้รัศมี 3×3)
+    /// ไม่งั้นเส้นเดินบนเกาะที่มีหินหนาจะหาทางไม่เจอเลย
+    /// </summary>
+    private bool IsWalkableTile(float x, float y, int minInland, bool allowBeach = false)
+    {
+        if (!_world.Terrain.IsLand(x, y, minInland, allowBeach)) return false;
+        int tx = (int)MathF.Floor(x / 200f);
+        int ty = (int)MathF.Floor(y / 200f);
+        if (HasNaturalAt(tx, ty)) return false;
+        if (_world.Terrain.IsCliff(tx, ty)) return false;   // [แก้เอง] เดินทะลุก้อนหินไม่ได้
+        float pad = ArtifactAvoidTiles * 200f;
+        foreach (Messages.AppearArtifact art in _world.SnapshotArtifacts())
+        {
+            float minX = art.Tile.x * 200f - pad;
+            float maxX = (art.Tile.x + art.Size.x) * 200f + pad;
+            float minY = art.Tile.y * 200f - pad;
+            float maxY = (art.Tile.y + art.Size.y) * 200f + pad;
+            if (x >= minX && x <= maxX && y >= minY && y <= maxY) return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// เส้นตรงจาก from→to ห้ามตัดช่องหิน/สิ่งปลูกสร้าง/ทะเล
+    /// เดิมเช็คแค่ปลายทาง ⇒ ไล่/หนี/เดินสุ่มทะลุหินกลางทางได้
+    /// </summary>
+    private bool PathIsClear(WorldPosition from, WorldPosition to, int minInland, bool allowBeach = false)
+    {
+        float dx = to.x - from.x;
+        float dy = to.y - from.y;
+        float dist = MathF.Sqrt(dx * dx + dy * dy);
+        if (dist < 1f) return true;
+        int steps = Math.Max(1, (int)MathF.Ceiling(dist / 100f));
+        for (int i = 1; i <= steps; i++)
+        {
+            float t = i / (float)steps;
+            float x = from.x + dx * t;
+            float y = from.y + dy * t;
+            if (i < steps)
+            {
+                if (!IsWalkableTile(x, y, minInland, allowBeach)) return false;
+            }
+            else if (!IsSafeLand(x, y, minInland, allowBeach))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// ถ้าสัตว์ยืนทับของธรรมชาติอยู่ ให้ดันออกไปช่องว่างรอบ ๆ ที่ใกล้ที่สุด (คืน true ถ้าสั่งย้าย)
+    /// วนหาเป็นวงจากใกล้ไปไกล 1→3 ช่อง ถ้าไม่เจอเลยก็ปล่อยไว้ รอบหน้าค่อยลองใหม่
+    /// </summary>
+    private bool NudgeOutOfNatural(ServerAnimal a, double now)
+    {
+        WorldPosition here = a.PositionAt(now);
+        int tx = (int)MathF.Floor(here.x / 200f);
+        int ty = (int)MathF.Floor(here.y / 200f);
+        if (!_world.Terrain.TryGetNatural(tx, ty, out _))
+        {
+            return false;
+        }
+        int minInland = InlandOf(a);
+        for (int ring = 1; ring <= 3; ring++)
+        {
+            for (int dx = -ring; dx <= ring; dx++)
+            {
+                for (int dy = -ring; dy <= ring; dy++)
+                {
+                    if (Math.Abs(dx) != ring && Math.Abs(dy) != ring) continue;   // เฉพาะขอบวง
+                    WorldPosition cand = new WorldPosition((tx + dx) * 200f + 100f, (ty + dy) * 200f + 100f);
+                    if (!IsSafeLand(cand.x, cand.y, minInland, a.BeachOk) || !PathIsClear(here, cand, minInland, a.BeachOk)) continue;
+                    a.Height = GroundHeightAt(cand);
+                    Move move = a.MakeMove(cand, WalkSpeed, now, out double travel);
+                    a.StandAt = now + travel;
+                    a.NextMoveAt = now + travel + NextInterval();
+                    _world.BroadcastToViewers(a.EntityId, move);
                     return true;
                 }
             }
@@ -612,6 +965,9 @@ public sealed class AnimalSpawner
         // ซาก/การเกิดใหม่ต้องเดินต่อแม้ไม่มีใครออนไลน์ ไม่งั้นสัตว์ที่ตายไปตอนคนออกเกม
         // จะค้างเป็นซากตลอดกาลและจำนวนสัตว์ในโลกลดลงเรื่อย ๆ
         ProcessCorpsesAndRespawn(now);
+        ProcessLifetimeExpiry(now);
+        ProcessUnstuck(now);
+        if (_herdMode) { MaintainHerds(now); } else { MaintainQuota(now); }
 
         // ส่วนการเดิน/AI ข้ามได้ถ้าไม่มีคนดู ประหยัดทั้ง CPU และแบนด์วิดท์
         if (_world.Count == 0)
@@ -643,14 +999,35 @@ public sealed class AnimalSpawner
             {
                 continue;                 // กำลังไล่/หนีอยู่ ไม่ต้องเดินสุ่ม
             }
+            // [แก้เอง 1 ก.ย. 2026] เจ้าของแจ้ง: "ยังมีไดโนเสาร์ติดในหิน" — ตัวเกมให้สัตว์ *เดินทะลุ*
+            // ของธรรมชาติได้ (ของเดิมก็เป็นแบบนั้น) ปัญหาคือมันไป **หยุด** ค้างกลางกองหิน
+            // เกิดได้แม้ปลายทางผ่าน IsSafeLand แล้ว เพราะขาเดินถูกตัดกลางคัน (โดนตี/เลิกไล่/หมดเวลาขา)
+            // แล้ว PositionAt(now) ไปตกกลางหินพอดี ⇒ คลิกตีไม่โดน เพราะกองหินบัง hitbox
+            // ตรงนี้กวาดทุก tick: ใครยืนทับ natural อยู่ ดันออกไปช่องว่างที่ใกล้ที่สุดทันที
+            if (NudgeOutOfNatural(a, now))
+            {
+                continue;
+            }
             if (now < a.NextMoveAt)
             {
                 continue;
             }
             // เดินสุ่มอยู่ในโซนของตัวเอง — ไม่หลุดไปทั่วเกาะ
             // (รัศมีเดินไม่เกินทั้งค่ากลางและขอบโซน แล้วดึงกลับถ้าเผลอออกนอกโซน)
-            WorldPosition dest = RandomAround(a.Home, WanderRadius);
-            ZoneConfig zone = ZoneOf(a.EntityType);
+            // สุ่มจุดหมายหลายจุดต่อ tick — เดิมสุ่มจุดเดียว พลาดทีก็ยืนรอเต็มวินาที
+            int tries = Math.Max(1, ServerConfig.Current.Animals.WanderTriesPerTick);
+            int inland = InlandOf(a);
+            WorldPosition here = a.PositionAt(now);
+            bool found = false;
+            WorldPosition dest = here;
+            int why = 0;
+            bool landOk = false, pathOk = false;
+            for (int t = 0; t < tries && !found; t++)
+            {
+            // [TodoList/08] สมาชิกฝูงเดินรอบบ้านฝูงในรัศมีสั้น ๆ และไม่ถูกดึงเข้าโซนของโหมดเดิม
+            bool inHerd = a.HerdId != 0;
+            dest = RandomAround(a.Home, inHerd ? HerdCfg.WanderTiles * 200f : WanderRadius);
+            ZoneConfig zone = inHerd ? null : ZoneOf(a.EntityType);
             if (zone != null)
             {
                 WorldPosition zc = ZoneCenter(zone, _world.GetEntryPosition());
@@ -666,19 +1043,33 @@ public sealed class AnimalSpawner
             // เดินทีละขาสั้น ๆ — ดูเป็นธรรมชาติกว่าเดินยาว 20 วินาทีรวดเดียว
             // และถ้ามีอะไรมาขัดกลางทาง ตำแหน่งก็เพี้ยนได้น้อยกว่า
             float maxLeg = WalkSpeed * (float)ServerConfig.Current.Animals.MaxWalkLegSeconds;
-            WorldPosition here = a.PositionAt(now);
             float ldx = dest.x - here.x, ldy = dest.y - here.y;
             float legDist = MathF.Sqrt(ldx * ldx + ldy * ldy);
             if (legDist > maxLeg && legDist > 1f)
             {
                 dest = new WorldPosition(here.x + ldx / legDist * maxLeg, here.y + ldy / legDist * maxLeg);
             }
-            // ไม่เดินลงทะเล — ถ้าปลายทางไม่ใช่บก ให้ข้ามรอบนี้ไปสุ่มใหม่รอบหน้า
-            if (!_world.Terrain.IsLand(dest.x, dest.y, InlandFor(a.EntityType)))
+            // ไม่เดินลงทะเล/หิน/สิ่งปลูกสร้าง ทั้งปลายทางและทุกช่องกลางทาง
+            landOk = IsSafeLand(dest.x, dest.y, inland, out why, a.BeachOk);
+            pathOk = landOk && PathIsClear(here, dest, inland, a.BeachOk);
+            found = landOk && pathOk;
+            }
+            if (!found)
             {
+                // สถิติไว้ตอบคำถาม "ทำไมไดโนไม่เดิน" — ถ้าตัวเลขนี้ชนเพดานตลอด
+                // แปลว่าเงื่อนไขจุดหมาย (IsSafeLand/PathIsClear) แน่นเกินไปสำหรับแมพนี้
+                if (!landOk)
+                {
+                    _wanderRejectLand++;
+                    if (why == 1) _rejectWater++;
+                    else if (why == 2) _rejectArtifact++;
+                    else if (why == 3) _rejectNatural++;
+                }
+                else _wanderRejectPath++;
                 a.NextMoveAt = now + 1.0;
                 continue;
             }
+            _wanderAccepted++;
             a.Height = GroundHeightAt(dest);
             Move move = a.MakeMove(dest, WalkSpeed, now, out double travelSeconds);
             a.StandAt = now + travelSeconds;
@@ -687,6 +1078,42 @@ public sealed class AnimalSpawner
             a.NextMoveAt = now + travelSeconds + NextInterval();
             _world.BroadcastToViewers(a.EntityId, move);
         }
+        ReportWanderStats(now);
+    }
+
+    // ── สถิติการเดินสุ่ม ────────────────────────────────────────────────
+    private int _wanderAccepted;
+    private int _wanderRejectLand;
+    private int _wanderRejectPath;
+    private int _rejectWater;
+    private int _rejectArtifact;
+    private int _rejectNatural;
+    private double _nextWanderReportAt;
+
+    /// <summary>
+    /// ทุก 30 วินาที บอกว่าการสุ่มจุดหมายผ่าน/ตกเท่าไร
+    /// ตกเกือบ 100% = สัตว์ยืนแข็งทั้งเกาะ (จุดหมายถูกปฏิเสธก่อนถึง MakeMove เสมอ)
+    /// </summary>
+    private void ReportWanderStats(double now)
+    {
+        if (_nextWanderReportAt == 0.0)
+        {
+            _nextWanderReportAt = now + 30.0;
+            return;
+        }
+        if (now < _nextWanderReportAt) return;
+        _nextWanderReportAt = now + 30.0;
+        int total = _wanderAccepted + _wanderRejectLand + _wanderRejectPath;
+        if (total > 0)
+        {
+            Console.WriteLine("[animal] สุ่มจุดเดิน 30 วิที่ผ่านมา: เดินจริง {0} · ตกเพราะพื้นที่ {1} · ตกเพราะทางเดิน {2} ({3:P0} เดินไม่ได้)",
+                _wanderAccepted, _wanderRejectLand, _wanderRejectPath,
+                (double)(_wanderRejectLand + _wanderRejectPath) / total);
+            Console.WriteLine("[animal]   แยกเหตุที่ตกเพราะพื้นที่: ริมน้ำ/ไม่ใช่พื้นดิน {0} · ใกล้สิ่งปลูกสร้าง {1} · ใกล้ของธรรมชาติ {2}",
+                _rejectWater, _rejectArtifact, _rejectNatural);
+        }
+        _wanderAccepted = _wanderRejectLand = _wanderRejectPath = 0;
+        _rejectWater = _rejectArtifact = _rejectNatural = 0;
     }
 
     // ───────── เฟส C รอบ 2: โดนตี / ตาย / เกิดใหม่ ─────────
@@ -732,6 +1159,8 @@ public sealed class AnimalSpawner
         bool died = animal.ApplyDamage(amount, now);
         // หลอดเลือดของสัตว์ต้องอัปเดตให้ทุกคนเห็น ไม่งั้นตีจนตายแต่หลอดยังเต็ม
         _world.BroadcastToViewers(animal.EntityId, new Survival { EntityId = animal.EntityId, Life = animal.LifeGauge() });
+        // ไม่ส่ง `Damaged` ที่นี่ — `ServerPlayer.ResolveHit` ส่งแพ็กเก็ตนั้นอยู่แล้วก่อนเรียก Damage()
+        // ถ้าส่งซ้ำ client จะวาดเลขดาเมจของเกมซ้อนกัน (ของเกมใช้ได้แล้ว ไม่ต้องมีชุดที่สอง)
 
         if (!died)
         {
@@ -768,7 +1197,15 @@ public sealed class AnimalSpawner
             // ถ้าไม่สั่งหยุด ซากจะล้มแล้วลุกวนไปเรื่อย ๆ — ส่งซ้ำด้วย playbackRate 0 เพื่อค้างท่าสุดท้าย
             _freezeAt[animal.EntityId] = now + DeathClipSeconds;
             _corpses[animal.EntityId] = now + CorpseSeconds;
-            _respawnAt.Add((now + RespawnSeconds, animal.EntityType));
+            // [TodoList/08] สมาชิกฝูงเกิดใหม่ที่ฝูงเดิม (เติมฝูง) ไม่ใช่สุ่มที่ใหม่ตามโควตาชนิด
+            if (_herdOf.TryGetValue(animal.EntityId, out Herd herdOfDead))
+            {
+                herdOfDead.PendingAt.Add(now + RespawnSeconds);
+            }
+            else
+            {
+                _respawnAt.Add((now + RespawnSeconds, animal.EntityType));
+            }
             _targets.Remove(animal.EntityId);
         }
         return true;
@@ -813,7 +1250,8 @@ public sealed class AnimalSpawner
     private static AnimalBehavior BehaviorOf(ushort entityType)
     {
         SpawnTable.Entry e = SpawnTable.Find(entityType);
-        return e?.Behavior ?? AnimalBehavior.FightBack;
+        // [TodoList/08] ชนิดที่ไม่มีใน config Spawn → นิสัยจาก type ของเกม (Carnivore/Herbivore/Scavenger)
+        return e?.Behavior ?? DefaultBehaviorOf(entityType);
     }
 
     private static bool IsTimid(ushort entityType)
@@ -825,7 +1263,7 @@ public sealed class AnimalSpawner
     private static double AttackCooltimeOf(ushort entityType)
     {
         SpawnTable.Entry e = SpawnTable.Find(entityType);
-        return e != null ? e.AttackCooltime : AttackInterval;
+        return e != null ? e.AttackCooltime : DefaultAttackCooltimeOf(entityType);
     }
 
     /// <summary>ระยะที่ตัวดุเริ่มสนใจผู้เล่น (หน่วยโลก — 1200 = 6 tile)</summary>
@@ -935,7 +1373,7 @@ public sealed class AnimalSpawner
                     me.x - dx / len * FleeSpeed,
                     me.y - dy / len * FleeSpeed);
                 // วิ่งหนีลงทะเลไม่ได้ — เบนไปวิ่งเลียบฝั่งแทน
-                if (!TryLandDestination(me, dest, InlandFor(a.EntityType), out dest))
+                if (!TryLandDestination(me, dest, InlandOf(a), out dest, a.BeachOk))
                 {
                     a.NextMoveAt = now + 0.5;      // จนมุมริมหาด ยืนนิ่งรอบนี้
                     return true;
@@ -959,7 +1397,7 @@ public sealed class AnimalSpawner
                 WorldPosition dest = new WorldPosition(
                     me.x + dx / len * step,
                     me.y + dy / len * step);
-                if (!TryLandDestination(me, dest, InlandFor(a.EntityType), out dest))
+                if (!TryLandDestination(me, dest, InlandOf(a), out dest, a.BeachOk))
                 {
                     a.NextMoveAt = now + 0.5;
                     return true;
@@ -975,7 +1413,7 @@ public sealed class AnimalSpawner
         if (now >= aggro.NextAttackAt)
         {
             aggro.NextAttackAt = now + AttackCooltimeOf(a.EntityType);
-            float damage = SpawnTable.DamageFor(a.Level);
+            float damage = SpawnTable.DamageFor(a.EntityType, a.Level);
 
             // หันหน้าเข้าหาเหยื่อ + เล่นท่าโจมตี
             // ถ้าไม่ส่งอันนี้ ตัวจะค้างท่าเดินและหันไปทางที่เดินมาล่าสุด (ดูเหมือนกัดลม)
@@ -985,6 +1423,30 @@ public sealed class AnimalSpawner
             // ตัวเลยค้างอยู่หน้าตำแหน่งจริง แล้ว packet ถัดไปกระชากกลับ = เห็นเป็นวาร์ป
             // ปิดท้ายด้วยท่ายืนที่ตำแหน่งจริงเสมอ
             a.StandAt = now + AttackClipSeconds;
+
+            // [4 ก.ย. 2026] บั๊ก #4 — ผู้เล่นกดท่าหลบอยู่ = ตีพลาด (ไม่เสียเลือด)
+            // ต้องเช็คก่อนสร้าง Damaged ไม่งั้น client เห็น "โดน" ไปแล้วถึงจะหักดาเมจทีหลัง
+            if (target.IsDodging)
+            {
+                _world.BroadcastToViewers(a.EntityId, new Damaged
+                {
+                    AttackerId = a.EntityId,
+                    VictimId = target.EntityId,
+                    Damage = new Damage
+                    {
+                        Result = Shared.Battle.DamageResult.Dodged,
+                        Value = 0,
+                        Part = Shared.Battle.BodyPart.Body,
+                        Direction = Shared.Battle.DamageDirection.Front,
+                        AttackType = Shared.Battle.AttackType.SmallBody,
+                        Effects = Shared.Battle.DamageEffects.None
+                    },
+                    EventAt = now
+                });
+                Console.WriteLine("[animal] {0} ตี {1} แต่หลบพ้น (dodge)", a.EntityId, target.Name);
+                return true;
+            }
+
             _world.BroadcastToViewers(a.EntityId, new Damaged
             {
                 AttackerId = a.EntityId,
@@ -1015,6 +1477,191 @@ public sealed class AnimalSpawner
         lock (_lock)
         {
             _targets.Remove(animalId);
+        }
+    }
+
+    private double _nextUnstuckAt;
+    private double _nextQuotaCheckAt;
+
+    /// <summary>
+    /// เติมโควตาที่ขาด (เช่น ตอนเกิดแรกหาจุดว่างไม่ได้) — ลองใหม่ทุก 15 วิ
+    /// ไม่ให้ประชากรขาดเพราะข้ามจุดที่ทับหิน
+    /// </summary>
+    private void MaintainQuota(double now)
+    {
+        if (now < _nextQuotaCheckAt)
+        {
+            return;
+        }
+        _nextQuotaCheckAt = now + 15.0;
+        // นับตัวเป็น + คิวเกิดใหม่ที่รออยู่ ต่อชนิด
+        var alive = new Dictionary<ushort, int>();
+        lock (_lock)
+        {
+            foreach (ServerAnimal a in _animals.Values)
+            {
+                if (!a.IsAlive) continue;
+                alive[a.EntityType] = alive.TryGetValue(a.EntityType, out int n) ? n + 1 : 1;
+            }
+            for (int i = 0; i < _respawnAt.Count; i++)
+            {
+                ushort t = _respawnAt[i].type;
+                alive[t] = alive.TryGetValue(t, out int n) ? n + 1 : 1;
+            }
+        }
+        WorldPosition center = _world.GetEntryPosition();
+        for (int i = 0; i < SpawnTable.Entries.Length; i++)
+        {
+            SpawnTable.Entry e = SpawnTable.Entries[i];
+            int have = alive.TryGetValue(e.EntityType, out int h) ? h : 0;
+            int need = e.Quota - have;
+            for (int n = 0; n < need; n++)
+            {
+                ServerAnimal? born = SpawnFromTable(e, center, now);
+                if (born == null)
+                {
+                    break; // รอบนี้หาจุดไม่ได้ — รอ 15 วิหน้า
+                }
+                _world.AnnounceAnimal(born);
+                alive[e.EntityType] = (alive.TryGetValue(e.EntityType, out int cur) ? cur : 0) + 1;
+                Console.WriteLine("[animal] เติมโควตา {0} ({1}) — มี {2}/{3}", e.Name, born.EntityId, alive[e.EntityType], e.Quota);
+            }
+        }
+    }
+
+    private static double LifetimeSeconds => ServerConfig.Current.Animals.LifetimeSeconds;
+
+    /// <summary>
+    /// สัตว์มีอายุ LifetimeSeconds (ค่าเริ่มต้น 300 วิ) แล้ว despawn + เกิดใหม่ที่จุดว่าง
+    /// (ไม่ทับหิน/สิ่งปลูกสร้าง) — ไม่ทิ้งซาก เพราะไม่ใช่การตายจากการต่อสู้
+    /// </summary>
+    /// <remarks>ดู ProcessLifetimeExpiry ด้านล่าง</remarks>
+
+    /// <summary>
+    /// สัตว์ที่ยืนทับหิน/สิ่งปลูกสร้างพอดี (ช่องศูนย์กลาง) — despawn + เกิดใหม่ที่จุดว่าง
+    /// ไม่ใช้รัศมีรอบตัว เพราะเกาะมีต้นไม้หนา จะ churn ตลอด
+    /// </summary>
+    private void ProcessUnstuck(double now)
+    {
+        // กันวน despawn ทุก tick ตอนเดินใกล้หินในรัศมี — เช็คเป็นช่วง ๆ พอ
+        if (now < _nextUnstuckAt)
+        {
+            return;
+        }
+        _nextUnstuckAt = now + 5.0;
+
+        List<(string id, ushort type)> stuck = null;
+        ServerAnimal[] all = Snapshot();
+        for (int i = 0; i < all.Length; i++)
+        {
+            ServerAnimal a = all[i];
+            if (!a.IsAlive)
+            {
+                continue;
+            }
+            // เพิ่งเกิดใหม่ไม่กี่วิ — ยังไม่ unstuck ซ้ำ (กันวนกับจุดเกิด)
+            if (now - a.SpawnedAt < 3.0)
+            {
+                continue;
+            }
+            WorldPosition here = a.PositionAt(now);
+            int tx = (int)MathF.Floor(here.x / 200f);
+            int ty = (int)MathF.Floor(here.y / 200f);
+            // เฉพาะช่องที่ยืนอยู่ — ถ้าแค่ใกล้ต้นไม้/หิน ให้ NudgeOutOfNatural ดันออกแทน
+            bool blocked = HasNaturalAt(tx, ty) || _world.HasArtifactAt(new Point2(tx, ty));
+            if (!blocked)
+            {
+                continue;
+            }
+            (stuck ??= new List<(string, ushort)>()).Add((a.EntityId, a.EntityType));
+        }
+        if (stuck == null)
+        {
+            return;
+        }
+        WorldPosition center = _world.GetEntryPosition();
+        for (int i = 0; i < stuck.Count; i++)
+        {
+            string id = stuck[i].id;
+            ushort type = stuck[i].type;
+            ClearTarget(id);
+            // [TodoList/08] สมาชิกฝูง → กลับไปเกิดที่ฝูงเดิม (คิวก่อน Remove เพราะ Remove ลบ map ฝูง)
+            if (QueueHerdRefill(id, now + 5.0))
+            {
+                Remove(id);
+                Console.WriteLine("[animal] unstuck {0} (type {1}) — เป็นสมาชิกฝูง เกิดใหม่ที่ฝูงใน 5 วิ", id, type);
+                continue;
+            }
+            Remove(id);
+            SpawnTable.Entry e = SpawnTable.Find(type) ?? SpawnTable.Entries[0];
+            ServerAnimal? born = SpawnFromTable(e, center, now);
+            if (born == null)
+            {
+                lock (_lock)
+                {
+                    _respawnAt.Add((now + 5.0, type));
+                }
+                Console.WriteLine("[animal] unstuck {0} (type {1}) — หาจุดเกิดใหม่ไม่ได้ รอคิว 5 วิ", id, type);
+                continue;
+            }
+            _world.AnnounceAnimal(born);
+            Console.WriteLine("[animal] unstuck {0} → เกิดใหม่ {1} lv{2} ({3}) ที่ tile {4:F0},{5:F0}",
+                id, e.Name, born.Level, born.EntityId, born.Home.x / 200f, born.Home.y / 200f);
+        }
+    }
+
+    private void ProcessLifetimeExpiry(double now)
+    {
+        double life = LifetimeSeconds;
+        if (life <= 0)
+        {
+            return;
+        }
+        List<(string id, ushort type)> expired = null;
+        ServerAnimal[] all = Snapshot();
+        for (int i = 0; i < all.Length; i++)
+        {
+            ServerAnimal a = all[i];
+            if (!a.IsAlive)
+            {
+                continue;
+            }
+            if (now - a.SpawnedAt < life)
+            {
+                continue;
+            }
+            if (a.HerdId != 0)
+            {
+                continue;                 // [TodoList/08] ฝูงอยู่ถาวร ไม่หมดอายุ
+            }
+            (expired ??= new List<(string, ushort)>()).Add((a.EntityId, a.EntityType));
+        }
+        if (expired == null)
+        {
+            return;
+        }
+        WorldPosition center = _world.GetEntryPosition();
+        for (int i = 0; i < expired.Count; i++)
+        {
+            string id = expired[i].id;
+            ushort type = expired[i].type;
+            ClearTarget(id);
+            Remove(id);
+            SpawnTable.Entry e = SpawnTable.Find(type) ?? SpawnTable.Entries[0];
+            ServerAnimal? born = SpawnFromTable(e, center, now);
+            if (born == null)
+            {
+                // หาจุดว่างไม่ได้ตอนนี้ — คิวเกิดใหม่เร็ว ๆ เพื่อไม่ให้โควตาขาด
+                lock (_lock)
+                {
+                    _respawnAt.Add((now + 5.0, type));
+                }
+                Console.WriteLine("[animal] หมดอายุ {0} (type {1}) — หาจุดเกิดใหม่ไม่ได้ รอคิว 5 วิ", id, type);
+                continue;
+            }
+            _world.AnnounceAnimal(born);
+            Console.WriteLine("[animal] หมดอายุ {0} → เกิดใหม่ {1} lv{2} ({3}) ที่ tile {4:F0},{5:F0}",
+                id, e.Name, born.Level, born.EntityId, born.Home.x / 200f, born.Home.y / 200f);
         }
     }
 
@@ -1112,6 +1759,7 @@ public sealed class AnimalSpawner
         lock (_lock)
         {
             removed = _animals.Remove(entityId ?? string.Empty);
+            ForgetHerdMember(entityId ?? string.Empty);
             // ซากที่ถูกแล่หมดก่อนเวลา ต้องไม่ค้างอยู่ในคิวจนไปลบสัตว์ตัวใหม่ที่ใช้ id ซ้ำ
             _corpses.Remove(entityId ?? string.Empty);
             _freezeAt.Remove(entityId ?? string.Empty);

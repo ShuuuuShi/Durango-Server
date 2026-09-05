@@ -13,8 +13,58 @@ namespace DurangoServer.Core;
 /// ไม่ใช่ของถือ) จึงคิดจาก **วัสดุที่ทำ** แทน ซึ่งตรงกับที่เกมสื่ออยู่แล้ว:
 /// ขวานหิน &lt; ขวานกระดูก &lt; ขวานเหล็ก
 /// </summary>
+/// <summary>[TodoList/03] ชนิดงานที่ทำให้ของสึก — ตรงกับ constants.durability.deltas</summary>
+public enum WearKind { Collect, Craft, Build, Attack, Defense, Taming }
+
 public static class ToolDurability
 {
+    /// <summary>
+    /// [TodoList/03] ความทนที่หักจากการทำงาน 1 ครั้ง สำหรับชิ้นที่มี max เท่านี้
+    /// Deltas เปิด → delta ของงานนั้น × (max ตาม prototype/ReferenceMax ถ้า ScaleToMax) · ปิด → WearPerUse เดิม (เกราะ ×0.25 เหมือนเดิม)
+    /// ใช้ max ตาม prototype (MaxFor) ไม่ใช่ max ปัจจุบันของชิ้น — ไม่งั้นซ่อมแล้ว max ลด ค่าสึกลดตาม จำนวนครั้งใช้ไม่เปลี่ยนเลย
+    /// </summary>
+    public static float WearFor(WearKind kind, string prototype)
+    {
+        return WearFor(kind, MaxFor(prototype));
+    }
+
+    public static float WearFor(WearKind kind, float itemMax)
+    {
+        ToolConfig cfg = ServerConfig.Current.Tools;
+        WearDeltaConfig d = cfg.Deltas;
+        if (d == null || !d.Enabled)
+        {
+            return kind == WearKind.Defense ? cfg.WearPerUse * 0.25f : cfg.WearPerUse;
+        }
+        float delta;
+        switch (kind)
+        {
+            case WearKind.Craft: delta = d.Craft; break;
+            case WearKind.Build: delta = d.Build; break;
+            case WearKind.Attack: delta = d.Attack; break;
+            case WearKind.Defense: delta = d.Defense; break;
+            case WearKind.Taming: delta = d.Taming; break;
+            default: delta = d.Collect; break;
+        }
+        if (d.ScaleToMax && d.ReferenceMax > 0f && itemMax > 0f)
+        {
+            delta *= itemMax / d.ReferenceMax;
+        }
+        return delta;
+    }
+
+    /// <summary>[TodoList/03] max ใหม่หลังซ่อม — ลดลงสุ่ม RepairDamageMin..Max (เกม 5-13%) ต่ำสุด 1</summary>
+    public static float MaxAfterRepair(float currentMax, System.Random rng)
+    {
+        WearDeltaConfig d = ServerConfig.Current.Tools.Deltas;
+        if (d == null || !d.Enabled || currentMax <= 0f)
+        {
+            return currentMax;
+        }
+        float ratio = d.RepairDamageMin + (float)rng.NextDouble() * (d.RepairDamageMax - d.RepairDamageMin);
+        return System.Math.Max(1f, currentMax * (1f - ratio));
+    }
+
     /// <summary>tag ที่ถือว่าเป็น "เครื่องมือ" (ตรงกับ ToolForPrototype ใน ServerPlayer.Gathering)</summary>
     private static readonly string[] ToolTags = { "axe", "knife", "pickaxe", "shovel", "hammer", "sickle" };
 

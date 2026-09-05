@@ -174,6 +174,14 @@ public class ArtifactAddonController : MonoBehaviour
 
 	private int CurrentFloor()
 	{
+		// [แก้เอง] 31 ส.ค. 2026 — เดิมเรียก LocalPlayer.Floor ตรง ๆ
+		// 🐛 OnTouchScreen ถูกผูกกับ UICamera ตั้งแต่ UI ถูกสร้าง = ทำงานตั้งแต่**ก่อนมีตัวละครในโลก**
+		//    (หน้าไตเติ้ล/หน้าเลือกเซิร์ฟ) ตอนนั้น LocalPlayer ยังเป็น null ⇒ NRE **ทุกครั้งที่แตะจอ**
+		//    ผลที่เห็น: กดอะไรก็ไม่ตอบสนอง เหมือนเกมค้าง (เจอจริง 28 NRE ใน log รอบเดียว)
+		if (PlayerBehavior.LocalPlayer == null)
+		{
+			return 0;
+		}
 		int b = (byte)PlayerBehavior.LocalPlayer.Floor;
 		int a = 0;
 		Artifact artifact = Artifact;

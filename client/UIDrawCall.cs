@@ -410,7 +410,8 @@ public class UIDrawCall : MonoBehaviour
 		{
 			mTextureClip = true;
 		}
-		shader = Shader.Find(text);
+		// [4 ก.ย. 2026] มือถือ (APK build เอง): shader ในโปรเจกต์เป็น dummy — ใช้ของแท้จาก preload bundle ก่อน (MobileShaderBootstrap)
+		shader = MobileShaderBootstrap.Find(text) ?? Shader.Find(text);
 		if (shader == null)
 		{
 			shader = NGUITools.defaultShader;

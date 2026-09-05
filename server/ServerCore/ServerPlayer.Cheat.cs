@@ -102,39 +102,58 @@ public partial class ServerPlayer
         if (cmd.StartsWith("give ", StringComparison.Ordinal))
         {
             string[] g = raw.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (g.Length >= 2)
+            if (g.Length < 2)
             {
-                string proto = g[1];
-                int count = 1;
-                if (g.Length >= 3 && int.TryParse(g[2], out int n))
-                {
-                    count = Math.Clamp(n, 1, 20);
-                }
-                if (!ItemNameData.Map.ContainsKey(proto))
-                {
-                    // ไม่ใช่ชื่อ prototype — ลองเป็นชุดของสำเร็จรูปแทน (axe · bonfire · cook ฯลฯ)
-                    // จะได้ใช้คำสั่งเดียวกันทั้งจากคอนโซลและจากกล่องเครื่องมือ (control <ชื่อ> give ...)
-                    Send(new Info { Text = ControlGive(proto) }, header.Seq);
-                    return;
-                }
-                for (int i = 0; i < count; i++)
-                {
-                    Item made = MakeGatheredItem(new Generator
-                    {
-                        Id = proto,
-                        Name = ItemNameData.NameOf(proto, proto),
-                        Icon = ItemNameData.IconOf(proto, string.Empty)
-                    });
-                    lock (_inventory)
-                    {
-                        _inventory.Add(made);
-                    }
-                }
-                MarkDirty();
-                SendInventory();
-                Send(new Info { Text = $"ได้ {ItemNameData.NameOf(proto, proto)} x{count} (prototype={proto})" }, header.Seq);
+                Send(new Info { Text = "ใช้: cheat give <prototype> [จำนวน] เช่น `cheat give meat 10`" }, header.Seq);
                 return;
             }
+            string proto = g[1];
+            int want = 1;
+            if (g.Length >= 3 && int.TryParse(g[2], out int n))
+            {
+                want = Math.Clamp(n, 1, 999);
+            }
+            // [TodoList/02] give <proto> <จำนวน> [เลเวล] — เสกวัสดุเลเวลสูงไว้เทสเลเวลผลลัพธ์คราฟต์
+            int giveLevel = 0;
+            if (g.Length >= 4 && int.TryParse(g[3], out int lv))
+            {
+                giveLevel = Math.Clamp(lv, 1, 80);
+            }
+            if (!ItemNameData.Map.ContainsKey(proto))
+            {
+                // ไม่ใช่ชื่อ prototype — ลองเป็นชุดของสำเร็จรูปแทน (axe · bonfire · cook ฯลฯ)
+                // จะได้ใช้คำสั่งเดียวกันทั้งจากคอนโซลและจากกล่องเครื่องมือ (control <ชื่อ> give ...)
+                Send(new Info { Text = ControlGive(proto, want) }, header.Seq);
+                return;
+            }
+            // [แก้เอง] 3 ก.ย. 2026 — เดิมตัดที่ 20 ตายตัวแล้ว **ใส่เข้ากระเป๋าโดยไม่เช็คช่องว่างเลย**
+            // ⇒ ถ้ากระเป๋าเกือบเต็มอยู่แล้ว จำนวนของจะทะลุ PlayerInventoryMaxSize (50)
+            // ตอนนี้ตัดตามช่องที่เหลือจริง แล้วบอกกลับว่าให้ได้เท่าไร
+            int room = FreeInventorySlots();
+            int give = Math.Clamp(want, 0, room);
+            for (int i = 0; i < give; i++)
+            {
+                Item made = MakeGatheredItem(new Generator
+                {
+                    Id = proto,
+                    Name = ItemNameData.NameOf(proto, proto),
+                    Icon = ItemNameData.IconOf(proto, string.Empty),
+                    Level = giveLevel
+                });
+                lock (_inventory)
+                {
+                    _inventory.Add(made);
+                }
+            }
+            MarkDirty();
+            SendInventory();
+            string reply = $"ได้ {ItemNameData.NameOf(proto, proto)} x{give} (prototype={proto}{(giveLevel > 0 ? $" lv{giveLevel}" : "")})";
+            if (give < want)
+            {
+                reply += $" — ขอ {want} แต่กระเป๋าเหลือที่แค่ {room} ช่อง";
+            }
+            Send(new Info { Text = reply }, header.Seq);
+            return;
         }
 
         // shutdown — test-only graceful stop สำหรับ restart acceptance harness
@@ -194,19 +213,11 @@ public partial class ServerPlayer
             return;
         }
 
-        // give <prototype> [จำนวน] — เสกของให้ตัวเอง (เดิมมีแต่ทาง `control <ชื่อ> give` ซึ่งต้องเป็น admin)
-        if (cmd.StartsWith("give ", StringComparison.Ordinal))
-        {
-            string[] g = cmd.Substring(5).Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (g.Length == 0)
-            {
-                Send(new Info { Text = "ใช้: cheat give <prototype> [จำนวน] เช่น `cheat give meat 10`" }, header.Seq);
-                return;
-            }
-            int n = g.Length >= 2 && int.TryParse(g[1], out int parsed) ? Math.Clamp(parsed, 1, 50) : 1;
-            Send(new Info { Text = ControlGive(g[0].ToLower(), n) }, header.Seq);
-            return;
-        }
+        // [แก้เอง] 3 ก.ย. 2026 — ลบ handler `give` ตัวที่สองทิ้ง
+        //
+        // มันซ้ำกับตัวข้างบน (บรรทัด ~102) ซึ่ง return ไปก่อนเสมอ ⇒ ตัวนี้เป็นโค้ดตายมาตลอด
+        // เจอตอนไล่ตรวจว่าทำไมแก้เพดานจำนวนแล้วไม่มีผล — แก้ผิดตัวเพราะไม่รู้ว่ามีสองอัน
+        // (ตัวที่ทำงานจริงถูกย้ายมารวมกรณี "ไม่ใส่ชื่อของ" ไว้แล้ว)
 
         // why <ชื่อสูตร> — ทำไมคราฟต์สูตรนี้ไม่ได้ (ไล่เช็คทีละข้อแล้วบอกว่าขาดอะไร)
         if (cmd.StartsWith("why ", StringComparison.Ordinal))
@@ -222,6 +233,19 @@ public partial class ServerPlayer
             string poiArgs = cmd.Length <= 4 ? string.Empty : cmd.Substring(4).Trim();
             Send(new Info { Text = CheatPOI(poiArgs) }, header.Seq);
             return;
+        }
+
+        // place real <blueprintId> — วางสิ่งปลูกสร้าง "สร้างเสร็จแล้ว" ตรง ๆ เพื่อตรวจโมเดล
+        // ใช้ไล่บั๊ก "สร้างเสร็จแล้วยังเป็นโครงไม้" (Parts ว่าง = client โชว์นั่งร้าน)
+        if (cmd.StartsWith("place real ", StringComparison.Ordinal)
+            || cmd.StartsWith("place_real ", StringComparison.Ordinal))
+        {
+            string want = cmd.Substring("place real ".Length).Trim();
+            if (want != "fire")   // "place real fire" ยังใช้ทางเดิม (จุดไฟจริง)
+            {
+                Send(new Info { Text = PlaceCompleted(want) }, header.Seq);
+                return;
+            }
         }
 
         // travel <รหัสเกาะ> — เดินทางข้ามเกาะ (Beta 1.1)
@@ -394,6 +418,21 @@ public partial class ServerPlayer
                     SendSkills();
                     Send(new Info { Text = $"อัพเลเวล {Level} + ปลดสกิลเต็ม {granted} ตัวแล้ว (โหมดเทสเท่านั้น)" }, header.Seq);
                 }
+                break;
+            // แบ็กอัพเซฟเดี๋ยวนี้ (ปกติทำเองทุก 4 ชม. ตาม config → Save.BackupIntervalHours)
+            case "backup":
+            {
+                _world.SaveAll(force: true);
+                string path = SaveBackup.RunOnce("สั่งจากคำสั่งทดสอบ");
+                Send(new Info { Text = path == null ? "แบ็กอัพไม่สำเร็จ — ดู log เซิร์ฟ" : "แบ็กอัพแล้ว: " + path }, header.Seq);
+                break;
+            }
+            // ระบบป่วย — ทดสอบผลของสถานะป่วย (คราฟต์ช้า/เปลืองแรง/ล้าไว/เดินช้า)
+            case "sick":
+                Send(new Info { Text = MakeSick("คำสั่งทดสอบ") ? "ป่วยแล้ว" : "ป่วยอยู่แล้ว หรือระบบป่วยปิดอยู่" }, header.Seq);
+                break;
+            case "cure":
+                Send(new Info { Text = CureSickness() ? "หายป่วยแล้ว" : "ไม่ได้ป่วยอยู่" }, header.Seq);
                 break;
             case "add bonfire":
             case "add_bonfire":
@@ -625,10 +664,26 @@ public partial class ServerPlayer
                 SetGaugeValue("fatigue", 90f);
                 Send(new Info { Text = "ตั้งความล้า 90 (เกิน danger 85 → ค่าใช้จ่ายสตามินา x2)" }, header.Seq);
                 break;
+            case "reload gather":
+            case "reload gathering":
+            {
+                string loaded = GatheringTools.ReloadNow();
+                int cleared = _world.ForgetNaturalGeneratorCache();
+                Send(new Info { Text = loaded + $" · ล้าง cache จุดเก็บของ {cleared} จุด (ต้นไม้ที่แตะไปแล้วจะใช้ค่าใหม่รอบหน้า)" }, header.Seq);
+                break;
+            }
             default:
             {
                 // [แก้เอง] 24 ส.ค. 2026 — ระบบ mod: verb ที่ไม่ตรงกับคำสั่งในตัวสักอัน ให้ลองส่งต่อ
                 // ให้ mod ที่ลงทะเบียนไว้ก่อนค่อยยอมแพ้เป็น "unknown cheat" (ดู PluginManager.cs)
+                // [แก้เอง] 3 ก.ย. 2026 — ลองตีความด้วยภาษาของมาโครเกมต้นฉบับก่อน
+                // (it / set level / sc ...) ไม่งั้นสั่งมาโครจากหน้าแอดมินแล้วขึ้น unknown cheat รัว
+                // ดู ServerPlayer.CheatMacroCompat.cs
+                if (TryGameMacroCheat(raw, header))
+                {
+                    break;
+                }
+
                 string[] parts = raw.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 string verb = parts.Length > 0 ? parts[0] : string.Empty;
                 string[] modArgs = parts.Length > 1 ? parts[1..] : Array.Empty<string>();
@@ -835,5 +890,31 @@ public partial class ServerPlayer
         MarkDirty();
         SendStatusEffects();
         return $"ติดบัฟ '{effId}' {seconds:F0} วิแล้ว";
+    }
+
+    /// <summary>
+    /// วางสิ่งปลูกสร้างสถานะ Completed ตรง ๆ (คำสั่งทดสอบ) แล้วรายงานโมเดล (Parts) ที่ส่งให้ client
+    /// Parts ว่าง = client จะโชว์แค่นั่งร้าน ⇒ ใช้ยืนยันว่าโมเดลของ blueprint นั้นถูกต้องแล้ว
+    /// </summary>
+    private string PlaceCompleted(string blueprintId)
+    {
+        // ไม่ต้องพึ่ง CraftMenu.AllowFreeBuild — ทั้งช่อง cheat ถูกกันด้วย --enable-cheat อยู่แล้ว
+        // (เหมือน give/spawn/maxskills) และคำสั่งนี้ใช้ตรวจโมเดลอย่างเดียว
+        if (string.IsNullOrEmpty(blueprintId)) { return "ใช้: cheat place real <blueprintId>"; }
+        if (!RecipeData.BlueprintType.TryGetValue(blueprintId, out ushort entityType))
+        {
+            return $"ไม่มีข้อมูล blueprint '{blueprintId}'";
+        }
+        Point2 tile = new Point2((int)(CurrentPosition.x / 200f), (int)(CurrentPosition.y / 200f));
+        for (int i = 0; i < 8 && _world.HasArtifactAt(tile); i++) { tile = new Point2(tile.x + 1, tile.y); }
+        Point2 size = RecipeData.BlueprintSize.TryGetValue(blueprintId, out var bpSize)
+            ? new Point2(bpSize.x, bpSize.y) : new Point2(1, 1);
+        AppearArtifact placed = ArtifactFactory.Make(EntityId, Guid.NewGuid().ToString(), entityType, tile, size,
+            default, null, 1, blueprintId, BuildingState.Completed);
+        _world.AddArtifact(placed, blueprintId);
+        _world.AnnounceArtifact(placed);
+        int n = placed.Display.Parts?.Count ?? 0;
+        string parts = n == 0 ? "(ว่าง — client จะโชว์นั่งร้าน!)" : string.Join(", ", placed.Display.Parts);
+        return $"วาง '{blueprintId}' (เสร็จแล้ว) ที่ tile {tile.x},{tile.y} · โมเดล {n} ชิ้น: {parts}";
     }
 }

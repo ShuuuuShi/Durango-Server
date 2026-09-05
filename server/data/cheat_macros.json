@@ -1,0 +1,133 @@
+{
+    "makecharacter_leave_ancora/mcla":
+    [
+        "set level 5",
+        "sc survival 5",
+        "sc gathering 5",
+        "sc weaponcrafting 5",
+        "it axe_onehand_assembled_stone 1",
+        "ga",
+        "la"
+    ],
+    "makecharacter5/mc5":
+    [
+        "ga",
+        "set_level 5",
+        "f",
+
+        "expand inventory 100",
+
+        "it stone 5 4",
+        "it wood_log 5 4",
+        "it stem 5 6",
+        "it wood_bough 5 6"
+    ],
+    "makecharacter10/mc10":
+    [
+        "ga",
+        "set_level 10",
+        "f",
+
+        "expand inventory 100",
+
+        "it stone 10 4",
+        "it wood_log 10 4",
+        "it stem 10 6",
+        "it wood_bough 10 6"
+    ],
+    "makecharacter15/mc15":
+    [
+        "ga",
+        "set_level 15",
+        "f",
+
+        "expand inventory 100",
+
+        "it stone 15 4",
+        "it wood_log 15 4",
+        "it stem 15 6",
+        "it wood_bough 15 6"
+    ],
+    "makecharacter20/mc20":
+    [
+        "ga",
+        "set_level 20",
+        "f",
+
+        "expand inventory 100",
+
+        "it stone 20 4",
+        "it wood_log 20 4",
+        "it stem 20 6",
+        "it wood_bough 20 6"
+    ],
+    "invincible character/inc":
+    [
+        "fat 0",
+        "inv",
+        "se newbie_shield_cheat",
+        "set_level 40",
+        "qm 4",
+        "df 9000"
+    ],
+    "set battle setting/sbs":
+    [
+      "ga",
+      "set level 20",
+      "set profession hunter",
+      "skill_category all 20",
+      "full",
+      "learn_actions",
+      "battle_field"
+    ],
+    "set 160219/160219":
+    [
+      "f",
+      "c mm 0 0",
+      "it sword_onehand_metal_01 21",
+      "it hammer_twohand_metal_01",
+      "at 150",
+      "df 500"
+    ],
+	"get_all_defensive_materials":
+    [
+      "it wood_log 60 8 trim_wood=60",
+      "it board_wood 60 12 trim_wood=60",
+      "it nail_wood 60 18",
+      "it blade_metal 60 5"
+    ],
+    "jump full":
+    [
+        "it hemostat 60 4",
+        "it painkiller_root 60 4",
+        "it utility_tool 60 1",
+        "it sword_onehand_bone_03 60 1 attack_incr=16 attack_rating_incr=4 durable_decr=7 strength_incr=15 agility_incr=15",
+        "it axe_onehand_metal_03 60 1 attack_incr=8 accuracy_incr=12 durable_decr=3 strength_incr=15 agility_incr=15",
+        "it sword_twohand_bone_03 60 1 attack_incr=16 attack_rating_incr=4 durable_decr=7 strength_incr=15 agility_incr=15",
+        "it hammer_twohand_bone_03 60 1 attack_incr=8 accuracy_incr=12 durable_decr=3 strength_incr=15 agility_incr=15",
+        "it lance_twohand_metal_02 60 1 attack_incr=8 accuracy_incr=12 durable_decr=3 strength_incr=15 agility_incr=15",
+        "it bow_metal_01 60 1 attack_incr=16 attack_rating_incr=4 durable_decr=7 strength_incr=15 agility_incr=15",
+        "it crossbow_metal_01 60 1 attack_incr=8 accuracy_incr=12 durable_decr=3 strength_incr=15 agility_incr=15",
+        "it clothes_assault_01 60 1 defense_incr=18 durable_decr=6",
+        "it clothes_sniper_01 60 1 dodge_incr=16 durable_decr=2",
+        "it hat_assault_01 60 1 defense_incr=18 durable_decr=6",
+        "it hat_sniper_01 60 1 dodge_incr=16 durable_decr=2",
+        "it gloves_bone_01_ivory 60 1 defense_incr=18 durable_decr=6",
+        "it gloves_bone_01_cuirass 60 1 dodge_incr=16 durable_decr=2",
+        "it shoes_bone_01_ivory 60 1 defense_incr=18 durable_decr=6",
+        "it shoes_bone_01_cuirass 60 1 dodge_incr=16 durable_decr=2",
+        "it bag_back 60 1",
+        "it necklace_tag 60 1",
+        "it hamberger_01 60 10 strength_plus_amplifier=3 will_plus_amplifier=3 agility_plus_amplifier=3",
+        "set level 60",
+        "sc all 60"        
+    ],
+    "easy craft/ec":
+    [
+        "immediate collect",
+        "immediate craft",
+        "immediate build",
+        "fix result success",
+        "unlimited collect"
+    ]
+}

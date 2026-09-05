@@ -41,6 +41,121 @@
   .dot.bad { background: var(--bad); box-shadow: 0 0 6px var(--bad); }
   #connStatus { font-size: 12.5px; color: var(--text-dim); }
 
+  /* ── แท็บเกาะ (island-mode: 1 เกาะ = 1 process = 1 พอร์ต) ── */
+  .islandbar {
+    flex-basis: 100%; display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap; padding-top: 4px;
+  }
+  .islandbar .lbl { color: var(--text-dim); font-size: 12px; margin-right: 2px; }
+  .isle-add {
+    background: transparent; border: 1px dashed var(--border); color: var(--text-dim);
+    border-radius: 999px; padding: 5px 12px; cursor: pointer; font-size: 12.5px; font-family: inherit;
+  }
+  .isle-add:hover { color: var(--accent); border-color: var(--accent); }
+  .isle-note { color: var(--warn); font-size: 11.5px; flex-basis: 100%; }
+
+  .isle-select {
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 6px 10px; font-family: inherit; font-size: 13px;
+    min-width: 250px; cursor: pointer;
+  }
+  .isle-select:hover, .isle-select:focus { border-color: var(--accent); outline: none; }
+  .isle-here { color: var(--text-dim); font-size: 11.5px; font-family: var(--mono); }
+
+  /* ── ตารางรวมทุกเกาะ / แบน / บัพ ── */
+  .tbl { width:100%; border-collapse:collapse; font-size:12.5px; }
+  .tbl th {
+    text-align:left; color:var(--text-dim); font-weight:600; font-size:11.5px;
+    padding:6px 8px; border-bottom:1px solid var(--border); white-space:nowrap;
+  }
+  .tbl td { padding:6px 8px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:top; }
+  .tbl tr:hover td { background:rgba(255,255,255,.02); }
+  .tbl .mono { font-family:var(--mono); }
+  .tbl .num { font-family:var(--mono); text-align:right; }
+  .tbl .muted { color:var(--text-dim); }
+  .pill { display:inline-block; padding:1px 8px; border-radius:999px; font-size:11px; border:1px solid var(--border); }
+  .pill.ok { color:var(--good); border-color:rgba(62,207,142,.4); }
+  .pill.bad { color:var(--bad); border-color:rgba(239,90,111,.4); }
+  .pill.warn { color:var(--warn); border-color:rgba(245,185,66,.4); }
+  .spark { display:block; width:100%; height:70px; }
+  .spark-wrap { background:var(--panel-2); border:1px solid var(--border); border-radius:8px; padding:10px 12px 4px; margin-bottom:10px; }
+  .spark-wrap .cap { display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim); margin-bottom:4px; }
+  .spark-wrap .cap b { color:var(--text); font-family:var(--mono); }
+  .diff-same { color:var(--text-dim); }
+  .diff-val { font-family:var(--mono); font-size:12px; }
+  .danger { border-color:var(--bad) !important; color:var(--bad) !important; }
+  .warnbox {
+    background:rgba(245,185,66,.08); border:1px solid rgba(245,185,66,.35);
+    border-radius:8px; padding:9px 12px; font-size:12.5px; margin-bottom:10px; color:var(--text);
+  }
+
+  /* ── ฟอร์มแก้ config ── */
+  .cfg-tools { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
+  .cfg-search {
+    flex:1 1 280px; min-width:200px; background:var(--panel-2); color:var(--text);
+    border:1px solid var(--border); border-radius:8px; padding:8px 11px; font-family:inherit; font-size:13px;
+  }
+  .cfg-search:focus { outline:none; border-color:var(--accent); }
+  .cfg-chk { display:flex; align-items:center; gap:6px; color:var(--text-dim); font-size:12.5px; cursor:pointer; }
+  .cfg-count { color:var(--text-dim); font-size:12px; margin-left:auto; font-family:var(--mono); }
+  .cfg-tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+  .cfg-tab {
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text-dim);
+    border-radius:7px; padding:5px 11px; font-size:12.5px; cursor:pointer; font-family:inherit;
+  }
+  .cfg-tab:hover { color:var(--text); border-color:var(--accent); }
+  .cfg-tab.on { background:#16283f; border-color:var(--accent); color:var(--text); }
+  .cfg-tab .n { color:var(--warn); font-family:var(--mono); font-size:11px; margin-left:5px; }
+
+  .cfg-group { margin-bottom:16px; }
+  .cfg-group > h3 {
+    font-size:13.5px; margin:0 0 8px; color:var(--accent);
+    border-bottom:1px solid var(--border); padding-bottom:5px;
+  }
+  .cfg-row {
+    display:grid; grid-template-columns: minmax(180px, 260px) 150px 1fr auto;
+    gap:10px; align-items:start; padding:7px 9px; border-radius:7px;
+    border-left:3px solid transparent;
+  }
+  .cfg-row:nth-child(odd) { background:rgba(255,255,255,.018); }
+  .cfg-row.dirty { border-left-color:var(--warn); background:rgba(245,185,66,.07); }
+  .cfg-row .k { font-family:var(--mono); font-size:12.5px; word-break:break-word; padding-top:5px; }
+  .cfg-row .k .path { color:var(--text-dim); font-size:11px; display:block; }
+  .cfg-row .d { color:var(--text-dim); font-size:12px; line-height:1.5; padding-top:5px; }
+  .cfg-row .d.shared::before { content:"↑ "; color:var(--border); }
+  .cfg-row .d.none { opacity:.4; font-style:italic; }
+  .cfg-row input[type=text], .cfg-row input[type=number] {
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+    border-radius:6px; padding:6px 9px; font-family:var(--mono); font-size:12.5px; width:100%;
+  }
+  .cfg-row input:focus { outline:none; border-color:var(--accent); }
+  .cfg-row textarea {
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+    border-radius:6px; padding:6px 9px; font-family:var(--mono); font-size:12px;
+    width:100%; min-height:64px; resize:vertical;
+  }
+  .cfg-row .side { display:flex; flex-direction:column; align-items:flex-end; gap:3px; padding-top:4px; }
+  .cfg-row .def { color:var(--text-dim); font-size:11px; font-family:var(--mono); white-space:nowrap; }
+  .cfg-reset {
+    background:transparent; border:1px solid var(--border); color:var(--text-dim);
+    border-radius:6px; width:26px; height:24px; cursor:pointer; font-size:12px; line-height:1;
+  }
+  .cfg-reset:hover { color:var(--warn); border-color:var(--warn); }
+  .cfg-bool { display:flex; align-items:center; gap:7px; padding-top:6px; font-size:12.5px; color:var(--text-dim); }
+  .cfg-bool input { width:15px; height:15px; accent-color:var(--accent); }
+  .cfg-sub { border-left:2px solid var(--border); margin:4px 0 8px 8px; padding-left:10px; }
+  .cfg-sub > .t { color:var(--text-dim); font-size:12px; font-family:var(--mono); margin:6px 0 4px; }
+  .cfg-empty { color:var(--text-dim); font-size:12.5px; padding:14px 4px; }
+  .cfg-savebar {
+    position:sticky; bottom:0; display:flex; align-items:center; justify-content:space-between;
+    gap:10px; background:var(--panel-2); border:1px solid var(--warn); border-radius:9px;
+    padding:9px 13px; margin-top:12px; font-size:13px; z-index:5;
+  }
+  @media (max-width: 760px) {
+    .cfg-row { grid-template-columns: 1fr; }
+    .cfg-row .side { align-items:flex-start; flex-direction:row; }
+  }
+
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
   .stat {
     background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
@@ -117,6 +232,92 @@
   .grow { flex: 1; }
   .foot-note { color: var(--text-dim); font-size: 11.5px; margin-top: 6px; }
   code { font-family: var(--mono); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+
+
+
+  /* ── โครงหน้า: เมนูซ้ายเป็นตัวสลับ "หน้า" (ไม่ต้องเลื่อนหา) ────────── */
+  .shell { display: flex; gap: 18px; align-items: flex-start; }
+  .main { flex: 1; min-width: 0; }
+
+  /* ── เมนูซ้าย ─────────────────────────────────────────────────────── */
+  .sidebar {
+    position: sticky; top: 16px;
+    flex: 0 0 224px; width: 224px;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px 8px; max-height: calc(100vh - 32px); overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 9px;
+    padding: 4px 8px 12px; margin-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand .mark {
+    width: 26px; height: 26px; border-radius: 7px; flex: none;
+    background: linear-gradient(135deg, var(--accent), #7a5cff);
+    display: grid; place-items: center; font-size: 14px;
+  }
+  .brand .name { font-weight: 600; font-size: 13.5px; line-height: 1.15; }
+  .brand .who {
+    color: var(--text-dim); font-size: 11px;
+    max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* หัวข้อกลุ่ม — กดพับได้เหมือน hPanel */
+  .nav-group {
+    display: flex; align-items: center; gap: 6px;
+    width: 100%; background: none; border: 0; cursor: pointer;
+    font-family: inherit; font-size: 11.5px; font-weight: 600;
+    color: var(--text-dim); text-transform: none;
+    padding: 10px 9px 5px; text-align: left;
+  }
+  .nav-group .arrow { margin-left: auto; font-size: 10px; transition: transform .15s ease; }
+  .nav-group.closed .arrow { transform: rotate(-90deg); }
+  .nav-group-body { display: block; }
+  .nav-group.closed + .nav-group-body { display: none; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 7px 9px; margin-bottom: 1px; border-radius: 8px;
+    font-size: 13px; color: var(--text-dim);
+    text-decoration: none; cursor: pointer;
+    background: none; border: 0; width: 100%; text-align: left;
+    font-family: inherit;
+  }
+  .nav-item .ic { width: 17px; flex: none; text-align: center; font-size: 13px; }
+  .nav-item .t { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nav-item .n { flex: none; font-family: var(--mono); font-size: 11px; opacity: .75; }
+  .nav-item:hover { background: var(--panel-2); color: var(--text); }
+  .nav-item.active { background: rgba(79,157,255,.13); color: var(--accent); font-weight: 600; }
+  .nav-item.active .n { color: var(--accent); opacity: 1; }
+  .side-foot { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border); }
+
+  /* ── พื้นที่เนื้อหา ───────────────────────────────────────────────── */
+  /* แถบตัวเลขสถานะติดอยู่บนสุดทุกหน้า จะได้ไม่ต้องกลับไปดู */
+  #statGrid { margin-bottom: 16px; }
+
+  .page-head {
+    display: flex; align-items: center; gap: 10px;
+    margin: 2px 0 12px;
+  }
+  .page-head h2 { margin: 0; font-size: 18px; }
+  .page-head .page-sub { color: var(--text-dim); font-size: 12.5px; }
+
+  /* ทีละหน้า — ตัวที่ไม่ได้เลือกซ่อนไปเลย ไม่ต้องเลื่อนผ่าน */
+  body.paged section { display: none; }
+  body.paged section.current { display: block; }
+  /* หัวข้อเดิมของ section ย้ายไปเป็นหัวหน้าแล้ว ไม่ต้องโชว์ซ้ำ
+     — บาง section เก็บ <h2> ไว้ใน .toolbar ร่วมกับปุ่มควบคุม ต้องซ่อนเฉพาะ h2
+       แล้วดันปุ่มไปชิดขวา ไม่งั้นปุ่มจะลอยมาอยู่ซ้ายแทนที่หัวข้อ */
+  body.paged section.current > h2,
+  body.paged section.current > .toolbar > h2 { display: none; }
+  body.paged section.current > .toolbar { justify-content: flex-end; }
+
+  @media (max-width: 900px) {
+    .shell { flex-direction: column; }
+    .sidebar { position: static; width: 100%; flex: none; max-height: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -127,6 +328,7 @@
     <div class="sub" id="serverTitle">กำลังเชื่อมต่อเซิร์ฟ...</div>
   </div>
   <div id="connStatus"><span class="dot bad" id="connDot"></span><span id="connText">ยังไม่เชื่อมต่อ</span></div>
+  <div class="islandbar" id="islandBar"><span class="lbl">เกาะ:</span></div>
 </header>
 
 <div class="grid" id="statGrid">
@@ -152,42 +354,143 @@
 
 <section>
   <div class="toolbar">
-    <h2 style="margin:0">📍 จุดสนใจ (POI) <span class="badge" id="poiCountBadge">0</span></h2>
+    <h2 style="margin:0">🏝 ศูนย์รวมทุกเกาะ</h2>
     <div class="row">
-      <label class="row"><input type="checkbox" id="poiOnlyProblems" /> โชว์เฉพาะที่มีปัญหา</label>
-      <button class="small" onclick="loadPOI()">รีเฟรช</button>
+      <button class="small" onclick="loadFleet()">รีเฟรช</button>
     </div>
   </div>
-  <div class="tablewrap">
-    <table>
-      <thead><tr>
-        <th>id</th><th>blueprint</th><th>tile</th><th>ห่างจุดเกิด</th><th>สถานะ</th><th>คำสั่ง</th>
-      </tr></thead>
-      <tbody id="poiBody"><tr class="empty-row"><td colspan="6">กำลังโหลด...</td></tr></tbody>
-    </table>
+  <table class="tbl" id="fleetTbl"><tbody><tr><td class="muted">กำลังอ่านสถานะทุกเกาะ...</td></tr></tbody></table>
+  <div class="msg" id="fleetMsg"></div>
+
+  <h2 style="margin:18px 0 8px; font-size:13.5px;">📢 ประกาศพร้อมกันทุกเกาะ</h2>
+  <div class="row">
+    <input id="fleetBcText" style="flex:1" placeholder="ข้อความที่จะส่งให้ผู้เล่นทุกเกาะ" />
+    <button class="primary small" onclick="broadcastAllIslands()">ส่งทุกเกาะ</button>
   </div>
-  <div class="row top-gap">
-    <b style="color:var(--text-dim); font-size:12.5px;">วางใหม่:</b>
-    <select id="poiAddBlueprint"></select>
-    <label>x <input type="number" id="poiAddX" value="0" /></label>
-    <label>y <input type="number" id="poiAddY" value="0" /></label>
-    <button class="primary small" onclick="addPOI()">วาง POI</button>
+
+  <h2 style="margin:18px 0 8px; font-size:13.5px;">🔎 ค้นหาผู้เล่นข้ามเกาะ</h2>
+  <div class="row">
+    <input id="fleetFindText" style="flex:1" placeholder="ชื่อผู้เล่น (เว้นว่าง = แสดงทุกคนทุกเกาะ)" />
+    <button class="small" onclick="findPlayerAcrossIslands()">ค้นหา</button>
   </div>
-  <div class="msg" id="poiMsg"></div>
+  <table class="tbl" id="fleetFindTbl"></table>
+
+  <h2 style="margin:18px 0 8px; font-size:13.5px;">🧬 เทียบ config ระหว่างเกาะ</h2>
+  <div class="sub" style="margin-bottom:8px;">แสดงเฉพาะค่าที่ตั้งไม่ตรงกัน — กันเคสแพตช์ลงเกาะเดียวแล้วลืมอีกเกาะ</div>
+  <div class="row"><button class="small" onclick="diffIslandConfigs()">เทียบเลย</button></div>
+  <table class="tbl" id="fleetDiffTbl"></table>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">📈 ย้อนหลัง 12 ชั่วโมง</h2>
+    <div class="row"><button class="small" onclick="loadHistory()">รีเฟรช</button></div>
+  </div>
+  <div id="histBox"><div class="sub">กำลังโหลด...</div></div>
+  <div class="foot-note">เก็บในหน่วยความจำของเซิร์ฟ เก็บทุก 1 นาที — <b>รีสตาร์ตแล้วเริ่มนับใหม่</b></div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">⛔ ระงับการเข้าเล่น <span class="badge" id="banCount">0</span></h2>
+    <div class="row"><button class="small" onclick="loadBans()">รีเฟรช</button></div>
+  </div>
+  <div class="warnbox">แบนแล้วมีผล <b>ทุกเกาะ</b> (ไฟล์ <span class="mono">data/bans.json</span> ใช้ร่วมกัน) · ถ้าคนนั้นออนไลน์อยู่จะถูกเตะออกให้ทันที</div>
+  <div class="row">
+    <input id="banWho" style="flex:1 1 180px" placeholder="ชื่อผู้เล่น หรือ entity id" />
+    <input id="banReason" style="flex:2 1 220px" placeholder="เหตุผล (ผู้เล่นจะเห็นข้อความนี้)" />
+    <input id="banHours" type="number" min="0" step="1" style="width:110px" placeholder="ชม. (0=ถาวร)" />
+    <button class="small danger" onclick="banPlayer()">ระงับ</button>
+  </div>
+  <table class="tbl" id="banTbl"></table>
+  <div class="msg" id="banMsg"></div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">🔄 รีสตาร์ตเซิร์ฟ (เกาะนี้)</h2>
+  </div>
+  <div class="warnbox">ประกาศเตือนในเกมตามจังหวะ 5 นาที / 3 นาที / 1 นาที / 30 วิ / 10 วิ แล้วค่อยปิด — ไม่ใช่ตัดทันทีแบบสั่งจาก ssh</div>
+  <div class="row">
+    <select id="restartSecs" style="width:150px">
+      <option value="300" selected>อีก 5 นาที</option>
+      <option value="180">อีก 3 นาที</option>
+      <option value="60">อีก 1 นาที</option>
+      <option value="30">อีก 30 วินาที</option>
+    </select>
+    <input id="restartNote" style="flex:1" placeholder="เหตุผล เช่น อัปเดตแพตช์ใหม่ (ไม่ใส่ก็ได้)" />
+    <button class="small danger" onclick="restartServer()">เริ่มนับถอยหลัง</button>
+  </div>
+  <div class="msg" id="restartMsg"></div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">✨ บัพ / ดีบัพ ทั้งหมด <span class="badge" id="seCount">0</span></h2>
+    <div class="row"><button class="small" onclick="loadStatusEffects()">โหลด</button></div>
+  </div>
+  <div class="row" style="margin-bottom:8px;">
+    <input id="seSearch" style="flex:1" placeholder="ค้นหา id / ชื่อ / ผล เช่น fatigue, rest, poison" oninput="renderStatusEffects()" />
+    <select id="seFilter" style="width:150px" onchange="renderStatusEffects()">
+      <option value="">ทั้งหมด</option>
+      <option value="positive">บัพ</option>
+      <option value="negative">ดีบัพ</option>
+      <option value="neutral">กลาง ๆ</option>
+    </select>
+  </div>
+  <table class="tbl" id="seTbl"></table>
+  <div class="foot-note">ที่มา <span class="mono">data/assets/survival/status_effects.json</span> (ถอดจากตัวเกมจริง) · เซิร์ฟเราคิดผลจริงให้แค่ rest / thirsty / drink_water / satiety_high — ที่เหลือส่งไอคอนได้แต่ยังไม่มีผลตัวเลข</div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">🗺 ทะเบียนเกาะ (islands.json)</h2>
+    <div class="row">
+      <button class="small" onclick="loadIslandRegistry()">โหลด</button>
+      <button class="primary small" onclick="saveIslandRegistry()">บันทึก</button>
+    </div>
+  </div>
+  <div class="warnbox">แก้แล้ว <b>มีผลตอนเปิดเซิร์ฟใหม่</b> เท่านั้น (แต่ละเกาะอ่านทะเบียนตอนบูต) · ระบบสำรองไฟล์เดิมให้อัตโนมัติ</div>
+  <textarea id="isleRegText" spellcheck="false" style="min-height:200px" placeholder="กดโหลดก่อน"></textarea>
+  <div class="msg" id="isleRegMsg"></div>
 </section>
 
 <section>
   <div class="toolbar">
     <h2 style="margin:0">⚙️ config.json (แก้สด — hot-reload มีผลทันที)</h2>
     <div class="row">
-      <button class="small" onclick="loadConfig()">โหลดค่าปัจจุบัน</button>
+      <button class="small" id="cfgModeBtn" onclick="toggleCfgMode()">โหมด JSON ดิบ</button>
+      <button class="small" onclick="loadConfig()">ทิ้งที่แก้ · โหลดใหม่</button>
       <button class="primary small" onclick="saveConfig()">บันทึก + ใช้ทันที</button>
     </div>
   </div>
   <div class="sub" id="cfgPath" style="margin-bottom:8px;"></div>
-  <textarea id="cfgTextarea" spellcheck="false" placeholder="กำลังโหลด..."></textarea>
+
+  <!-- โหมดฟอร์ม: ช่องกรอกทีละค่า พร้อมคำอธิบายไทยที่ดึงมาจากคอมเมนต์ในโค้ดจริง -->
+  <div id="cfgForm">
+    <div class="cfg-tools">
+      <input id="cfgSearch" class="cfg-search" placeholder="ค้นหา… (พิมพ์ไทยหรืออังกฤษ เช่น ความล้า, fatigue, exp)" oninput="renderCfgForm()" />
+      <label class="cfg-chk"><input type="checkbox" id="cfgOnlyChanged" onchange="renderCfgForm()" /> เฉพาะที่ต่างจากค่าเริ่มต้น</label>
+      <span class="cfg-count" id="cfgCount"></span>
+    </div>
+    <div class="cfg-tabs" id="cfgTabs"></div>
+    <div id="cfgFields"></div>
+  </div>
+
+  <!-- โหมดเดิม: JSON ดิบ เผื่อต้องแก้อะไรที่ฟอร์มไม่ครอบคลุม -->
+  <div id="cfgRaw" hidden>
+    <textarea id="cfgTextarea" spellcheck="false" placeholder="กำลังโหลด..."></textarea>
+  </div>
+
+  <div class="cfg-savebar" id="cfgSaveBar" hidden>
+    <span id="cfgDirtyText"></span>
+    <div class="row">
+      <button class="small" onclick="revertCfg()">ย้อนกลับทั้งหมด</button>
+      <button class="primary small" onclick="saveConfig()">บันทึก + ใช้ทันที</button>
+    </div>
+  </div>
   <div class="msg" id="cfgMsg"></div>
-  <div class="foot-note">แก้ค่าตัวเลข (เรทเกิด/เลือด/ดาเมจ/exp) แล้วกดบันทึก — มีผลทันทีไม่ต้อง restart เซิร์ฟ (ตารางสัตว์มีผลตอนเปิดเซิร์ฟใหม่เท่านั้น)</div>
+  <div class="foot-note">แก้แล้วกดบันทึก มีผลทันทีไม่ต้อง restart · ช่องที่แก้จะขึ้นแถบเหลือง กดปุ่ม ↺ ข้างช่องเพื่อคืนค่าเริ่มต้น · <b>ตารางสัตว์/terrain มีผลตอนเปิดเซิร์ฟใหม่เท่านั้น</b></div>
 </section>
 
 <section>
@@ -242,6 +545,120 @@
     <button class="primary small" onclick="sendCheat()">ส่งคำสั่ง</button>
   </div>
   <div class="msg" id="cheatMsg"></div>
+</section>
+
+
+<!-- ═══ เครื่องมือเกาะ/แมพ ═══════════════════════════════════════════ -->
+<section>
+  <h2>🩺 สุขภาพเกาะ
+    <button class="small" onclick="loadHealth()">ตรวจใหม่</button>
+    <span id="healthVerdict" class="badge"></span>
+  </h2>
+  <div class="grid" id="healthStats"></div>
+  <div id="healthIssues" class="sub"></div>
+</section>
+
+<section>
+  <h2>🗺️ แผนที่เกาะ</h2>
+  <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start">
+    <div>
+      <canvas id="mapCanvas" width="512" height="512"
+              style="border:1px solid var(--border); border-radius:8px; image-rendering:pixelated; cursor:crosshair; background:#0a0d12"></canvas>
+      <div class="sub" id="mapHint" style="margin-top:6px">คลิกบนแผนที่เพื่อดูข้อมูล tile นั้น</div>
+    </div>
+    <div style="min-width:230px; flex:1">
+      <div style="margin-bottom:8px">
+        <label class="sub">เลเยอร์</label><br />
+        <select id="mapLayer" onchange="loadMap()">
+          <option value="biome">ไบโอม</option>
+          <option value="cliff">ก้อนหิน (cliffs.dm)</option>
+          <option value="land">ระยะชายฝั่ง (oceans.dm)</option>
+          <option value="elevation">ความสูง</option>
+          <option value="fertility">ความอุดมสมบูรณ์ดิน</option>
+          <option value="temperature">อุณหภูมิ</option>
+          <option value="humidity">ความชื้น</option>
+          <option value="river">ระยะถึงแม่น้ำ</option>
+          <option value="lake">ระยะถึงทะเลสาบ</option>
+          <option value="scoop">ระยะถึงจุดขุด</option>
+        </select>
+      </div>
+      <div class="sub" style="line-height:1.9">
+        <label><input type="checkbox" id="ovPoi" checked onchange="drawMap()" /> POI <span style="color:#ffd447">●</span></label><br />
+        <label><input type="checkbox" id="ovHerd" onchange="drawMap()" /> จุดเกิดที่เกมกำหนด <span style="color:#7fd4ff">●</span></label><br />
+        <label><input type="checkbox" id="ovAnimal" checked onchange="drawMap()" /> สัตว์ <span style="color:#3ecf8e">●</span> / ในหิน <span style="color:#ef5a6f">●</span></label><br />
+        <label><input type="checkbox" id="ovPlayer" checked onchange="drawMap()" /> ผู้เล่น <span style="color:#ffffff">●</span></label><br />
+        <label><input type="checkbox" id="ovEntry" checked onchange="drawMap()" /> จุดเข้าเกม <span style="color:#ff8a3d">◎</span></label>
+      </div>
+      <div id="tileInfo" class="sub" style="margin-top:10px; font-family:var(--mono); white-space:pre-line"></div>
+      <button class="small danger" id="btnClearNatural" style="display:none" onclick="clearNaturalHere()">ลบต้นไม้/หินตรงนี้</button>
+      <div id="mapMsg" class="sub"></div>
+    </div>
+  </div>
+
+  <!-- ── ย้ายสิ่งก่อสร้างประจำเกาะ (POI) — ยุบมารวมกับแผนที่ 4 ก.ย. 2026 ──
+       เดิมอยู่คนละหัวข้อ: ต้องดูพิกัดจากแผนที่ แล้วเลื่อนหน้าไปพิมพ์ตัวเลขในอีกหัวข้อ
+       ตอนนี้กด "ย้าย" แล้วคลิกจุดบนแผนที่ได้เลย — เห็นภูมิประเทศตอนเลือกที่ -->
+  <div id="poiMoveBar" class="warnbox" hidden></div>
+  <div class="toolbar" style="margin-top:14px">
+    <h2 style="margin:0; font-size:14px">📍 สิ่งก่อสร้างประจำเกาะ (POI) <span class="badge" id="poiCountBadge">0</span></h2>
+    <div class="row">
+      <label class="row"><input type="checkbox" id="poiOnlyProblems" onchange="loadPOI()" /> โชว์เฉพาะที่มีปัญหา</label>
+      <button class="small" onclick="loadPOI()">รีเฟรช</button>
+    </div>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>id</th><th>blueprint</th><th>tile</th><th>ห่างจุดเกิด</th><th>สถานะ</th><th>คำสั่ง</th>
+      </tr></thead>
+      <tbody id="poiBody"><tr class="empty-row"><td colspan="6">กำลังโหลด...</td></tr></tbody>
+    </table>
+  </div>
+  <div class="row top-gap">
+    <b style="color:var(--text-dim); font-size:12.5px;">วางใหม่:</b>
+    <select id="poiAddBlueprint"></select>
+    <label>x <input type="number" id="poiAddX" value="0" /></label>
+    <label>y <input type="number" id="poiAddY" value="0" /></label>
+    <button class="small" onclick="useePickedForAdd()">ใช้จุดที่คลิกบนแผนที่</button>
+    <button class="primary small" onclick="addPOI()">วาง POI</button>
+  </div>
+  <div class="msg" id="poiMsg"></div>
+  <div class="foot-note">ท่าเรือ (<span class="mono">dock</span>) · หลุมวาร์ป · รอยแยก มาจาก <span class="mono">pois.yml</span> ของเกาะ — ย้ายจากตรงนี้แล้วอยู่ถาวร (เก็บใน world.json) ไม่กลับไปที่เดิมตอนเปิดเซิร์ฟใหม่</div>
+</section>
+
+<section>
+  <div class="toolbar">
+    <h2 style="margin:0">📂 ไฟล์ข้อมูลของเกาะ (terrains)</h2>
+    <div class="row">
+      <select id="tfTerrain" style="min-width:170px" onchange="loadTerrainFiles()"></select>
+      <button class="small" onclick="loadTerrainFiles()">โหลด</button>
+    </div>
+  </div>
+  <div class="warnbox">
+    ไฟล์พวกนี้บอกว่าเกาะมี <b>ท่าเรือ / หลุมวาร์ป / ฝูงสัตว์</b> ตรงไหน — ถ้าไม่มีไฟล์
+    เซิร์ฟจะ <b>สุ่มตำแหน่งให้เอง</b> (เคยทำให้ท่าเรือเกาะหิมะไปโผล่ห่างจุดเกิด 232 tile)
+    · แก้แล้ว <b>มีผลตอนเปิดเซิร์ฟใหม่</b> และเฉพาะ POI ที่ยังไม่เคยถูกวาง
+  </div>
+  <div id="tfList"><div class="sub">เลือกเกาะแล้วกดโหลด</div></div>
+  <div class="msg" id="tfMsg"></div>
+</section>
+
+<section>
+  <h2>🧭 ตรวจเกาะทุกใบ <button class="small" onclick="loadIslands()">ตรวจ</button></h2>
+  <div id="islandTable" class="sub">กด "ตรวจ" เพื่อไล่เช็คทุกเกาะด้วยกฎเดียวกับที่เซิร์ฟใช้โหลด</div>
+</section>
+
+<section>
+  <h2>⚡ มาโครของเกม <span class="sub" id="macroSource"></span></h2>
+  <div class="sub" style="margin-bottom:8px">ชุดคำสั่งที่ทีมสร้างเกมนิยามไว้เอง (Resources/cheat_macro_definition.json) — ต้องเปิดเซิร์ฟด้วย <code>--enable-cheat</code></div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+    <select id="macroName"></select>
+    <input id="macroPlayer" placeholder="ชื่อผู้เล่น (ว่าง = คนแรกที่ออนไลน์)" style="min-width:240px" />
+    <button class="primary small" onclick="runMacro()">สั่ง</button>
+    <button class="small" onclick="loadMacros()">รีเฟรช</button>
+  </div>
+  <div id="macroCommands" class="sub" style="margin-top:8px; font-family:var(--mono); white-space:pre-line"></div>
+  <div id="macroMsg" class="sub"></div>
 </section>
 
 <script>
@@ -300,13 +717,179 @@ function setConn(ok) {
   document.getElementById("connText").textContent = ok ? "เชื่อมต่ออยู่" : "ขาดการเชื่อมต่อ";
 }
 
+// ── แท็บเกาะ (island-mode) ───────────────────────────────────────────
+// [4 ก.ย. 2026] เซิร์ฟแยกเป็น 1 เกาะ = 1 process = 1 พอร์ต (ดู IslandRegistry.cs)
+// หน้า admin เดิมพูดกับเซิร์ฟที่เสิร์ฟหน้านี้ตัวเดียว ⇒ ต้องจำพอร์ตเองแล้วพิมพ์ URL ใหม่ทุกครั้ง
+//
+// รายชื่อเกาะมาจาก 3 ทางเรียงตามลำดับ:
+//   1. GET /admin/islands  — ทะเบียนจริงจาก data/islands.json (เซิร์ฟรุ่นใหม่เท่านั้น)
+//   2. localStorage        — เกาะที่เจ้าของเซิร์ฟเพิ่มเองผ่านปุ่ม "+ เพิ่มเกาะ" (เช่นเซิร์ฟเทส)
+//   3. ค่าติดมากับหน้า     — เผื่อเซิร์ฟยังเป็นรุ่นเก่าที่ยังไม่มี /admin/islands
+//
+// การสลับเกาะใช้ "เปลี่ยนหน้าไปพอร์ตนั้น" ไม่ใช่ยิง API ข้ามพอร์ตทั้งหน้า เพราะแต่ละเกาะคือ
+// คนละ process คนละโลก — ข้อมูลทุก section (ผู้เล่น/แมพ/config/log) ต้องมาจากเกาะนั้นจริง ๆ
+// ส่วนตัวเลข "คนออนไลน์" บนแท็บที่ไม่ได้เปิดอยู่ ยิงข้ามพอร์ตเอา ต้องให้เซิร์ฟส่งหัว CORS
+// (เพิ่มใน WebServer.cs แล้ว เฉพาะ /admin/*) — เซิร์ฟรุ่นเก่าจะโชว์ขีดแทนตัวเลข ไม่พัง
+const ISLE_KEY = "durango_admin_islands_extra";
+const ISLE_FALLBACK = [
+  { id: "isle01", name: "เกาะเริ่มต้น", host: location.hostname, gateway_port: 8190 },
+  { id: "isle02", name: "เกาะหิมะ",    host: location.hostname, gateway_port: 8390 },
+];
+let ISLANDS = [];
+let islandCorsBlocked = false;
+
+function isleBase(isle) {
+  return location.protocol + "//" + isle.host + ":" + isle.gateway_port;
+}
+function isleIsHere(isle) {
+  const port = location.port || (location.protocol === "https:" ? "443" : "80");
+  return String(isle.gateway_port) === String(port)
+    && (isle.host === location.hostname || isle.host === "127.0.0.1" || isle.host === "localhost");
+}
+function loadExtraIslands() {
+  try { return JSON.parse(localStorage.getItem(ISLE_KEY) || "[]"); } catch (e) { return []; }
+}
+function saveExtraIslands(list) {
+  try { localStorage.setItem(ISLE_KEY, JSON.stringify(list)); } catch (e) { /* ไม่มี localStorage ก็ข้าม */ }
+}
+
+async function loadIslandTabs() {
+  let list = [];
+  try {
+    const r = await getJSON("/admin/islands");
+    list = (r.islands || []).map(function (x) {
+      return { id: x.id, name: x.name, host: x.host, gateway_port: x.gateway_port,
+               min_level: x.min_level, max_level: x.max_level };
+    });
+  } catch (e) {
+    list = ISLE_FALLBACK.slice();   // เซิร์ฟรุ่นเก่ายังไม่มี endpoint นี้
+  }
+  // เกาะที่เพิ่มเอง (เช่นเซิร์ฟเทส/เซิร์ฟ nx) — ไม่ทับของที่มาจากทะเบียนจริง
+  loadExtraIslands().forEach(function (x) {
+    if (!list.some(function (y) { return String(y.gateway_port) === String(x.gateway_port) && y.host === x.host; })) {
+      list.push(x);
+    }
+  });
+  // เกาะที่เปิดอยู่ตอนนี้ต้องมีในลิสต์เสมอ ไม่งั้นจะไม่มีแท็บไหนถูกไฮไลต์
+  if (!list.some(isleIsHere)) {
+    list.unshift({ id: "(เกาะนี้)", name: "เซิร์ฟที่เปิดอยู่", host: location.hostname,
+                   gateway_port: Number(location.port) || 80 });
+  }
+  ISLANDS = list;
+  renderIslands();
+  pollIslandStats();
+}
+
+function renderIslands() {
+  const bar = document.getElementById("islandBar");
+  if (!bar) return;
+  bar.querySelectorAll(".isle-select, .isle-add, .isle-note, .dot, .isle-here").forEach(function (el) { el.remove(); });
+
+  // จุดสถานะของเกาะที่เปิดอยู่ (loadStatus เป็นคนอัปเดต)
+  const dot = document.createElement("span");
+  dot.className = "dot wait";
+  dot.id = "isleDot";
+  bar.appendChild(dot);
+
+  // combobox — เกาะอยู่คนละพอร์ต เลือกแล้วเด้งไปหน้า admin ของพอร์ตนั้นพร้อม token เดิม
+  const sel = document.createElement("select");
+  sel.className = "isle-select";
+  sel.id = "isleSelect";
+  ISLANDS.forEach(function (isle, i) {
+    const o = document.createElement("option");
+    o.value = String(i);
+    o.dataset.port = isle.gateway_port;
+    const lv = (isle.min_level && isle.max_level) ? " · Lv" + isle.min_level + "-" + isle.max_level : "";
+    o.textContent = (isle.name || isle.id) + "  :" + isle.gateway_port + lv;
+    if (isleIsHere(isle)) { o.selected = true; }
+    sel.appendChild(o);
+  });
+  sel.addEventListener("change", function () {
+    const isle = ISLANDS[Number(sel.value)];
+    if (!isle || isleIsHere(isle)) return;
+    let url = isleBase(isle) + "/admin";
+    if (ADMIN_TOKEN) url += "?token=" + encodeURIComponent(ADMIN_TOKEN);
+    location.href = url;
+  });
+  bar.appendChild(sel);
+
+  const here = document.createElement("span");
+  here.className = "isle-here";
+  here.id = "isleHere";
+  here.textContent = "กำลังดูพอร์ต " + (location.port || "80");
+  bar.appendChild(here);
+
+  const add = document.createElement("button");
+  add.className = "isle-add";
+  add.textContent = "+ เพิ่มพอร์ต";
+  add.title = "เพิ่มเซิร์ฟที่ไม่ได้อยู่ในทะเบียน islands.json (เช่นเซิร์ฟเทส)";
+  add.addEventListener("click", function () {
+    const raw = prompt("ใส่ host:port ของ gateway (เช่น 187.53.129.69:8290)\nเว้นว่าง = ยกเลิก");
+    if (!raw) return;
+    const m = raw.trim().match(/^(?:https?:\/\/)?([^:/]+):(\d+)/);
+    if (!m) { alert("รูปแบบไม่ถูก — ต้องเป็น host:port"); return; }
+    const name = prompt("ตั้งชื่อให้พอร์ตนี้", "เซิร์ฟ " + m[2]) || ("เซิร์ฟ " + m[2]);
+    const extra = loadExtraIslands();
+    extra.push({ id: "custom-" + m[2], name: name, host: m[1], gateway_port: Number(m[2]) });
+    saveExtraIslands(extra);
+    loadIslandTabs();
+  });
+  bar.appendChild(add);
+
+  if (islandCorsBlocked) {
+    const note = document.createElement("div");
+    note.className = "isle-note";
+    note.textContent = "⚠ อ่านจำนวนคนของเกาะอื่นไม่ได้ (เซิร์ฟยังไม่ได้อัปรุ่นที่ส่งหัว CORS) — สลับพอร์ตได้ตามปกติ";
+    bar.appendChild(note);
+  }
+}
+
+// ตัวเลขคนออนไลน์ของ "ทุกเกาะ" พร้อมกัน — เกาะที่ล่มจะจางลงและขึ้นจุดแดง
+async function pollIslandStats() {
+  const sel = document.getElementById("isleSelect");
+  if (!sel) return;
+  await Promise.all(ISLANDS.map(async function (isle, i) {
+    const opt = sel.options[i];
+    if (!opt) return;
+    const lv = (isle.min_level && isle.max_level) ? " · Lv" + isle.min_level + "-" + isle.max_level : "";
+    const head = (isle.name || isle.id) + "  :" + isle.gateway_port + lv;
+    let url = isleBase(isle) + "/admin/status";
+    if (ADMIN_TOKEN) url += "?token=" + encodeURIComponent(ADMIN_TOKEN);
+    try {
+      const res = await fetch(url, { mode: "cors" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const st = await res.json();
+      opt.textContent = head + "  — " + st.online_players + " คน";
+      if (st.island_name && (!isle.name || isle.name === isle.id)) {
+        isle.name = st.island_name;
+      }
+    } catch (e) {
+      if (isleIsHere(isle)) return;   // เกาะที่เปิดอยู่ใช้ตัวเลขจาก loadStatus()
+      islandCorsBlocked = true;
+      opt.textContent = head + "  — (ติดต่อไม่ได้)";
+    }
+  }));
+}
+
 // ── สถานะภาพรวม ──────────────────────────────────────────────────────
 async function loadStatus() {
   try {
     const s = await getJSON("/admin/status");
     setConn(true);
     document.getElementById("serverTitle").textContent =
+      (s.island_name ? `🏝 ${s.island_name} · ` : "") +
       `${s.server_name} · เกมพอร์ต ${s.game_port} · gateway ${s.gateway_prefix}`;
+    // เกาะที่เปิดอยู่ใช้ตัวเลขชุดเดียวกับหน้านี้ (ไม่ต้องยิงซ้ำ)
+    const isleDot = document.getElementById("isleDot");
+    if (isleDot) isleDot.className = "dot ok";
+    const sel = document.getElementById("isleSelect");
+    if (sel && sel.selectedIndex >= 0) {
+      const opt = sel.options[sel.selectedIndex];
+      const base = opt.textContent.split("  —")[0];
+      opt.textContent = base + "  — " + s.online_players + " คน";
+    }
+    const hereEl = document.getElementById("isleHere");
+    if (hereEl) hereEl.textContent = "เกมพอร์ต " + s.game_port;
     document.getElementById("stTps").textContent = s.tps.toFixed(0);
     document.getElementById("stTps").className = "value " + (s.tps < 30 ? "bad" : s.tps < 80 ? "warn" : "good");
     document.getElementById("stPlayers").textContent = s.online_players;
@@ -417,7 +1000,7 @@ async function loadPOI() {
           <td class="num">${e.dist_from_entry}</td>
           <td>${status}</td>
           <td class="row">
-            <button class="small" onclick="movePOI('${id}')">ย้าย</button>
+            <button class="small" onclick="movePOI('${id}', '${escapeHtml(e.short_id)}', '${escapeHtml(e.blueprint)}')">ย้าย</button>
             <button class="small danger" onclick="removePOI('${id}', '${escapeHtml(e.short_id)}')">ลบ</button>
           </td>
         </tr>`;
@@ -428,16 +1011,73 @@ async function loadPOI() {
     sel.innerHTML = data.blueprints.map(b => `<option value="${b}">${b}</option>`).join("");
   }
 }
-async function movePOI(id) {
-  const x = prompt("ย้ายไป tile X เท่าไหร่?");
-  if (x === null) return;
-  const y = prompt("ย้ายไป tile Y เท่าไหร่?");
-  if (y === null) return;
+// ── ย้าย POI ด้วยการคลิกบนแผนที่ ────────────────────────────────────
+// เดิมกด "ย้าย" แล้ว prompt ถามตัวเลข x/y ทีละช่อง — ต้องไปอ่านพิกัดจากแผนที่มาก่อน
+// ตอนนี้กดแล้วเข้า "โหมดย้าย": คลิกจุดไหนบนแผนที่ก็ย้ายไปจุดนั้น เห็นภูมิประเทศตอนเลือกด้วย
+let POI_MOVING = null;      // { id, short, blueprint }
+
+function movePOI(id, short, blueprint) {
+  POI_MOVING = { id: id, short: short || id, blueprint: blueprint || "" };
+  PICKED = null;
+  renderPoiMoveBar();
+  drawMap();
+  document.getElementById("poiMoveBar").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+function cancelMovePOI() {
+  POI_MOVING = null;
+  renderPoiMoveBar();
+  drawMap();
+}
+function renderPoiMoveBar() {
+  const bar = document.getElementById("poiMoveBar");
+  if (!bar) return;
+  if (!POI_MOVING) { bar.hidden = true; bar.innerHTML = ""; return; }
+  bar.hidden = false;
+  bar.innerHTML = "";
+  const t = document.createElement("span");
+  t.innerHTML = "🎯 กำลังย้าย <b>" + escapeHtml(POI_MOVING.short) + "</b>" +
+    (POI_MOVING.blueprint ? " (" + escapeHtml(POI_MOVING.blueprint) + ")" : "") +
+    " — <b>คลิกจุดที่ต้องการบนแผนที่</b>";
+  bar.appendChild(t);
+  const row = document.createElement("span");
+  row.style.cssText = "float:right; display:flex; gap:6px;";
+  const typed = document.createElement("button");
+  typed.className = "small";
+  typed.textContent = "พิมพ์พิกัดเอง";
+  typed.addEventListener("click", function () {
+    const x = prompt("ย้ายไป tile X เท่าไหร่?");
+    if (x === null) return;
+    const y = prompt("ย้ายไป tile Y เท่าไหร่?");
+    if (y === null) return;
+    doMovePOI(Number(x), Number(y));
+  });
+  const cancel = document.createElement("button");
+  cancel.className = "small";
+  cancel.textContent = "ยกเลิก";
+  cancel.addEventListener("click", cancelMovePOI);
+  row.appendChild(typed);
+  row.appendChild(cancel);
+  bar.appendChild(row);
+}
+async function doMovePOI(x, y) {
+  if (!POI_MOVING) return;
+  const what = POI_MOVING.short;
   try {
-    const r = await postForm("/admin/poi/move", { id, x, y });
-    showMsg(document.getElementById("poiMsg"), r.message, true);
-    loadPOI();
-  } catch (e) { showMsg(document.getElementById("poiMsg"), e.message, false); }
+    const r = await postForm("/admin/poi/move", { id: POI_MOVING.id, x: x, y: y });
+    // เซิร์ฟตอบกลับพร้อมผลตรวจตำแหน่งใหม่ (จมน้ำ/มีของทับ) — โชว์ตรง ๆ ไม่ตีความเอง
+    showMsg(document.getElementById("poiMsg"), r.message, r.message.indexOf("⚠") < 0);
+    POI_MOVING = null;
+    renderPoiMoveBar();
+    await loadPOI();
+    await loadMap();      // โหลดจุดบนแผนที่ใหม่ด้วย ไม่งั้นหมุดยังค้างที่เดิม
+  } catch (e) {
+    showMsg(document.getElementById("poiMsg"), "ย้าย " + what + " ไม่สำเร็จ: " + e.message, false);
+  }
+}
+function useePickedForAdd() {
+  if (!PICKED) { showMsg(document.getElementById("poiMsg"), "ยังไม่ได้คลิกจุดบนแผนที่", false); return; }
+  document.getElementById("poiAddX").value = PICKED.x;
+  document.getElementById("poiAddY").value = PICKED.y;
 }
 async function removePOI(id, shortId) {
   if (!confirm(`ลบ "${shortId}" ทิ้งไหม?`)) return;
@@ -458,26 +1098,899 @@ async function addPOI() {
   } catch (e) { showMsg(document.getElementById("poiMsg"), e.message, false); }
 }
 
-// ── config.json ──────────────────────────────────────────────────────
+// ── งานที่ต้องคุยกับ "ทุกเกาะ" พร้อมกัน ───────────────────────────────
+// ทุกอันด้านล่างยิงข้ามพอร์ตไปหาเกาะอื่น ⇒ ต้องให้เซิร์ฟส่งหัว CORS ให้ /admin/*
+// (เพิ่มใน WebServer.cs แล้ว) · เกาะที่ตอบไม่ได้จะขึ้น "ติดต่อไม่ได้" ไม่ทำให้ทั้งหน้าพัง
+async function isleGet(isle, path) {
+  let url = isleBase(isle) + path;
+  if (ADMIN_TOKEN) url += (url.includes("?") ? "&" : "?") + "token=" + encodeURIComponent(ADMIN_TOKEN);
+  const res = await fetch(url, { mode: "cors" });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  return res.json();
+}
+async function islePost(isle, path, params) {
+  const body = new URLSearchParams(params || {});
+  if (ADMIN_TOKEN) body.set("token", ADMIN_TOKEN);
+  const res = await fetch(isleBase(isle) + path, { method: "POST", mode: "cors", body: body });
+  let data = null;
+  try { data = await res.json(); } catch (e) { /* ไม่ใช่ JSON ก็ไม่เป็นไร */ }
+  if (!res.ok || (data && data.ok === false)) throw new Error((data && data.error) || ("HTTP " + res.status));
+  return data;
+}
+function td(text, cls) {
+  const c = document.createElement("td");
+  if (cls) c.className = cls;
+  c.textContent = text === null || text === undefined ? "" : String(text);
+  return c;
+}
+function tblHead(table, cols) {
+  table.innerHTML = "";
+  const tr = document.createElement("tr");
+  cols.forEach(function (c) { const th = document.createElement("th"); th.textContent = c; tr.appendChild(th); });
+  const thead = document.createElement("thead"); thead.appendChild(tr); table.appendChild(thead);
+  const tb = document.createElement("tbody"); table.appendChild(tb);
+  return tb;
+}
+
+// ── ตารางรวมทุกเกาะ ─────────────────────────────────────────────────
+async function loadFleet() {
+  const tb = tblHead(document.getElementById("fleetTbl"),
+    ["เกาะ", "พอร์ต", "สถานะ", "คน", "TPS", "RAM", "เปิดมาแล้ว", "ชุดข้อมูล", ""]);
+  await Promise.all(ISLANDS.map(async function (isle) {
+    const tr = document.createElement("tr");
+    tr.appendChild(td(isle.name || isle.id));
+    tr.appendChild(td(isle.gateway_port, "mono"));
+    try {
+      const st = await isleGet(isle, "/admin/status");
+      const stat = document.createElement("td");
+      const pill = document.createElement("span");
+      pill.className = "pill " + (st.tps < 30 ? "bad" : st.tps < 80 ? "warn" : "ok");
+      pill.textContent = st.tps < 30 ? "หนืด" : "ปกติ";
+      stat.appendChild(pill);
+      tr.appendChild(stat);
+      tr.appendChild(td(st.online_players, "num"));
+      tr.appendChild(td(Number(st.tps).toFixed(0), "num"));
+      tr.appendChild(td(st.ram_mb + " MB", "num"));
+      tr.appendChild(td(fmtSeconds(st.uptime_sec), "muted"));
+      // digest ต่างกัน = เกาะนั้นรันข้อมูล/binary คนละชุด (เจอบ่อยเวลาอัปไม่ครบ)
+      tr.appendChild(td((st.data_manifest_digest || "?").slice(0, 8), "mono muted"));
+    } catch (e) {
+      const bad = document.createElement("td");
+      bad.colSpan = 6;
+      bad.innerHTML = '<span class="pill bad">ติดต่อไม่ได้</span> <span class="muted">' +
+        (islandCorsBlocked ? "เซิร์ฟยังไม่ได้อัปรุ่นที่ส่งหัว CORS หรือเกาะนี้ไม่ได้เปิด" : "เกาะนี้ไม่ได้เปิดอยู่") + "</span>";
+      tr.appendChild(bad);
+    }
+    const go = document.createElement("td");
+    if (!isleIsHere(isle)) {
+      const b = document.createElement("button");
+      b.className = "small";
+      b.textContent = "เปิด";
+      b.addEventListener("click", function () {
+        let url = isleBase(isle) + "/admin";
+        if (ADMIN_TOKEN) url += "?token=" + encodeURIComponent(ADMIN_TOKEN);
+        location.href = url;
+      });
+      go.appendChild(b);
+    } else {
+      go.innerHTML = '<span class="muted">อยู่นี่</span>';
+    }
+    tr.appendChild(go);
+    tb.appendChild(tr);
+  }));
+}
+
+async function broadcastAllIslands() {
+  const text = document.getElementById("fleetBcText").value.trim();
+  const msg = document.getElementById("fleetMsg");
+  if (!text) { showMsg(msg, "ยังไม่ได้พิมพ์ข้อความ", false); return; }
+  if (!confirm('ส่ง "' + text + '" ให้ผู้เล่นทุกเกาะ?')) return;
+  let ok = 0, fail = [];
+  await Promise.all(ISLANDS.map(async function (isle) {
+    try { await islePost(isle, "/admin/broadcast", { text: text }); ok += 1; }
+    catch (e) { fail.push((isle.name || isle.id) + " (" + e.message + ")"); }
+  }));
+  showMsg(msg, "ส่งสำเร็จ " + ok + " เกาะ" + (fail.length ? " · ไม่สำเร็จ: " + fail.join(", ") : ""), fail.length === 0);
+  if (ok) document.getElementById("fleetBcText").value = "";
+}
+
+async function findPlayerAcrossIslands() {
+  const q = document.getElementById("fleetFindText").value.trim().toLowerCase();
+  const tb = tblHead(document.getElementById("fleetFindTbl"), ["ผู้เล่น", "อยู่เกาะ", "Lv", "ตำแหน่ง", "client", ""]);
+  let found = 0;
+  await Promise.all(ISLANDS.map(async function (isle) {
+    let list = [];
+    try { list = await isleGet(isle, "/admin/players"); } catch (e) { return; }
+    list.forEach(function (pl) {
+      if (q && (pl.name || "").toLowerCase().indexOf(q) < 0 && (pl.entity_id || "").indexOf(q) < 0) return;
+      found += 1;
+      const tr = document.createElement("tr");
+      tr.appendChild(td(pl.name));
+      tr.appendChild(td(isle.name || isle.id));
+      tr.appendChild(td(pl.level, "num"));
+      tr.appendChild(td(pl.tile_x + "," + pl.tile_y, "mono muted"));
+      tr.appendChild(td(pl.client_version + " / " + pl.platform, "muted"));
+      const go = document.createElement("td");
+      if (!isleIsHere(isle)) {
+        const b = document.createElement("button");
+        b.className = "small";
+        b.textContent = "ไปเกาะนี้";
+        b.addEventListener("click", function () {
+          let url = isleBase(isle) + "/admin";
+          if (ADMIN_TOKEN) url += "?token=" + encodeURIComponent(ADMIN_TOKEN);
+          location.href = url;
+        });
+        go.appendChild(b);
+      }
+      tr.appendChild(go);
+      tb.appendChild(tr);
+    });
+  }));
+  if (!found) {
+    const tr = document.createElement("tr");
+    tr.appendChild(td(q ? "ไม่เจอผู้เล่นชื่อนี้ในเกาะไหนเลย" : "ตอนนี้ไม่มีใครออนไลน์", "muted"));
+    tb.appendChild(tr);
+  }
+}
+
+// ── เทียบ config ระหว่างเกาะ ────────────────────────────────────────
+// เคสจริงที่เจอ: แพตช์ค่าความล้าลง isle01 แล้วลืม isle02 ⇒ ค่าต่างกัน 10 เท่าอยู่หลายวัน
+async function diffIslandConfigs() {
+  const tbl = document.getElementById("fleetDiffTbl");
+  const loaded = [];
+  await Promise.all(ISLANDS.map(async function (isle) {
+    try {
+      const c = await isleGet(isle, "/admin/config");
+      loaded.push({ isle: isle, cfg: JSON.parse(c.json) });
+    } catch (e) { /* เกาะที่อ่านไม่ได้ ข้ามไป */ }
+  }));
+  if (loaded.length < 2) {
+    tbl.innerHTML = '<tbody><tr><td class="muted">อ่าน config ได้ไม่ถึง 2 เกาะ — ' +
+      (islandCorsBlocked ? "ต้องอัปเซิร์ฟรุ่นที่ส่งหัว CORS ก่อน" : "เปิดอีกเกาะให้ครบก่อน") + "</td></tr></tbody>";
+    return;
+  }
+  // ไล่ทุก path ที่เป็นค่าเดี่ยว แล้วเก็บเฉพาะอันที่เกาะตั้งไม่เท่ากัน
+  const flat = loaded.map(function (x) { const o = {}; flatten(x.cfg, "", o); return o; });
+  const keys = new Set();
+  flat.forEach(function (o) { Object.keys(o).forEach(function (k) { keys.add(k); }); });
+  const diffs = [];
+  keys.forEach(function (k) {
+    const vals = flat.map(function (o) { return k in o ? o[k] : "(ไม่มี)"; });
+    if (new Set(vals.map(String)).size > 1) diffs.push({ k: k, vals: vals });
+  });
+  diffs.sort(function (a, b) { return a.k < b.k ? -1 : 1; });
+
+  const tb = tblHead(tbl, ["ค่า"].concat(loaded.map(function (x) { return x.isle.name || x.isle.id; })).concat([""]));
+  if (!diffs.length) {
+    const tr = document.createElement("tr");
+    const c = td("ทุกเกาะตั้งค่าตรงกันหมด 👍", "muted");
+    c.colSpan = loaded.length + 2;
+    tr.appendChild(c);
+    tb.appendChild(tr);
+    return;
+  }
+  diffs.forEach(function (d) {
+    const tr = document.createElement("tr");
+    tr.appendChild(td(d.k, "mono"));
+    d.vals.forEach(function (v) { tr.appendChild(td(v, "diff-val")); });
+    // ปุ่มดันค่าของ "เกาะที่เปิดอยู่" ไปให้เกาะอื่นทั้งหมด
+    const act = document.createElement("td");
+    const meIdx = loaded.findIndex(function (x) { return isleIsHere(x.isle); });
+    if (meIdx >= 0 && d.vals[meIdx] !== "(ไม่มี)") {
+      const b = document.createElement("button");
+      b.className = "small";
+      b.textContent = "ดันค่านี้ไปทุกเกาะ";
+      b.title = "ตั้ง " + d.k + " = " + d.vals[meIdx] + " ให้ทุกเกาะ";
+      b.addEventListener("click", function () { pushConfigValue(loaded, meIdx, d.k); });
+      act.appendChild(b);
+    }
+    tr.appendChild(act);
+    tb.appendChild(tr);
+  });
+}
+function flatten(obj, prefix, out) {
+  Object.keys(obj).forEach(function (k) {
+    const v = obj[k];
+    const path = prefix ? prefix + "." + k : k;
+    if (v !== null && typeof v === "object" && !Array.isArray(v)) flatten(v, path, out);
+    else out[path] = Array.isArray(v) ? JSON.stringify(v) : v;
+  });
+}
+async function pushConfigValue(loaded, srcIdx, path) {
+  const src = loaded[srcIdx];
+  const val = path.split(".").reduce(function (o, k) { return o[k]; }, src.cfg);
+  if (!confirm("ตั้ง " + path + " = " + JSON.stringify(val) + " ให้ทุกเกาะ?")) return;
+  const msg = document.getElementById("fleetMsg");
+  let ok = 0, fail = [];
+  for (const target of loaded) {
+    if (target === src) { ok += 1; continue; }
+    try {
+      const parts = path.split(".");
+      let o = target.cfg;
+      for (let i = 0; i < parts.length - 1; i++) { if (o[parts[i]] === undefined) o[parts[i]] = {}; o = o[parts[i]]; }
+      o[parts[parts.length - 1]] = val;
+      await islePost(target.isle, "/admin/config", { json: JSON.stringify(target.cfg, null, 2) });
+      ok += 1;
+    } catch (e) { fail.push((target.isle.name || target.isle.id) + ": " + e.message); }
+  }
+  showMsg(msg, "ตั้งค่าให้ " + ok + " เกาะแล้ว" + (fail.length ? " · พลาด: " + fail.join(", ") : ""), fail.length === 0);
+  diffIslandConfigs();
+  if (loaded.some(function (x) { return isleIsHere(x.isle); })) loadConfig();
+}
+
+// ── กราฟย้อนหลัง (วาดเป็น SVG เอง ไม่ต้องโหลดไลบรารีจากเน็ต) ─────────
+async function loadHistory() {
+  const box = document.getElementById("histBox");
+  let data;
+  try { data = await getJSON("/admin/history"); }
+  catch (e) {
+    box.innerHTML = '<div class="sub">เซิร์ฟรุ่นนี้ยังไม่มี /admin/history (ต้องอัปเซิร์ฟก่อน)</div>';
+    return;
+  }
+  const rows = data.samples || [];
+  if (rows.length < 2) {
+    box.innerHTML = '<div class="sub">ยังเก็บข้อมูลไม่พอ — เก็บทุก 1 นาที เพิ่งเปิดเซิร์ฟมา ' +
+      fmtSeconds(rows.length * 60) + "</div>";
+    return;
+  }
+  box.innerHTML = "";
+  box.appendChild(sparkline("ผู้เล่นออนไลน์", rows.map(function (r) { return r.players; }), rows, "var(--good)", ""));
+  box.appendChild(sparkline("TPS", rows.map(function (r) { return r.tps; }), rows, "var(--accent)", ""));
+  box.appendChild(sparkline("RAM", rows.map(function (r) { return r.ram_mb; }), rows, "var(--warn)", " MB"));
+}
+function sparkline(title, values, rows, color, unit) {
+  const wrap = document.createElement("div");
+  wrap.className = "spark-wrap";
+  const max = Math.max.apply(null, values), min = Math.min.apply(null, values);
+  const span = (max - min) || 1;
+  const cap = document.createElement("div");
+  cap.className = "cap";
+  const last = values[values.length - 1];
+  cap.innerHTML = "<span>" + title + "</span><span>ตอนนี้ <b>" + last + unit +
+    "</b> · สูงสุด <b>" + max + unit + "</b> · ช่วง " + fmtSeconds((rows.length - 1) * 60) + " ที่ผ่านมา</span>";
+  wrap.appendChild(cap);
+  const W = 600, H = 60;
+  const pts = values.map(function (v, i) {
+    const x = (i / (values.length - 1)) * W;
+    const y = H - ((v - min) / span) * (H - 6) - 3;
+    return x.toFixed(1) + "," + y.toFixed(1);
+  }).join(" ");
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "spark");
+  svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+  svg.setAttribute("preserveAspectRatio", "none");
+  const area = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+  area.setAttribute("points", "0," + H + " " + pts + " " + W + "," + H);
+  area.setAttribute("fill", color);
+  area.setAttribute("opacity", "0.14");
+  svg.appendChild(area);
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  line.setAttribute("points", pts);
+  line.setAttribute("fill", "none");
+  line.setAttribute("stroke", color);
+  line.setAttribute("stroke-width", "1.6");
+  line.setAttribute("vector-effect", "non-scaling-stroke");
+  svg.appendChild(line);
+  wrap.appendChild(svg);
+  return wrap;
+}
+
+// ── ระงับการเข้าเล่น ────────────────────────────────────────────────
+async function loadBans() {
+  const tbl = document.getElementById("banTbl");
+  let data;
+  try { data = await getJSON("/admin/bans"); }
+  catch (e) {
+    tbl.innerHTML = '<tbody><tr><td class="muted">เซิร์ฟรุ่นนี้ยังไม่มีระบบแบน (ต้องอัปเซิร์ฟก่อน)</td></tr></tbody>';
+    return;
+  }
+  const bans = data.bans || [];
+  document.getElementById("banCount").textContent = bans.length;
+  const tb = tblHead(tbl, ["ผู้เล่น", "entity id", "เหตุผล", "หมดอายุ", ""]);
+  if (!bans.length) {
+    const tr = document.createElement("tr");
+    tr.appendChild(td("ยังไม่มีใครถูกระงับ", "muted"));
+    tb.appendChild(tr);
+    return;
+  }
+  bans.forEach(function (b) {
+    const tr = document.createElement("tr");
+    tr.appendChild(td(b.name || "(ไม่ทราบชื่อ)"));
+    tr.appendChild(td(b.entity_id, "mono muted"));
+    tr.appendChild(td(b.reason || "-", "muted"));
+    tr.appendChild(td(b.until > 0 ? new Date(b.until * 1000).toLocaleString("th-TH") : "ถาวร"));
+    const act = document.createElement("td");
+    const btn = document.createElement("button");
+    btn.className = "small";
+    btn.textContent = "ปลด";
+    btn.addEventListener("click", async function () {
+      try {
+        await postForm("/admin/unban", { who: b.entity_id || b.name });
+        showMsg(document.getElementById("banMsg"), "ปลดระงับแล้ว", true);
+        loadBans();
+      } catch (e) { showMsg(document.getElementById("banMsg"), "ปลดไม่สำเร็จ: " + e.message, false); }
+    });
+    act.appendChild(btn);
+    tr.appendChild(act);
+    tb.appendChild(tr);
+  });
+}
+async function banPlayer() {
+  const who = document.getElementById("banWho").value.trim();
+  const msg = document.getElementById("banMsg");
+  if (!who) { showMsg(msg, "ใส่ชื่อผู้เล่นก่อน", false); return; }
+  const reason = document.getElementById("banReason").value.trim();
+  const hours = document.getElementById("banHours").value.trim() || "0";
+  if (!confirm("ระงับ " + who + (hours === "0" ? " ถาวร" : " เป็นเวลา " + hours + " ชั่วโมง") + "?")) return;
+  try {
+    const r = await postForm("/admin/ban", { who: who, reason: reason, hours: hours });
+    showMsg(msg, (r && r.message) || "ระงับแล้ว", true);
+    document.getElementById("banWho").value = "";
+    document.getElementById("banReason").value = "";
+    loadBans();
+  } catch (e) { showMsg(msg, "ระงับไม่สำเร็จ: " + e.message, false); }
+}
+
+// ── รีสตาร์ตแบบมีคำเตือน ────────────────────────────────────────────
+async function restartServer() {
+  const secs = document.getElementById("restartSecs").value;
+  const note = document.getElementById("restartNote").value.trim();
+  const msg = document.getElementById("restartMsg");
+  if (!confirm("เริ่มนับถอยหลังรีสตาร์ตเกาะนี้ในอีก " + fmtSeconds(Number(secs)) + " ใช่ไหม?\nผู้เล่นทุกคนบนเกาะนี้จะหลุดตอนครบเวลา")) return;
+  try {
+    const r = await postForm("/admin/restart", { seconds: secs, note: note });
+    showMsg(msg, (r && r.message) || "เริ่มนับถอยหลังแล้ว", true);
+  } catch (e) { showMsg(msg, "สั่งไม่สำเร็จ: " + e.message + " (เซิร์ฟรุ่นเก่ายังไม่มีคำสั่งนี้)", false); }
+}
+
+// ── บัพ/ดีบัพ ───────────────────────────────────────────────────────
+let seAll = [];
+async function loadStatusEffects() {
+  try {
+    const r = await getJSON("/admin/status-effects");
+    seAll = r.effects || [];
+    document.getElementById("seCount").textContent = seAll.length;
+    renderStatusEffects();
+  } catch (e) {
+    document.getElementById("seTbl").innerHTML =
+      '<tbody><tr><td class="muted">เซิร์ฟรุ่นนี้ยังไม่มี /admin/status-effects (ต้องอัปเซิร์ฟก่อน)</td></tr></tbody>';
+  }
+}
+const SE_TYPE = { 1: "หลอด", 2: "ความล้า", 3: "ค่าสถานะ", 4: "ลดพลังงาน", 7: "ธง", 9: "ภูมิคุ้มกัน",
+                  10: "วิจัยสัตว์", 12: "exp สกิล", 13: "สัตว์เลี้ยง", 14: "พลังสัตว์เลี้ยง" };
+function renderStatusEffects() {
+  const q = (document.getElementById("seSearch").value || "").trim().toLowerCase();
+  const filter = document.getElementById("seFilter").value;
+  const tb = tblHead(document.getElementById("seTbl"), ["id", "ชื่อ (เกาหลี)", "ชนิด", "นาน", "ผลที่ได้", ""]);
+  let n = 0;
+  seAll.forEach(function (e) {
+    // "neutral" ในหน้าเว็บ = icon_color ว่างในไฟล์เกม (ธงระบบ ไม่ใช่บัพ/ดีบัพจริง)
+    if (filter === "neutral" ? e.color !== "" : (filter && e.color !== filter)) return;
+    const fx = (e.effects || []).map(function (f) {
+      return (SE_TYPE[f.type] || f.type) + ":" + f.key + "=" + f.value;
+    }).join(" · ");
+    if (q && (e.id + " " + e.name + " " + fx).toLowerCase().indexOf(q) < 0) return;
+    if (n >= 300) return;      // กันตารางยาวจนหน้าอืด
+    n += 1;
+    const tr = document.createElement("tr");
+    tr.appendChild(td(e.id, "mono"));
+    tr.appendChild(td(e.name, "muted"));
+    const c = document.createElement("td");
+    const pill = document.createElement("span");
+    pill.className = "pill " + (e.color === "negative" ? "bad" : e.color === "positive" ? "ok" : "");
+    pill.textContent = e.color === "negative" ? "ดีบัพ" : e.color === "positive" ? "บัพ" : "กลาง";
+    c.appendChild(pill);
+    tr.appendChild(c);
+    tr.appendChild(td(e.duration || "-", "mono muted"));
+    tr.appendChild(td(fx || "-", "muted"));
+    const act = document.createElement("td");
+    const b = document.createElement("button");
+    b.className = "small";
+    b.textContent = "ลองใส่ตัวเอง";
+    b.title = "สั่ง cheat effect " + e.id + " (ต้องเปิด --enable-cheat และตัวเองต้องออนไลน์)";
+    b.addEventListener("click", async function () {
+      const who = prompt("ใส่ให้ใคร? (ชื่อผู้เล่นที่ออนไลน์อยู่)");
+      if (!who) return;
+      try {
+        await postForm("/admin/cheat", { entity_id: who, cheat: "effect " + e.id });
+        showMsg(document.getElementById("fleetMsg"), "ส่ง cheat effect " + e.id + " ให้ " + who + " แล้ว", true);
+      } catch (err) { alert("ไม่สำเร็จ: " + err.message); }
+    });
+    act.appendChild(b);
+    tr.appendChild(act);
+    tb.appendChild(tr);
+  });
+  if (!n) {
+    const tr = document.createElement("tr");
+    tr.appendChild(td("ไม่เจอ", "muted"));
+    tb.appendChild(tr);
+  }
+}
+
+// ── ไฟล์ข้อมูลของเกาะ (data/terrains/extracted/<เกาะ>/*.yml) ─────────
+// ทำไมต้องมี: เจอของจริงว่าเกาะหิมะบน VPS ไม่มี pois.yml เลย ⇒ ท่าเรือถูกสุ่มไปไว้คนละมุมเกาะ
+// เดิมทางแก้เดียวคือ scp ไฟล์ขึ้นเครื่อง — ตอนนี้เลือกไฟล์จากคอมหรือพิมพ์เองในหน้านี้ได้
+const TF_HINT = {
+  "pois.yml": "ตำแหน่งท่าเรือ (port_points) · หลุมวาร์ป (warpholes) · รอยแยก (rifts)",
+  "herds.yml": "จุดเกิดฝูงสัตว์ที่เกมกำหนดมา",
+  "config.yml": "ค่าประจำเกาะที่มากับ terrain",
+  "info.yml": "ขนาดเกาะและ metadata — แก้ผิดแล้วเกาะโหลดไม่ขึ้น ระวัง"
+};
+
+async function loadTerrainList() {
+  const sel = document.getElementById("tfTerrain");
+  if (!sel || sel.options.length) return;
+  try {
+    const d = await getJSON("/admin/terrain/islands");
+    (d.islands || []).forEach(function (isle) {
+      const o = document.createElement("option");
+      o.value = isle.id;
+      o.textContent = isle.id + (isle.pois_yml ? "" : "  ⚠ ไม่มี pois.yml");
+      sel.appendChild(o);
+    });
+    if (sel.options.length) loadTerrainFiles();
+  } catch (e) { /* เซิร์ฟรุ่นเก่าไม่มี endpoint นี้ */ }
+}
+
+async function loadTerrainFiles() {
+  const terrain = document.getElementById("tfTerrain").value;
+  const box = document.getElementById("tfList");
+  if (!terrain) { box.innerHTML = '<div class="sub">ยังไม่ได้เลือกเกาะ</div>'; return; }
+  let d;
+  try {
+    d = await getJSON("/admin/terrain/files?terrain=" + encodeURIComponent(terrain));
+  } catch (e) {
+    box.innerHTML = '<div class="sub">เซิร์ฟรุ่นนี้ยังไม่มี /admin/terrain/files (ต้องอัปเซิร์ฟก่อน)</div>';
+    return;
+  }
+  box.innerHTML = "";
+  const dir = document.createElement("div");
+  dir.className = "sub";
+  dir.style.marginBottom = "10px";
+  dir.textContent = "โฟลเดอร์: " + d.dir;
+  box.appendChild(dir);
+
+  (d.files || []).forEach(function (f) {
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:10px;";
+
+    const head = document.createElement("div");
+    head.className = "row";
+    head.style.marginBottom = "6px";
+    const nm = document.createElement("b");
+    nm.className = "mono";
+    nm.textContent = f.name;
+    const pill = document.createElement("span");
+    pill.className = "pill " + (f.exists ? "ok" : "bad");
+    pill.textContent = f.exists ? (f.bytes + " ไบต์") : "ยังไม่มีไฟล์นี้";
+    head.appendChild(nm);
+    head.appendChild(pill);
+
+    const hint = document.createElement("span");
+    hint.className = "sub";
+    hint.textContent = TF_HINT[f.name] || "";
+    head.appendChild(hint);
+    wrap.appendChild(head);
+
+    const ta = document.createElement("textarea");
+    ta.spellcheck = false;
+    ta.style.minHeight = "110px";
+    ta.value = f.exists ? (f.content || "") : "";
+    ta.placeholder = f.name === "pois.yml"
+      ? "port_points:\n- - 176\n  - 200\ncamp_warpholes: []"
+      : "ยังไม่มีไฟล์ — วางเนื้อหาที่นี่ หรือกดเลือกไฟล์จากเครื่อง";
+    wrap.appendChild(ta);
+
+    const bar = document.createElement("div");
+    bar.className = "row top-gap";
+
+    // เลือกไฟล์จากเครื่อง — อ่านเป็นข้อความแล้วเทลงกล่อง ให้ตรวจตาก่อนบันทึกเสมอ
+    const pick = document.createElement("input");
+    pick.type = "file";
+    pick.accept = ".yml,.yaml,.txt";
+    pick.style.display = "none";
+    pick.addEventListener("change", function () {
+      const file = pick.files && pick.files[0];
+      if (!file) return;
+      const rd = new FileReader();
+      rd.onload = function () {
+        ta.value = String(rd.result);
+        showMsg(document.getElementById("tfMsg"),
+          "อ่าน " + file.name + " มาใส่กล่องแล้ว — ตรวจดูก่อนกดบันทึก", true);
+      };
+      rd.readAsText(file, "utf-8");
+    });
+    const pickBtn = document.createElement("button");
+    pickBtn.className = "small";
+    pickBtn.textContent = "📁 เลือกไฟล์จากเครื่อง";
+    pickBtn.addEventListener("click", function () { pick.click(); });
+
+    const saveBtn = document.createElement("button");
+    saveBtn.className = "primary small";
+    saveBtn.textContent = f.exists ? "บันทึกทับ" : "สร้างไฟล์นี้";
+    saveBtn.addEventListener("click", async function () {
+      if (!ta.value.trim()) {
+        showMsg(document.getElementById("tfMsg"), "เนื้อหาว่าง — ไม่บันทึกให้", false);
+        return;
+      }
+      if (!confirm((f.exists ? "เขียนทับ " : "สร้าง ") + f.name + " ของเกาะ " + terrain + " ?\n(ของเดิมจะถูกสำรองไว้ให้)")) return;
+      try {
+        const r = await postForm("/admin/terrain/file", { terrain: terrain, name: f.name, content: ta.value });
+        showMsg(document.getElementById("tfMsg"), r.message, true);
+        loadTerrainFiles();
+      } catch (e) {
+        showMsg(document.getElementById("tfMsg"), "บันทึกไม่สำเร็จ: " + e.message, false);
+      }
+    });
+
+    bar.appendChild(pick);
+    bar.appendChild(pickBtn);
+    bar.appendChild(saveBtn);
+    wrap.appendChild(bar);
+    box.appendChild(wrap);
+  });
+}
+
+// ── ทะเบียนเกาะ ─────────────────────────────────────────────────────
+async function loadIslandRegistry() {
+  const msg = document.getElementById("isleRegMsg");
+  try {
+    const r = await getJSON("/admin/data-file?name=islands.json");
+    document.getElementById("isleRegText").value = JSON.stringify(JSON.parse(r.json), null, 2);
+    showMsg(msg, "โหลดจาก " + r.path, true);
+  } catch (e) { showMsg(msg, "โหลดไม่สำเร็จ: " + e.message, false); }
+}
+async function saveIslandRegistry() {
+  const msg = document.getElementById("isleRegMsg");
+  const json = document.getElementById("isleRegText").value;
+  try { JSON.parse(json); } catch (e) { showMsg(msg, "JSON ไม่ถูกต้อง: " + e.message, false); return; }
+  try {
+    const r = await postForm("/admin/islands", { json: json });
+    showMsg(msg, (r && r.message) || "บันทึกแล้ว", true);
+    loadIslandTabs();
+  } catch (e) { showMsg(msg, "บันทึกไม่สำเร็จ: " + e.message + " (เซิร์ฟรุ่นเก่ายังไม่มีคำสั่งนี้)", false); }
+}
+
+// ── config.json — ฟอร์มแก้ค่าทีละช่อง ────────────────────────────────
+// เดิมเป็น textarea JSON ดิบก้อนเดียว: พิมพ์ตกคอมมาเดียว config ทั้งไฟล์ไม่โหลด และไม่มีทางรู้ว่า
+// ช่องไหนหมายถึงอะไรถ้าไม่เปิด ServerConfig.cs อ่านเอง
+//
+// คำอธิบายไทยของทุกช่องมาจาก <summary> ในโค้ดจริง ผ่านไฟล์ data/config-meta.json
+// (สร้างด้วย tools/gen-config-meta.py — รันใหม่ทุกครั้งที่เพิ่มช่องใน ServerConfig.cs)
+// ดึงผ่าน /admin/data-file ที่มีอยู่แล้ว จึงไม่ต้องเพิ่ม route ใหม่ในเซิร์ฟ
+//
+// หลักสำคัญ: **ไม่สร้าง JSON ขึ้นใหม่จากฟอร์ม** แต่แก้ค่าลงบนก้อนที่โหลดมาแล้วส่งกลับทั้งก้อน
+// ⇒ ช่องที่ฟอร์มไม่ได้เรนเดอร์ (ของใหม่ที่เซิร์ฟเพิ่มมา / ตารางยาว ๆ) ไม่หายไปไหน
+let cfgOriginal = null;   // ก้อนที่โหลดมาล่าสุด (ไว้เทียบว่าแก้อะไรไป + ปุ่มย้อนกลับ)
+let cfgDraft = null;      // ก้อนที่กำลังแก้อยู่
+let cfgMeta = {};         // คำอธิบาย/ค่าเริ่มต้นของแต่ละช่อง
+let cfgTab = null;        // หมวดที่เปิดอยู่
+let cfgRawMode = false;
+
+async function loadCfgMeta() {
+  if (Object.keys(cfgMeta).length) return;
+  try {
+    const r = await getJSON("/admin/data-file?name=config-meta.json");
+    cfgMeta = JSON.parse(r.json);
+  } catch (e) {
+    cfgMeta = {};   // ไม่มีไฟล์ก็ยังแก้ได้ แค่ไม่มีคำอธิบาย/ค่าเริ่มต้น
+  }
+}
+
 async function loadConfig() {
   try {
+    await loadCfgMeta();
     const c = await getJSON("/admin/config");
     document.getElementById("cfgPath").textContent = "ไฟล์: " + c.path;
     document.getElementById("cfgTextarea").value = c.json;
+    cfgOriginal = JSON.parse(c.json);
+    cfgDraft = JSON.parse(c.json);
+    if (cfgTab === null || !(cfgTab in cfgDraft)) {
+      cfgTab = Object.keys(cfgDraft)[0] || null;
+    }
+    renderCfgForm();
   } catch (e) {
     showMsg(document.getElementById("cfgMsg"), "โหลด config ไม่สำเร็จ: " + e.message, false);
   }
 }
-async function saveConfig() {
-  const json = document.getElementById("cfgTextarea").value;
-  try {
-    JSON.parse(json); // เช็คไวยากรณ์ฝั่งเบราว์เซอร์ก่อน ลด round-trip เวลาพิมพ์ผิด
-  } catch (e) {
-    showMsg(document.getElementById("cfgMsg"), "JSON ไม่ถูกต้อง: " + e.message, false);
+
+function toggleCfgMode() {
+  cfgRawMode = !cfgRawMode;
+  document.getElementById("cfgForm").hidden = cfgRawMode;
+  document.getElementById("cfgRaw").hidden = !cfgRawMode;
+  document.getElementById("cfgModeBtn").textContent = cfgRawMode ? "โหมดฟอร์ม" : "โหมด JSON ดิบ";
+  // สลับไป JSON ดิบ: ยกที่แก้ในฟอร์มไปด้วย จะได้ไม่งงว่าทำไมค่าไม่ตรง
+  if (cfgRawMode && cfgDraft) {
+    document.getElementById("cfgTextarea").value = JSON.stringify(cfgDraft, null, 2);
+  } else if (!cfgRawMode) {
+    try {
+      cfgDraft = JSON.parse(document.getElementById("cfgTextarea").value);
+      renderCfgForm();
+    } catch (e) {
+      showMsg(document.getElementById("cfgMsg"), "JSON ในกล่องยังไม่ถูกต้อง — แก้ให้ถูกก่อนสลับกลับ", false);
+    }
+  }
+}
+
+function revertCfg() {
+  if (!cfgOriginal) return;
+  cfgDraft = JSON.parse(JSON.stringify(cfgOriginal));
+  renderCfgForm();
+  showMsg(document.getElementById("cfgMsg"), "ย้อนกลับเป็นค่าที่โหลดมาแล้ว (ยังไม่ได้บันทึก)", true);
+}
+
+// อ่าน/เขียนค่าตาม path แบบ "Survival.FatigueMax" หรือ "Animals.Herds.MaxPerHerd"
+function cfgGet(obj, path) {
+  return path.split(".").reduce(function (o, k) { return (o == null) ? undefined : o[k]; }, obj);
+}
+function cfgSet(obj, path, val) {
+  const parts = path.split(".");
+  let o = obj;
+  for (let i = 0; i < parts.length - 1; i++) { o = o[parts[i]]; }
+  o[parts[parts.length - 1]] = val;
+}
+function cfgMetaOf(section, path) {
+  // meta มีแค่ระดับบนสุดของแต่ละหมวด (ตรงกับ property ในคลาส C#)
+  const parts = path.split(".");
+  const m = (cfgMeta[section] && cfgMeta[section][parts[1]]) || null;
+  if (!m) return null;
+  if (parts.length > 2) {
+    // ช่องที่ซ้อนอยู่ข้างใน object — ยืมได้แค่คำอธิบายของก้อนแม่
+    // ห้ามยืม "ค่าเริ่มต้น" มาด้วย เพราะของแม่เป็นทั้ง object ไม่ใช่ค่าของช่องนี้
+    return { t: "", d: m.d, g: 1, v: null };
+  }
+  return m;
+}
+function sameValue(a, b) {
+  if (typeof a === "object" && a !== null) return JSON.stringify(a) === JSON.stringify(b);
+  return String(a) === String(b);
+}
+function cfgTotalDirty() {
+  if (!cfgDraft) return 0;
+  let n = 0;
+  Object.keys(cfgDraft).forEach(function (sec) { n += countDirty(sec); });
+  return n;
+}
+function refreshSaveBar() {
+  const total = cfgTotalDirty();
+  const bar = document.getElementById("cfgSaveBar");
+  bar.hidden = total === 0;
+  document.getElementById("cfgDirtyText").textContent = "✏️ แก้ไว้ " + total + " ช่อง — ยังไม่ได้บันทึก";
+}
+
+function renderCfgForm() {
+  if (!cfgDraft) return;
+  const box = document.getElementById("cfgFields");
+  const tabs = document.getElementById("cfgTabs");
+  const q = (document.getElementById("cfgSearch").value || "").trim().toLowerCase();
+  const onlyChanged = document.getElementById("cfgOnlyChanged").checked;
+  const sections = Object.keys(cfgDraft);
+
+  // ── แท็บหมวด · ตัวเลขข้างชื่อ = จำนวนช่องที่แก้ไว้ยังไม่บันทึกในหมวดนั้น ──
+  tabs.innerHTML = "";
+  sections.forEach(function (sec) {
+    const n = countDirty(sec);
+    const b = document.createElement("button");
+    b.className = "cfg-tab" + ((cfgTab === sec && !q) ? " on" : "");
+    b.textContent = sec;
+    if (n) {
+      const sp = document.createElement("span");
+      sp.className = "n";
+      sp.textContent = "●" + n;
+      b.appendChild(sp);
+    }
+    b.addEventListener("click", function () {
+      cfgTab = sec;
+      document.getElementById("cfgSearch").value = "";
+      renderCfgForm();
+    });
+    tabs.appendChild(b);
+  });
+
+  // ── ช่องกรอก — ค้นหาแล้วดูข้ามหมวด ไม่ค้นก็ดูทีละหมวด ──
+  box.innerHTML = "";
+  let shown = 0;
+  const visibleSections = q ? sections : (cfgTab ? [cfgTab] : sections);
+  visibleSections.forEach(function (sec) {
+    const rows = [];
+    walkCfg(sec, sec, cfgDraft[sec], rows, q, onlyChanged, 0);
+    if (!rows.length) return;
+    const g = document.createElement("div");
+    g.className = "cfg-group";
+    const h = document.createElement("h3");
+    h.textContent = sec;
+    g.appendChild(h);
+    rows.forEach(function (r) { g.appendChild(r); shown += 1; });
+    box.appendChild(g);
+  });
+
+  if (!shown) {
+    const e = document.createElement("div");
+    e.className = "cfg-empty";
+    e.textContent = q ? ('ไม่เจอช่องที่ตรงกับ "' + q + '"') : "หมวดนี้ไม่มีช่องที่ตรงกับตัวกรอง";
+    box.appendChild(e);
+  }
+  document.getElementById("cfgCount").textContent = "แสดง " + shown + " ช่อง";
+  refreshSaveBar();
+}
+
+// นับช่องที่ต่างจากตอนโหลดมา (ทีละหมวด)
+function countDirty(sec) {
+  let n = 0;
+  const walk = function (a, b) {
+    if (a === null || typeof a !== "object" || Array.isArray(a)) {
+      if (!sameValue(a, b)) n += 1;
+      return;
+    }
+    Object.keys(a).forEach(function (k) { walk(a[k], b ? b[k] : undefined); });
+  };
+  walk(cfgDraft[sec], cfgOriginal ? cfgOriginal[sec] : undefined);
+  return n;
+}
+
+// เดินลงไปในก้อน config แล้วสร้างแถวช่องกรอกตามชนิดของค่า
+function walkCfg(section, path, value, out, q, onlyChanged, depth) {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    const row = buildCfgRow(section, path, value, q, onlyChanged);
+    if (row) out.push(row);
     return;
+  }
+  // object ซ้อน (เช่น Animals.Herds) — โชว์เป็นกลุ่มย่อยแล้วไล่ลงไปข้างใน
+  const inner = [];
+  Object.keys(value).forEach(function (k) {
+    walkCfg(section, path + "." + k, value[k], inner, q, onlyChanged, depth + 1);
+  });
+  if (!inner.length) return;
+  if (depth > 0) {
+    const wrap = document.createElement("div");
+    wrap.className = "cfg-sub";
+    const t = document.createElement("div");
+    t.className = "t";
+    t.textContent = path.split(".").slice(1).join(".");
+    wrap.appendChild(t);
+    inner.forEach(function (r) { wrap.appendChild(r); });
+    out.push(wrap);
+  } else {
+    inner.forEach(function (r) { out.push(r); });
+  }
+}
+
+function buildCfgRow(section, path, value, q, onlyChanged) {
+  const meta = cfgMetaOf(section, path);
+  const shortPath = path.split(".").slice(1).join(".");
+  const doc = meta ? meta.d : "";
+  const def = meta ? meta.v : null;
+
+  // ตัวกรอง: ค้นจากชื่อช่อง + คำอธิบาย + ชื่อหมวด (พิมพ์ไทยหรืออังกฤษก็เจอ)
+  if (q) {
+    const hay = (shortPath + " " + doc + " " + section).toLowerCase();
+    if (hay.indexOf(q) < 0) return null;
+  }
+  const hasDefault = def !== null && def !== undefined;
+  const changedFromDefault = hasDefault && !sameValue(value, def);
+  if (onlyChanged && !changedFromDefault) return null;
+
+  const orig = cfgOriginal ? cfgGet(cfgOriginal, path) : undefined;
+  const row = document.createElement("div");
+  row.className = "cfg-row" + (sameValue(value, orig) ? "" : " dirty");
+  row.dataset.path = path;
+
+  const k = document.createElement("div");
+  k.className = "k";
+  k.textContent = shortPath;
+  row.appendChild(k);
+
+  const commit = function (v) {
+    cfgSet(cfgDraft, path, v);
+    row.classList.toggle("dirty", !sameValue(v, cfgGet(cfgOriginal, path)));
+    refreshSaveBar();
+  };
+
+  const cell = document.createElement("div");
+  if (typeof value === "boolean") {
+    const lab = document.createElement("label");
+    lab.className = "cfg-bool";
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = value;
+    const txt = document.createElement("span");
+    txt.textContent = value ? "เปิด" : "ปิด";
+    cb.addEventListener("change", function () {
+      txt.textContent = cb.checked ? "เปิด" : "ปิด";
+      commit(cb.checked);
+    });
+    lab.appendChild(cb);
+    lab.appendChild(txt);
+    cell.appendChild(lab);
+  } else if (typeof value === "number") {
+    const inp = document.createElement("input");
+    inp.type = "number";
+    inp.step = "any";
+    inp.value = value;
+    inp.addEventListener("input", function () {
+      const n = parseFloat(inp.value);
+      if (!isNaN(n)) commit(n);
+    });
+    cell.appendChild(inp);
+  } else if (value !== null && typeof value === "object") {
+    // array หรือ object ที่ไม่อยากแตกเป็นช่อง — ให้แก้เป็น JSON ก้อนเล็ก ๆ ตรงนั้นเลย
+    const ta = document.createElement("textarea");
+    ta.value = JSON.stringify(value, null, 1);
+    ta.spellcheck = false;
+    ta.addEventListener("input", function () {
+      try {
+        commit(JSON.parse(ta.value));
+        ta.style.borderColor = "";
+      } catch (e) {
+        ta.style.borderColor = "var(--bad)";
+      }
+    });
+    cell.appendChild(ta);
+    row.style.gridTemplateColumns = "minmax(180px,260px) 1fr";
+  } else {
+    const inp = document.createElement("input");
+    inp.type = "text";
+    inp.value = value === null ? "" : String(value);
+    inp.addEventListener("input", function () { commit(inp.value); });
+    cell.appendChild(inp);
+  }
+  row.appendChild(cell);
+
+  const d = document.createElement("div");
+  d.className = "d" + (doc ? (meta && meta.g ? " shared" : "") : " none");
+  d.textContent = doc || "(ยังไม่มีคำอธิบายในโค้ด)";
+  row.appendChild(d);
+
+  const side = document.createElement("div");
+  side.className = "side";
+  if (hasDefault) {
+    const dv = document.createElement("span");
+    dv.className = "def";
+    dv.textContent = "เริ่มต้น " + def;
+    if (changedFromDefault) { dv.style.color = "var(--warn)"; }
+    side.appendChild(dv);
+    const rb = document.createElement("button");
+    rb.className = "cfg-reset";
+    rb.textContent = "↺";
+    rb.title = "คืนค่าเริ่มต้น (" + def + ")";
+    rb.addEventListener("click", function () {
+      const n = parseFloat(def);
+      let v = def;
+      if (def === "true") { v = true; }
+      else if (def === "false") { v = false; }
+      else if (!isNaN(n) && String(n) === String(def)) { v = n; }
+      commit(v);
+      renderCfgForm();
+    });
+    side.appendChild(rb);
+  }
+  row.appendChild(side);
+  return row;
+}
+
+async function saveConfig() {
+  let json;
+  if (cfgRawMode) {
+    json = document.getElementById("cfgTextarea").value;
+    try {
+      JSON.parse(json);   // เช็คไวยากรณ์ฝั่งเบราว์เซอร์ก่อน ลด round-trip เวลาพิมพ์ผิด
+    } catch (e) {
+      showMsg(document.getElementById("cfgMsg"), "JSON ไม่ถูกต้อง: " + e.message, false);
+      return;
+    }
+  } else {
+    if (!cfgDraft) {
+      showMsg(document.getElementById("cfgMsg"), "ยังไม่ได้โหลด config", false);
+      return;
+    }
+    json = JSON.stringify(cfgDraft, null, 2);
   }
   try {
     await postForm("/admin/config", { json });
+    cfgOriginal = JSON.parse(json);
+    cfgDraft = JSON.parse(json);
+    document.getElementById("cfgTextarea").value = json;
+    renderCfgForm();
     showMsg(document.getElementById("cfgMsg"), "บันทึกแล้ว มีผลทันที", true);
   } catch (e) {
     showMsg(document.getElementById("cfgMsg"), "บันทึกไม่สำเร็จ: " + e.message, false);
@@ -568,8 +2081,431 @@ document.getElementById("cheatCmd").addEventListener("keydown", e => {
 });
 document.getElementById("poiOnlyProblems").addEventListener("change", loadPOI);
 
+
+// ── เครื่องมือเกาะ/แมพ ────────────────────────────────────────────────
+// วาดเลเยอร์ลง canvas เอง แทนที่จะให้เซิร์ฟทำ PNG — เซิร์ฟจริงรันบน Linux
+// ซึ่ง System.Drawing ใช้ไม่ได้ (ดูหมายเหตุใน Gateway.AdminTerrain.cs)
+let MAP = null, POINTS = null, PICKED = null;
+
+// สีของแต่ละ biome — id ตรงกับ Shared.Region.Biome ของเกม
+const BIOME_RGB = {
+  0:[45,90,39], 1:[34,120,34], 2:[222,194,128], 3:[152,164,152], 4:[238,240,243],
+  5:[124,176,74], 6:[74,92,58], 7:[86,54,48], 9:[150,146,136], 10:[226,208,160],
+  11:[48,96,132], 12:[40,104,148], 13:[74,144,184], 14:[58,122,184], 15:[196,72,32]
+};
+
+function rampColor(v, lo, hi, cold) {
+  const t = Math.max(0, Math.min(1, (v - lo) / Math.max(1e-6, hi - lo)));
+  return cold ? [Math.round(30 + 60 * t), Math.round(60 + 150 * t), Math.round(90 + 120 * t)]
+              : [Math.round(40 + 200 * t), Math.round(50 + 150 * t), Math.round(60 + 40 * t)];
+}
+
+async function loadMap() {
+  const layer = document.getElementById("mapLayer").value;
+  try {
+    MAP = await getJSON("/admin/terrain/layer?name=" + layer + "&size=256");
+    POINTS = await getJSON("/admin/terrain/points");
+    drawMap();
+  } catch (e) {
+    showMsg(document.getElementById("mapMsg"), e.message, false);
+  }
+}
+
+function drawMap() {
+  if (!MAP) return;
+  const cv = document.getElementById("mapCanvas");
+  const ctx = cv.getContext("2d");
+  const w = MAP.w, h = MAP.h, data = MAP.data, layer = MAP.layer;
+  const img = ctx.createImageData(w, h);
+  let lo = Infinity, hi = -Infinity;
+  if (layer !== "biome" && layer !== "cliff") {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i] < lo) lo = data[i];
+      if (data[i] > hi) hi = data[i];
+    }
+  }
+  for (let i = 0; i < data.length; i++) {
+    const v = data[i];
+    let c;
+    if (layer === "biome") c = BIOME_RGB[v] || [128,128,128];
+    else if (layer === "cliff") c = v ? [200,90,70] : [40,48,58];
+    else c = rampColor(v, lo, hi, layer === "land" || layer === "river" || layer === "lake");
+    const o = i * 4;
+    img.data[o] = c[0]; img.data[o+1] = c[1]; img.data[o+2] = c[2]; img.data[o+3] = 255;
+  }
+  // วาดภาพเล็กก่อนแล้วขยายเต็ม canvas (ปิด smoothing ให้เห็นเป็น tile ชัด ๆ)
+  const tmp = document.createElement("canvas");
+  tmp.width = w; tmp.height = h;
+  tmp.getContext("2d").putImageData(img, 0, 0);
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.drawImage(tmp, 0, 0, cv.width, cv.height);
+
+  if (!POINTS) return;
+  const k = cv.width / MAP.tiles;   // tile -> พิกเซลบนจอ
+  function dot(x, y, color, r) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x * k, y * k, r, 0, 6.283);
+    ctx.fill();
+  }
+  if (document.getElementById("ovHerd").checked) {
+    for (const p of POINTS.herds) dot(p.x, p.y, "rgba(127,212,255,0.55)", 1.6);
+  }
+  if (document.getElementById("ovAnimal").checked) {
+    for (const a of POINTS.animals) dot(a.x, a.y, a.rock ? "#ef5a6f" : "#3ecf8e", 2.6);
+  }
+  if (document.getElementById("ovPoi").checked) {
+    for (const p of POINTS.pois) dot(p.x, p.y, "#ffd447", 3.4);
+  }
+  if (POI_MOVING) {
+    // วงกลมกะพริบรอบตัวที่กำลังย้าย + เปลี่ยนเคอร์เซอร์ ให้รู้ว่ายังอยู่ในโหมดย้าย
+    const me = POINTS.pois.filter(function (q) {
+      return (q.id && q.id === POI_MOVING.id) || (q.short_id && q.short_id === POI_MOVING.short);
+    });
+    ctx.strokeStyle = "#4f9dff"; ctx.lineWidth = 2;
+    for (const q of me) { ctx.beginPath(); ctx.arc(q.x * k, q.y * k, 9, 0, 6.283); ctx.stroke(); }
+  }
+  if (document.getElementById("ovPlayer").checked) {
+    for (const p of POINTS.players) dot(p.x, p.y, "#ffffff", 3.4);
+  }
+  if (document.getElementById("ovEntry").checked && POINTS.entry) {
+    ctx.strokeStyle = "#ff8a3d"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(POINTS.entry.x * k, POINTS.entry.y * k, 7, 0, 6.283); ctx.stroke();
+  }
+  if (PICKED) {
+    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 1;
+    ctx.strokeRect(PICKED.x * k - 4, PICKED.y * k - 4, 8, 8);
+  }
+}
+
+document.getElementById("mapCanvas").addEventListener("click", function (ev) {
+  if (!MAP) return;
+  const cv = ev.currentTarget;
+  const r = cv.getBoundingClientRect();
+  const k = cv.width / MAP.tiles;
+  PICKED = {
+    x: Math.floor((ev.clientX - r.left) * (cv.width / r.width) / k),
+    y: Math.floor((ev.clientY - r.top) * (cv.height / r.height) / k)
+  };
+  drawMap();
+  if (POI_MOVING) {
+    // ยืนยันก่อนเสมอ — คลิกพลาดบนแผนที่ย่อส่วนทำให้เพี้ยนหลาย tile ได้ง่าย
+    if (confirm("ย้าย " + POI_MOVING.short + " ไปที่ tile " + PICKED.x + "," + PICKED.y + " ?")) {
+      doMovePOI(PICKED.x, PICKED.y);
+    }
+    return;
+  }
+  const gi = Math.floor(PICKED.y / MAP.step) * MAP.w + Math.floor(PICKED.x / MAP.step);
+  const val = MAP.data[gi];
+  const near = POINTS ? POINTS.animals.filter(function (a) {
+    return Math.abs(a.x - PICKED.x) <= 2 && Math.abs(a.y - PICKED.y) <= 2;
+  }).length : 0;
+  document.getElementById("tileInfo").textContent =
+    "tile " + PICKED.x + "," + PICKED.y + "\n" + MAP.layer + " = " + val +
+    "\nสัตว์ในรัศมี 2 tile: " + near;
+  document.getElementById("btnClearNatural").style.display = "inline-block";
+});
+
+async function clearNaturalHere() {
+  if (!PICKED) return;
+  const msgEl = document.getElementById("mapMsg");
+  try {
+    const d = await postForm("/admin/terrain/natural", { x: PICKED.x, y: PICKED.y, action: "remove" });
+    showMsg(msgEl, d.message, true);
+  } catch (e) {
+    showMsg(msgEl, e.message, false);
+  }
+}
+
+function stat(label, value, cls) {
+  return '<div class="stat"><div class="label">' + label +
+         '</div><div class="value ' + cls + '">' + value + '</div></div>';
+}
+
+async function loadHealth() {
+  try {
+    const d = await getJSON("/admin/terrain/health");
+    const a = d.animals;
+    document.getElementById("healthStats").innerHTML = [
+      stat("เกาะ", d.terrain_id, "small"),
+      stat("ขนาด", d.size[0] + " x " + d.size[1], "small"),
+      stat("พื้นที่เป็นหิน", d.rock_pct + "%", "small"),
+      stat("สัตว์ทั้งหมด", a.total, ""),
+      stat("อยู่ในก้อนหิน", a.in_rock, a.in_rock ? "bad" : "good"),
+      stat("อยู่ในน้ำ", a.in_water, a.in_water ? "bad" : "good"),
+      stat("ตรงจุดที่เกมกำหนด", a.on_game_spawn, "good"),
+      stat("จุดเข้าเกม", d.entry.x + "," + d.entry.y + " (" + d.entry.ocean_dm + ")", "small")
+    ].join("");
+    const v = document.getElementById("healthVerdict");
+    v.textContent = d.ok ? "ปกติดี" : d.issues.length + " เรื่องต้องดู";
+    v.className = "badge " + (d.ok ? "ok" : "warn");
+    const files = Object.keys(d.files).map(function (k) {
+      return (d.files[k] ? "✅ " : "❌ ") + k;
+    }).join(" · ");
+    document.getElementById("healthIssues").innerHTML =
+      "<div style='margin:8px 0'>ไฟล์ที่มากับเกาะ: " + files + "</div>" +
+      (d.issues.length
+        ? d.issues.map(function (i) {
+            const col = i.level === "bad" ? "var(--bad)" : "var(--warn)";
+            return "<div style='color:" + col + "'>• " + escapeHtml(i.text) + "</div>";
+          }).join("")
+        : "<div style='color:var(--good)'>• ไม่พบปัญหา</div>");
+  } catch (e) {
+    document.getElementById("healthIssues").textContent = e.message;
+  }
+}
+
+async function loadIslands() {
+  const el = document.getElementById("islandTable");
+  el.textContent = "กำลังตรวจ…";
+  try {
+    const d = await getJSON("/admin/terrain/islands");
+    el.innerHTML = "<table><tr><th>เกาะ</th><th>ขนาด</th><th>cliffs.dm</th><th>pois.yml</th><th>herds.yml</th><th>ผล</th></tr>" +
+      d.islands.map(function (i) {
+        const col = i.ok ? "var(--good)" : "var(--bad)";
+        const verdict = i.ok ? "ผ่าน" : escapeHtml(i.problems.join("; "));
+        return "<tr><td>" + escapeHtml(i.id) + "</td><td>" + i.size[0] + "x" + i.size[1] +
+          "</td><td>" + (i.cliffs_dm ? "✅" : "—") +
+          "</td><td>" + (i.pois_yml ? "✅" : "—") +
+          "</td><td>" + (i.herds_yml ? "✅" : "—") +
+          "</td><td style='color:" + col + "'>" + verdict + "</td></tr>";
+      }).join("") + "</table>";
+  } catch (e) {
+    el.textContent = e.message;
+  }
+}
+
+let MACROS = [];
+async function loadMacros() {
+  try {
+    const d = await getJSON("/admin/macros");
+    MACROS = d.macros;
+    document.getElementById("macroSource").textContent = d.source;
+    document.getElementById("macroName").innerHTML = MACROS.map(function (m) {
+      return '<option value="' + escapeHtml(m.name) + '">' + escapeHtml(m.name) + " (" + m.count + ")</option>";
+    }).join("");
+    showMacroCommands();
+  } catch (e) {
+    document.getElementById("macroSource").textContent = e.message;
+  }
+}
+function showMacroCommands() {
+  const name = document.getElementById("macroName").value;
+  const m = MACROS.find(function (x) { return x.name === name; });
+  document.getElementById("macroCommands").textContent = m ? m.commands.join("\n") : "";
+}
+async function runMacro() {
+  const msgEl = document.getElementById("macroMsg");
+  try {
+    const d = await postForm("/admin/macros/run", {
+      name: document.getElementById("macroName").value,
+      player: document.getElementById("macroPlayer").value.trim()
+    });
+    showMsg(msgEl, "สั่ง " + d.count + " คำสั่งให้ " + d.player + " แล้ว", true);
+  } catch (e) {
+    showMsg(msgEl, e.message, false);
+  }
+}
+document.getElementById("macroName").addEventListener("change", showMacroCommands);
+
+
+
+
+// ── โครงหน้า: เมนูซ้ายเป็นตัวสลับ "หน้า" ────────────────────────────────
+//
+// แบบเดียวกับ hPanel ของ Hostinger — กดเมนูแล้วเปลี่ยนเนื้อหาทั้งบล็อกไปเลย
+// ไม่ใช่เลื่อนไปหา (ของเดิมเป็นหน้ายาวหน้าเดียว ต้องหมุนล้อลงไปดูของล่าง ๆ)
+//
+// ทำตอนโหลดด้วย JS เพราะ section มีสองทรง (บางอันขึ้นต้นด้วย <h2> ตรง ๆ
+// บางอันห่อด้วย <div class="toolbar"> ที่มีปุ่มข้างใน) และการย้าย DOM node
+// ไม่ทำให้ event listener ที่ผูกไว้ก่อนหน้าหลุด
+(function setupShell() {
+  const VIEW_KEY = "durango_admin_view";
+  const GROUP_KEY = "durango_admin_groups";
+
+  // จัดกลุ่มเมนูด้วยคำในหัวข้อ — เรียงตามลำดับที่อยากให้โผล่
+  const GROUPS = [
+    { name: "ภาพรวม", keys: ["ศูนย์รวมทุกเกาะ", "ย้อนหลัง 12 ชั่วโมง"] },
+    { name: "เซิร์ฟ", keys: ["ผู้เล่นออนไลน์", "ระงับการเข้าเล่น", "Log", "บรอดแคสต์", "สั่งคำสั่งทดสอบ", "มาโครของเกม", "รีสตาร์ตเซิร์ฟ"] },
+    { name: "เกาะ / แมพ", keys: ["สุขภาพเกาะ", "แผนที่เกาะ", "ไฟล์ข้อมูลของเกาะ", "ตรวจเกาะทุกใบ", "ทะเบียนเกาะ"] },
+    { name: "ตั้งค่า", keys: ["config.json", "บัพ / ดีบัพ", "Mod Loader"] },
+  ];
+  const EMOJI = /^([‼-㊙\u{1F000}-\u{1FAFF}←-⇿☀-➿️‍]+)\s*/u;
+
+  const header = document.querySelector("header.top");
+  const grid = document.getElementById("statGrid");
+  const sections = Array.from(document.querySelectorAll("body > section"));
+  if (!header || sections.length === 0) return;
+
+  let openGroups = {};
+  try { openGroups = JSON.parse(localStorage.getItem(GROUP_KEY) || "{}"); } catch (e) { openGroups = {}; }
+
+  const shell = document.createElement("div");
+  shell.className = "shell";
+  const side = document.createElement("nav");
+  side.className = "sidebar";
+  const main = document.createElement("div");
+  main.className = "main";
+  header.after(shell);
+  shell.appendChild(side);
+  shell.appendChild(main);
+  document.body.classList.add("paged");
+
+  // ตัวเลขสถานะอยู่บนสุดของทุกหน้า
+  if (grid) main.appendChild(grid);
+
+  // หัวหน้า (ชื่อหน้าที่กำลังดู)
+  const pageHead = document.createElement("div");
+  pageHead.className = "page-head";
+  pageHead.innerHTML = '<h2 id="pageTitle"></h2><span class="page-sub" id="pageSub"></span>';
+  main.appendChild(pageHead);
+
+  // ── แบรนด์
+  const brand = document.createElement("div");
+  brand.className = "brand";
+  brand.innerHTML = '<div class="mark">◆</div>'
+    + '<div><div class="name">Durango</div><div class="who" id="brandWho">admin panel</div></div>';
+  side.appendChild(brand);
+
+  // ── เก็บข้อมูลของแต่ละ section
+  const items = [];
+  sections.forEach(function (sec, i) {
+    const h2 = sec.querySelector("h2");
+    if (!h2) { main.appendChild(sec); return; }
+    sec.id = "sec" + i;
+    main.appendChild(sec);
+
+    const clone = h2.cloneNode(true);
+    clone.querySelectorAll("button, .badge, .caret, input, select").forEach(function (n) { n.remove(); });
+    let title = clone.textContent.replace(/\s+/g, " ").trim();
+    let icon = "▪";
+    const m = title.match(EMOJI);
+    if (m) { icon = m[1]; title = title.slice(m[0].length).trim(); }
+
+    // หัวข้อบางอันอยู่ใน .toolbar ที่มีปุ่มควบคุมอยู่ด้วย — เก็บปุ่มไว้ให้ยังกดได้
+    items.push({ sec: sec, h2: h2, title: title, icon: icon, badge: h2.querySelector(".badge") });
+  });
+
+  function shortTitle(t) { return t.replace(/\s*\(.*?\)\s*$/, "").trim() || t; }
+
+  // ── สร้างเมนูเป็นกลุ่ม
+  const used = new Set();
+  const links = [];
+
+  function addLink(container, it) {
+    const a = document.createElement("button");
+    a.className = "nav-item";
+    a.innerHTML = '<span class="ic"></span><span class="t"></span><span class="n"></span>';
+    a.querySelector(".ic").textContent = it.icon;
+    a.querySelector(".t").textContent = shortTitle(it.title);
+    a.addEventListener("click", function () { show(it); });
+    container.appendChild(a);
+    it.link = a;
+    links.push(it);
+  }
+
+  GROUPS.forEach(function (g) {
+    const mine = items.filter(function (it) {
+      return !used.has(it) && g.keys.some(function (k) { return it.title.indexOf(k) >= 0; });
+    });
+    if (mine.length === 0) return;
+
+    const head = document.createElement("button");
+    head.className = "nav-group";
+    head.innerHTML = '<span class="gname"></span><span class="arrow">▾</span>';
+    head.querySelector(".gname").textContent = g.name;
+    const body = document.createElement("div");
+    body.className = "nav-group-body";
+    if (openGroups[g.name] === false) head.classList.add("closed");
+    head.addEventListener("click", function () {
+      head.classList.toggle("closed");
+      openGroups[g.name] = !head.classList.contains("closed");
+      try { localStorage.setItem(GROUP_KEY, JSON.stringify(openGroups)); } catch (e) { /* ข้าม */ }
+    });
+    side.appendChild(head);
+    side.appendChild(body);
+
+    mine.forEach(function (it) { used.add(it); addLink(body, it); });
+  });
+
+  // section ที่ไม่เข้ากลุ่มไหน — ต่อท้ายไว้ ไม่ให้ตกหล่น
+  const rest = items.filter(function (it) { return !used.has(it); });
+  if (rest.length > 0) {
+    const head = document.createElement("button");
+    head.className = "nav-group";
+    head.innerHTML = '<span class="gname">อื่น ๆ</span><span class="arrow">▾</span>';
+    const body = document.createElement("div");
+    body.className = "nav-group-body";
+    head.addEventListener("click", function () { head.classList.toggle("closed"); });
+    side.appendChild(head);
+    side.appendChild(body);
+    rest.forEach(function (it) { addLink(body, it); });
+  }
+
+  // ── สลับหน้า
+  function show(it) {
+    items.forEach(function (o) { o.sec.classList.toggle("current", o === it); });
+    links.forEach(function (o) { if (o.link) o.link.classList.toggle("active", o === it); });
+    document.getElementById("pageTitle").textContent = it.icon + " " + it.title;
+    try { localStorage.setItem(VIEW_KEY, it.sec.id); } catch (e) { /* ข้าม */ }
+    if (location.hash !== "#" + it.sec.id) {
+      history.replaceState(null, "", "#" + it.sec.id);
+    }
+    // canvas ที่เพิ่งโผล่ต้องวาดใหม่ ไม่งั้นได้จอเปล่า (ตอนวาดครั้งแรกมันถูกซ่อนอยู่)
+    if (it.title.indexOf("แผนที่") >= 0 && typeof drawMap === "function") {
+      setTimeout(drawMap, 30);
+    }
+    window.scrollTo(0, 0);
+  }
+
+  // เปิดหน้าไหนก่อน: จาก #hash > ที่เปิดค้างไว้ครั้งก่อน > หน้าแรก
+  let start = null;
+  const wantId = (location.hash || "").replace("#", "");
+  if (wantId) start = items.find(function (it) { return it.sec.id === wantId; });
+  if (!start) {
+    let saved = null;
+    try { saved = localStorage.getItem(VIEW_KEY); } catch (e) { saved = null; }
+    if (saved) start = items.find(function (it) { return it.sec.id === saved; });
+  }
+  show(start || items[0]);
+
+  // ── ท้ายเมนู
+  const foot = document.createElement("div");
+  foot.className = "side-foot";
+  const reload = document.createElement("button");
+  reload.className = "nav-item";
+  reload.innerHTML = '<span class="ic">↻</span><span class="t">โหลดหน้าใหม่</span>';
+  reload.addEventListener("click", function () { location.reload(); });
+  foot.appendChild(reload);
+  side.appendChild(foot);
+
+  // ── ตัวเลขข้างเมนู: ก๊อปจาก badge เดิมที่โค้ดส่วนอื่นอัปเดตอยู่แล้ว
+  function syncBadges() {
+    links.forEach(function (it) {
+      if (!it.badge || !it.link) return;
+      const n = it.badge.textContent.trim();
+      it.link.querySelector(".n").textContent = (n && n !== "0") ? n : "";
+    });
+    const who = document.getElementById("serverTitle");
+    const brandWho = document.getElementById("brandWho");
+    if (who && brandWho) {
+      brandWho.textContent = who.textContent.split("·")[0].trim() || "admin panel";
+    }
+  }
+  syncBadges();
+  setInterval(syncBadges, 1500);
+})();
+
 // ── เริ่มโพลทุกอย่าง ─────────────────────────────────────────────────
+loadIslandTabs();
 loadStatus(); loadPlayers(); loadPOI(); loadConfig(); loadMods();
+loadBans(); loadHistory(); loadIslandRegistry(); loadTerrainList();
+setTimeout(loadFleet, 800);            // รอ loadIslandTabs() ได้รายชื่อเกาะก่อน
+setInterval(loadHistory, 60000);
+loadHealth(); loadMap(); loadMacros();
+setInterval(pollIslandStats, 5000);
+setInterval(loadHealth, 10000);
 setInterval(loadStatus, 1500);
 setInterval(loadPlayers, 2000);
 setInterval(pollLog, 1500);

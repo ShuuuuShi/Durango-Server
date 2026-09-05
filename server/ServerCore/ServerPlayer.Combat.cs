@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Durango.Network;
 using Durango.Utils;
@@ -38,6 +38,15 @@ public partial class ServerPlayer
     /// <summary>เป้าหมายที่กำลังตีอยู่ — ใช้ตัดสินว่าต้องส่ง BattleBegun ไหม</summary>
     private string _battleTarget;
 
+    /// <summary>[บั๊ก #4] หลบได้ถึงเวลานี้ (unix) — ตั้งตอนใช้ท่า dodge</summary>
+    private double _dodgeUntil;
+
+    /// <summary>ช่วงเวลาที่หลบพ้น (วินาที) — สั้นพอให้ต้องกดจังหวะ ไม่ใช่กดค้างอมตะ</summary>
+    private const double DodgeWindowSeconds = 0.9;
+
+    /// <summary>กำลังอยู่ในจังหวะหลบไหม — สัตว์เช็คก่อนคิดดาเมจ</summary>
+    public bool IsDodging => Times.UnixTimeNow() < _dodgeUntil;
+
     private static readonly Random _combatRng = new Random();
 
     /// <summary>ตายอยู่หรือเปล่า (ตั้งตอนเลือดหมด ล้างตอนฟื้น)</summary>
@@ -74,26 +83,26 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[feature] ปฏิเสธ {0}: ระบบต่อสู้ปิดอยู่ในรอบนี้ (Features.Combat)", Name);
             Send(new Info { Text = "ระบบต่อสู้ยังไม่เปิดในรอบนี้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (Dead)
         {
             Console.WriteLine("[combat] {0} ตายอยู่ ตีไม่ได้", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!ActionData.TryGet(msg.ActionId, out ActionData.Action action))
         {
             Console.WriteLine("[combat] ปฏิเสธ {0}: ไม่มีท่า '{1}' ในเกม", Name, msg.ActionId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // ท่าต้องเป็นของอาวุธที่ถืออยู่จริง ไม่งั้นถือมือเปล่าก็ใช้ท่าดาบสองมือได้
         if (Array.IndexOf(ActionData.ForWeaponTag(CurrentWeaponTag()), action.Id) < 0)
         {
             Console.WriteLine("[combat] ปฏิเสธ {0}: ท่า {1} ใช้กับอาวุธที่ถืออยู่ ({2}) ไม่ได้", Name, action.Id, CurrentWeaponTag());
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // [แก้เอง] 25 ส.ค. 2026 — เจ้าของย้ำ 2 รอบ: "ท่าต่อสู้ก็ต้องยึดจากสกิลที่เรียน"
@@ -104,22 +113,31 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[combat] ปฏิเสธ {0}: ยังไม่ได้เรียนสกิลที่ปลดล็อกท่า {1}", Name, action.Id);
             Send(new Info { Text = "ต้องเรียนสกิลก่อนจึงจะใช้ท่านี้ได้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
         double now = Times.UnixTimeNow();
+
+        // [4 ก.ย. 2026] บั๊ก #4 "กดหลบ ยังโดนโจมตี 100%"
+        // เดิมท่า dodge มีแค่ในตารางท่า (ActionData) ไม่มีผลอะไรเลย — กดแล้วได้แค่แต้มสกิลป้องกัน
+        // ตอนนี้เปิด "หน้าต่างหลบ" ให้ช่วงสั้น ๆ · สัตว์ที่ตีมาระหว่างนี้จะพลาด (DamageResult.Dodged)
+        if (action.Id.IndexOf("dodge", StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            _dodgeUntil = now + DodgeWindowSeconds;
+        }
+
         if (_actionReadyAt.TryGetValue(action.Id, out double readyAt) && now < readyAt)
         {
             Console.WriteLine("[combat] ปฏิเสธ {0}: ท่า {1} ยังคูลดาวน์อีก {2:F1} วิ", Name, action.Id, readyAt - now);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
         if (!TryFindTarget(msg.TargetEntityId, out WorldPosition targetPos, out bool targetIsAnimal))
         {
             Console.WriteLine("[combat] ปฏิเสธ {0}: ไม่มีเป้าหมาย {1} ในโลก", Name, msg.TargetEntityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -131,7 +149,7 @@ public partial class ServerPlayer
         if (dist > maxRange)
         {
             Console.WriteLine("[combat] ปฏิเสธ {0}: เป้าหมายไกลไป ({1:F0} > {2:F0})", Name, dist, maxRange);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!targetIsAnimal)
@@ -145,7 +163,7 @@ public partial class ServerPlayer
             if (Level < 20 || targetPlayer == null || targetPlayer.Level < 20)
             {
                 Send(new Info { Text = "PvP เปิดสำหรับผู้เล่นเลเวล 20 ขึ้นไปเท่านั้น" }, header.Seq);
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
         }
@@ -153,20 +171,20 @@ public partial class ServerPlayer
         if (_deferred.Count >= MaxPendingActions)
         {
             Console.WriteLine("[combat] ปฏิเสธ {0}: คิวการกระทำเต็ม ({1})", Name, _deferred.Count);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
         IModEventContext? beforeAttack = PluginManager.Instance?.FireEvent("combat.before_attack", this, true, false,
             new Dictionary<string, string>(StringComparer.Ordinal) { ["target_id"] = msg.TargetEntityId ?? "", ["action_id"] = action.Id.ToString() });
         if (beforeAttack?.IsCancelled == true)
-        { Send(new Info { Text = beforeAttack.CancelReason ?? "การโจมตีถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
+        { Send(new Info { Text = beforeAttack.CancelReason ?? "การโจมตีถูกยกเลิกโดยม็อด" }, header.Seq); Send(Aborts.Reason(), header.Seq); return; }
 
         float staminaCost = Math.Max(action.Stamina, StaminaCostAttackMin);
-        if (!TrySpendStamina(staminaCost))
+        if (!TrySpendStamina(staminaCost, ActionKind.Combat))
         {
             Console.WriteLine("[combat] {0} สตามินาไม่พอ ({1:F0})", Name, staminaCost);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -205,6 +223,15 @@ public partial class ServerPlayer
     private void ResolveHit(string victimId, bool victimIsAnimal, ActionData.Action action, double eventAt, bool rangedAttack)
     {
         float damage = RollDamage(action, rangedAttack, out bool crit);
+        // [TodoList/05] เกราะสัตว์รายชนิดตามข้อมูลเกม — สูตรเดียวกับเกราะผู้เล่น (ArmorScaleFor)
+        if (victimIsAnimal && _world.Animals.TryGet(victimId, out ServerAnimal armored))
+        {
+            float def = SpawnTable.DefenseFor(armored.EntityType, armored.Level);
+            if (def > 0f)
+            {
+                damage = Math.Max(1f, damage * ArmorScaleFor(def));
+            }
+        }
 
         var dmg = new Damage
         {
@@ -335,6 +362,7 @@ public partial class ServerPlayer
         _life.Value = 0f;
         _life.Velocity = 0f;
         RememberDeathPoint();
+        ApplyDeathPenalty(now);        // [TodoList/07] นับครั้ง + ของหล่นลงกล่องที่จุดตาย
         WearEquippedOnDeath();
         EndBattle();               // ตายแล้วต้องออกจากโหมดต่อสู้ ไม่งั้น client ค้างในโหมดนั้น
         Console.WriteLine("[combat] ☠ {0} ตายแล้ว", Name);
@@ -348,7 +376,7 @@ public partial class ServerPlayer
     {
         if (!Dead)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         ReviveAtSpawn();
@@ -364,18 +392,14 @@ public partial class ServerPlayer
     public void ReviveAtSpawn()
     {
         Dead = false;
-        // [แก้เอง] 25 ส.ค. 2026 — เจ้าของสั่ง "เวลาเกิดใหม่ต้องรีเซ็ท [ความล้า]" — เดิมตั้งใจให้ความล้า
-        // ค้างไว้หลังฟื้น (คอมเมนต์เดิม "เลือด/สตามินาเต็ม ความล้ายังอยู่") แต่ทำให้ถ้าตายเพราะความล้า
-        // เต็มหลอด ฟื้นมาแล้วก็ยังล้าเต็มอยู่ดี ตายซ้ำได้ทันทีโดยไม่ได้ทำอะไรเลย — เปลี่ยนเป็นรีเซ็ทจริง
-        RestoreSurvival(clearFatigue: true);
-        WorldPosition spawn = _world.GetEntryPosition();
+        RestoreOnRevive();             // [TodoList/07] 60/40/20/10% ตามจำนวนครั้งที่ตายติดกัน
+        WorldPosition spawn = _returningPoint.HasValue
+            ? new WorldPosition(_returningPoint.Value.x * 200f, _returningPoint.Value.y * 200f)
+            : _world.GetEntryPosition();
         SendTeleport(spawn, Shared.Teleport.TeleportType.Revive);
         RememberPosition(spawn, 0f);
-        // [แก้เอง] 26 ส.ค. 2026 — หลังวาร์ปฟื้น client บางกรณีไม่ยอมอัปหลอดเลือดของตัวเอง
-        // (SurvivalUpdated ตัวที่ส่งก่อน Teleported หายไประหว่าง client สร้าง player ใหม่)
-        // ⇒ ส่งซ้ำให้ตัวเองหลังวาร์ป เพื่อให้ UI เลือด/สตามินา/ความล้าตรงกับเซิร์ฟ ไม่ค้าง 0
         PushGauges("life", "stamina", "fatigue");
-        Console.WriteLine("[combat] {0} ฟื้นที่จุดเกิด", Name);
+        Console.WriteLine("[combat] {0} ฟื้นที่จุดเกิด ({1},{2})", Name, (int)(spawn.x / 200f), (int)(spawn.y / 200f));
         _world.BroadcastToViewers(EntityId, new EntityRevived { EntityId = EntityId, At = Times.UnixTimeNow() });
         SendSurvivalPublic();
         PluginManager.Instance?.FireEvent("player.revived", this, false, true);
@@ -421,7 +445,7 @@ public partial class ServerPlayer
             if (index < 0)
             {
                 Send(new Info { Text = "ไม่มีกระสุน ต้องคราฟต์ลูกธนูก่อน" }, replyOf);
-                Send(default(Abort), replyOf);
+                Send(Aborts.Reason(), replyOf);
                 return false;
             }
             arrow = _inventory[index];

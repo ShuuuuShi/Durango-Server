@@ -316,8 +316,13 @@ public class WinInput
 		return result;
 	}
 
+	/// <summary>[4 ก.ย. 2026] user32.dll มีแค่บน Windows — มือถือ (APK Mono ที่ใช้ DLL ชุดเดียวกับ PC) ใช้ UnityEngine.Input แทน</summary>
+	private static readonly bool UseNativeWin =
+		Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor;
+
 	public static bool GetKey(KeyCode key)
 	{
+		if (!UseNativeWin) return Input.GetKey(key);
 		int num = KeyCodeToVkey(key);
 		if (num != 0)
 		{
@@ -328,6 +333,7 @@ public class WinInput
 
 	public static bool GetKeyDown(KeyCode key)
 	{
+		if (!UseNativeWin) return Input.GetKeyDown(key);
 		int num = KeyCodeToVkey(key);
 		if (num != 0)
 		{
@@ -341,6 +347,7 @@ public class WinInput
 
 	public static bool GetKeyUp(KeyCode key)
 	{
+		if (!UseNativeWin) return Input.GetKeyUp(key);
 		int num = KeyCodeToVkey(key);
 		if (num != 0)
 		{
@@ -354,6 +361,7 @@ public class WinInput
 
 	public static bool GetKeyFullCover(KeyCode key)
 	{
+		if (!UseNativeWin) return Input.GetKey(key);
 		int num = KeyCodeToVkeyFullSet(key);
 		if (num != 0)
 		{

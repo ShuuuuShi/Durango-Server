@@ -41,6 +41,39 @@ public static class ArtifactFactory
             }
         };
 
+    /// <summary>
+    /// โมเดล (Parts) ของสิ่งปลูกสร้างที่สร้างเสร็จแล้ว — look หลักจาก default_look
+    /// (กองไฟ/เตาที่มี Burnable เติม "_burning") + look ต่อช่องของ blueprint แบบ slot
+    /// ใช้ทั้งตอนสร้าง (ถ้าเสร็จแล้ว) และตอนสร้างเสร็จภายหลัง (re-announce)
+    /// </summary>
+    public static Dictionary<string, string> BuildParts(string blueprintId)
+    {
+        var parts = new Dictionary<string, string>();
+        if (string.IsNullOrEmpty(blueprintId)) { return parts; }
+        if (RecipeData.BlueprintDefaultLook.TryGetValue(blueprintId, out string defaultLook)
+            && !string.IsNullOrEmpty(defaultLook))
+        {
+            bool burnable = RecipeData.BlueprintComponents.TryGetValue(blueprintId, out string[] comps)
+                && Array.IndexOf(comps, "Burnable") != -1;
+            parts["common"] = burnable ? defaultLook + "_burning" : defaultLook;
+        }
+        // [4 ก.ย. 2026] เอาจาก blueprints.json ก่อน (ครบทุก blueprint) แล้วค่อย fallback
+        // ตาราง hardcode เดิม — บั๊ก "สร้างเสร็จแล้วยังเป็นโครงไม้" เพราะตารางเดิมมีแค่ 8 ตัว
+        // ส่วนอีก 54 blueprint แบบช่องวัสดุได้ Parts ว่าง ⇒ client โชว์นั่งร้านตลอด
+        if (!GameData.BlueprintSlotLooks.TryGetValue(blueprintId, out Dictionary<string, string> slotLooks))
+        {
+            DefaultSlotLooks.TryGetValue(blueprintId, out slotLooks);
+        }
+        if (slotLooks != null)
+        {
+            foreach (KeyValuePair<string, string> slot in slotLooks)
+            {
+                parts[slot.Key] = slot.Value;
+            }
+        }
+        return parts;
+    }
+
     public static AppearArtifact Make(
         string founderEntityId,
         string entityId,
@@ -54,29 +87,13 @@ public static class ArtifactFactory
         BuildingState buildingState = BuildingState.Occupied,
         string[] architectEntityIds = null)
     {
-        string defaultLook = null;
-        if (!string.IsNullOrEmpty(blueprintId))
-        {
-            RecipeData.BlueprintDefaultLook.TryGetValue(blueprintId, out defaultLook);
-        }
-        var parts = new Dictionary<string, string>();
-        if (!string.IsNullOrEmpty(defaultLook))
-        {
-            bool burnable = false;
-            if (!string.IsNullOrEmpty(blueprintId) && RecipeData.BlueprintComponents.TryGetValue(blueprintId, out string[] comps))
-            {
-                burnable = Array.IndexOf(comps, "Burnable") != -1;
-            }
-            parts["common"] = burnable ? defaultLook + "_burning" : defaultLook;
-        }
-        if (!string.IsNullOrEmpty(blueprintId)
-            && DefaultSlotLooks.TryGetValue(blueprintId, out Dictionary<string, string> slotLooks))
-        {
-            foreach (KeyValuePair<string, string> slot in slotLooks)
-            {
-                parts[slot.Key] = slot.Value;
-            }
-        }
+        // [4 ก.ย. 2026] โมเดลของสิ่งปลูกสร้าง (Parts) ต้องส่งเฉพาะเมื่อ "สร้างเสร็จ" เท่านั้น
+        // เดิมส่งโมเดลเสร็จ (+ "_burning" ของกองไฟ) ตั้งแต่ยังเป็นไซต์ ⇒ กดสร้างปุ๊บได้โมเดลไฟลุก/
+        // โต๊ะเสร็จ/ฟลอร์เต้นทันที (เจ้าของรายงาน) · client เรนเดอร์ Parts เสมอ (state คุมแค่สี)
+        // ไซต์ = Parts เปล่า ⇒ client โชว์แค่นั่งร้าน/ฐานก่อสร้าง · พอสร้างเสร็จเซิร์ฟค่อยเติม Parts
+        // แล้ว re-announce (ServerPlayer.Building.cs → RefreshBuiltArtifactDisplay)
+        bool built = buildingState == BuildingState.Built || buildingState == BuildingState.Completed;
+        var parts = built ? BuildParts(blueprintId) : new Dictionary<string, string>();
         return new AppearArtifact
         {
             EntityId = entityId,

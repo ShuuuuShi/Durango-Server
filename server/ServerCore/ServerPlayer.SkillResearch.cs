@@ -68,21 +68,21 @@ public partial class ServerPlayer
     {
         if (!ServerConfig.Current.Features.Skills || !SkillCategoryData.TryGet(msg.Category, out SkillCategoryData.Curve _))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (_researchCategory != Category.Invalid)
         {
             if (!msg.SkipCategory.HasValue || msg.SkipCategory.Value != _researchCategory)
             {
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             CompleteSkillResearch();
         }
         if (!IsReadyForResearch(msg.Category, out int target, out int seconds))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         _researchCategory = msg.Category;
@@ -98,7 +98,7 @@ public partial class ServerPlayer
     {
         if (_researchCategory == Category.Invalid || msg.SkillCategory != _researchCategory)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         ClearSkillResearch();
@@ -111,7 +111,7 @@ public partial class ServerPlayer
     {
         if (_researchCategory == Category.Invalid || msg.SkillCategory != _researchCategory)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         CompleteSkillResearch();

@@ -181,8 +181,16 @@ public partial class ServerPlayer
     /// </summary>
     public float ArmorDamageScale()
     {
-        CombatConfig cfg = CombatRates;
-        float defense = DefenseRating();
+        return ArmorScaleFor(DefenseRating());
+    }
+
+    /// <summary>
+    /// สูตรลดดาเมจจากค่า defense ใด ๆ — ใช้ร่วมกันทั้งเกราะผู้เล่นและ [TodoList/05] เกราะสัตว์
+    /// (กติกาเดียวกันสองฝั่ง จะได้ไม่ต้องจูนสองชุด)
+    /// </summary>
+    public static float ArmorScaleFor(float defense)
+    {
+        CombatConfig cfg = ServerConfig.Current.Combat;
         if (defense <= 0f)
         {
             return 1f;

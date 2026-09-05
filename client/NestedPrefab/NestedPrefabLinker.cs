@@ -37,6 +37,8 @@ public class NestedPrefabLinker<T> : MonoBehaviour, IUIInitializable, RectLayout
 		}
 	}
 
+	public GameObject SourcePrefab => Prefab;
+
 	private GameObject Prefab
 	{
 		get

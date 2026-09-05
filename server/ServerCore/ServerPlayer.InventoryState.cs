@@ -51,14 +51,14 @@ public partial class ServerPlayer
     {
         if (msg.TargetArtifact.HasValue || msg.ItemOrder == null || msg.ItemOrder.Length > PlayerInventoryMaxSize)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         lock (_inventory)
         {
             if (msg.ItemOrder.Length != _inventory.Count)
             {
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             var live = new HashSet<string>(StringComparer.Ordinal);
@@ -68,7 +68,7 @@ public partial class ServerPlayer
             {
                 if (!live.Contains(msg.ItemOrder[i]) || !seen.Add(msg.ItemOrder[i]))
                 {
-                    Send(default(Abort), header.Seq);
+                    Send(Aborts.Reason(), header.Seq);
                     return;
                 }
             }
@@ -83,7 +83,7 @@ public partial class ServerPlayer
     {
         if (msg.ItemIds == null || msg.ItemIds.Length == 0 || msg.ItemIds.Length > PlayerInventoryMaxSize)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         lock (_inventory)
@@ -94,7 +94,7 @@ public partial class ServerPlayer
             {
                 if (!live.Contains(msg.ItemIds[i]))
                 {
-                    Send(default(Abort), header.Seq);
+                    Send(Aborts.Reason(), header.Seq);
                     return;
                 }
             }

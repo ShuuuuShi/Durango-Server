@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Durango.Network;
 using Shared.Item;
@@ -42,51 +42,51 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[feature] ปฏิเสธ {0}: ระบบปลูกผักปิดอยู่ในรอบนี้ (Features.Farming)", Name);
             Send(new Info { Text = "ระบบปลูกผักยังไม่เปิดในรอบนี้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         if (Dead)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         if (!_world.TryGetArtifact(entityId, out artifact))
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: ไม่มีสิ่งปลูกสร้าง {1}", Name, entityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         // ⚠️ ใช้ tile ที่ server จำไว้ ไม่ใช่ msg.Tile — เหตุผลเดียวกับ GP-09 ฝั่งเก็บของ
         if (!IsWithinReach(artifact.Tile))
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: {1} อยู่ไกลเกินเอื้อม", Name, entityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         if (!_world.IsFarmArtifact(entityId))
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: {1} ไม่ใช่แปลงผัก", Name, entityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         if (artifact.States.BuildingState != BuildingState.Built)
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: {1} ยังสร้างไม่เสร็จ", Name, entityId);
             Send(new Info { Text = "แปลงนี้ยังสร้างไม่เสร็จ" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         if (!CanModifyArtifact(artifact))
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: ไม่ใช่เจ้าของแปลง {1}", Name, entityId);
             Send(new Info { Text = "แปลงนี้ไม่ใช่ของคุณ" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         if (_deferred.Count >= MaxPendingActions)
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: มีงานค้างอยู่ {1} รายการแล้ว", Name, _deferred.Count);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         return true;
@@ -104,31 +104,31 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: แปลง {1} มี {2} ปลูกอยู่แล้ว", Name, msg.EntityId, existing.SeedId);
             Send(new Info { Text = "แปลงนี้มีต้นอยู่แล้ว — ถอนก่อนถึงจะปลูกใหม่ได้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // เมล็ดต้องมีอยู่จริงในกระเป๋า (ห้ามเชื่อ client ว่ามีของ) และต้องเป็นเมล็ดที่ปลูกได้จริง
         if (!TryFindItem(msg.SeedItemId, out Item seed))
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: ไม่มีเมล็ด {1} ในกระเป๋า", Name, msg.SeedItemId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!CropData.TryGet(seed.Prototype, out CropData.CropInfo crop))
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: {1} ไม่ใช่เมล็ดที่ปลูกได้", Name, seed.Prototype);
             Send(new Info { Text = "ของชิ้นนี้ปลูกไม่ได้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         IModEventContext? beforePlant = PluginManager.Instance?.FireEvent("farm.before_plant", this, true, false,
             new Dictionary<string, string>(StringComparer.Ordinal) { ["entity_id"] = msg.EntityId ?? "", ["seed_item_id"] = seed.Id ?? "", ["seed_prototype"] = seed.Prototype ?? "" });
         if (beforePlant?.IsCancelled == true)
-        { Send(new Info { Text = beforePlant.CancelReason ?? "การปลูกถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
+        { Send(new Info { Text = beforePlant.CancelReason ?? "การปลูกถูกยกเลิกโดยม็อด" }, header.Seq); Send(Aborts.Reason(), header.Seq); return; }
         if (!TrySpendStamina(FarmCfg.StaminaCostPlant))
         {
             Console.WriteLine("[survival] {0} สตามินาไม่พอสำหรับปลูก", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -136,7 +136,7 @@ public partial class ServerPlayer
         if (!_world.PlantSeedOn(msg.EntityId, artifact.Tile, crop, Math.Max(1, seed.Level), now,
                                 out ServerWorld.FarmPlot plot))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         RemoveItemById(seed.Id);       // กินเมล็ดหลังจากลงแปลงสำเร็จแล้วเท่านั้น
@@ -185,24 +185,24 @@ public partial class ServerPlayer
         if (!_world.TryGetFarm(entityId, out ServerWorld.FarmPlot plot))
         {
             Send(new Info { Text = "แปลงนี้ยังไม่ได้ปลูกอะไร" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (plot.Resolved)
         {
             // โตครบแล้ว (หรือตายแล้ว) — เติมน้ำ/ปุ๋ยตอนนี้ไม่มีผลกับอะไรทั้งนั้น
             Send(new Info { Text = plot.Dead ? "ต้นนี้ตายแล้ว ถอนทิ้งได้เลย" : "ต้นนี้โตเต็มที่แล้ว" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (itemIds == null || itemIds.Length == 0)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!CropData.TryGet(plot.SeedId, out CropData.CropInfo crop))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -244,12 +244,12 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: ไม่มีของที่ใช้{1}ได้ในรายการที่ส่งมา", Name, what);
             Send(new Info { Text = water ? "ต้องใช้ของที่เป็นน้ำ" : "ต้องใช้ปุ๋ย" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!TrySpendStamina(FarmCfg.StaminaCostTend))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -295,12 +295,12 @@ public partial class ServerPlayer
         if (!_world.TryGetFarm(msg.EntityId, out ServerWorld.FarmPlot plot))
         {
             Send(new Info { Text = "แปลงนี้ยังไม่ได้ปลูกอะไร" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!TrySpendStamina(FarmCfg.StaminaCostTend))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -331,25 +331,25 @@ public partial class ServerPlayer
         }
         if (Dead)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (_deferred.Count >= MaxPendingActions)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!TryFindItem(msg.ToolItemId, out Item tool))
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: ไม่มีภาชนะ {1} ในกระเป๋า", Name, msg.ToolItemId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         float capacity = CropData.CapacityOf(tool.Prototype, Math.Max(1, tool.Level));
         if (capacity <= 0f && !HasTag(tool, "container"))
         {
             Send(new Info { Text = "ของชิ้นนี้ใส่น้ำไม่ได้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (capacity <= 0f)
@@ -360,12 +360,12 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: ไม่ได้อยู่ใกล้แหล่งน้ำ", Name);
             Send(new Info { Text = "ต้องยืนใกล้แหล่งน้ำก่อน" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!TrySpendStamina(FarmCfg.StaminaCostDraw))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -404,7 +404,7 @@ public partial class ServerPlayer
             {
                 RestoreStamina(FarmCfg.StaminaCostDraw, 0f);
                 Send(new Info { Text = "กระเป๋าเต็ม" }, header.Seq);
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             MarkDirty();
@@ -497,35 +497,35 @@ public partial class ServerPlayer
         if (!plot.Resolved || plot.Dead)
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: {1} ยังเก็บไม่ได้", Name, msg.EntityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!_world.TryGetArtifact(msg.EntityId, out AppearArtifact artifact) || !IsWithinReach(artifact.Tile))
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: แปลง {1} อยู่ไกลเกินเอื้อม", Name, msg.EntityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (InventoryFull)
         {
             Console.WriteLine("[inventory] {0} กระเป๋าเต็ม เก็บเกี่ยวไม่ได้", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(InventoryFullMessage), header.Seq);
             return;
         }
         // H-6: เพดานงานที่รอเวลาอยู่ต่อผู้เล่น — กันสแปม packet ยัดคิวโตไม่จำกัด
         if (_deferred.Count >= MaxPendingActions)
         {
             Console.WriteLine("[farm] ปฏิเสธ {0}: มีงานค้างอยู่ {1} รายการแล้ว", Name, _deferred.Count);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         IModEventContext? beforeHarvest = PluginManager.Instance?.FireEvent("farm.before_harvest", this, true, false,
             new Dictionary<string, string>(StringComparer.Ordinal) { ["entity_id"] = msg.EntityId ?? "", ["generator_id"] = msg.GeneratorId ?? "" });
         if (beforeHarvest?.IsCancelled == true)
-        { Send(new Info { Text = beforeHarvest.CancelReason ?? "การเก็บเกี่ยวถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
-        if (!TrySpendStamina(StaminaCostCollect))
+        { Send(new Info { Text = beforeHarvest.CancelReason ?? "การเก็บเกี่ยวถูกยกเลิกโดยม็อด" }, header.Seq); Send(Aborts.Reason(), header.Seq); return; }
+        if (!TrySpendStamina(StaminaCostCollect, ActionKind.Collect))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // จองก่อน (GP-03) — สองคนกดพร้อมกันบนชิ้นสุดท้ายจะผ่านคนเดียว
@@ -533,7 +533,7 @@ public partial class ServerPlayer
         {
             // [แก้เอง] อีกคนชิงชิ้นสุดท้ายไปก่อน — คืนสตามินาที่เพิ่งหักไป
             RestoreStamina(StaminaCostCollect, 0f);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 

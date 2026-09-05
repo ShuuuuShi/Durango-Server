@@ -10,6 +10,13 @@ public partial class ServerPlayer
     private Point2 _deathTile;
     private int _immediateReviveCount;
 
+    /// <summary>
+    /// จุดเกิดที่บันทึกไว้จากท่าเรือ (SetReturningPoint) — ผู้เล่นเหยียบ checkpoint trigger บน dock
+    /// client ส่ง SetReturningPoint มา เซิร์ฟบันทึก tile ไว้ใช้ตอนฟื้น / warp back
+    /// null = ยังไม่เคยเหยียบ ใช้ entry point แทน
+    /// </summary>
+    private Point2? _returningPoint;
+
     private Region CurrentRegion()
     {
         return new Region
@@ -25,7 +32,7 @@ public partial class ServerPlayer
 
     private Points BuildPoints()
     {
-        WorldPosition spawn = _world.GetEntryPosition();
+        Point2 rp = _returningPoint ?? _world.Terrain.EntryPoint;
         Region region = CurrentRegion();
         return new Points
         {
@@ -33,7 +40,7 @@ public partial class ServerPlayer
             ReturningPoint = new RegionTile
             {
                 Region = region,
-                Tile = new Point2((int)(spawn.x / 200f), (int)(spawn.y / 200f))
+                Tile = rp
             },
             DeathPoint = _hasDeathPoint ? new RegionTile { Region = region, Tile = _deathTile } : null,
             LastReturnPoint = null,
@@ -69,14 +76,13 @@ public partial class ServerPlayer
     {
         if (!Dead)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         Dead = false;
         _immediateReviveCount++;
-        // [แก้เอง] 25 ส.ค. 2026 — เหมือน ReviveAtSpawn (ServerPlayer.Combat.cs) — เจ้าของสั่งให้ความล้า
-        // รีเซ็ทตอนฟื้นด้วย ไม่ใช่แค่เลือด/สตามินา
-        RestoreSurvival(clearFatigue: true);
+        // [TodoList/07] เกจตอนฟื้นตาม death_penalty (60/40/20/10%) — ปิด Death.Enabled = ฟื้นเต็ม+ล้างความล้าเหมือนเดิม
+        RestoreOnRevive();
         MarkDirty();
         Send(default(Revived), header.Seq);
         _world.BroadcastToViewers(EntityId, new EntityRevived { EntityId = EntityId, At = Durango.Utils.Times.UnixTimeNow() });
@@ -90,6 +96,11 @@ public partial class ServerPlayer
         _deathTile = new Point2(save.DeathTileX, save.DeathTileY);
         _immediateReviveCount = Math.Max(0, save.ImmediateReviveCount);
         Dead = save.Dead;
+        ApplyDeathPenaltySave(save);
+        if (save.HasReturningPoint && save.ReturningPointX > 0 && save.ReturningPointY > 0)
+        {
+            _returningPoint = new Point2(save.ReturningPointX, save.ReturningPointY);
+        }
     }
 
     private void FillDeathSave(PlayerSave save)
@@ -99,5 +110,28 @@ public partial class ServerPlayer
         save.DeathTileY = _deathTile.y;
         save.ImmediateReviveCount = _immediateReviveCount;
         save.Dead = Dead;
+        FillDeathPenaltySave(save);
+        save.HasReturningPoint = _returningPoint.HasValue;
+        save.ReturningPointX = _returningPoint?.x ?? 0;
+        save.ReturningPointY = _returningPoint?.y ?? 0;
+    }
+
+    /// <summary>
+    /// SetReturningPoint — client ส่งมาเมื่อผู้เล่นเดินเข้า trigger collider บน dock artifact
+    /// (ดู PlayerTriggerMakeCheckPoint.cs ฝั่ง client)
+    /// บันทึก tile นั้นเป็นจุดเกิดสำหรับ warp back / revive
+    /// </summary>
+    private void HandleSetReturningPoint(SetReturningPoint msg, PacketHeader header)
+    {
+        Point2 tile = msg.Tile;
+        if (tile.x < 0 || tile.y < 0
+            || tile.x >= _world.Terrain.Width || tile.y >= _world.Terrain.Height)
+        {
+            return;
+        }
+        _returningPoint = tile;
+        MarkDirty();
+        Send(BuildPoints());
+        Console.WriteLine("[checkpoint] {0} บันทึกจุดเกิดที่ tile {1},{2}", Name, tile.x, tile.y);
     }
 }

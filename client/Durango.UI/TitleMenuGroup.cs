@@ -105,6 +105,8 @@ public class TitleMenuGroup : MonoBehaviour
 
 	private bool _autoSelectCluster;
 
+	private bool _patchChecked;
+
 	private float _initialStateTime;
 
 	private float _lastHardCapRequestTime;
@@ -185,6 +187,12 @@ public class TitleMenuGroup : MonoBehaviour
 				_autoSelectCluster = false;
 				if (string.IsNullOrEmpty(GameManager.LastEvictedMsg))
 				{
+					if (!_patchChecked)
+					{
+						_patchChecked = true;
+						StartCoroutine(CheckUpdate());
+						break;
+					}
 					state = State.GetClusterList;
 					break;
 				}
@@ -211,7 +219,8 @@ public class TitleMenuGroup : MonoBehaviour
 				// จากหน้าเลือกเซิร์ฟเวอร์มาก่อน) — แก้ที่ ForceSetClusters() ให้อัปเดต LastSelectedClusterKey
 				// ด้วยเสมอ ดูรายละเอียดที่นั่น branch นี้ (ForceSetClusters) ใช้งานได้จริงแล้วตอนนี้
 				TextAsset textAsset = Resources.Load("offline/clusters") as TextAsset;
-				state = ((!(textAsset != null) || !UserControl.TryUpdateClusters(textAsset.text)) ? State.Error : State.SelectCluster);
+				string clustersJson = (textAsset != null) ? textAsset.text : "{\"clusters\":{}}";
+				state = (UserControl.TryUpdateClusters(clustersJson) ? State.SelectCluster : State.Error);
 				break;
 			}
 			case State.SelectCluster:
@@ -419,7 +428,7 @@ public class TitleMenuGroup : MonoBehaviour
 				break;
 			}
 			case State.Knock:
-				StartCoroutine(CheckUpdate());
+				KnockSystem();
 				break;
 			case State.CheckDataLoaded:
 				if (Loader.LoadState != Loader.State.Succees)
@@ -613,6 +622,29 @@ public class TitleMenuGroup : MonoBehaviour
 		}, delay);
 	}
 
+	/// <summary>[4 ก.ย. 2026] พื้นหลังไตเติ้ลบนมือถือ — โหลด JPG จากใน APK (StreamingAssets) แล้วยัดใส่ UITexture ที่วิดีโอเคยใช้</summary>
+	private global::System.Collections.IEnumerator ShowMobileStillBackground()
+	{
+		string url = Application.streamingAssetsPath + "/title_bg.jpg";
+		using (WWW www = new WWW(url))
+		{
+			yield return www;
+			if (!string.IsNullOrEmpty(www.error))
+			{
+				UnityEngine.Debug.LogWarning("[durango] โหลด title_bg.jpg ไม่ได้: " + www.error);
+				yield break;
+			}
+			Texture2D tex = new Texture2D(2, 2, TextureFormat.RGB24, false);
+			tex.LoadImage(www.bytes);
+			MediaPlayer2UITexture[] targets = UnityEngine.Object.FindObjectsOfType<MediaPlayer2UITexture>();
+			for (int i = 0; i < targets.Length; i++)
+			{
+				targets[i].SetStill(tex);
+			}
+			UnityEngine.Debug.Log("[durango] พื้นหลังไตเติ้ลมือถือ: ใส่ภาพนิ่งให้ " + targets.Length + " จุด");
+		}
+	}
+
 	private void ApplyEmigrationMode()
 	{
 		if (_titleList == null)
@@ -645,7 +677,24 @@ public class TitleMenuGroup : MonoBehaviour
 				array[i].SetActive(value: true);
 			}
 		}
-		_videoPlayer.Load(titleOptions.VideoName);
+		// [4 ก.ย. 2026] มือถือ (APK build เอง ใช้ DLL ชุด PC): ExternalLibrary.dll เป็นตัว PC (avformat/ffmpeg) เล่นวิดีโอไม่ได้
+		//   และถ้าโยน exception ตรงนี้ StartGame() จะหยุดกลางคัน ⇒ state machine ไตเติ้ลไม่เริ่ม กดปุ่มอะไรไม่ได้เลย
+		//   ⇒ มือถือใช้ภาพนิ่ง (assets/title_bg.jpg — เฟรมจาก Movie/Mobile/title.mp4) แทน และกันพังด้วย try/catch
+		if (Application.isMobilePlatform)
+		{
+			StartCoroutine(ShowMobileStillBackground());
+		}
+		else
+		{
+			try
+			{
+				_videoPlayer.Load(titleOptions.VideoName);
+			}
+			catch (global::System.Exception e)
+			{
+				UnityEngine.Debug.LogWarning("[durango] เล่นวิดีโอไตเติ้ลไม่ได้ (ข้าม): " + e.Message);
+			}
+		}
 		AkAudioListener akAudioListener = UnityEngine.Object.FindObjectOfType<AkAudioListener>();
 		if (akAudioListener != null)
 		{
@@ -925,7 +974,7 @@ public class TitleMenuGroup : MonoBehaviour
 			UserControl.UpdateVersionInfo(jObject.Get<string>("server_version"));
 			if (!jObject.Get("compatible", defaultVal: false))
 			{
-				RedirectToDownloadUrl(jObject.Get<string>("download_url"));
+				RedirectToDownloadUrl(jObject.Get<string>("download_url"), jObject.Get<string>("patch_notes"));
 				break;
 			}
 			string urlRoot = jObject.Get<string>("assetbundle_url_root");
@@ -1248,20 +1297,178 @@ public class TitleMenuGroup : MonoBehaviour
 		}
 	}
 
-	protected virtual void RedirectToDownloadUrl(string downloadUrl)
+	protected virtual void RedirectToDownloadUrl(string downloadUrl, string patchNotes = null)
 	{
-		if (downloadUrl != null)
+		LaunchInGamePatcher(downloadUrl, required: true, patchNotes);
+	}
+
+	/// <summary>
+	/// เกมทับ Assembly-CSharp.dll ตัวเองตอนรันอยู่ไม่ได้ — เปิด DurangoUpdater แล้วปิดเกม
+	/// ให้ตัวอัปเดตรอเกมปิด แล้วแพตช์ DLL (ไม่โหลด zip 828 MB)
+	/// Unity cwd อาจเป็น Durango_Data — ใช้ parent ของ dataPath เหมือน DurangoUpdateGate
+	/// </summary>
+	private static string GameFolder()
+	{
+		try
 		{
-			UserControl.ShowMessageBox(T._("업데이트"), T._("새 버전 업데이트를 위해 다운로드 페이지로 이동합니다."), delegate
+			if (!string.IsNullOrEmpty(Application.dataPath))
+			{
+				DirectoryInfo parent = Directory.GetParent(Application.dataPath);
+				if (parent != null && !string.IsNullOrEmpty(parent.FullName))
+				{
+					return parent.FullName;
+				}
+			}
+		}
+		catch
+		{
+		}
+		try
+		{
+			string cwd = Directory.GetCurrentDirectory();
+			if (!string.IsNullOrEmpty(cwd) && cwd.EndsWith("_Data", StringComparison.OrdinalIgnoreCase))
+			{
+				DirectoryInfo parent = Directory.GetParent(cwd);
+				if (parent != null)
+				{
+					return parent.FullName;
+				}
+			}
+			if (!string.IsNullOrEmpty(cwd))
+			{
+				return cwd;
+			}
+		}
+		catch
+		{
+		}
+		return ".";
+	}
+
+	private static string FindUpdaterExe()
+	{
+		string gameDir = GameFolder();
+		// [4 ก.ย. 2026] ใช้ DinoWorld Launcher เป็นตัวอัปเดตแทน DurangoUpdater (เจ้าของสั่ง) — เจอ launcher ให้ใช้ก่อน
+		string launcher = Path.Combine(gameDir, "DinoWorldLauncher.exe");
+		if (File.Exists(launcher))
+		{
+			return launcher;
+		}
+		string direct = Path.Combine(gameDir, "DurangoUpdater.exe");
+		if (File.Exists(direct))
+		{
+			return direct;
+		}
+		try
+		{
+			string cwd = Directory.GetCurrentDirectory();
+			string fromCwd = Path.Combine(cwd, "DurangoUpdater.exe");
+			if (File.Exists(fromCwd))
+			{
+				return fromCwd;
+			}
+			if (!string.IsNullOrEmpty(cwd) && cwd.EndsWith("_Data", StringComparison.OrdinalIgnoreCase))
+			{
+				DirectoryInfo parent = Directory.GetParent(cwd);
+				if (parent != null)
+				{
+					string fromParent = Path.Combine(parent.FullName, "DurangoUpdater.exe");
+					if (File.Exists(fromParent))
+					{
+						return fromParent;
+					}
+				}
+			}
+		}
+		catch
+		{
+		}
+		return direct;
+	}
+
+	private static string ResolvePatchManifestUrl()
+	{
+		string gateway = GameManager.GatewayUrl;
+		if (string.IsNullOrEmpty(gateway))
+		{
+			gateway = Durango.Offline.Server.AutoConnectTarget;
+		}
+		if (string.IsNullOrEmpty(gateway))
+		{
+			gateway = Durango.Offline.Server.ToGatewayUrl(Durango.Offline.Server.ResolveOnlineTarget());
+		}
+		if (string.IsNullOrEmpty(gateway))
+		{
+			return null;
+		}
+		return gateway.TrimEnd('/') + "/launcher/version";
+	}
+
+	private static string BuildUpdateDialogBody(bool updaterFound, string patchNotes)
+	{
+		string body = updaterFound
+			? "พบเวอร์ชันใหม่  ต้องติดตั้งก่อนเข้าเล่น\nโหลดเฉพาะไฟล์แพท ไม่ต้องโหลดเกมทั้งก้อน"
+			: "พบเวอร์ชันใหม่ แต่ไม่พบ DinoWorldLauncher.exe ข้างไฟล์ Durango.exe\nกรุณาเปิดเกมผ่าน DinoWorld Launcher";
+		if (!string.IsNullOrEmpty(patchNotes))
+		{
+			body = body + "\n\n" + patchNotes.Trim().Replace("\r\n", "\n");
+		}
+		body += "\n\nกดปุ่มด้านล่างเพื่อปิดเกม แล้วติดตั้งแพท";
+		return body;
+	}
+
+	protected void LaunchInGamePatcher(string downloadUrl, bool required = true, string patchNotes = null)
+	{
+		string gameDir = GameFolder();
+		string updater = FindUpdaterExe();
+		bool hasUpdater = File.Exists(updater);
+		Action startUpdater = delegate
+		{
+			if (hasUpdater)
+			{
+				// [4 ก.ย. 2026] DinoWorldLauncher.exe = ตัวอัปเดตใหม่: เปิดเปล่า ๆ (มันเช็คเวอร์ชัน+แพตช์ DLL+เปิดเกมพร้อม token เอง)
+				// DurangoUpdater.exe (ชุดเก่า) ยังรับ --from-game/--manifest-url เหมือนเดิม
+				bool isLauncher = Path.GetFileName(updater).Equals("DinoWorldLauncher.exe", StringComparison.OrdinalIgnoreCase);
+				string args = string.Empty;
+				if (!isLauncher)
+				{
+					args = "--from-game";
+					string manifestUrl = ResolvePatchManifestUrl();
+					if (!string.IsNullOrEmpty(manifestUrl))
+					{
+						args += " --manifest-url \"" + manifestUrl + "\"";
+					}
+				}
+				try
+				{
+					Process.Start(new ProcessStartInfo
+					{
+						FileName = updater,
+						Arguments = args,
+						WorkingDirectory = Path.GetDirectoryName(updater) ?? gameDir,
+						UseShellExecute = true
+					});
+				}
+				catch (Exception e)
+				{
+					LogError("start updater failed: " + e.Message);
+					if (!string.IsNullOrEmpty(downloadUrl))
+					{
+						Application.OpenURL(downloadUrl);
+					}
+				}
+			}
+			else if (!string.IsNullOrEmpty(downloadUrl))
 			{
 				Application.OpenURL(downloadUrl);
-			});
-		}
-		else
+			}
+			Application.Quit();
+		};
+		if (!hasUpdater && string.IsNullOrEmpty(downloadUrl))
 		{
-			LogError("No download url");
-			CurState = State.Error;
+			LogError("DinoWorldLauncher.exe / DurangoUpdater.exe not found in " + gameDir);
 		}
+		UserControl.ShowMessageBox("ต้องอัปเดต", BuildUpdateDialogBody(hasUpdater, patchNotes), startUpdater, null, "ปิดเกมแล้วอัปเดต");
 	}
 
 	static TitleMenuGroup()
@@ -1271,9 +1478,69 @@ public class TitleMenuGroup : MonoBehaviour
 
 	private IEnumerator CheckUpdate()
 	{
-		// [แก้เอง] โหมดเซิร์ฟส่วนตัว — ข้ามเช็คอัปเดตทั้งหมด
-		// (UpdateManager + db.kyllox.pe.kr เป็นของเจ้าเก่า ตายแล้ว → ค้าง/throw กลาง coroutine
-		//  แล้ว /knock ไม่ถูกยิง = หน้า title ค้างที่ State.Knock)
+		string url = ResolvePatchManifestUrl();
+		if (string.IsNullOrEmpty(url))
+		{
+			CurState = State.GetClusterList;
+			yield break;
+		}
+		WWW www = new WWW(url);
+		float waited = 0f;
+		while (!www.isDone && waited < 6f)
+		{
+			waited += Time.unscaledDeltaTime;
+			yield return null;
+		}
+		if (!www.isDone)
+		{
+			www.Dispose();
+			CurState = State.GetClusterList;
+			yield break;
+		}
+		if (string.IsNullOrEmpty(www.error) && !string.IsNullOrEmpty(www.text))
+		{
+			string remote = null;
+			string notes = null;
+			try
+			{
+				JObject o = JObject.Parse(www.text);
+				remote = (string)o["Version"] ?? (string)o["version"];
+				notes = (string)o["Notes"] ?? (string)o["notes"];
+			}
+			catch
+			{
+				remote = null;
+			}
+			string local = "0";
+			string versionFile = Path.Combine(GameFolder(), "version.txt");
+			if (File.Exists(versionFile))
+			{
+				local = File.ReadAllText(versionFile).Trim();
+			}
+			if (!string.IsNullOrEmpty(remote) && !PatchVersionsMatch(local, remote))
+			{
+				LaunchInGamePatcher(null, required: true, notes);
+				yield break;
+			}
+		}
+		CurState = State.GetClusterList;
+		yield break;
+	}
+
+	private static bool PatchVersionsMatch(string local, string remote)
+	{
+		if (string.IsNullOrEmpty(local) || string.IsNullOrEmpty(remote))
+		{
+			return false;
+		}
+		local = local.Replace("CustomClient", "").Trim();
+		remote = remote.Replace("CustomClient", "").Trim();
+		return string.Equals(local, remote, StringComparison.OrdinalIgnoreCase);
+	}
+
+	private IEnumerator CheckUpdateLegacyKyllox()
+	{
+		// ตัวอัปเดตเจ้าเก่า (kyllox) — ไม่ใช้แล้ว เหลือไว้กันชุดเก่า
 		if (!string.IsNullOrEmpty(Durango.Offline.Server.AutoConnectTarget))
 		{
 			KnockSystem();

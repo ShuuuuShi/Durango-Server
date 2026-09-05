@@ -31,6 +31,17 @@ public static class AccountStore
     /// <summary>ตรวจ IP ที่จองไว้ครั้งแรกไหม (ปิดด้วย <c>--no-ip-bind</c> เช่นเมื่อทุกคนอยู่หลัง NAT เดียวกัน)</summary>
     public static bool BindToFirstIp { get; set; } = true;
 
+    /// <summary>
+    /// เทียบ IP แบบวงเดียวกัน (/24) แทนที่จะต้องตรงเป๊ะทุกหลัก — ตั้งด้วย <c>--loose-ip-match</c>
+    ///
+    /// 🐛 ที่มา (30 ส.ค. 2026): เจ้าของใช้ Cloudflare WARP ซึ่ง**สลับ IP ในวงเดิมไปเรื่อย ๆ**
+    /// (สร้างตัวละครตอน `104.28.214.148` · เข้ามาอีกทีเป็น `104.28.214.151`) — `FindByIp` เดิมเทียบ
+    /// ตรงเป๊ะ ⇒ หน้าเลือกตัวละครว่างเปล่า ⇒ **บังคับสร้างตัวละครใหม่ทุกครั้งที่ IP ขยับ**
+    /// (เน็ตมือถือ/CGNAT ก็เจอแบบเดียวกัน) แต่จะเลิกกรอง IP ทั้งหมดก็ไม่ได้ เพราะทุกคนจะเห็น
+    /// และเลือกตัวละครของคนอื่นได้หมด ⇒ ผ่อนเป็น "วงเดียวกัน" เป็นทางสายกลาง
+    /// </summary>
+    public static bool LooseIpMatch { get; set; }
+
     /// <summary>ไฟล์รายชื่อที่อนุญาต — ไม่มีไฟล์ = ไม่ใช้ชั้นนี้ (ใครก็สมัครได้ แต่ยังโดนชั้น 2)</summary>
     public static string WhitelistPath { get; set; }
 
@@ -232,7 +243,7 @@ public static class AccountStore
         // ชั้น 2: ต้องมาจาก IP เดิมที่จองไว้
         if (BindToFirstIp
             && !string.IsNullOrEmpty(acc.ClaimedFromIp)
-            && !string.Equals(NormalizeIp(acc.ClaimedFromIp), remoteIp, StringComparison.Ordinal))
+            && !SameClient(NormalizeIp(acc.ClaimedFromIp), remoteIp))
         {
             reason = $"entity id นี้ถูกจองไว้จาก {acc.ClaimedFromIp} แล้ว";
             return false;
@@ -268,6 +279,36 @@ public static class AccountStore
     /// ไม่มี index แยกต่างหาก — ไฟล์ account มีไม่เยอะ (จำนวนคนเล่นจริง) สแกนทั้งโฟลเดอร์ทุกครั้งที่ถามพอ
     /// ไม่คุ้มทำ index แยกแล้วต้องคอยดูแลให้ตรงกันเวลาไฟล์ถูกลบ/แก้มือ
     /// </summary>
+    /// <summary>
+    /// สอง IP นี้ถือว่าเป็นเครื่องเดียวกันไหม — ปกติต้องตรงเป๊ะ
+    /// ถ้าเปิด <see cref="LooseIpMatch"/> จะยอมให้ต่างกันได้เฉพาะหลักสุดท้าย (วง /24 เดียวกัน)
+    /// รองรับเฉพาะ IPv4 · IPv6 ยังต้องตรงเป๊ะเสมอ (วงกว้างเกินกว่าจะเดาเจ้าของได้อย่างปลอดภัย)
+    /// </summary>
+    private static bool SameClient(string storedIp, string remoteIp)
+    {
+        if (string.Equals(storedIp, remoteIp, StringComparison.Ordinal))
+        {
+            return true;
+        }
+        if (!LooseIpMatch || string.IsNullOrEmpty(storedIp) || string.IsNullOrEmpty(remoteIp))
+        {
+            return false;
+        }
+        int a = storedIp.LastIndexOf('.');
+        int b = remoteIp.LastIndexOf('.');
+        if (a <= 0 || b <= 0 || storedIp.Count(c => c == '.') != 3 || remoteIp.Count(c => c == '.') != 3)
+        {
+            return false;                     // ไม่ใช่ IPv4 ทั้งคู่ — ไม่ผ่อนให้
+        }
+        return string.Equals(storedIp.Substring(0, a), remoteIp.Substring(0, b), StringComparison.Ordinal);
+    }
+
+    /// <summary>อ่านไฟล์ account ของตัวละครตัวเดียว — DurangoID รู้ entity id อยู่แล้ว ไม่ต้องสแกนทั้งโฟลเดอร์</summary>
+    public static Account FindByEntityId(string entityId)
+    {
+        return string.IsNullOrEmpty(entityId) ? null : SaveStore.Load<Account>(PathFor(entityId));
+    }
+
     public static List<Account> FindByIp(string remoteIp)
     {
         var result = new List<Account>();
@@ -280,7 +321,7 @@ public static class AccountStore
         foreach (string file in Directory.EnumerateFiles(dir, "*.json"))
         {
             Account acc = SaveStore.Load<Account>(file);
-            if (acc != null && string.Equals(NormalizeIp(acc.ClaimedFromIp), remoteIp, StringComparison.Ordinal))
+            if (acc != null && SameClient(NormalizeIp(acc.ClaimedFromIp), remoteIp))
             {
                 result.Add(acc);
             }

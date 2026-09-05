@@ -24,10 +24,17 @@ public sealed class CharacterService
         _gameServer = gameServer;
     }
 
+    /// <summary>
+    /// [4 ก.ย. 2026] หน้าเลือกตัวละคร — ถ้าเปิด DurangoID จะตอบจาก "ไอดีที่ผูก IP นี้ไว้" แทนการเดาจาก IP ล้วน
+    ///
+    /// เกมมือถือส่ง account_id (NPSN) มาเป็นค่าว่างเสมอ (Platform_Android ไม่ override) ⇒ ระบบเดิมเหลือแค่ IP
+    /// ซึ่งเน็ตมือถือสลับ IP ทีตัวละครหายที · ไอดีที่ผูกไว้จึงเป็นตัวตนที่แน่นอนกว่า
+    /// หลายไอดีผูก IP เดียวกันได้ (บ้านเดียวกัน) — คืนตัวละครของทุกไอดี แล้วให้ผู้เล่นเลือกเองในเกม
+    /// </summary>
     public WebServer.Response ListAccounts(HttpListenerRequest request, string ownerKey)
     {
         string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
-        List<AccountStore.Account> accounts = AccountStore.FindByOwner(remoteIp, ownerKey);
+        List<AccountStore.Account> accounts = ResolveAccounts(remoteIp, ownerKey);
         JArray players = new JArray();
         foreach (AccountStore.Account account in accounts)
         {
@@ -56,6 +63,33 @@ public sealed class CharacterService
             ["max_player_slot_count"] = MaxPlayerSlotCount,
             ["player_slot_count"] = PlayerSlotCount
         }.ToString());
+    }
+
+    /// <summary>หาตัวละครที่ควรโชว์ให้เครื่องนี้ — ผ่าน DurangoID ก่อน แล้วค่อยตกไปที่ระบบ IP เดิม</summary>
+    private static List<AccountStore.Account> ResolveAccounts(string remoteIp, string ownerKey)
+    {
+        PlayerIdConfig ids = ServerConfig.Current.PlayerIds;
+        if (ids == null || !ids.Enabled)
+        {
+            return AccountStore.FindByOwner(remoteIp, ownerKey);
+        }
+
+        List<string> entityIds = PlayerIdStore.EntitiesForIp(remoteIp);
+        if (entityIds.Count > 0)
+        {
+            var result = new List<AccountStore.Account>(entityIds.Count);
+            foreach (string entityId in entityIds)
+            {
+                AccountStore.Account acc = AccountStore.FindByEntityId(entityId)
+                    ?? new AccountStore.Account { EntityId = entityId };
+                result.Add(acc);
+            }
+            result.Sort((a, b) => b.LastSeenAt.CompareTo(a.LastSeenAt));
+            return result;
+        }
+
+        // ยังไม่ผูกไอดีกับ IP นี้ — บังคับสมัคร = ไม่โชว์อะไรเลย (ผู้เล่นต้องไปกดผูกที่หน้า /id ก่อน)
+        return ids.Required ? new List<AccountStore.Account>() : AccountStore.FindByOwner(remoteIp, ownerKey);
     }
 
     public WebServer.Response GetInfo(string entityId)
@@ -150,8 +184,22 @@ public sealed class CharacterService
         return new WebServer.JsonResponse("{}");
     }
 
-    public WebServer.Response Create(Dictionary<string, string> postData)
+    public WebServer.Response Create(Dictionary<string, string> postData, HttpListenerRequest request = null)
     {
+        // [4 ก.ย. 2026] บังคับสมัครไอดีก่อนเล่น (PlayerIds.Required) — ไม่มีไอดีที่ผูก IP นี้ = สร้างไม่ได้
+        // ตัวเกมโชว์ได้แค่ "สร้างตัวละครไม่สำเร็จ" เพราะยังไม่เข้าโลก (popup ต้องใช้ช่องแชท System)
+        // จึงต้องบอกทางไปสมัครผ่านช่องทางอื่น (หน้าดาวน์โหลด/ประกาศ) ดู docs/server/PlayerIds.md
+        string createIpEarly = AccountStore.NormalizeIp(request?.RemoteEndPoint?.Address?.ToString() ?? "?");
+        PlayerIdConfig idCfg = ServerConfig.Current.PlayerIds;
+        string boundId = (idCfg != null && idCfg.Enabled) ? PlayerIdStore.LatestBoundId(createIpEarly) : null;
+        if (idCfg != null && idCfg.Enabled && idCfg.Required && string.IsNullOrEmpty(boundId))
+        {
+            Console.WriteLine($"[id] ปฏิเสธการสร้างตัวละครจาก {createIpEarly} — ยังไม่ได้ผูกไอดี");
+            return new WebServer.JsonResponse(
+                new JObject { ["error"] = "ต้องสมัครและผูกไอดีที่หน้า /id ก่อนสร้างตัวละคร" }.ToString(),
+                HttpStatusCode.Forbidden);
+        }
+
         string entityId = Guid.NewGuid().ToString();
         string name = (postData.Get("name") ?? string.Empty).Trim();
         bool isMale = !string.Equals(postData.Get("gender"), "female", StringComparison.OrdinalIgnoreCase);
@@ -181,7 +229,9 @@ public sealed class CharacterService
             DisplayJson = displayJson
         };
 
-        ItemSave starterOutfit = BuildStarterOutfit(postData.Get("job"), displayJson);
+        int job = ParseStarterJob(postData.Get("job"));
+        save.Job = job;
+        ItemSave starterOutfit = BuildStarterOutfit(job, displayJson);
         if (starterOutfit != null)
         {
             save.Inventory.Add(starterOutfit);
@@ -192,7 +242,32 @@ public sealed class CharacterService
                 ["body"] = starterOutfit.Id
             };
         }
+        if (ServerConfig.Current.Features.Jobs)
+        {
+            ApplyJobSkillBoost(save, job);
+        }
         SaveStore.Save(SaveStore.PlayerPath(entityId), save);
+
+        // 🐛 [แก้เอง 30 ส.ค. 2026] ตัวละครที่เพิ่งสร้าง **ไม่เคยถูกผูกบัญชีเลย**
+        //
+        // `AccountStore.TryClaim` ถูกเรียกที่เดียวคือ `/sessions` และเรียกเฉพาะตอน `hasSelectedCharacter`
+        // = true (id ที่ "มีเซฟอยู่แล้ว") — แต่ตอนสร้างตัวละครใหม่ id ยังไม่มีเซฟ ⇒ ข้ามไปเสมอ
+        // ⇒ ไม่มีไฟล์ใน saves/accounts/ ⇒ `/accounts` (ListAccounts → FindByOwner/FindByIp) คืนลิสต์ว่าง
+        // ⇒ client เห็นว่า "ไม่มีตัวละคร" แล้วบังคับสร้างใหม่ทุกครั้งที่เข้าเกม **วนไม่รู้จบ**
+        // (เจอจริงบน VPS 30 ส.ค.: ADMIN → แอดมิน → อีกตัว สร้างใหม่ 3 รอบติด ทั้งที่เซฟเก่ายังอยู่ครบ)
+        //
+        // แก้ให้จองบัญชีตั้งแต่ตอนสร้าง — จุดที่รู้แน่นอนว่าใครเป็นเจ้าของ id นี้
+        string createIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
+        if (!AccountStore.TryClaim(entityId, name, createIp, postData.Get("account_id"), out string claimDenied))
+        {
+            Console.WriteLine($"[account] ผูกบัญชีให้ตัวละครใหม่ {entityId} ไม่สำเร็จ: {claimDenied}");
+        }
+
+        // ตัวละครใหม่เป็นของไอดีที่ผูก IP นี้ไว้ล่าสุด (คนที่เพิ่งกด "ผูกเครื่องนี้" ที่หน้า /id)
+        if (!string.IsNullOrEmpty(boundId))
+        {
+            PlayerIdStore.AttachEntity(boundId, entityId);
+        }
 
         Console.WriteLine($"[character] created {entityId} name={(string.IsNullOrEmpty(name) ? "(empty)" : name)} " +
             $"gender={(isMale ? "male" : "female")} display={(string.IsNullOrEmpty(displayJson) ? "no" : "yes")} " +
@@ -228,11 +303,13 @@ public sealed class CharacterService
                     {
                         continue;
                     }
+                    // [4 ก.ย. 2026] เดิม fallback ขาวตรง ๆ ⇒ ชุดตัวละครขาว · แปลงชื่อ palette/ตัด '#' ก่อน
+                    var pc = GameData.ItemColorOrWhite(item.Prototype);
                     string[] colors =
                     {
-                        string.IsNullOrEmpty(item.ColorR) ? "FFFFFF" : item.ColorR,
-                        string.IsNullOrEmpty(item.ColorG) ? "FFFFFF" : item.ColorG,
-                        string.IsNullOrEmpty(item.ColorB) ? "FFFFFF" : item.ColorB
+                        GameData.ResolveColor(item.ColorR, item.Prototype) ?? pc.R,
+                        GameData.ResolveColor(item.ColorG, item.Prototype) ?? pc.G,
+                        GameData.ResolveColor(item.ColorB, item.Prototype) ?? pc.B
                     };
                     if (EquipData.TryGetArmor(item.Prototype, out EquipData.ArmorInfo armor))
                     {
@@ -260,17 +337,111 @@ public sealed class CharacterService
         }
     }
 
-    private static ItemSave BuildStarterOutfit(string rawJob, string displayJson)
+    private static int ParseStarterJob(string rawJob)
+    {
+        if (!int.TryParse(rawJob, out int job))
+        {
+            job = 0;
+        }
+        return Math.Clamp(job, 0, 7);
+    }
+
+    /// <summary>
+    /// ตอนสร้างตัว (เมื่อ Features.Jobs) — ดันความชำนาญหมวดอาชีพเป็น 20
+    /// และปลดโหนดสกิลตาม jobs.json ไม่ backfill ตัวเก่า
+    /// </summary>
+    private static void ApplyJobSkillBoost(PlayerSave save, int job)
+    {
+        if (JobCatalog.TryGet(job, out JobCatalog.Definition def))
+        {
+            foreach (KeyValuePair<int, int> pair in def.CategoryLevels)
+            {
+                ApplyCategoryBoost(save, (Shared.Skill.Category)pair.Key, pair.Value);
+            }
+            foreach (JobCatalog.Grant grant in def.GivenSkills)
+            {
+                GrantJobSkill(save, grant);
+            }
+            Console.WriteLine($"[character] job skill boost job={job} จาก jobs.json หมวด {def.CategoryLevels.Count} โหนด {def.GivenSkills.Count}");
+            return;
+        }
+
+        if (!TryJobBoostCategory((Shared.Player.Job)job, out Shared.Skill.Category category))
+        {
+            return;
+        }
+        ApplyCategoryBoost(save, category, 20);
+        Console.WriteLine($"[character] job skill boost job={job} category={category} (ตารางสำรอง)");
+    }
+
+    private static void ApplyCategoryBoost(PlayerSave save, Shared.Skill.Category category, int boostLevel)
+    {
+        if (category == Shared.Skill.Category.Invalid || boostLevel <= 1)
+        {
+            return;
+        }
+        int exp = SkillCategoryData.TotalExpToReach(category, boostLevel);
+        if (exp <= 0)
+        {
+            return;
+        }
+        save.CategoryExp[((int)category).ToString()] = exp;
+        if (category != Shared.Skill.Category.Survival)
+        {
+            string key = $"{(int)category}:{boostLevel}";
+            if (!save.CompletedCategoryResearch.Contains(key))
+            {
+                save.CompletedCategoryResearch.Add(key);
+            }
+        }
+    }
+
+    private static void GrantJobSkill(PlayerSave save, JobCatalog.Grant grant)
+    {
+        if (string.IsNullOrEmpty(grant.SkillId))
+        {
+            return;
+        }
+        string sub = string.IsNullOrEmpty(grant.SubId) ? "__base__" : grant.SubId;
+        int cat = SkillData.SkillCategory.TryGetValue(grant.SkillId, out int found) ? found : 0;
+        SkillBundleSave existing = save.KnownSkills.Find(s => s != null && s.SkillId == grant.SkillId);
+        if (existing == null)
+        {
+            existing = new SkillBundleSave
+            {
+                SkillId = grant.SkillId,
+                Category = cat,
+                Levels = new Dictionary<string, int>()
+            };
+            save.KnownSkills.Add(existing);
+        }
+        existing.Levels ??= new Dictionary<string, int>();
+        existing.Levels[sub] = Math.Max(1, grant.Level);
+    }
+
+    private static bool TryJobBoostCategory(Shared.Player.Job job, out Shared.Skill.Category category)
+    {
+        switch (job)
+        {
+            case Shared.Player.Job.Engineer: category = Shared.Skill.Category.Weaponcrafting; return true;
+            case Shared.Player.Job.Office: category = Shared.Skill.Category.Constructing; return true;
+            case Shared.Player.Job.Student: category = Shared.Skill.Category.Gathering; return true;
+            case Shared.Player.Job.Farmer: category = Shared.Skill.Category.Farming; return true;
+            case Shared.Player.Job.Waiter: category = Shared.Skill.Category.Armorcrafting; return true;
+            case Shared.Player.Job.Soldier: category = Shared.Skill.Category.MeleeCombat; return true;
+            case Shared.Player.Job.Homemaker: category = Shared.Skill.Category.Cooking; return true;
+            case Shared.Player.Job.Jobless: category = Shared.Skill.Category.Defense; return true;
+            default: category = Shared.Skill.Category.Invalid; return false;
+        }
+    }
+
+    private static ItemSave BuildStarterOutfit(int job, string displayJson)
     {
         string[] outfits =
         {
             "clothes_engineer", "clothes_officeworker", "clothes_student", "clothes_farmer",
             "clothes_waiter", "clothes_soldier", "clothes_homeworker", "clothes_jobless"
         };
-        if (!int.TryParse(rawJob, out int job))
-        {
-            job = 0;
-        }
         job = Math.Clamp(job, 0, outfits.Length - 1);
         string prototype = outfits[job];
         if (!EquipData.TryGetArmor(prototype, out _))

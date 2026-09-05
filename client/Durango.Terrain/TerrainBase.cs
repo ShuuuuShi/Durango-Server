@@ -271,7 +271,12 @@ public abstract class TerrainBase : Singleton<TerrainBase>
 		// ซึ่งอยู่นอกระยะกล้อง — โหลดเสร็จก่อนที่ผู้เล่นจะเดินไปถึง
 		// ⚠️ ต้องตรงกับ World.ChunkSendRange ของ server ไม่งั้น chunk วงนอกจะไม่มีต้นไม้/หิน
 		//    แล้วต้องสร้างใหม่ตอนเดินเข้าใกล้ = กลับไปเห็นการรีเฟรชเหมือนเดิม
-		int range = 2;
+		//
+		// [แก้เอง] 31 ส.ค. 2026 — ย้ายมาจากมอด `DurangoClientCore` (ApplyWorldChunkRange)
+		// เดิมมอดสร้าง ChunkPool ใหม่ทับของเดิมตอน runtime ผ่าน reflection (เปลืองและเสี่ยงเห็น chunk
+		// เก่าค้างใต้ของใหม่ ต้อง Reset() ก่อนทุกครั้ง) — ตอนนี้เลิกใช้มอดแล้วจึงตั้งค่าถูกตั้งแต่ตอนสร้าง
+		// ค่ามาจาก /knock ของเซิร์ฟ (`world_chunk_range`) ถ้ายิงไม่ติดจะได้ค่าเดิมของเกม = 2
+		int range = Math.Max(2, Math.Min(4, Durango.Offline.Server.WorldChunkRange));
 		int num = (range * 2 + 1) * (range * 2 + 1);
 		if (TerrainChunk == null)
 		{

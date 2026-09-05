@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net.Sockets;
 using System.Threading;
 using Durango.Network;
@@ -19,6 +19,8 @@ public static class SmokeCheck
     {
         string id = "smoke-" + Guid.NewGuid().ToString("N")[..8];
         string token = SessionClient.Fetch(host, gatewayPort, id, "SmokeCheck");
+        // token ผูกกับ user_id ที่ gateway ออกให้ ไม่ใช่ชื่อที่ขอไป (ไม่งั้น auth โดนปฏิเสธ)
+        if (!string.IsNullOrEmpty(SessionClient.LastUserId)) { id = SessionClient.LastUserId; }
         if (string.IsNullOrEmpty(token)) { Console.WriteLine("[FAIL] gateway session"); return 1; }
         using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         socket.Connect(host, gamePort);

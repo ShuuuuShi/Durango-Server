@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -72,7 +72,7 @@ public partial class ServerPlayer
         }
         if (Dead)                       // เฟส C รอบ 2: ตายแล้วแตะอะไรไม่ได้
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // สัตว์: entity type 2000-2999 และ client ส่ง Tile = (-1,-1) มาเสมอ
@@ -93,7 +93,8 @@ public partial class ServerPlayer
         string naturalId = $"natural_{msg.Tile.x}_{msg.Tile.y}";
         Touched reply = new Touched
         {
-            EntityId = naturalId
+            EntityId = naturalId,
+            Level = ServerConfig.ResourceLevel
         };
         if (msg.EntityType >= 10000)
         {
@@ -102,13 +103,13 @@ public partial class ServerPlayer
             if (!_world.Terrain.TryGetNatural(msg.Tile.x, msg.Tile.y, out ushort actualType))
             {
                 Console.WriteLine("[touch] ปฏิเสธ {0}: ไม่มีของธรรมชาติที่ tile {1},{2}", Name, msg.Tile.x, msg.Tile.y);
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             if (!IsWithinReach(msg.Tile))
             {
                 Console.WriteLine("[touch] ปฏิเสธ {0}: tile {1},{2} อยู่ไกลเกินเอื้อม", Name, msg.Tile.x, msg.Tile.y);
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             if (actualType != msg.EntityType)
@@ -132,6 +133,9 @@ public partial class ServerPlayer
         }
         else if (RecipeData.BlueprintByType.TryGetValue(msg.EntityType, out string blueprintId))
         {
+            // ต้องเป็น id ของ artifact จริง — เดิมค้างเป็น natural_x_y จากบรรทัดบน
+            // ทำให้บางเส้นทางทุบส่ง id ผิด แล้วเซิร์ฟตอบ "ไม่รู้จัก entity"
+            reply.EntityId = msg.EntityId;
             var interactions = new List<int> { 103 };
             // A placed blueprint is still Occupied. Expose BuildArtifact so the
             // client opens the material ledger only when the player clicks it.
@@ -151,6 +155,13 @@ public partial class ServerPlayer
             {
                 reply.EntityName = bpName;
             }
+            // [4 ก.ย. 2026] เมนูฟังก์ชันของสิ่งปลูกสร้าง (คราฟต์/พัก/เปิดกล่อง/ชุบชีวิต) ต้องโผล่
+            // **เฉพาะเมื่อสร้างเสร็จแล้ว** — เดิมเพิ่มทุก component ทันทีที่แตะ ⇒ กล่องที่ยังเป็นไซต์
+            // (ยังไม่ใส่ของ) ก็เปิด UI เก็บของได้ · กองไฟไซต์ก็โชว์เมนูพัก/ชุบชีวิต (เจ้าของรายงาน)
+            // Warphole มีการ์ด built อยู่แล้วในเคสของมันเอง
+            bool artifactBuilt = _world.TryGetArtifact(msg.EntityId, out AppearArtifact compArtifact)
+                && (compArtifact.States.BuildingState == BuildingState.Built
+                    || compArtifact.States.BuildingState == BuildingState.Completed);
             if (RecipeData.BlueprintComponents.TryGetValue(blueprintId, out string[] comps))
             {
                 for (int i = 0; i < comps.Length; i++)
@@ -158,16 +169,18 @@ public partial class ServerPlayer
                     switch (comps[i])
                     {
                         case "Workbench":
-                            interactions.Add(501);
+                            if (artifactBuilt) { interactions.Add(501); }
                             break;
                         case "Shelter":
-                            interactions.Add(407);
+                            if (artifactBuilt) { interactions.Add(407); }
                             break;
                         case "Sanctum":
-                            interactions.Add(503);
+                            // 503 = Resurrect ("ปั้มหัวใจ" ชุบชีวิตที่ศาลเจ้า/กองไฟ) — โผล่เฉพาะตอนตายจริง
+                            // (เดิมโชว์ตลอดแม้ยังไม่ตาย ⇒ กองไฟมีเมนูปั้มหัวใจติดมาด้วย — เจ้าของรายงาน)
+                            if (artifactBuilt && Dead) { interactions.Add(503); }
                             break;
                         case "Bandstand":
-                            interactions.Add(552);
+                            // 552 = HostConcert — คอนเสิร์ต/วงดนตรีเป็นฟีเจอร์ที่ตัดออกจากรอบนี้ ไม่ต้องโชว์
                             break;
                         case "WarpAccelerator":
                             // เมนูของ warp_accelerator ขึ้นกับสถานะกิจกรรมสด ๆ (ว่าง/กำลังไป/รอรับรางวัล)
@@ -175,7 +188,8 @@ public partial class ServerPlayer
                             AddWarpAcceleratorInteractions(msg.EntityId, interactions);
                             break;
                         case "Inventory":
-                            interactions.Add(404);
+                            // 404 = เปิดกล่องเก็บของ — ต้องสร้างเสร็จก่อน (เดิมเปิดได้ตั้งแต่ยังเป็นไซต์)
+                            if (artifactBuilt) { interactions.Add(404); }
                             break;
                         case "Warphole":
                             // [แก้เอง] 23 ส.ค. 2026 — เจ้าของรายงาน "ไม่มีเมนูกดวาป" ที่หลุมวาร์ป
@@ -248,7 +262,7 @@ public partial class ServerPlayer
         if (dx * dx + dy * dy > ButcheryRange * ButcheryRange)
         {
             Console.WriteLine("[touch] ปฏิเสธ {0}: ซาก {1} อยู่ไกลเกินเอื้อม", Name, animal.EntityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         reply.Collectible = new Collectible
@@ -264,29 +278,14 @@ public partial class ServerPlayer
     }
 
     /// <summary>
-    /// Beta 1.0 — ของแต่ละอย่างต้องใช้เครื่องมืออะไรถึงจะเก็บได้
-    ///
-    /// ไม่มีในตาราง = มือเปล่าเก็บได้ (ผลไม้ · ใบไม้ · ลำต้น · ปลา · ดินเหนียว)
-    /// เครื่องมือดูจาก **tag ของไอเทม** ไม่ใช่ชื่อไอเทม — ขวานอันไหนก็ได้ที่มี tag `axe`
-    /// (ดู ItemTagData ว่า prototype ไหนมี tag อะไร)
-    ///
-    /// [แก้เอง] 24 ส.ค. 2026 — เปลี่ยนไม้ทุกชนิดจากต้องใช้ "ขวาน" เป็น "มีด" แทนชั่วคราว เพราะสูตร
-    /// คราฟต์ขวาน (assembled_axe_one_01) มีบั๊กไม่โผล่ในเมนูคราฟต์ (ดู HANDOFF.md — known-issue
-    /// resources.assets เสียหาย) ผู้เล่นเลยไม่มีทางได้ขวานมาตัดไม้เลย — สลับมาใช้มีดแทนกันผู้เล่นเก็บไม้
-    /// ไม่ได้เลยทั้งระบบ พอแก้ปัญหาขวานจริงแล้วค่อยเปลี่ยนกลับ
+    /// ของแต่ละอย่างต้องใช้เครื่องมืออะไร — อ่านจาก <c>data/gathering_tools.json</c>
+    /// ไม่มีในไฟล์ = มือเปล่า (ผลไม้ · ใบไม้ · ลำต้น · ปลา · ดินเหนียว)
+    /// เครื่องมือเป็น tag ของไอเทม (axe / knife / pickaxe) ไม่ใช่ชื่อไอเทม
     /// </summary>
-    private static readonly Dictionary<string, string> ToolForPrototype = new Dictionary<string, string>
-    {
-        { "wood_log",   "knife" },      // เดิมต้องใช้ขวาน — สลับมาใช้มีดชั่วคราว (ดูคอมเมนต์ข้างบน)
-        { "wood_bough", "knife" },
-        { "wood_bush",  "knife" },
-        { "stone_big",  "pickaxe" },    // หินก้อนใหญ่/แร่ ต้องมีอีเต้อ
-        { "metal_brass","pickaxe" },
-    };
-
     private static Dictionary<string, int> ToolRequirementFor(string prototype)
     {
-        if (prototype != null && ToolForPrototype.TryGetValue(prototype, out string tag))
+        string tag = GatheringTools.RequiredTag(prototype);
+        if (!string.IsNullOrEmpty(tag) && tag != "bare_hands")
         {
             return new Dictionary<string, int> { { tag, 1 } };
         }
@@ -376,7 +375,7 @@ public partial class ServerPlayer
     ///
     /// ของที่ไม่มีหลอด (MaxOf = 0) และตอนปิดระบบใน config จะไม่โดนอะไรทั้งนั้น
     /// </summary>
-    private void WearTool(string toolItemId)
+    private void WearTool(string toolItemId, WearKind kind = WearKind.Collect)
     {
         if (!ServerConfig.Current.Features.ToolDurability) return;
         if (string.IsNullOrEmpty(toolItemId))
@@ -384,12 +383,14 @@ public partial class ServerPlayer
             return;                 // มือเปล่า
         }
         ToolConfig cfg = ServerConfig.Current.Tools;
-        if (!cfg.Enabled || cfg.WearPerUse <= 0f)
+        // [TodoList/03] หักตามชนิดงาน (คราฟต์ 3.2 / เก็บ 1.6 …) — Deltas ปิด = WearPerUse เดิม
+        bool deltas = cfg.Deltas != null && cfg.Deltas.Enabled;
+        if (!cfg.Enabled || (!deltas && cfg.WearPerUse <= 0f))
         {
             return;
         }
         string brokenName = null;
-        float left = 0f, max = 0f;
+        float left = 0f, max = 0f, wear = 0f;
         lock (_inventory)
         {
             for (int i = 0; i < _inventory.Count; i++)
@@ -404,7 +405,8 @@ public partial class ServerPlayer
                     return;         // ไม่ใช่เครื่องมือที่สึกได้
                 }
                 max = ToolDurability.MaxOf(it);
-                left = ToolDurability.RemainingOf(it) - cfg.WearPerUse;
+                wear = ToolDurability.WearFor(kind, it.Prototype);
+                left = ToolDurability.RemainingOf(it) - wear;
                 if (left <= 0f)
                 {
                     brokenName = it.Name;
@@ -431,7 +433,7 @@ public partial class ServerPlayer
             Console.WriteLine("[tool] {0}: {1} พังแล้ว", Name, brokenName);
             Send(new Info { Text = $"{brokenName} พังแล้ว — ต้องคราฟต์อันใหม่" });
         }
-        else if (left <= max * 0.2f && left + cfg.WearPerUse > max * 0.2f)
+        else if (left <= max * 0.2f && left + wear > max * 0.2f)
         {
             // เตือนครั้งเดียวตอนข้ามเส้น 20% ไม่ใช่ทุกครั้งที่ใช้หลังจากนั้น
             Console.WriteLine("[tool] {0}: เครื่องมือเหลือ {1:F0}/{2:F0}", Name, left, max);
@@ -457,6 +459,10 @@ public partial class ServerPlayer
         switch (tag)
         {
             case "axe": return "ขวาน";
+            case "axe_onehand_tool": return "ขวานมือเดียว (หรือมีด/ดาบหิน ถ้าสูตรรับ)";
+            case "axe_twohand_tool": return "ขวานสองมือ";
+            case "hammer_onehand": return "ค้อนมือเดียว";
+            case "hammer_twohand": return "ค้อนสองมือ";
             case "knife": return "มีด";
             case "pickaxe": return "อีเต้อ";
             case "shovel": return "พลั่ว";
@@ -470,25 +476,69 @@ public partial class ServerPlayer
     {
         var list = new List<Generator>();
         var bareHands = new Dictionary<string, int> { { "bare_hands", 1 } };
+        int level = ServerConfig.ResourceLevel;
+        // [TodoList/04] เวลาเก็บตามเกม = effort_standard.collect(level) = 2.5 + (level-1)×0.25 วินาที ทุกชิ้นเท่ากัน
+        // (เดิม 1.5+i — ของชิ้นที่ 3 ในต้นเดียวกันช้ากว่าชิ้นแรก 2 เท่าโดยไม่มีเหตุผล) · ปิดสวิตช์ = ตัวเลขเดิม
+        CraftingConfig effortCfg = ServerConfig.Current.Crafting;
+        bool effortFormula = effortCfg != null && effortCfg.EffortFormula;
         if (NaturalData.Map.TryGetValue(entityType, out NaturalData.GenEntry[] entries))
         {
             for (int i = 0; i < entries.Length; i++)
             {
+                float effort = effortFormula ? effortCfg.CollectSeconds(level) : 1f + i;
                 list.Add(new Generator
                 {
                     Id = entries[i].Prototype,
                     Name = entries[i].Name,
                     Icon = entries[i].Icon,
+                    Level = level,
                     Amount = 3 - (i % 2),
-                    Effort = 1f + i,
-                    Duration = 1.5f + i,
+                    Effort = effort,
+                    Duration = effortFormula ? effort : 1.5f + i,
                     ToolRequirements = ToolRequirementFor(entries[i].Prototype),
                     Enabled = true
                 });
             }
             return list;
         }
-        list.Add(new Generator { Id = "leaf", Name = "ใบไม้", Icon = "icon_nat_leaf", Amount = 3, Effort = 1f, Duration = 1.5f, ToolRequirements = bareHands, Enabled = true });
+        // [4 ก.ย. 2026] เดิม fallback เป็น "ใบไม้" อย่างเดียวเสมอ ⇒ เกาะที่ชนิดของธรรมชาติไม่อยู่ใน
+        // NaturalData.Map (เช่นเกาะหิมะ) **ทุกต้นทุกก้อนหินให้ใบไม้หมด** — เจ้าของแจ้งเป็นบั๊ก
+        // ตอนนี้เดาจากช่วง id แทน: 11xxx=พืช · 12xxx/13xxx/15xxx=หิน/แร่ · 14xxx=ต้นไม้
+        float fbEffort = effortFormula ? effortCfg.CollectSeconds(level) : 1f;
+        void AddFb(string proto, string name, string icon, System.Collections.Generic.Dictionary<string, int> tools)
+        {
+            list.Add(new Generator
+            {
+                Id = proto, Name = name, Icon = icon, Level = level, Amount = 3,
+                Effort = fbEffort, Duration = effortFormula ? fbEffort : 1.5f,
+                ToolRequirements = tools, Enabled = true
+            });
+        }
+        if (entityType >= 14000 && entityType < 15000)
+        {
+            AddFb("wood_bough", "กิ่งไม้", "icon_nat_wood_branch", ToolRequirementFor("wood_bough"));
+            AddFb("wood_log", "ท่อนไม้", "icon_nat_wood_log", ToolRequirementFor("wood_log"));
+            AddFb("leaf", "ใบไม้", "icon_nat_leaf", bareHands);
+        }
+        else if (entityType >= 12000 && entityType < 14000)
+        {
+            AddFb("stone", "หิน", "icon_nat_mine_stone", ToolRequirementFor("stone"));
+            AddFb("stone_big", "หินก้อนใหญ่", "icon_nat_mine_rock", ToolRequirementFor("stone_big"));
+        }
+        else if (entityType >= 15000 && entityType < 16000)
+        {
+            AddFb("stone", "หิน", "icon_nat_mine_stone", ToolRequirementFor("stone"));
+            AddFb("stone_big", "หินก้อนใหญ่", "icon_nat_mine_rock", ToolRequirementFor("stone_big"));
+        }
+        else
+        {
+            // 11xxx (พืช/พุ่ม) และชนิดที่ไม่รู้จักจริง ๆ
+            AddFb("leaf", "ใบไม้", "icon_nat_leaf", bareHands);
+            if (entityType >= 11000 && entityType < 12000)
+            {
+                AddFb("stem", "ลำต้น", "icon_nat_fiber_reed", ToolRequirementFor("stem"));
+            }
+        }
         return list;
     }
 
@@ -498,13 +548,13 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[feature] ปฏิเสธ {0}: ระบบเก็บของปิดอยู่ในรอบนี้ (Features.Gathering)", Name);
             Send(new Info { Text = "ระบบเก็บของยังไม่เปิดในรอบนี้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         Console.WriteLine("[collect] {0} gen={1} tool={2}", msg.EntityId, msg.GeneratorId, msg.ToolItemId);
         if (Dead)                       // เฟส C รอบ 2: ตายแล้วทำอะไรไม่ได้จนกว่าจะฟื้น
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // แล่ซากสัตว์ — คนละเส้นทางกับของธรรมชาติ (ไม่มี tile ให้ผูก และหมดทีละชิ้นส่วน)
@@ -524,13 +574,13 @@ public partial class ServerPlayer
         if (!_world.TryGetNaturalTile(msg.EntityId, out Point2 tile))
         {
             Console.WriteLine("[collect] ปฏิเสธ {0}: ยังไม่ได้แตะ {1} (server ไม่รู้ว่าอยู่ tile ไหน)", Name, msg.EntityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!IsWithinReach(tile))
         {
             Console.WriteLine("[collect] ปฏิเสธ {0}: {1} อยู่ไกลเกินเอื้อมแล้ว", Name, msg.EntityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // GP-03: หักจำนวนทันทีที่ขอ (อะตอมมิกที่ระดับ world) ไม่ใช่ตอนเก็บเสร็จ
@@ -538,14 +588,14 @@ public partial class ServerPlayer
         if (InventoryFull)
         {
             Console.WriteLine("[inventory] {0} กระเป๋าเต็ม เก็บของไม่ได้", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(InventoryFullMessage), header.Seq);
             return;
         }
         // H-6: เพดานงานที่รอเวลาอยู่ต่อผู้เล่น — ไม่เช็คแล้วสแปม packet ยัดคิวโตไม่จำกัดจน main loop ค้าง
         if (_deferred.Count >= MaxPendingActions)
         {
             Console.WriteLine("[collect] ปฏิเสธ {0}: มีงานค้างอยู่ {1} รายการแล้ว", Name, _deferred.Count);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // GP-08b: ต้องมีเครื่องมือที่ generator ขอจริง ๆ (ตัดไม้ต้องมีขวาน · ทุบหินต้องมีอีเต้อ)
@@ -566,42 +616,53 @@ public partial class ServerPlayer
         if (gatherBefore != null && gatherBefore.IsCancelled)
         {
             Send(new Info { Text = gatherBefore.CancelReason ?? "mod ยกเลิกการเก็บของ" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
-        if (!TrySpendStamina(StaminaCostCollect))
+        if (!TrySpendStamina(StaminaCostCollect, ActionKind.Collect))
         {
             Console.WriteLine("[survival] {0} สตามินาไม่พอสำหรับเก็บของ", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!_world.TryReserveGenerator(msg.EntityId, msg.GeneratorId, out Generator generator, out bool ranOut))
         {
             // [แก้เอง] อีกคนชิงหน่วยสุดท้ายไปก่อนในติ๊กเดียวกัน — คืนสตามินาที่เพิ่งหักไป ไม่งั้นเสียฟรี
             RestoreStamina(StaminaCostCollect, 0f);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // GP-09b: ใช้ Duration ของ generator จริง ๆ (เดิม 2 วิตายตัวทุกชิ้น)
         // แล้วคูณด้วยสกิลหมวดเก็บของ — เวลาที่บอก client กับที่ server หน่วงต้องตรงกัน
-        float gatherSeconds = Math.Max(0.5f, (generator.Duration > 0f ? generator.Duration : 2f) * GatherDurationScale());
+        // [TodoList/04] คิดสดจาก config ทุกครั้ง (generator ถูกแคชไว้ใน world — ค่าจะค้างถ้าแก้ config/ResourceLevel ระหว่างรัน)
+        CraftingConfig gatherCfg = ServerConfig.Current.Crafting;
+        int gatherLevelForEffort = generator.Level > 0 ? generator.Level : ServerConfig.ResourceLevel;
+        float gatherBase = gatherCfg != null && gatherCfg.EffortFormula
+            ? gatherCfg.CollectSeconds(gatherLevelForEffort)
+            : (generator.Duration > 0f ? generator.Duration : 2f);
+        float gatherSeconds = Math.Max(0.5f, gatherBase * GatherDurationScale());
         Send(new Messages.Timer { Duration = gatherSeconds }, header.Seq);
-        Item item = MakeGatheredItem(generator);
+        int resourceLevel = generator.Level > 0 ? generator.Level : ServerConfig.ResourceLevel;
+        int gatherSkill = Math.Max(1, ProficiencyLevel(Shared.Skill.Category.Gathering));
         bool bonusItem = RollGatherBonus();
-        Item extra = bonusItem ? MakeGatheredItem(generator) : default;
+        bool greatGather = bonusItem || RollGatherGreatSuccess();
+        Generator gatherStamp = generator;
+        gatherStamp.Level = ResolveSkillItemLevel(Shared.Skill.Category.Gathering, resourceLevel, greatGather);
+        Item item = MakeGatheredItem(gatherStamp);
+        Item extra = bonusItem ? MakeGatheredItem(gatherStamp) : default;
         _deferred.Add((Times.UnixTimeNow() + gatherSeconds + 0.1, () =>
         {
             Send(new Collected
             {
                 Items = bonusItem ? new[] { item, extra } : new[] { item },
-                Result = Result.Success,
+                Result = greatGather ? Result.GreatSuccess : Result.Success,
                 ActionInfo = new ActionInfo
                 {
-                    ActionLevel = 1,
-                    PotentialLevel = 0,
-                    RelatedCategory = Shared.Skill.Category.Invalid,
-                    SuccessRatio = 1f,
-                    RelatedAbility = Shared.Ability.Derived.Invalid
+                    ActionLevel = gatherSkill,
+                    PotentialLevel = resourceLevel,
+                    RelatedCategory = Shared.Skill.Category.Gathering,
+                    SuccessRatio = 0.85f + SkillRatio(Shared.Skill.Category.Gathering) * 0.14f,
+                    RelatedAbility = Shared.Ability.Derived.Gathering
                 },
                 RanOut = ranOut
             }, header.Seq);
@@ -610,7 +671,7 @@ public partial class ServerPlayer
             if (ranOut)
             {
                 _world.ForgetNaturalTile(msg.EntityId);      // GP-09
-                if (_world.Terrain.RemoveNatural(tile.x, tile.y))
+                if (_world.Terrain.RemoveNatural(tile.x, tile.y, regrowable: true))
                 {
                     _world.MarkDirty();   // GP-07
                     _world.BroadcastNear(new WorldPosition(tile.x * 200f + 100f, tile.y * 200f + 100f), new DisappearEntityOnTile { EntityId = msg.EntityId, Tile = tile });
@@ -636,6 +697,11 @@ public partial class ServerPlayer
                 });
             PluginManager.Instance?.FireEvent("inventory.added", this, false, true);
             GainExpForGather();
+            // บั๊ก #7 — ตักโคลน/ดินเหนียวแล้วต้องเปื้อน (ข้อมูลเกมมีสถานะ dirty อยู่แล้ว)
+            if ((item.Prototype ?? string.Empty).StartsWith("clay", StringComparison.Ordinal))
+            {
+                MakeDirty();
+            }
             NoteGatheredItem(item.Prototype);          // เควสที่เจาะจงของ เช่น "เก็บท่อนซุง 10 อัน"
             if (bonusItem)
             {
@@ -656,13 +722,13 @@ public partial class ServerPlayer
         if (!ServerConfig.Current.Features.Butchery)
         {
             Send(new Info { Text = "ระบบแล่ซากยังไม่เปิดในรอบนี้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (corpse.IsAlive)
         {
             Console.WriteLine("[butchery] ปฏิเสธ {0}: {1} ยังไม่ตาย", Name, corpse.EntityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         WorldPosition me = CurrentPosition;
@@ -671,20 +737,20 @@ public partial class ServerPlayer
         if (dx * dx + dy * dy > ButcheryRange * ButcheryRange)
         {
             Console.WriteLine("[butchery] ปฏิเสธ {0}: ซาก {1} อยู่ไกลเกินเอื้อม", Name, corpse.EntityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (InventoryFull)
         {
             Console.WriteLine("[inventory] {0} กระเป๋าเต็ม แล่เนื้อไม่ได้", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(InventoryFullMessage), header.Seq);
             return;
         }
         // H-6: เพดานงานที่รอเวลาอยู่ต่อผู้เล่น — กันสแปม packet ยัดคิวโตไม่จำกัด
         if (_deferred.Count >= MaxPendingActions)
         {
             Console.WriteLine("[butchery] ปฏิเสธ {0}: มีงานค้างอยู่ {1} รายการแล้ว", Name, _deferred.Count);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // ต้องมีมีดถึงจะแล่ได้ (เช็คก่อนจอง ไม่งั้นคนไม่มีมีดกินชิ้นส่วนของคนอื่นทิ้งเปล่า ๆ)
@@ -696,11 +762,11 @@ public partial class ServerPlayer
         IModEventContext? beforeButchery = PluginManager.Instance?.FireEvent("butchery.before", this, true, false,
             new Dictionary<string, string>(StringComparer.Ordinal) { ["entity_id"] = corpse.EntityId, ["generator_id"] = msg.GeneratorId ?? "", ["tool_item_id"] = msg.ToolItemId ?? "" });
         if (beforeButchery?.IsCancelled == true)
-        { Send(new Info { Text = beforeButchery.CancelReason ?? "การแล่ถูกยกเลิกโดยม็อด" }, header.Seq); Send(default(Abort), header.Seq); return; }
-        if (!TrySpendStamina(StaminaCostCollect))
+        { Send(new Info { Text = beforeButchery.CancelReason ?? "การแล่ถูกยกเลิกโดยม็อด" }, header.Seq); Send(Aborts.Reason(), header.Seq); return; }
+        if (!TrySpendStamina(StaminaCostCollect, ActionKind.Collect))
         {
             Console.WriteLine("[survival] {0} สตามินาไม่พอสำหรับแล่เนื้อ", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // จองก่อนเสมอ (GP-03) — สองคนแล่ซากเดียวกันพร้อมกันจะได้ไม่ได้ของซ้ำ
@@ -708,27 +774,32 @@ public partial class ServerPlayer
         {
             // [แก้เอง] อีกคนชิงชิ้นส่วนสุดท้ายไปก่อน — คืนสตามินาที่เพิ่งหักไป
             RestoreStamina(StaminaCostCollect, 0f);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
         float duration = Math.Max(0.5f, (part.Duration > 0f ? part.Duration : 2f) * ButcheryDurationScale());
         Send(new Messages.Timer { Duration = duration }, header.Seq);
-        Item item = MakeGatheredItem(part);
+        int meatBase = part.Level > 0 ? part.Level : ServerConfig.ResourceLevel;
+        int butcherSkill = Math.Max(1, ProficiencyLevel(Shared.Skill.Category.Butchery));
         bool bonusPart = RollButcheryBonus();
-        Item extraPart = bonusPart ? MakeGatheredItem(part) : default;
+        bool greatButcher = bonusPart || RollButcheryGreatSuccess();
+        Generator meatStamp = part;
+        meatStamp.Level = ResolveSkillItemLevel(Shared.Skill.Category.Butchery, meatBase, greatButcher);
+        Item item = MakeGatheredItem(meatStamp);
+        Item extraPart = bonusPart ? MakeGatheredItem(meatStamp) : default;
         _deferred.Add((Times.UnixTimeNow() + duration + 0.1, () =>
         {
             Send(new Collected
             {
                 Items = bonusPart ? new[] { item, extraPart } : new[] { item },
-                Result = Result.Success,
+                Result = greatButcher ? Result.GreatSuccess : Result.Success,
                 ActionInfo = new ActionInfo
                 {
-                    ActionLevel = 1,
-                    PotentialLevel = 0,
+                    ActionLevel = butcherSkill,
+                    PotentialLevel = meatBase,
                     RelatedCategory = Shared.Skill.Category.Butchery,
-                    SuccessRatio = 1f,
+                    SuccessRatio = 0.85f + SkillRatio(Shared.Skill.Category.Butchery) * 0.14f,
                     RelatedAbility = Shared.Ability.Derived.Invalid
                 },
                 RanOut = emptied
@@ -760,6 +831,7 @@ public partial class ServerPlayer
 
     private static Item MakeGatheredItem(Generator generator)
     {
+        int level = generator.Level > 0 ? generator.Level : ServerConfig.ResourceLevel;
         return new Item
         {
             Id = Guid.NewGuid().ToString(),
@@ -768,8 +840,8 @@ public partial class ServerPlayer
             Icon = generator.Icon,
             SubIcon = null,
             Prototype = generator.Id,
-            Level = 1,
-            OriginalLevel = 1,
+            Level = level,
+            OriginalLevel = level,
             // 🐛 **ตัวที่ทำให้ "มีเนื้อ 10 ชิ้นแต่คราฟต์ไม่ได้"** — เดิมเป็น 0
             //
             // สูตรที่มี `deduct_modifiable_count: true` (สูตรทำอาหาร/แปรรูปแทบทั้งหมด)
@@ -786,9 +858,10 @@ public partial class ServerPlayer
             // ปกติของที่เก็บได้ไม่ใช่เครื่องมือ (MaxFor คืน 0 ⇒ หลอด 1/1 เหมือนเดิม)
             // แต่ cheat add axe/knife ก็ผ่านทางนี้ จึงต้องเติมความทนทานให้ด้วย
             Durability = ToolDurability.MakeGauge(ToolDurability.MaxFor(generator.Id), ToolDurability.MaxFor(generator.Id)),
-            ColorR = "FFFFFF",
-            ColorG = "FFFFFF",
-            ColorB = "FFFFFF",
+            // [4 ก.ย. 2026] สีจริงจาก prototype_data — เดิม FFFFFF (ขาว)
+            ColorR = GameData.ItemColorOrWhite(generator.Id).R,
+            ColorG = GameData.ItemColorOrWhite(generator.Id).G,
+            ColorB = GameData.ItemColorOrWhite(generator.Id).B,
             Unstable = false,
             RepairRequirement = ToolDurability.RepairRequirementFor(generator.Id),
             FounderId = null,

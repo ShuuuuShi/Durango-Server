@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Durango.Network;
 using Durango.Utils;
@@ -123,24 +123,29 @@ public partial class ServerPlayer
             || msg.Tile.x >= _world.Terrain.Width || msg.Tile.y >= _world.Terrain.Height
             || !IsWithinReach(msg.Tile))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         bool found = false;
+        Point2 canonical = msg.Tile;
         foreach (var poi in AllPOIs())
         {
-            if (poi.Tile == msg.Tile && poi.Type == msg.Type)
+            if (poi.Type == msg.Type && POICoversTile(poi.Tile, poi.Size, msg.Tile))
             {
                 found = true;
+                canonical = poi.Tile;   // เก็บ tile มุมของ POI ไม่ใช่ tile ที่ผู้เล่นยืน
                 break;
             }
         }
         if (!found)
         {
-            Send(default(Abort), header.Seq);
+            Console.WriteLine("[poi] {0} สำรวจ {1} ที่ tile {2},{3} — ไม่เจอ POI ตรงนั้น",
+                Name, msg.Type, msg.Tile.x, msg.Tile.y);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
-        _exploredPOIs[msg.Tile] = msg.Type;
+        _exploredPOIs[canonical] = msg.Type;
+        Console.WriteLine("[poi] {0} ค้นพบ {1} ที่ tile {2},{3}", Name, msg.Type, canonical.x, canonical.y);
         MarkDirty();
         Send(default(OK), header.Seq);
     }
@@ -158,13 +163,14 @@ public partial class ServerPlayer
         if (msg.Tile.x < 0 || msg.Tile.y < 0
             || msg.Tile.x >= _world.Terrain.Width || msg.Tile.y >= _world.Terrain.Height)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         bool valid = false;
         foreach (var poi in AllPOIs())
         {
-            if (poi.Tile == msg.Tile && poi.Type == Shared.System.PointOfInterest.Warphole)
+            if (poi.Type == Shared.System.PointOfInterest.Warphole
+                && POICoversTile(poi.Tile, poi.Size, msg.Tile))
             {
                 valid = true;
                 break;
@@ -172,22 +178,23 @@ public partial class ServerPlayer
         }
         if (!valid)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         WorldPosition dest = new WorldPosition(msg.Tile.x * 200f, msg.Tile.y * 200f);
         IModEventContext? travelBefore = PluginManager.Instance?.FireEvent("travel.leaving", this, true, false,
             new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "warp", ["tile"] = msg.Tile.x + "," + msg.Tile.y });
-        if (travelBefore?.IsCancelled == true) { Send(default(Abort), header.Seq); return; }
+        if (travelBefore?.IsCancelled == true) { Send(Aborts.Reason(), header.Seq); return; }
         Console.WriteLine("[warp] {0} วาร์ปไป tile {1},{2}", Name, msg.Tile.x, msg.Tile.y);
         RememberPosition(dest, 0f);
         SendTeleport(dest, Shared.Teleport.TeleportType.WarpBack);
         Send(default(OK), header.Seq);
+        QuestProgress(QuestData.Goal.WarpLocal);
         PluginManager.Instance?.FireEvent("travel.entered", this, false, true,
             new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "warp", ["tile"] = msg.Tile.x + "," + msg.Tile.y });
     }
 
-    /// <summary>WarpBack — วาร์ปกลับจุดเกิด</summary>
+    /// <summary>WarpBack — วาร์ปกลับจุดเกิด (ใช้ returning point ถ้ามี)</summary>
     private void HandleWarpBack(WarpBack msg, PacketHeader header)
     {
         if (!ServerConfig.Current.Features.IslandTravel)
@@ -195,11 +202,13 @@ public partial class ServerPlayer
             RejectFeatureDisabled("IslandTravel", "WarpBack", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
             return;
         }
-        WorldPosition dest = _world.GetEntryPosition();
+        WorldPosition dest = _returningPoint.HasValue
+            ? new WorldPosition(_returningPoint.Value.x * 200f, _returningPoint.Value.y * 200f)
+            : _world.GetEntryPosition();
         IModEventContext? travelBackBefore = PluginManager.Instance?.FireEvent("travel.leaving", this, true, false,
             new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "warp_back" });
-        if (travelBackBefore?.IsCancelled == true) { Send(default(Abort), header.Seq); return; }
-        Console.WriteLine("[warp] {0} วาร์ปกลับจุดเกิด", Name);
+        if (travelBackBefore?.IsCancelled == true) { Send(Aborts.Reason(), header.Seq); return; }
+        Console.WriteLine("[warp] {0} วาร์ปกลับจุดเกิด ({1},{2})", Name, (int)(dest.x / 200f), (int)(dest.y / 200f));
         RememberPosition(dest, 0f);
         SendTeleport(dest, Shared.Teleport.TeleportType.WarpBack);
         Send(default(OK), header.Seq);
@@ -222,7 +231,7 @@ public partial class ServerPlayer
         }
         IModEventContext? travelPortBefore = PluginManager.Instance?.FireEvent("travel.leaving", this, true, false,
             new Dictionary<string, string>(StringComparer.Ordinal) { ["mode"] = "port" });
-        if (travelPortBefore?.IsCancelled == true) { Send(default(Abort), header.Seq); return; }
+        if (travelPortBefore?.IsCancelled == true) { Send(Aborts.Reason(), header.Seq); return; }
         Console.WriteLine("[warp] {0} วาร์ปไปท่าเรือ ({1:F0},{2:F0})", Name, dest.x, dest.y);
         RememberPosition(dest, 0f);
         SendTeleport(dest, Shared.Teleport.TeleportType.WarpBack);
@@ -255,7 +264,7 @@ public partial class ServerPlayer
             || poiType != Shared.System.PointOfInterest.Warphole)
         {
             Console.WriteLine("[warp] ปฏิเสธ {0}: {1} ไม่ใช่หลุมวาร์ปที่ใช้งานได้", Name, msg.EntityId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         Send(default(OK), header.Seq);
@@ -301,10 +310,10 @@ public partial class ServerPlayer
             RejectFeatureDisabled("IslandTravel", "GetWarpBackCost", "การเดินทางข้ามเกาะยังไม่เปิดในรอบนี้", header);
             return;
         }
-        Point2 entry = _world.Terrain.EntryPoint;
+        Point2 rp = _returningPoint ?? _world.Terrain.EntryPoint;
         Send(new WarpCosts
         {
-            Costs = new[] { new WarpCost { Tile = entry, Cost = 0, Prohibited = false } }
+            Costs = new[] { new WarpCost { Tile = rp, Cost = 0, Prohibited = false } }
         }, header.Seq);
     }
 
@@ -393,25 +402,46 @@ public partial class ServerPlayer
         return results.ToArray();
     }
 
+    /// <summary>
+    /// POI นี้ครอบคลุม tile ที่ client ส่งมาไหม
+    ///
+    /// 🐛 [แก้เอง 30 ส.ค. 2026] **ต้นตอ "เดินชนวาร์ปแล้วไม่บันทึกเหมือนท่าเรือ"**
+    /// POI ธรรมชาติถูกวางเป็น artifact ขนาด **6×6 tile** (`camp_warphole` ใน EnsureNaturalPOIs)
+    /// แต่ `AllPOIs()` คืนแค่ tile มุมซ้ายล่าง แล้วโค้ดเทียบด้วย `poi.Tile == msg.Tile` เป๊ะ ๆ
+    /// ⇒ client ส่ง tile ที่ผู้เล่นไปยืน/จุดกลางของหลุมมา ก็ไม่มีวันตรง ⇒ ตอบ Abort ทุกครั้ง
+    /// (เห็นเป็นข้อความ "ServerPlayer.POI.HandleExplorePOI:140" กลางจอ)
+    ///
+    /// เผื่อขอบอีก 1 tile เพราะผู้เล่นยืน "ข้าง ๆ" หลุมตอนกดสำรวจ ไม่ได้ยืนทับพอดี
+    /// </summary>
+    private static bool POICoversTile(Point2 poiTile, Point2 poiSize, Point2 tile)
+    {
+        int sx = poiSize.x <= 0 ? 1 : poiSize.x;
+        int sy = poiSize.y <= 0 ? 1 : poiSize.y;
+        return tile.x >= poiTile.x - 1 && tile.x <= poiTile.x + sx
+            && tile.y >= poiTile.y - 1 && tile.y <= poiTile.y + sy;
+    }
+
     /// <summary>ดึง POI ทั้งหมดในโลก — จาก artifact ที่ผู้เล่นสร้าง + จากที่เคยค้นพบ</summary>
-    private IEnumerable<(Point2 Tile, Shared.System.PointOfInterest Type)> AllPOIs()
+    private IEnumerable<(Point2 Tile, Point2 Size, Shared.System.PointOfInterest Type)> AllPOIs()
     {
         // 1. POI จาก artifact ที่ผู้เล่นสร้าง
         var artifacts = _world.SnapshotArtifacts();
-        var blueprints = _world.SnapshotArtifactBlueprints();
         for (int i = 0; i < artifacts.Length; i++)
         {
-            string bp = (i < blueprints.Length) ? blueprints[i] : null;
-            if (bp != null && BlueprintPOIType.TryGetValue(bp, out var poiType))
+            // อย่าจับคู่ Values/Keys จาก dictionary คนละรอบด้วย index — หลังมีการลบ/วาง
+            // artifact ลำดับอาจไม่ตรงกัน ทำให้ `poi list` เห็น dock แต่ handler หาไม่เจอ
+            // อ่าน blueprint จาก EntityId ของ artifact โดยตรงให้ทุกเส้นทางใช้ข้อมูลชุดเดียวกัน
+            if (_world.TryGetArtifactBlueprint(artifacts[i].EntityId, out string bp)
+                && bp != null && BlueprintPOIType.TryGetValue(bp, out var poiType))
             {
-                yield return (artifacts[i].Tile, poiType);
+                yield return (artifacts[i].Tile, artifacts[i].Size, poiType);
             }
         }
 
         // 2. POI ที่เคยค้นพบ (จาก _exploredPOIs)
         foreach (var kv in _exploredPOIs)
         {
-            yield return (kv.Key, kv.Value);
+            yield return (kv.Key, new Point2(1, 1), kv.Value);
         }
     }
 

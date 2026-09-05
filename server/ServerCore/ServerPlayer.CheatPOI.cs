@@ -145,6 +145,18 @@ public partial class ServerPlayer
         int sx = art.Size.x <= 0 ? 1 : art.Size.x;
         int sy = art.Size.y <= 0 ? 1 : art.Size.y;
 
+        // [แก้เอง] 3 ก.ย. 2026 — POI ที่มาจาก `pois.yml` คือพิกัดที่ทีมสร้างเกมวางไว้เอง
+        //
+        // กฎข้อ 2 (ท่าเรือต้องติดแม่น้ำ) กับ 2.5 (ต้องลึกเข้าเกาะ ≥6) เป็นกฎที่ *เราตั้งเอง*
+        // ตอนทำระบบสุ่มตำแหน่ง ไม่ใช่กฎของเกม — พอเปลี่ยนมาใช้พิกัดจริงแล้วมันเตือนปลอม 3 จุด
+        // (island_camp_0 · island_warphole_2 · island_port_0) ทั้งที่ไม่ได้จมน้ำและไม่ทับหิน
+        //
+        // คำเตือนปลอมทำให้ตัวตรวจเชื่อถือไม่ได้ — พอมีปัญหาจริงจะแยกไม่ออก
+        // ⇒ ของที่มากับเกมข้ามสองกฎนี้ แต่ยังตรวจข้ออื่นครบ (จมน้ำ · ของธรรมชาติทับ)
+        //   ซึ่งเป็นปัญหาจริงไม่ว่าพิกัดจะมาจากไหน
+        bool fromGameFile = art.EntityId != null
+            && art.EntityId.StartsWith("poi_island_", StringComparison.Ordinal);
+
         // 1. ทุก tile ใต้ตัวต้องเป็นบก — ⚠️ ใช้ LandDistance เท่านั้น (IsLand/WaterDepthAt พัง)
         for (int x = 0; x < sx; x++)
         {
@@ -159,14 +171,14 @@ public partial class ServerPlayer
 
         // 2. ท่าเรือต้องติดแม่น้ำเท่านั้น (ไม่ใช่ทะเล/ทะเลสาบทั่วไป) — [แก้เอง] เจ้าของสั่ง
         //    เดิมเช็คด้วย TouchesWater (ติดน้ำอะไรก็ได้) เปลี่ยนมาเช็ค TouchesRiver ให้ตรงกับกฎวางใหม่
-        if (blueprint == "dock" && !world.TouchesRiver(art.Tile.x, art.Tile.y, new Point2(sx, sy)))
+        if (!fromGameFile && blueprint == "dock" && !world.TouchesRiver(art.Tile.x, art.Tile.y, new Point2(sx, sy)))
         {
             return "ท่าเรือไม่ติดแม่น้ำ";
         }
 
         // 2.5 หลุมวาร์ป/รอยแยกต้องอยู่บนเกาะ ไม่ใช่ริมน้ำ — [แก้เอง] เจ้าของสั่ง (คนละอันกับข้อ 1
         //     ที่เช็คแค่ "ไม่จมน้ำ" — ข้อนี้เช็คว่าลึกเข้าเกาะพอไหม ตรงกับ minInland ที่ยกเป็น 6-10 ตอนวางใหม่)
-        if (blueprint != "dock" && world.Terrain.LandDistance(art.Tile.x, art.Tile.y) < 6)
+        if (!fromGameFile && blueprint != "dock" && world.Terrain.LandDistance(art.Tile.x, art.Tile.y) < 6)
         {
             return "ใกล้น้ำเกินไป (ต้องอยู่บนเกาะ ไม่ใช่ริมฝั่ง)";
         }

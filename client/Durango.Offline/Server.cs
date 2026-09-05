@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using Durango.Logic.Clusters;
 using Durango.Utils;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace Durango.Offline;
@@ -68,7 +70,13 @@ public class Server
 		// Keeping the embedded callback here makes a fresh local player appear after restart.
 		if (key == "online")
 		{
-			Cluster.GatewayUrlRoot = "http://127.0.0.1:8190";
+			// [แก้เอง] 31 ส.ค. 2026 — เดิมฮาร์ดโค้ด "http://127.0.0.1:8190" = เครื่องผู้เล่นเอง
+			// หน้า "เลือกเซิร์ฟเวอร์" จะยิง POST /accounts ไปที่นั่นเพื่อเอารายชื่อตัวละครมาโชว์
+			// ซึ่งไม่มีอะไรตอบ ⇒ account เป็น null ⇒ TitleClusterSelection เรียก SetPlayerInfo(-1)
+			// ⇒ ช่องจำนวนคนค้างที่ "กำลังตรวจสอบ..." ตลอดไป และกดเข้าไปก็ไม่เจอตัวละคร
+			// (ดู TitleClusterSelection.ShowClusters → Clusters.GetOrRequestAccounts → RequestAccounts)
+			// ⇒ ชี้ไปเซิร์ฟจริงจาก server.txt ตัวเดียวกับที่ปุ่มยืนยันใช้ จะได้ไม่ต้องตั้งค่าสองที่
+			Cluster.GatewayUrlRoot = ToGatewayUrl(ResolveOnlineTarget());
 			Cluster.OnRequestAccount = null;
 		}
 		Cluster.OnDeletePlayer = delegate(string entityId)
@@ -130,12 +138,10 @@ public class Server
 			BeginServer(context.World, context.Player);
 			if (key == "online")
 			{
-				string ip = Preferences.GetString("last_connect_ip", "127.0.0.1");
-				if (string.IsNullOrEmpty(ip))
-				{
-					ip = "127.0.0.1";
-				}
-				ConnectTo(ip);
+				// [แก้เอง] 31 ส.ค. 2026 — เดิมอ่านแต่ "last_connect_ip" ⇒ ผู้เล่นที่เพิ่งโหลดชุดแจกมา
+				// ยังไม่เคยกรอก ip เลย จะ fallback ไป 127.0.0.1 (ไม่มีอะไรรันอยู่) ⇒ ค้างที่สถานะ
+				// "ตรวจสอบ..." แล้วหาตัวละครไม่เจอ ทั้งที่ server.txt ชี้เซิร์ฟจริงอยู่แล้ว
+				ConnectTo(ResolveOnlineTarget());
 			}
 		};
 		string[] files = AppData.GetFiles(WorldContext.GetBasePath(Key), "*.world", SearchOption.TopDirectoryOnly);
@@ -199,10 +205,108 @@ public class Server
 	/// </summary>
 	public static string AutoConnectTarget
 	{
-		get { return string.Empty; }
+		get
+		{
+			// [แก้เอง] ห้ามอ่าน env DURANGO_AUTOCONNECT ตรงนี้
+			// DurangoUpdater ตั้ง env นี้ทุกครั้งที่เปิดเกมจาก server.txt
+			// ถ้า getter คืนค่านั้น Title/OnConfirm จะ ConnectTo ทันที ⇒ ข้ามหน้า Main
+			// เจ้าของสั่ง: กดปุ่มที่หน้า Main ค่อยเชื่อมเซิร์ฟ
+			// ปุ่ม Online ยังชี้ server.txt ผ่าน ResolveOnlineTarget() ตามเดิม
+			// หลังกดเชื่อมแล้ว ConnectTo() ยังตั้ง _defaultAutoConnectTarget สำหรับ reconnect
+			return _defaultAutoConnectTarget ?? string.Empty;
+		}
 	}
 
 	private static string _defaultAutoConnectTarget = "";
+
+	/// <summary>
+	/// อ่านเซิร์ฟที่ operator ตั้งไว้ให้ชุดแจกจาก &lt;โฟลเดอร์เกม&gt;/server.txt
+	/// บรรทัดแรกที่ไม่ใช่คอมเมนต์ (#) และไม่ว่าง = เซิร์ฟหลัก (บรรทัดถัดไป = ตัวสำรอง ยังไม่ใช้ตรงนี้)
+	/// ไฟล์เดียวกับที่มอด DurangoClientCore อ่าน — จะได้ไม่ต้องตั้งค่าสองที่
+	/// คืนค่าว่างถ้าไม่มีไฟล์/อ่านไม่ได้ ⇒ ผู้เรียกต้อง fallback เอง
+	/// </summary>
+	/// <summary>
+	/// เซิร์ฟที่ปุ่ม "เซิร์ฟออนไลน์" ควรชี้ไป — ลำดับ: server.txt → ip ล่าสุดที่ผู้เล่นเคยกรอกเอง → เครื่องตัวเอง
+	/// ใช้ร่วมกันทั้งตอนสร้างรายการในหน้าเลือกเซิร์ฟ (ดึงรายชื่อตัวละคร) และตอนกดยืนยัน (ต่อจริง)
+	/// จะได้ไม่หลุดกันเหมือนเดิมที่ตอนโชว์รายการชี้ 127.0.0.1 แต่ตอนกดยืนยันชี้เซิร์ฟจริง
+	/// </summary>
+	internal static string ResolveOnlineTarget()
+	{
+		string text = ReadServerTxtTarget();
+		if (string.IsNullOrEmpty(text))
+		{
+			text = Preferences.GetString("last_connect_ip", string.Empty);
+		}
+		if (string.IsNullOrEmpty(text))
+		{
+			text = "127.0.0.1";
+		}
+		return text;
+	}
+
+	/// <summary>เติม http:// และพอร์ต 8190 ให้ถ้ายังไม่มี — รับได้ทั้ง "ip", "ip:port" และ url เต็ม</summary>
+	internal static string ToGatewayUrl(string ip)
+	{
+		if (ip.StartsWith("http://"))
+		{
+			return ip;
+		}
+		return (ip.IndexOf(':') >= 0) ? ("http://" + ip) : ("http://" + ip + ":" + 8190);
+	}
+
+	/// <summary>
+	/// [4 ก.ย. 2026] เซิร์ฟที่มือถือต่อเมื่อไม่มี server.txt ในเครื่อง (ผู้เล่นมือถือทั่วไปไม่มีทางวางไฟล์เอง)
+	/// ว่าง = เหมือน PC (ไม่ต่อไปไหน ให้กรอก IP เอง) · ค่านี้ตั้งตอน build ด้วย tools/AndroidApk (ดู docs/server/Android.md)
+	/// </summary>
+	public const string DefaultMobileServer = "187.53.129.69:8190";
+
+	private static string ReadServerTxtTarget()
+	{
+		// [4 ก.ย. 2026] มือถือ (APK ที่ build เองแบบ Mono — ใช้ DLL ชุดเดียวกับ PC): Application.dataPath คือไฟล์ APK
+		// เขียนไม่ได้ ⇒ หา server.txt เพิ่มที่ persistentDataPath (Android/data/<package>/files/server.txt)
+		// ลำดับ: <โฟลเดอร์เกม>/server.txt (PC) → persistentDataPath/server.txt (มือถือ) → ค่า default ที่ฝังตอน build
+		string[] candidates;
+		try
+		{
+			candidates = new[]
+			{
+				Path.Combine(Directory.GetParent(Application.dataPath).FullName, "server.txt"),
+				Path.Combine(Application.persistentDataPath, "server.txt")
+			};
+		}
+		catch (Exception)
+		{
+			candidates = new[] { Path.Combine(Application.persistentDataPath, "server.txt") };
+		}
+		foreach (string path in candidates)
+		{
+			try
+			{
+				if (!File.Exists(path))
+				{
+					continue;
+				}
+				string[] lines = File.ReadAllLines(path);
+				for (int i = 0; i < lines.Length; i++)
+				{
+					string line = lines[i].Trim();
+					if (line.Length > 0 && !line.StartsWith("#"))
+					{
+						return line;
+					}
+				}
+			}
+			catch (Exception)
+			{
+			}
+		}
+		if (Application.isMobilePlatform)
+		{
+			UnityEngine.Debug.Log("[durango] ไม่พบ server.txt ที่ " + string.Join(" | ", candidates) + " ⇒ ใช้ค่า default " + DefaultMobileServer);
+			return DefaultMobileServer;
+		}
+		return string.Empty;
+	}
 
 	public static void BeginServer(WorldContext worldCtx, PlayerContext playerCtx)
 	{
@@ -281,7 +385,16 @@ public class Server
 		}
 		cluster.LocalPlayer = Json.Write(_localPlayer);
 		cluster.GatewayUrlRoot = gatewayUrlRoot;
-		cluster.Mode = Mode.Offline;
+		// [แก้เอง] 31 ส.ค. 2026 — เดิมบังคับ Mode.Offline เพราะเซิร์ฟเรายังไม่มี route "/assets/*"
+		// ถ้าตั้ง Online ทั้งที่ไม่มี Loader จะขอ 71 ไฟล์ไม่เจอ รีทรายไฟล์ละ 5 รอบ = ค้างหน้าโหลด
+		//
+		// ผลข้างเคียงของ Offline ที่เจ็บที่สุดคือ MenuSystem.ShowInOffline อนุญาตแค่ 10 เมนู
+		// ไม่มี Craft/Skill/Quest ⇒ ผู้เล่นไม่มีปุ่มคราฟต์ ต้องให้มอดมาเรียก EnableMenu() ปลดล็อกให้
+		// พอเลิกใช้มอดจึงเหลือทางเดียวคือแก้ที่ต้นเหตุ — ทำ route ให้เซิร์ฟเสิร์ฟไฟล์พวกนั้นได้จริง
+		//
+		// ตอนนี้เซิร์ฟมี "/assets/*" ครบ 71 เส้นทางแล้ว (ดู server/ServerCore/Gateway.cs) จึงเปิด Online ได้
+		// ได้กลับมาทั้งเมนูครบ และแก้สูตรคราฟต์/พิมพ์เขียวจากฝั่งเซิร์ฟโดยผู้เล่นไม่ต้องโหลดเกมใหม่
+		cluster.Mode = Mode.Online;
 		GameManager.ConnectCluster = cluster;
 		// [แก้เอง] MoveToTitle() รีสตาร์ท TitleMenuGroup ใหม่ตั้งแต่ State.Initial → GetClusterList
 		// จุดนั้นเช็คแค่ AutoConnectTarget (ไม่รู้จัก ConnectCluster เลย) — ถ้าว่าง จะไป Resources.Load
@@ -289,9 +402,186 @@ public class Server
 		// (โชว์ "[400] Bad Request/คิวการล็อกอิน" — คนละสาเหตุกับบั๊ก 192.168.1.34 เดิม แต่หน้าตาเหมือนกัน)
 		// ⇒ ตั้ง _defaultAutoConnectTarget ไว้ด้วยเสมอตอน ConnectTo ถูกเรียก กัน GetClusterList หลุดไปทาง
 		// TextAsset ที่ไม่มีจริง (ไม่กระทบ env DURANGO_AUTOCONNECT — ยังชนะอยู่เพราะเช็คก่อนใน getter)
-		_defaultAutoConnectTarget = ip;
+		_defaultAutoConnectTarget = gatewayUrlRoot;
+		FetchServerPolicy(gatewayUrlRoot);
 		GameManager.Emigrated = GameManager.EmigratedType.Explore;
 		Singleton<GameManager>.Instance().MoveToTitle();
+	}
+
+	/// <summary>
+	/// ระยะ chunk ที่เซิร์ฟบอกมาทาง /knock (`world_chunk_range`) — ใช้ที่ TerrainBase.InitChunkPool
+	/// 2 = 5×5 chunk (ค่าเดิมของเกม) · 4 = 9×9 chunk
+	/// ⚠️ ต้องไม่เกิน `World.ChunkSendRange` ของเซิร์ฟ ไม่งั้น chunk วงนอกจะไม่มีต้นไม้/หิน
+	/// (เซิร์ฟ clamp ค่านี้ให้อยู่ 2-4 มาแล้วฝั่งมัน ดู ClientModPolicy.cs)
+	/// </summary>
+	public static int WorldChunkRange = 2;
+
+	/// <summary>เมนูที่เซิร์ฟอนุญาต (`enabled_menus`) เช่น Skill/Craft/Quest — ว่าง = ใช้ค่าของเกม</summary>
+	public static string[] EnabledMenus = new string[0];
+
+	/// <summary>เซิร์ฟบอกให้ข้ามหน้าเลือก region (`skip_region_selection`)</summary>
+	public static bool SkipRegionSelection;
+
+	/// <summary>
+	/// เมนูที่เซิร์ฟสั่งให้ซ่อน (`hidden_menus`) — ชื่อ MenuType เช่น "Market", "Clan"
+	/// ใช้ที่ `MenuSystem.IsHiddenMenu` แทนรายการฮาร์ดโค้ดเดิม
+	/// ว่าง = ไม่ซ่อนอะไร · เซิร์ฟรุ่นเก่าที่ไม่ส่งค่านี้มาก็ได้ค่าว่างเหมือนกัน (ไม่ซ่อน)
+	/// </summary>
+	public static string[] HiddenMenus = new string[0];
+
+	/// <summary>จำนวนคนออนไลน์ที่เซิร์ฟตอบมาล่าสุด (-1 = ยังไม่รู้)</summary>
+	public static int OnlinePlayers = -1;
+
+	/// <summary>เซิร์ฟตอบ /knock กลับมาไหม — ใช้ตัดสินสีจุดสถานะบนหน้าไตเติ้ล</summary>
+	public static bool ServerReachable;
+
+	/// <summary>เช็คสถานะไปแล้วอย่างน้อย 1 รอบ (ใช้แยก "ยังไม่รู้" ออกจาก "ติดต่อไม่ได้")</summary>
+	public static bool ServerStatusKnown;
+
+	/// <summary>เวลาที่เช็คสถานะรอบล่าสุด (Time.realtimeSinceStartup) — กันยิงถี่เกิน</summary>
+	private static float _lastStatusCheck = -999f;
+
+	/// <summary>
+	/// เช็คสถานะเซิร์ฟแบบเบา ๆ สำหรับโชว์จุดเขียว/แดง + จำนวนคนบนหน้าไตเติ้ล
+	///
+	/// [เพิ่มเอง] 31 ส.ค. 2026 — เจ้าของขอ "จุดเขียวเล็ก ๆ บอกว่าเซิร์ฟรันอยู่ไหม + จำนวนคนออนไลน์
+	/// ถ้าเซิร์ฟไม่เปิดให้เป็นจุดแดง"
+	/// ยิงใน thread แยกเสมอ — ถ้าเซิร์ฟล่ม การรอ timeout บน main thread จะทำให้หน้าไตเติ้ลค้าง
+	/// </summary>
+	public static void RefreshServerStatus(bool force = false)
+	{
+		float now = Time.realtimeSinceStartup;
+		if (!force && now - _lastStatusCheck < 10f)
+		{
+			return;
+		}
+		_lastStatusCheck = now;
+		// [3 ก.ย. 2026] เดิม hardcode version=5.2.1 (เวอร์ชันเอนจิน) ⇒ เซิร์ฟที่ตั้ง RequiredVersionOfClient
+		//   เทียบไม่ตรงตลอด (เตะทุกคน) · ส่งเวอร์ชัน custom จริง ("CustomClient 0.1.3") ให้เซิร์ฟเทียบ MAJOR.MINOR ได้
+		if (Application.isMobilePlatform) UnityEngine.Debug.Log("[durango] RefreshServerStatus target=" + ResolveOnlineTarget());
+		string url = ToGatewayUrl(ResolveOnlineTarget()).TrimEnd('/') + "/knock?version=" + global::System.Uri.EscapeDataString(CurrentBundleVersion.GetClientVersion()) + "&platform=" + Application.platform.ToString() /* [4 ก.ย. 2026] มือถือ (APK build เอง) ต้องส่ง Android ให้เซิร์ฟเลือก bundle ชุด Android */;
+		Thread thread = new Thread((ThreadStart)delegate
+		{
+			try
+			{
+				string json;
+				using (WebClient webClient = new WebClient())
+				{
+					json = webClient.DownloadString(url);
+				}
+				JObject jObject = JObject.Parse(json);
+				JToken count = jObject["online_players"];
+				OnlinePlayers = (count != null) ? (int)count : -1;
+				ServerReachable = true;
+			}
+			catch (Exception)
+			{
+				// เซิร์ฟปิด/เน็ตมีปัญหา = จุดแดง ไม่ต้องโวยวาย
+				ServerReachable = false;
+				OnlinePlayers = -1;
+			}
+			finally
+			{
+				ServerStatusKnown = true;
+			}
+		});
+		thread.IsBackground = true;
+		thread.Start();
+	}
+
+	/// <summary>
+	/// ข้อความสถานะสำหรับต่อท้ายชื่อเซิร์ฟบนหน้าไตเติ้ล — จุดสี + จำนวนคน
+	/// ใช้ NGUI BBCode ⇒ label ที่เอาไปใช้ต้องเปิด supportEncoding ก่อน
+	/// </summary>
+	public static string StatusSuffix()
+	{
+		if (!ServerStatusKnown)
+		{
+			return "  [999999]●[-]";                       // เทา = กำลังเช็ค
+		}
+		if (!ServerReachable)
+		{
+			return "  [DE8A70]● ออฟไลน์[-]";                // แดง = ติดต่อไม่ได้
+		}
+		string people = (OnlinePlayers >= 0) ? ("  " + OnlinePlayers + " คน") : string.Empty;
+		return "  [7FB877]●[-]" + people;                  // เขียว = รันอยู่
+	}
+
+
+	/// <summary>
+	/// [แก้เอง] 31 ส.ค. 2026 — ย้ายมาจากมอด `DurangoClientCore` (ApplyWorldChunkRange/ApplyServerMenus)
+	/// เจ้าของสั่งเลิกใช้ระบบมอดแล้วมาทำเป็นแพตช์แทน เพราะมอดหลุด/หายบ่อย
+	///
+	/// ตัวเกมไม่เคยยิง /knock ไปหาเซิร์ฟจริงเลย (Durango.Offline/Gateway.cs เป็นฝั่ง *ตอบ* /knock
+	/// ของเซิร์ฟจำลองในเครื่อง คนละทาง) ⇒ ต้องยิงเองตรงนี้ตอนกดต่อเซิร์ฟ
+	///
+	/// ยิงใน thread แยกเสมอ — ถ้ายิงบน main thread แล้วเซิร์ฟช้า/ล่ม เกมจะค้างทั้งจอจนกว่าจะ timeout
+	/// ค่าที่ได้เป็น field ธรรมดา อ่านทีหลังตอนเข้าโลก (InitChunkPool) ซึ่งช้ากว่าตรงนี้มาก ทันอยู่แล้ว
+	/// ถ้ายิงไม่ติด = คงค่าเดิมของเกมไว้ (range 2) ไม่ทำให้อะไรพัง
+	/// </summary>
+	private static void FetchServerPolicy(string gatewayUrlRoot)
+	{
+		string url = gatewayUrlRoot.TrimEnd('/') + "/knock?version=" + global::System.Uri.EscapeDataString(CurrentBundleVersion.GetClientVersion()) + "&platform=" + Application.platform.ToString() /* [4 ก.ย. 2026] มือถือ (APK build เอง) ต้องส่ง Android ให้เซิร์ฟเลือก bundle ชุด Android */;
+		Thread thread = new Thread((ThreadStart)delegate
+		{
+			try
+			{
+				string json;
+				using (WebClient webClient = new WebClient())
+				{
+					json = webClient.DownloadString(url);
+				}
+				JObject jObject = JObject.Parse(json);
+				JToken jToken = jObject["client_mod"];
+				if (jToken == null)
+				{
+					return;
+				}
+				JToken jToken2 = jToken["world_chunk_range"];
+				if (jToken2 != null)
+				{
+					WorldChunkRange = Math.Max(2, Math.Min(4, (int)jToken2));
+				}
+				JToken jToken3 = jToken["skip_region_selection"];
+				if (jToken3 != null)
+				{
+					SkipRegionSelection = (bool)jToken3;
+				}
+				JArray jArray = jToken["enabled_menus"] as JArray;
+				if (jArray != null)
+				{
+					List<string> list = new List<string>();
+					foreach (JToken item in jArray)
+					{
+						list.Add((string)item);
+					}
+					EnabledMenus = list.ToArray();
+				}
+				JArray jArray2 = jToken["hidden_menus"] as JArray;
+				if (jArray2 != null)
+				{
+					List<string> list2 = new List<string>();
+					foreach (JToken item2 in jArray2)
+					{
+						string name = (string)item2;
+						if (!string.IsNullOrEmpty(name))
+						{
+							list2.Add(name);
+						}
+					}
+					HiddenMenus = list2.ToArray();
+				}
+				UnityEngine.Debug.Log("[durango] server policy: chunk_range=" + WorldChunkRange
+					+ " menus=" + string.Join(",", EnabledMenus)
+					+ " skip_region=" + SkipRegionSelection);
+			}
+			catch (Exception ex)
+			{
+				UnityEngine.Debug.Log("[durango] knock failed (ใช้ค่าเดิมของเกมต่อ): " + ex.Message);
+			}
+		});
+		thread.IsBackground = true;
+		thread.Start();
 	}
 
 	public static void SendLogs(string log)

@@ -483,7 +483,11 @@ public class UIBase : MonoBehaviour, IUriInvokable
 		}
 		UISound.PlayOpenGroup(_openCloseSound);
 		PlayCloseSound = true;
-		if (!string.IsNullOrEmpty(_avatarMotion) && PlayerController.MotionUpdater.IsState("Stand"))
+		// กันเหตุผลเดียวกับใน Close() — เปิด UI ตั้งแต่ยังไม่มีตัวละครได้ (หน้าไตเติ้ล/ระหว่างโหลด)
+		if (!string.IsNullOrEmpty(_avatarMotion)
+			&& Durango.Utils.Singleton<PlayerController>.HasInstance()
+			&& PlayerController.MotionUpdater != null
+			&& PlayerController.MotionUpdater.IsState("Stand"))
 		{
 			PlayerController.MotionUpdater.Motion(_avatarMotion);
 		}
@@ -529,7 +533,15 @@ public class UIBase : MonoBehaviour, IUriInvokable
 		{
 			UISound.PlayCloseGroup(_openCloseSound);
 		}
-		PlayerController.MotionUpdater.RefreshMotion(_avatarMotion);
+		// [แก้เอง] 1 ก.ย. 2026 — กัน NRE ตอนปิด UI ก่อนที่ตัวละครจะเกิดในโลก
+		// 🐛 ต้นตออาการ **ค้างหน้าโหลด**: ม่านโหลด (LoadingCurtainGroup) ก็เป็น UIBase
+		//    ตอนมันปิดตัวเอง ตัวละครยังไม่ถูกสร้าง ⇒ Singleton<PlayerController> ยังไม่มี
+		//    ⇒ NRE ตรงนี้ ⇒ บรรทัดล่าง (OnCloseSucceed) ไม่ถูกเรียก ⇒ ม่านไม่หายไปจากจอ
+		//    เจอจริง: UIBase.Close() โยน NRE 8 ครั้งในเซสชันเดียว
+		if (Durango.Utils.Singleton<PlayerController>.HasInstance() && PlayerController.MotionUpdater != null)
+		{
+			PlayerController.MotionUpdater.RefreshMotion(_avatarMotion);
+		}
 		if (_lockScreenOrientation)
 		{
 			bool isLockScreenOrientation = IsLockScreenOrientation;

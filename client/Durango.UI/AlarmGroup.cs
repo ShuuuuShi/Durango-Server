@@ -176,9 +176,9 @@ public class AlarmGroup : UIBase
 		_notifyMinor.RefreshVisibleHeight();
 	}
 
-	public void PushMessage(string key, string message, float duration)
+	public void PushMessage(string key, string message, float duration, float scale = 1f)
 	{
-		_message.PushMessage(key, message, duration);
+		_message.PushMessage(key, message, duration, scale);
 	}
 
 	public bool HasNotify(string key, bool major)

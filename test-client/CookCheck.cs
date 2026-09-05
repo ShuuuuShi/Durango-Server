@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -108,6 +108,8 @@ public static class CookCheck
 
         string id = "cook-" + Guid.NewGuid().ToString("N").Substring(0, 8);
         string token = SessionClient.Fetch(host, gatewayPort, id, id);
+        // [4 ก.ย. 2026] token ผูกกับ user_id ที่ gateway ออกให้ ไม่ใช่ชื่อที่เราขอ (auth ไม่งั้นโดนปฏิเสธ)
+        if (!string.IsNullOrEmpty(SessionClient.LastUserId)) { id = SessionClient.LastUserId; }
         if (string.IsNullOrEmpty(token))
         {
             Console.WriteLine("ขอ token ไม่ได้ — เซิร์ฟเปิดอยู่ไหม");
@@ -225,6 +227,14 @@ public static class CookCheck
         // ── รอบ 2: วางกองไฟแล้วลองใหม่ ─────────────────────────────────
         Console.WriteLine("รอบ 2 — วางกองไฟ");
         _placedArtifacts.Clear();
+        // [4 ก.ย. 2026] วางแคปซูลถูกกันด้วย CraftMenu.AllowFreeBuild (ปิดอยู่บนเซิร์ฟจริง)
+        // ⇒ เทสทำอาหารเข้าไม่ถึงกองไฟเลย · ใช้ `place real fire` วางกองไฟจริงตรง ๆ แทน
+        conn.Send(new Cheat { _Cheat = "place real fire" });
+        Pump(conn, 900);
+        if (_placedArtifacts.Count > 0)
+        {
+            goto haveFire;
+        }
         conn.Send(new Cheat { _Cheat = "add bonfire" });
         Pump(conn, 600);
         Item? capsule = _inventory.FirstOrDefault(x => (x.Prototype ?? "").StartsWith("capsulated_bonfire", StringComparison.Ordinal)) is Item c && c.Id != null ? c : (Item?)null;
@@ -244,6 +254,7 @@ public static class CookCheck
             });
             Pump(conn, 2000);
         }
+    haveFire:
         string bonfireId = _placedArtifacts.Count > 0 ? _placedArtifacts[_placedArtifacts.Count - 1] : null;
         Check("วางกองไฟแล้วมีสิ่งปลูกสร้างโผล่", !string.IsNullOrEmpty(bonfireId), bonfireId);
 
@@ -349,6 +360,44 @@ public static class CookCheck
         Pump(conn, 2000);
         Check("ต้มน้ำซุปที่กองไฟธรรมดา ไม่ผ่าน", _crafted.Count == 0 && _aborts > 0,
             $"abort={_aborts} ได้ {_crafted.Count} ชิ้น · {_info.Trim()}");
+
+        // ── รอบ 7: ลูปแปรรูปซ้ำ — ย่างของที่ย่างแล้วอีกรอบต้องไม่ได้ ────────
+        // (บั๊ก #5: roast/skewer ขอแค่ tag `eatable` ซึ่งของสุกก็ยังมี ⇒ ย่างวนเก็บแต้มได้ไม่จำกัด)
+        Console.WriteLine("รอบ 7 — ย่างของที่ย่างแล้วซ้ำ (ต้องโดนปฏิเสธ)");
+        conn.Send(new Cheat { _Cheat = "give meat 2" });
+        Pump(conn, 500);
+        Reset();
+        Item? freshMeat = _inventory.FirstOrDefault(x => x.Prototype == "meat" && HasTag(x, "raw_food")) is Item fm && fm.Id != null ? fm : (Item?)null;
+        Item? stick7a = Find("wood_bough");
+        conn.Send(new Craft
+        {
+            RecipeId = "skewer",
+            Materials = new Dictionary<string, string[]> { { "base", new[] { freshMeat?.Id ?? "" } } },
+            ToolItemId = stick7a?.Id,
+            Workbench = new PropKey { EntityId = bonfireId, Tile = myTile }
+        });
+        Pump(conn, 2500);
+        Reset();
+        Item? cookedAgain = _inventory.FirstOrDefault(x => x.Prototype == "meat" && !HasTag(x, "raw_food")) is Item ca && ca.Id != null ? ca : (Item?)null;
+        if (cookedAgain == null)
+        {
+            Console.WriteLine("  [ตก ] ไม่มีเนื้อที่ย่างแล้วไว้ทดสอบ");
+            _failed++;
+        }
+        else
+        {
+            Item? stick7 = Find("wood_bough");
+            conn.Send(new Craft
+            {
+                RecipeId = "skewer",
+                Materials = new Dictionary<string, string[]> { { "base", new[] { cookedAgain.Value.Id } } },
+                ToolItemId = stick7?.Id,
+                Workbench = new PropKey { EntityId = bonfireId, Tile = myTile }
+            });
+            Pump(conn, 2500);
+            Check("แปรรูปของที่แปรรูปแล้วซ้ำ ไม่ผ่าน", _crafted.Count == 0 && _aborts > 0,
+                $"abort={_aborts} ได้ {_crafted.Count} ชิ้น · {_info.Trim()}");
+        }
 
         conn.Close();
         Console.WriteLine($"\n=== สรุป: ผ่าน {_passed} / ตก {_failed} ===");

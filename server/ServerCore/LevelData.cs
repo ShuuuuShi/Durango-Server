@@ -18,8 +18,8 @@ public static class LevelData
 
     /// <summary>
     /// เพดานของ **รอบนี้** — ปรับได้ที่ `Features.MaxPlayerLevel` ใน config.json
-    /// beta 1.0.0 ตั้งไว้ที่ 20 ตาม LBT1 ของเกมต้นฉบับ ("ปล่อยคอนเทนต์แค่ Lv.1-20")
-    /// 0 = ไม่จำกัด (ใช้ MaxLevel)
+    /// 0 = ไม่จำกัด (ใช้ MaxLevel = 60 ตามเกม) — ค่าเริ่มต้นตั้งแต่ 3 ก.ย. 2026
+    /// (beta 1.0.0 เคยล็อก 20 ตาม LBT1 ของเกมต้นฉบับ — ดู TodoList/01-level-cap.md)
     /// </summary>
     public static int Cap
     {

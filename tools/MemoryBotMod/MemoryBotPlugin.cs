@@ -23,6 +23,9 @@ public sealed class MemoryBotPlugin : IClientPlugin
             return;
         }
         MemoryBotRuntime.Start(api);
+
+        // วาดเส้นทาง A* บน minimap
+        MinimapPathRenderer.Ensure();
     }
 
     public void OnPostLoad(IClientModApi api)

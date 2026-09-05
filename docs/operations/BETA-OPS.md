@@ -1,4 +1,4 @@
-# คู่มือเปิดเซิร์ฟ beta 1.0
+﻿# คู่มือเปิดเซิร์ฟ beta 1.0
 
 สำหรับคนที่ดูแลเซิร์ฟตอนเปิดให้คนนอกเข้ามาเล่นจริง
 (แผนว่าจะเปิดอะไรบ้างอยู่ที่ [../testing/BETA-1.0-PLAN.md](../testing/BETA-1.0-PLAN.md))
@@ -17,7 +17,7 @@ dotnet run -- --whitelist data/whitelist.txt
 | อย่าง | สถานะ | ทำไม |
 |---|---|---|
 | cheat (`Cheat` packet) | **ปิด** | ไม่ใส่ `--enable-cheat` = ใครยิงมาก็โดนปฏิเสธ |
-| radiotower (8192) | **ปิด** | ไม่มี auth ปลอมชื่อได้ (M-5) |
+| radiotower (พอร์ตเกม+1) | **ปิด** จนกว่าจะใส่ `--radiotower` | ตรวจ session token แล้ว เปิดได้ปลอดภัย (M-5 แก้ 2 ก.ย. 2026) |
 | ผูก entity id กับ IP | **เปิด** | คนแรกที่ใช้ id ไหน = เจ้าของ id นั้น |
 | บทสนทนา NPC / ระบบสอนเล่น | **ปิด** | `RegionRole=Sandbox` |
 | เพดาน connection | 32 เส้น (4 ต่อ IP) | |
@@ -74,7 +74,20 @@ dotnet run -- --whitelist data/whitelist.txt --enable-cheat --admin bot-op --max
 cd "C:\Users\thana\Desktop\Durango Opencode\test-client"
 dotnet run --no-build -- --gp-check      # ต้องได้ 36/36
 dotnet run --no-build -- --multi-check   # ต้องได้ 9/9
+
+# ระบบที่ดิน — 39 ข้อ (ต้องเปิดเซิร์ฟด้วย --enable-cheat เพราะใช้ cheat tp / cheat save)
+dotnet run --no-build -- --estate-check 127.0.0.1 8191 8190
+#   ท้ายรันพิมพ์ entityId ที่ทิ้งแปลงไว้ → รีสตาร์ทเซิร์ฟ แล้วเช็คว่าที่ดินยังอยู่ (5 ข้อ)
+dotnet run --no-build -- --estate-reload-check 127.0.0.1 8191 8190 <entityId>
+
+# พอร์ตแชท — 12 ข้อ (เฉพาะตอนเปิดเซิร์ฟด้วย --radiotower)
+dotnet run --no-build -- --radiotower-check 127.0.0.1 8192 8190
 ```
+
+> ⚠️ **สถานะ gp-check ตอนนี้ (2 ก.ย. 2026): ผ่าน 31 ตก 5** — ตกเรื่องแตะของธรรมชาติไกลเกินเอื้อม,
+> ลบของธรรมชาติที่ไม่เคยแตะ (chunk รอบจุดเกิดไม่มีของธรรมชาติเหลือแล้วในเซฟเทสชุดนี้) และ 3 ข้อ
+> เรื่องเลเวลที่ client อ้าง (ตัวเช็คเห็นเลเวล -1 = ไม่ได้ `AppearPlayer` ของตัวเอง)
+> **ไม่เกี่ยวกับระบบที่ดิน/แชท** — ต้องตามแยกต่างหากก่อนเคลม 36/36
 
 แล้ว**ปิดแล้วเปิดใหม่ด้วยคำสั่งของข้อ 1** (ไม่มี `--enable-cheat`) ก่อนให้คนนอกเข้า
 

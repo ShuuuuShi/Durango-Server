@@ -703,14 +703,14 @@ public class UIManager : Singleton<UIManager>, IUriInvokable
 		SystemMsg(null, comment, duration);
 	}
 
-	public static void SystemMsg(string key, string comment, float duration = 3f)
+	public static void SystemMsg(string key, string comment, float duration = 3f, float scale = 1f)
 	{
 		if (Singleton<UIManager>.HasInstance())
 		{
 			AlarmGroup alarm = Alarm;
 			if (alarm != null)
 			{
-				alarm.PushMessage(key, comment, duration);
+				alarm.PushMessage(key, comment, duration, scale);
 			}
 		}
 	}

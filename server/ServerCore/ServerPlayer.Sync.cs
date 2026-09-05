@@ -51,6 +51,23 @@ public partial class ServerPlayer
         }
     }
 
+    /// <summary>
+    /// ข้อความบอกผู้เล่นตรงๆ ว่ากระเป๋าเต็ม แทนที่จะโชว์ debug string ดิบ ๆ แบบ "File.Method:Line"
+    /// (`Aborts.Reason()` เดิมไม่ได้ใส่ why เลยตรงจุดกระเป๋าเต็ม เลยไปโผล่เป็นชื่อ handler ในเกมจริง)
+    /// ทุกไอเทมกินช่องละ 1 เสมอในระบบนี้ (`Item.Size` ตั้งเป็น 1 ทุกจุดที่สร้างไอเทม ไม่มีไอเทมกินหลายช่อง)
+    /// ⇒ จำนวนที่ต้องทิ้งเพื่อเก็บของใหม่ 1 ชิ้น คือ 1 เสมอ ไม่ต้องคำนวณตามขนาดไอเทม
+    /// </summary>
+    private string InventoryFullMessage
+    {
+        get
+        {
+            lock (_inventory)
+            {
+                return $"กระเป๋าเต็ม ({_inventory.Count}/{PlayerInventoryMaxSize} ช่อง) — ทิ้งหรือฝากของเข้าโกดังอย่างน้อย 1 ชิ้นก่อนถึงจะเก็บเพิ่มได้";
+            }
+        }
+    }
+
 
     /// <summary>
     /// ดึงผู้เล่นกลับไปยืนที่ pos
@@ -96,6 +113,14 @@ public partial class ServerPlayer
         Send(move);
     }
 
+    /// <summary>วาร์ปตัวเองไปพิกัดโลก แล้วจำตำแหน่งไว้ให้เซฟ/AOI ตามทัน</summary>
+    public void WarpTo(WorldPosition pos)
+    {
+        _lastPosition = pos;
+        _hasPosition = true;
+        SendTeleport(pos);
+    }
+
     /// <summary>
     /// ชุดข้อมูลที่ต้องส่งให้ครบตอนเข้าเกม
     ///
@@ -109,6 +134,8 @@ public partial class ServerPlayer
     /// </summary>
     public void SendSpawnBurst()
     {
+        // Send identity before the large spawn burst so the client always receives its own character.
+        Send(MakeAppearPlayer());
         SendSkills();
         SendStatistics();
         SendInventory();
@@ -128,7 +155,6 @@ public partial class ServerPlayer
                 Vouchers = null
             }
         });
-        Send(MakeAppearPlayer());
 
         // ส่งซ้ำหลังเกาะโหลดเสร็จ — กันเคสที่ HUD ยังไม่เกิดตอนชุดแรกมาถึง
         _deferred.Add((Times.UnixTimeNow() + ResyncDelaySeconds, delegate

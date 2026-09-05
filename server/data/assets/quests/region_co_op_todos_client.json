@@ -1,0 +1,119 @@
+{
+  "ua60snMain02_elite": {
+    "elite_tarbosaurus": {
+      "trigger_todo_id": "find_elite_tarbosaurus",
+      "subject": {
+        "타르보사우루스": null
+      },
+      "co_op_todo_id": "permanent_hunt_tarbosaurus_01",
+      "description": {
+        "타르보사우루스가 발견되었습니다.": null
+      },
+      "notice_icon": "target_tarbosaurus_snowy"
+    }
+  },
+  "ua60deMain02_elite": {
+    "elite_allosaurus": {
+      "trigger_todo_id": "find_elite_allosaurus",
+      "subject": {
+        "알로사우루스": null
+      },
+      "co_op_todo_id": "permanent_hunt_allosaurus_01",
+      "description": {
+        "알로사우루스가 발견되었습니다.": null
+      },
+      "notice_icon": "target_allosaurus"
+    }
+  },
+  "ua60swMain02_elite": {
+    "elite_apatosaurus": {
+      "trigger_todo_id": "find_elite_apatosaurus",
+      "subject": {
+        "아파토사우루스": null
+      },
+      "co_op_todo_id": "permanent_hunt_apatosaurus_01",
+      "description": {
+        "아파토사우루스가 발견되었습니다.": null
+      },
+      "notice_icon": "target_apatosaurus"
+    }
+  },
+  "ua60vol_03_01": {
+    "elite_tyranosaurus_01": {
+      "trigger_todo_id": "find_elite_tyranosaurus_01",
+      "subject": {
+        "티라노사우루스": null
+      },
+      "co_op_todo_id": "permanent_hunt_tyranosaurus_01",
+      "description": {
+        "티라노사우루스가 발견되었습니다.": null
+      },
+      "notice_icon": "target_trex"
+    }
+  },
+  "ua60vol_04_01": {
+    "elite_tyranosaurus_02": {
+      "trigger_todo_id": "find_elite_tyranosaurus_02",
+      "subject": {
+        "티라노사우루스": null
+      },
+      "co_op_todo_id": "permanent_hunt_tyranosaurus_02",
+      "description": {
+        "티라노사우루스가 발견되었습니다.": null
+      },
+      "notice_icon": "target_trex"
+    }
+  },
+  "ua60vol_05_01": {
+    "elite_tyranosaurus_03": {
+      "trigger_todo_id": "find_elite_tyranosaurus_03",
+      "subject": {
+        "티라노사우루스": null
+      },
+      "co_op_todo_id": "permanent_hunt_tyranosaurus_03",
+      "description": {
+        "티라노사우루스가 발견되었습니다.": null
+      },
+      "notice_icon": "target_trex"
+    }
+  },
+  "ua60vol_06_01": {
+    "elite_tyranosaurus_04": {
+      "trigger_todo_id": "find_elite_tyranosaurus_04",
+      "subject": {
+        "티라노사우루스": null
+      },
+      "co_op_todo_id": "permanent_hunt_tyranosaurus_04",
+      "description": {
+        "티라노사우루스가 발견되었습니다.": null
+      },
+      "notice_icon": "target_trex"
+    }
+  },
+  "ua60vol_07_01": {
+    "elite_tyranosaurus_05": {
+      "trigger_todo_id": "find_elite_tyranosaurus_05",
+      "subject": {
+        "티라노사우루스": null
+      },
+      "co_op_todo_id": "permanent_hunt_tyranosaurus_05",
+      "description": {
+        "티라노사우루스가 발견되었습니다.": null
+      },
+      "notice_icon": "target_trex"
+    }
+  },
+  "ua60vol_08_01": {
+    "elite_tyranosaurus_06": {
+      "trigger_todo_id": "find_elite_tyranosaurus_06",
+      "subject": {
+        "티라노사우루스": null
+      },
+      "co_op_todo_id": "permanent_hunt_tyranosaurus_06",
+      "description": {
+        "티라노사우루스가 발견되었습니다.": null
+      },
+      "notice_icon": "target_trex"
+    }
+  }
+}

@@ -103,4 +103,34 @@ public static class SkillCategoryData
         }
         expInLevel = remaining;
     }
+
+    /// <summary>
+    /// exp รวมที่ต้องมีเพื่อให้ Resolve ได้เลเวล target (เริ่มจาก MinLevel)
+    /// เช่น target 20 = ผลรวม NeededAt(1)..NeededAt(19)
+    /// </summary>
+    public static int TotalExpToReach(Shared.Skill.Category category, int targetLevel)
+    {
+        if (targetLevel <= 1 || !TryGet(category, out Curve curve))
+        {
+            return 0;
+        }
+        int total = 0;
+        int level = curve.MinLevel;
+        int max = targetLevel;
+        if (max > curve.MaxLevel)
+        {
+            max = curve.MaxLevel;
+        }
+        while (level < max)
+        {
+            int needed = curve.NeededAt(level);
+            if (needed <= 0)
+            {
+                break;
+            }
+            total += needed;
+            level++;
+        }
+        return total;
+    }
 }

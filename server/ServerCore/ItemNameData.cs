@@ -13,7 +13,7 @@ namespace DurangoServer.Core;
 /// </summary>
 public static class ItemNameData
 {
-    public static readonly Dictionary<string, (string Name, string Icon)> Map =
+    public static Dictionary<string, (string Name, string Icon)> Map =
         new Dictionary<string, (string, string)>(StringComparer.Ordinal)
     {
         { "15days_package", ("15일 정액 패키지", "buff_monthly_pack") },

@@ -13,11 +13,13 @@ public static class ArtifactUtil
 	{
 		return rotation switch
 		{
-			Rotation.None => Direction.SouthWest, 
-			Rotation.Quarter => Direction.SouthEast, 
-			Rotation.Half => Direction.NorthEast, 
-			Rotation.ThreeQuarter => Direction.NorthWest, 
-			_ => throw new ArgumentException("Invalid Rotation - " + rotation), 
+			Rotation.None => Direction.SouthWest,
+			Rotation.Quarter => Direction.SouthEast,
+			Rotation.Half => Direction.NorthEast,
+			Rotation.ThreeQuarter => Direction.NorthWest,
+			// [4 ก.ย. 2026] เดิม throw ⇒ ถ้า artifact มี Rotation.Invalid (เช่นสร้างจากข้อมูลผิด)
+			// FillModels พังทั้งก้อน โมเดลไม่เรนเดอร์ · คืน SouthWest (= None) แทน ไม่ให้ล้ม
+			_ => Direction.SouthWest,
 		};
 	}
 
@@ -32,8 +34,9 @@ public static class ArtifactUtil
 			Direction.West => Vector3.up * 45f, 
 			Direction.South => Vector3.up * -45f, 
 			Direction.East => Vector3.up * -135f, 
-			Direction.North => Vector3.up * 135f, 
-			_ => throw new ArgumentException("Invalid Direction - " + dir), 
+			Direction.North => Vector3.up * 135f,
+			// [4 ก.ย. 2026] เดิม throw ⇒ กันเรนเดอร์พังถ้าเจอ Direction.Invalid คืนมุม 0
+			_ => Vector3.zero,
 		};
 	}
 

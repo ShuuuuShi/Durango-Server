@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using Durango.System;
 using Durango.Terrain;
@@ -42,7 +42,12 @@ public abstract class LoadingCurtainBase : MonoBehaviour
 	{
 		IsChunkLoadFailed = false;
 		float beginTime = Time.realtimeSinceStartup;
-		while (!Singleton<TerrainBase>.Instance().IsReady)
+		// [แก้เอง] 1 ก.ย. 2026 — เดิมเรียก Instance() ตรง ๆ ถ้าซีน Main ยังไม่มี Terrain_Mobile
+		// (เข้าโลกช้ากว่าที่ม่านโหลดเริ่มรอ) Singleton จะพยายาม AddComponent TerrainBase ซึ่งเป็น
+		// abstract ⇒ "can't be abstract" + NullReferenceException ⇒ **โครูทีนตาย**
+		// ⇒ ม่านโหลดไม่เปิด และ timeout 60 วิ ข้างล่างไม่มีวันทำงาน = ค้างหน้าโหลดถาวร
+		// เช็ค HasInstance ก่อน เพื่อให้รอเฉย ๆ แล้วปล่อยให้ timeout เด้งกลับหน้าไตเติ้ลพร้อมข้อความ
+		while (!Singleton<TerrainBase>.HasInstance() || !Singleton<TerrainBase>.Instance().IsReady)
 		{
 			yield return null;
 			float timeOut = 60f;

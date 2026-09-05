@@ -9,22 +9,22 @@
   <ItemGroup>
     <ProjectReference Include="..\..\client-mod-sdk\DurangoClientModSdk.csproj" />
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\game\DurangoV2_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\dist\DurangoTH-Clean\Durango_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\game\DurangoV2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\dist\DurangoTH-Clean\Durango_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>..\..\game\DurangoV2_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>..\..\dist\DurangoTH-Clean\Durango_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\game\DurangoV2_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>..\..\dist\DurangoTH-Clean\Durango_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>..\..\game\DurangoV2_Data\Managed\UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <HintPath>..\..\dist\DurangoTH-Clean\Durango_Data\Managed\UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\game\DurangoV2_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\..\dist\DurangoTH-Clean\Durango_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

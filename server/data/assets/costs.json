@@ -1,0 +1,108 @@
+{
+  "estate": {
+    "extending_cost": {
+      "0": "int(pow(1.4, size)) * 50 / size",
+      "2": "int(pow(1.08, size) * 10) * 200 / size"
+    },
+    "expanding_cost": {
+      "0": "int(pow(1.4, size)) * 2500",
+      "2": "int(pow(1.08, size) * 10) * 1000"
+    }
+  },
+  "cargo": {
+    "immediate_receiving_cost": "int(left_time / 60) + 1"
+  },
+  "skill_untrain": {
+    "currency": 1,
+    "amount": 30,
+    "vouchers": [
+      {
+        "voucher_id": "voucher_skill_untrain",
+        "voucher_amount": 1,
+        "including_commodity_id": ""
+      },
+      {
+        "voucher_id": "voucher_skill_untrain_hidden",
+        "voucher_amount": 1,
+        "including_commodity_id": "premium_support_package"
+      }
+    ]
+  },
+  "balloon_ticket": {
+    "voucher_id": "voucher_balloon",
+    "currency": 1,
+    "amount": 150,
+    "voucher_amount": 1
+  },
+  "artifact_rename": {
+    "currency": 1,
+    "amount": 5
+  },
+  "artifact_extend_floor": {
+    "currency": 0,
+    "amount": "10000 * (current_stories)"
+  },
+  "clan_warphole_visit": {
+    "currency": 1,
+    "amount": "int(left_time / 60)"
+  },
+  "pet_revert_milestone": {
+    "voucher_id": "voucher_revert_milestone",
+    "currency": 0,
+    "amount": "int(1.25*((1721*(1.04+(pow((0.05*pet_level),2.39)))/6)*(1+0.1*(0.9+(0.6*(0+((count-2)*((1*2)+((count-2)-1)))/2))+(1.5*(count-1))))))",
+    "voucher_amount": 1
+  },
+  "pet_revert_active_skill": {
+    "voucher_id": "voucher_revert_active_skill",
+    "currency": 1,
+    "amount": "100 + min(count, 9) * 100",
+    "voucher_amount": 1
+  },
+  "pet_revert_rank": {
+    "voucher_id": "voucher_revert_rank",
+    "voucher_amount": 1
+  },
+  "expert_reform_estimate": {
+    "amount": "int((2000 * pow(1.1, min(request_count, 20))) * (1 + locked_tags_count))",
+    "currecny": 0
+  },
+  "reset_reform_slot": {
+    "currency": 1,
+    "amount": 50
+  },
+  "encyclopedia_mastery_swap": {
+    "currency": 1,
+    "amount": 30
+  },
+  "purchase_r_piece": {
+    "need_warpgem": 30,
+    "give_r_piece": 10,
+    "purchable_count": 15
+  },
+  "open_map": {
+    "vouchers": [
+      {
+        "voucher_id": "voucher_open_map",
+        "including_commodity_id": ""
+      },
+      {
+        "voucher_id": "voucher_open_map_hidden",
+        "including_commodity_id": "premium_support_package"
+      }
+    ]
+  },
+  "revive_immediately": {
+    "currency": 1,
+    "amount": 100,
+    "vouchers": [
+      {
+        "voucher_id": "voucher_revive",
+        "including_commodity_id": ""
+      },
+      {
+        "voucher_id": "voucher_revive_hidden",
+        "including_commodity_id": "premium_support_package"
+      }
+    ]
+  }
+}

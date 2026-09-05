@@ -1,4 +1,4 @@
-# สวิตช์เปิด/ปิดระบบ — standard beta profile
+﻿# สวิตช์เปิด/ปิดระบบ — standard beta profile
 
 standard launcher (`tools/menu.ps1`) รัน server จาก `server/` ดังนั้น profile ที่ใช้จริงคือ [`../../server/data/config.json`](../../server/data/config.json). `Program.cs` อ่าน `<--data หรือ current working directory>/config.json`; `--island` จะใช้ `data/islands/<id>/config.json` แทน. `FeatureConfig.Defaults()` เป็น fallback/seed profile ไม่ใช่คำประกาศ rollout ของ standard launcher.
 
@@ -35,7 +35,7 @@ standard launcher (`tools/menu.ps1`) รัน server จาก `server/` ดั
 | Warp Accelerator | `WarpAccelerator` | Internal test; reward/abort/persistence acceptance ยังไม่ครบ |
 | เควส 4 กลุ่ม NPC | `Quests` | Internal test; project-authored reward/objective evidence ยังไม่ครบ |
 | PK เกาะ 20+ | `Pvp` | policy/anti-grief suite ยังไม่ครบ |
-| สิทธิ์ที่ดิน | `LandPermission` | permission model ยังไม่ครบ |
+| สิทธิ์ที่ดิน | `LandPermission` | เปิดแล้ว — บังคับสิทธิ์ Occupy จริง (ดู [Estate.md](Estate.md)) · ค่าดูแลหมดอายุยังไม่คืนที่ |
 | ปาร์ตี้/แคลน | `PartyAndClan` | ไม่มี authoritative subsystem |
 | อีโมติคอนผู้เล่น | `Emotes` | ปิดใน profile นี้ |
 

@@ -1,0 +1,197 @@
+{
+  "0": {
+    "description": {
+      "이 지역의 레벨이 내 레벨에 비해 높을 수록 빨리 피곤해진다.": null
+    },
+    "color": "625c7f",
+    "effect": "",
+    "name": {
+      "기본": null
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_default"
+  },
+  "1": {
+    "boost_abilities": {
+      "311": 1.0
+    },
+    "description": {
+      "더워서 쉽게 지칠 것 같다. 몸을 씻거나 물을 마시면 한결 나을 것 같다.": null
+    },
+    "color": "394e52",
+    "effect": "hot",
+    "reduce_abilities": {
+      "310": 1.0
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_hot",
+    "name": {
+      "더위": null
+    }
+  },
+  "2": {
+    "boost_abilities": {
+      "311": 1.0
+    },
+    "description": {
+      "너무 더워서 걷는 것만으로 지친다. 몸을 씻거나 물을 마시면 좀 나아질 것 같다.": null
+    },
+    "color": "534f39",
+    "effect": "hot",
+    "reduce_abilities": {
+      "310": 1.0
+    },
+    "default_ratio": 2.0,
+    "icon": "icon_env_veryhot",
+    "name": {
+      "혹서": null
+    }
+  },
+  "3": {
+    "boost_abilities": {
+      "310": 1.0
+    },
+    "description": {
+      "추워서 오한이 든다. 불을 쬐거나 따뜻한 옷을 입으면 한결 나을 것 같다.": null
+    },
+    "color": "3e4758",
+    "effect": "cold",
+    "reduce_abilities": {
+      "311": 1.0
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_cold",
+    "name": {
+      "추위": null
+    }
+  },
+  "4": {
+    "boost_abilities": {
+      "310": 1.0
+    },
+    "description": {
+      "너무 추워서 덜덜 떨린다. 불을 쬐거나 따뜻한 옷을 입으면 좀 나아질 것 같다.": null
+    },
+    "color": "3e4758",
+    "effect": "cold",
+    "reduce_abilities": {
+      "311": 1.0
+    },
+    "default_ratio": 2.0,
+    "icon": "icon_env_verycold",
+    "name": {
+      "혹한": null
+    }
+  },
+  "7": {
+    "description": {
+      "직사광선이 내리쬐어 눈을 뜨기가 힘들다. 챙이 있는 모자를 써서 햇빛을 가려보자.": null
+    },
+    "color": "523f39",
+    "effect": "hot",
+    "reduce_abilities": {
+      "313": 1.0
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_scorchingsun",
+    "name": {
+      "땡볕": null
+    }
+  },
+  "5": {
+    "boost_abilities": {
+      "314": 1.0
+    },
+    "description": {
+      "습기가 너무 차서 짜증이 난다. 불을 쬐어서 옷과 몸을 좀 말리고 싶다.": null
+    },
+    "color": "4b4b4b",
+    "effect": "hot",
+    "reduce_abilities": {
+      "312": 1.0
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_humid",
+    "name": {
+      "습기": null
+    }
+  },
+  "8": {
+    "boost_abilities": {
+      "312": 1.0
+    },
+    "description": {
+      "바람이 매우 강하게 분다. 바람을 막을 수 있는 옷을 입으면 나아질 것 같다.": null
+    },
+    "color": "3e4758",
+    "effect": "cold",
+    "reduce_abilities": {
+      "314": 1.0
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_gale",
+    "name": {
+      "강풍": null
+    }
+  },
+  "10": {
+    "description": {
+      "눈보라로 몸을 움직이기 힘들다. 긴 털로 만든 의상을 입으면 나아질 것 같다.": null
+    },
+    "color": "4c5a76",
+    "effect": "cold",
+    "reduce_abilities": {
+      "315": 1.0
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_blizzard",
+    "name": {
+      "눈보라": null
+    }
+  },
+  "6": {
+    "description": {
+      "건조해서 바싹바싹 마른다. 물을 마시거나 물에 뛰어들고 싶다.": null
+    },
+    "color": "524739",
+    "effect": "",
+    "name": {
+      "건조": null
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_arid"
+  },
+  "9": {
+    "description": {
+      "유독가스에 현기증이 난다. ": null
+    },
+    "color": "625c7f",
+    "effect": "hot",
+    "reduce_abilities": {
+      "316": 1.0
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_poison",
+    "name": {
+      "기름 안개": null
+    }
+  },
+  "11": {
+    "boost_abilities": {
+      "311": 1.0
+    },
+    "description": {
+      "뜨거운 화산 열기에 쉽게 지칠 것 같다.": null
+    },
+    "color": "625c7f",
+    "effect": "hot",
+    "reduce_abilities": {
+      "317": 1.0
+    },
+    "default_ratio": 1.0,
+    "icon": "icon_env_volcanic",
+    "name": {
+      "열기": null
+    }
+  }
+}

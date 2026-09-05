@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Durango.Network;
@@ -28,6 +28,10 @@ public partial class ServerPlayer
     // ใช้ status effect จริงของเกมสำหรับการพัก ไม่ปนกับ SleepChecker/AFK
     // เพื่อให้ HUD แสดงไอคอนพัก (icon_se_rest) แทนไอคอน AFK
     private const string RestStatusEffectId = "rest";
+    // id ตรงกับ status_effects.json ของเกมจริง (อย่าเปลี่ยน ไม่งั้น client หาไอคอน/ชื่อไม่เจอ)
+    private const string ThirstStatusEffectId = "thirsty";
+    private const string DrinkWaterStatusEffectId = "drink_water";
+    private const string SatietyHighStatusEffectId = "satiety_high";
 
     /// <summary>อัปเดตไอคอนสถานะพักให้ตรงกับสถานะพักจริงของ server</summary>
     private void SetRestStatusEffect(bool enabled)
@@ -102,7 +106,7 @@ public partial class ServerPlayer
     private void SendStatusEffects(uint replyOf = 0)
     {
         PruneStatusEffects();
-        RefreshHungerStatus(send: false);
+        RefreshSatietyStatus(send: false);
         var values = _statusEffects.Where(x => x.Enabled).Select(x => new Messages.StatusEffect
         {
             Id = x.Id,
@@ -113,17 +117,7 @@ public partial class ServerPlayer
             Stacked = 1,
             DurationHidden = x.Until <= 0,
             NameGettext = null,
-            Effects = string.Equals(x.EffectId, RestStatusEffectId, StringComparison.OrdinalIgnoreCase)
-                ? new[]
-                {
-                    new Messages.EffectDetail
-                    {
-                        Type = EffectType.Survival,
-                        Key = "fatigue",
-                        Value = -ServerConfig.Current.Survival.RestFatiguePerSec
-                    }
-                }
-                : Array.Empty<EffectDetail>(),
+            Effects = BuildEffectDetails(x),
             DailyContents = null
         }).ToArray();
         var packet = new Messages.StatusEffects { EntityId = EntityId, _StatusEffects = values };
@@ -134,7 +128,7 @@ public partial class ServerPlayer
     {
         if (string.IsNullOrWhiteSpace(msg.Id) || msg.Id.Length > 80)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         PruneStatusEffects();
@@ -231,28 +225,145 @@ public partial class ServerPlayer
         SendStatistics();
     }
 
-    private void RefreshHungerStatus(bool send = true)
+    /// <summary>
+    /// กินดิบ (tag raw_food ค้างบนไอเทม) = ปวดท้อง 5 นาที เลือดค่อยลด
+    /// ไอคอนเกมต้นฉบับใช้ id `raw_food` (복통 / icon_se_tastebad)
+    /// ของสุก (ItemProcessing ตัด tag นี้ออก) จะไม่เข้าทางนี้
+    /// </summary>
+    private void ApplyRawFoodStomachache()
+    {
+        StatusEffectConfig cfg = ServerConfig.Current.StatusEffects;
+        float seconds = cfg != null ? cfg.StomachacheSeconds : 300f;
+        if (seconds <= 0f) return;
+        double now = Times.UnixTimeNow();
+        const string effectId = "raw_food";
+        string id = "food:raw_food";
+        _statusEffects.RemoveAll(x => x.Id == id || x.EffectId == effectId);
+        _statusEffects.Add(new StatusEffectSave
+        {
+            Id = id,
+            EffectId = effectId,
+            Level = 1,
+            Since = now,
+            Until = now + seconds,
+            Enabled = true
+        });
+        MarkDirty();
+        SendStatusEffects();
+        SendStatistics();
+        Send(new Info { Text = "กินดิบแล้วปวดท้อง — เลือดจะค่อย ๆ ลดลงประมาณ 5 นาที" });
+        Console.WriteLine("[item] {0} ปวดท้องจากของดิบ {1:F0} วิ", Name, seconds);
+        NoteStomachache();      // ปวดท้องซ้ำ ๆ แล้วป่วย (ระบบป่วย)
+    }
+
+    /// <summary>
+    /// รายละเอียดผลของ status effect — **ค่าจาก `server/data/assets/survival/status_effects.json` ของเกมจริง**
+    ///
+    /// ฝั่ง client เอาไปใช้สองทาง:
+    ///   · `EffectType.Survival` key `fatigue` → `FatigueSystem.UpdateFatigue` บวกเป็นความเร็วความล้าที่โชว์
+    ///   · `EffectType.Fatigue` key = ชื่อหมวดสภาพแวดล้อม → `FatigueMomentum` โชว์เป็น "สาเหตุ" พร้อม %
+    /// </summary>
+    private static EffectDetail[] BuildEffectDetails(StatusEffectSave x)
+    {
+        SurvivalConfig cfg = ServerConfig.Current.Survival;
+        string id = x.EffectId ?? x.Id ?? "";
+        int level = Math.Max(1, x.Level);
+        switch (id)
+        {
+            // rest: -(0.15 + 0.0015*level) ความล้า · 0.45 + 0.05*level เลือด
+            case RestStatusEffectId:
+                return new[]
+                {
+                    new EffectDetail { Type = EffectType.Survival, Key = "fatigue",
+                        Value = -(cfg.RestFatigueBase + cfg.RestFatiguePerLevel * level) },
+                    new EffectDetail { Type = EffectType.Survival, Key = "life",
+                        Value = cfg.RestLifeBase + cfg.RestLifePerLevel * level }
+                };
+
+            // thirsty: type 2 (Fatigue) key default = 0.2 และ key arid = 0.2
+            case ThirstStatusEffectId:
+                return new[]
+                {
+                    new EffectDetail { Type = EffectType.Fatigue, Key = "default", Value = cfg.ThirstFatigue },
+                    new EffectDetail { Type = EffectType.Fatigue, Key = "arid",    Value = cfg.ThirstFatigue }
+                };
+
+            // drink_water: type 2 key hot = -0.3
+            case DrinkWaterStatusEffectId:
+                return new[]
+                {
+                    new EffectDetail { Type = EffectType.Fatigue, Key = "hot", Value = cfg.DrinkWaterFatigue }
+                };
+
+            // satiety_high: ในข้อมูลจริงไม่มีตัวเลขผลใด ๆ เป็นแค่ธง "กินต่อไม่ได้"
+            default:
+                return Array.Empty<EffectDetail>();
+        }
+    }
+
+    /// <summary>
+    /// อิ่มจนกินต่อไม่ได้ — ตรงกับ `satiety_high` (배부름) ของต้นฉบับ
+    /// ⚠️ ต้นฉบับ **ไม่มี** effect "หิว" ของผู้เล่นเลย (ไอคอน `icon_se_satietylow` ไม่มีใครใช้ใน
+    /// status_effects.json) ของเดิมที่เราใส่ไว้จึงถูกถอดออก
+    /// </summary>
+    private void RefreshSatietyStatus(bool send = true)
     {
         EnsureSurvival();
-        float satiety = _hungry.ValueAt(Times.UnixTimeNow());
-        StatusEffectSave hungry = _statusEffects.FirstOrDefault(x => x.Id == "survival:hungry");
-        bool shouldShow = satiety <= HungryMax * 0.25f;
-        if (shouldShow && hungry == null)
+        StatusEffectSave full = _statusEffects.FirstOrDefault(x => x.EffectId == SatietyHighStatusEffectId);
+        bool shouldShow = IsFullySatiated;
+        if (shouldShow && full == null)
         {
             _statusEffects.Add(new StatusEffectSave
             {
-                Id = "survival:hungry", EffectId = "hungry", Level = satiety <= 5f ? 2 : 1,
+                Id = SatietyHighStatusEffectId, EffectId = SatietyHighStatusEffectId, Level = 1,
                 Since = Times.UnixTimeNow(), Until = 0, Enabled = true
             });
             MarkDirty();
             if (send) SendStatusEffects();
         }
-        else if (!shouldShow && hungry != null)
+        else if (!shouldShow && full != null)
         {
-            _statusEffects.Remove(hungry);
+            _statusEffects.Remove(full);
             MarkDirty();
             if (send) SendStatusEffects();
         }
+    }
+
+    /// <summary>ติดสถานะกระหายน้ำ 180 วินาที (ค่าเดียวกับ `thirsty` ของต้นฉบับ)</summary>
+    public void ApplyThirst()
+    {
+        SurvivalConfig cfg = ServerConfig.Current.Survival;
+        if (cfg.ThirstSeconds <= 0f) return;
+        double now = Times.UnixTimeNow();
+        _statusEffects.RemoveAll(x => x.EffectId == ThirstStatusEffectId);
+        _statusEffects.Add(new StatusEffectSave
+        {
+            Id = ThirstStatusEffectId, EffectId = ThirstStatusEffectId, Level = 1,
+            Since = now, Until = now + cfg.ThirstSeconds, Enabled = true
+        });
+        MarkDirty();
+        SendStatusEffects();
+        RefreshFatigueFromStatusEffects();
+    }
+
+    /// <summary>ดื่มน้ำ — ดับกระหาย แล้วติดบัพ `drink_water` 180 วินาที</summary>
+    public void ApplyDrinkWater()
+    {
+        SurvivalConfig cfg = ServerConfig.Current.Survival;
+        double now = Times.UnixTimeNow();
+        _statusEffects.RemoveAll(x => x.EffectId == ThirstStatusEffectId);
+        if (cfg.DrinkWaterSeconds > 0f)
+        {
+            _statusEffects.RemoveAll(x => x.EffectId == DrinkWaterStatusEffectId);
+            _statusEffects.Add(new StatusEffectSave
+            {
+                Id = DrinkWaterStatusEffectId, EffectId = DrinkWaterStatusEffectId, Level = 1,
+                Since = now, Until = now + cfg.DrinkWaterSeconds, Enabled = true
+            });
+        }
+        MarkDirty();
+        SendStatusEffects();
+        RefreshFatigueFromStatusEffects();
     }
 
     private Dictionary<string, float> BuildStatusModifiers()
@@ -311,6 +422,21 @@ public partial class ServerPlayer
         return false;
     }
 
+    private bool HasActiveEffectId(string effectId)
+    {
+        if (string.IsNullOrEmpty(effectId)) return false;
+        double now = Times.UnixTimeNow();
+        for (int i = 0; i < _statusEffects.Count; i++)
+        {
+            StatusEffectSave e = _statusEffects[i];
+            if (!e.Enabled) continue;
+            if (e.Until > 0 && e.Until <= now) continue;
+            if (string.Equals(e.EffectId ?? e.Id, effectId, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        return false;
+    }
+
     /// <summary>ผลรวมของบัฟ/ดีบัฟสตามินาที่บวกเข้ากับ StaminaCostScale (ลบ = ถูกลง, บวก = แพงขึ้น)</summary>
     public float StatusStaminaCostDelta()
     {
@@ -330,6 +456,7 @@ public partial class ServerPlayer
         float delta = 0f;
         if (HasActiveStatusKind(StatusEffectKind.LifeRegen)) delta += cfg.LifeUpRegenPerSec;
         if (HasActiveStatusKind(StatusEffectKind.LifeDrain)) delta -= cfg.PoisonDamagePerSec;
+        if (HasActiveEffectId("raw_food")) delta -= cfg.StomachacheDamagePerSec;
         return delta;
     }
 
@@ -402,7 +529,7 @@ public partial class ServerPlayer
         string chosen = string.IsNullOrEmpty(msg.TitleId) ? null : msg.TitleId;
         if (chosen != null && Array.IndexOf(UnlockedTitleIds(), chosen) < 0)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         _selectedTitleId = chosen;
@@ -425,13 +552,13 @@ public partial class ServerPlayer
     {
         if (!string.Equals(msg.EntityId, EntityId, StringComparison.Ordinal) || string.IsNullOrWhiteSpace(msg.Name))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         string name = msg.Name.Trim();
         if (name.Length < 2 || name.Length > 24 || name.Any(char.IsControl))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         string old = Name;

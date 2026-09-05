@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -19,11 +19,16 @@ internal sealed class MemoryBotRequest
     public string EntityId;
     public string ActionId;
     public string ItemId;
+
+    /// <summary>id ของเมนูย่อย เช่น generator ของการเก็บ ("stone", "stone_big") — ต้องระบุเวลามีหลายอันภายใต้แอ็กชันเดียวกัน</summary>
+    public string MenuId;
     public string Uri;
     public float X;
     public float Y;
     public bool HasX;
     public bool HasY;
+    public int Count;
+    public bool HasCount;
 }
 
 internal static class MemoryBotProtocol
@@ -60,11 +65,18 @@ internal static class MemoryBotProtocol
             EntityId = Get(values, "entity_id", ""),
             ActionId = Get(values, "action_id", ""),
             ItemId = Get(values, "item_id", ""),
+            MenuId = Get(values, "menu_id", ""),
             Uri = Get(values, "uri", "")
         };
         float f;
         if (TryFloat(Get(values, "x", ""), out f)) { request.X = f; request.HasX = true; }
         if (TryFloat(Get(values, "y", ""), out f)) { request.Y = f; request.HasY = true; }
+        int count;
+        if (int.TryParse(Get(values, "count", ""), NumberStyles.Integer, CultureInfo.InvariantCulture, out count) && count >= 0)
+        {
+            request.Count = count;
+            request.HasCount = true;
+        }
         if (request.Op.Length == 0) { error = "missing_op"; return false; }
         return true;
     }

@@ -121,7 +121,125 @@ public class TerrainStore
     ///   1. ไม่ใช่ไบโอมทะเล/ชายหาด
     ///   2. ลึกเข้าไปในแผ่นดินอย่างน้อย minTilesInland tile
     /// </summary>
+    /// <summary>
+    /// `cliffs.dm` — **ระยะห่างจากหน้าผาแบบมีเครื่องหมาย** 1 ไบต์ต่อ tile (เข้ารหัสเหมือน oceans.dm)
+    ///
+    ///   ลบ = *อยู่ในเนื้อหิน* · บวก = ห่างออกมา (สูงสุด 32) · ยิ่งลบมากยิ่งลึกเข้าไปในก้อน
+    ///
+    /// พิสูจน์แล้วกับเกาะจริง: ค่าติดลบตรงกับธง 0xC0 ใน `whole.biomes` **100.0%** ทั้ง ri35te
+    /// (3,777 tile = 5.8%) และ ri40tr (5,137 tile = 7.8%) · และจุดวาง 50 หน้าผาใน
+    /// `whole.landmarks` ตกอยู่บนค่าติดลบทั้งหมด (−2..−6) คือใจกลางก้อนหินพอดี
+    ///
+    /// ⚠️ ก่อนหน้านี้เซิร์ฟ **ไม่เคยอ่านไฟล์นี้เลย** และ `BiomeAt` ก็ตัดธง 0xC0 ทิ้งด้วย `&amp; 0x3F`
+    /// ⇒ ตัวสัตว์เลยเกิดกลางก้อนหินได้ เพราะไม่มีใครรู้ว่าตรงนั้นมีหินอยู่
+    /// </summary>
+    public byte[] CliffMap { get; private set; }
+
+    /// <summary>
+    /// tile นี้ห่างจากหน้าผากี่ tile (ติดลบ = อยู่ในเนื้อหิน) — ไม่มีข้อมูลคืน 99
+    ///
+    /// ถ้าไม่มี `cliffs.dm` (เช่นเกาะที่ปั่นเอง) จะถอยไปใช้ธง 0xC0 ใน `whole.biomes` แทน
+    /// ซึ่งบอกได้แค่ "อยู่ในหินหรือไม่" ไม่มีระยะ เลยคืน −1 / +99
+    /// </summary>
+    public int CliffDistance(int tileX, int tileY)
+    {
+        if (tileX < 0 || tileY < 0 || tileX >= Width || tileY >= Height)
+        {
+            return 99;
+        }
+        int idx = tileX + tileY * Width;
+        if (CliffMap != null && CliffMap.Length >= Width * Height)
+        {
+            int v = CliffMap[idx];
+            return v > 127 ? v - 256 : v;
+        }
+        if (Biomes.Length >= Width * Height && (Biomes[idx] & 0xC0) == 0xC0)
+        {
+            return -1;
+        }
+        return 99;
+    }
+
+    /// <summary>ตรงนี้เป็นหินไหม — margin คือเว้นระยะรอบก้อนเพิ่มอีกกี่ tile</summary>
+    public bool IsCliff(int tileX, int tileY, int margin = 0)
+    {
+        return CliffDistance(tileX, tileY) <= margin;
+    }
+
+    /// <summary>`lakes.dm` — ระยะถึงทะเลสาบ (ลบ = อยู่ในทะเลสาบ) เข้ารหัสเหมือน oceans.dm</summary>
+    public byte[] LakeMap { get; private set; } = Array.Empty<byte>();
+
+    /// <summary>`rivers.dm` — ระยะถึงแม่น้ำ (ลบ = อยู่ในแม่น้ำ)</summary>
+    public byte[] RiverMap { get; private set; } = Array.Empty<byte>();
+
+    /// <summary>`scoops.dm` — ระยะถึงจุดขุด (ลบ = อยู่บนจุดขุด) คู่กับ scoop_slots ใน pois.yml</summary>
+    public byte[] ScoopMap { get; private set; } = Array.Empty<byte>();
+
+    /// <summary>`fertilities` — ความอุดมสมบูรณ์ของดิน 0..31 ต่อ tile (ใช้กับระบบปลูกพืช)</summary>
+    public byte[] Fertilities { get; private set; } = Array.Empty<byte>();
+
+    /// <summary>`whole.temperatures` — อุณหภูมิจริงต่อ tile 1..255</summary>
+    public byte[] Temperatures { get; private set; } = Array.Empty<byte>();
+
+    /// <summary>`whole.humidities` — ความชื้นจริงต่อ tile 0..255</summary>
+    public byte[] Humidities { get; private set; } = Array.Empty<byte>();
+
+    /// <summary>POI ที่เกมกำหนดมากับเกาะ (pois.yml) — null ถ้าเกาะนี้ไม่มีไฟล์</summary>
+    public TerrainPois? Pois { get; private set; }
+
+    /// <summary>จุดเกิดสัตว์ที่เกมกำหนดมากับเกาะ (herds.yml) — null ถ้าเกาะนี้ไม่มีไฟล์</summary>
+    public TerrainHerds? Herds { get; private set; }
+
+    /// <summary>อ่านค่าจากแผนที่ signed distance (.dm) — ไม่มีข้อมูลคืน 99</summary>
+    private int SignedAt(byte[] map, int tileX, int tileY)
+    {
+        if (map == null || map.Length < Width * Height
+            || tileX < 0 || tileY < 0 || tileX >= Width || tileY >= Height)
+        {
+            return 99;
+        }
+        int v = map[tileX + tileY * Width];
+        return v > 127 ? v - 256 : v;
+    }
+
+    /// <summary>ระยะถึงทะเลสาบ (ลบ = อยู่ในน้ำ)</summary>
+    public int LakeDistance(int tileX, int tileY) => SignedAt(LakeMap, tileX, tileY);
+
+    /// <summary>ระยะถึงแม่น้ำ (ลบ = อยู่ในน้ำ)</summary>
+    public int RiverDistance(int tileX, int tileY) => SignedAt(RiverMap, tileX, tileY);
+
+    /// <summary>ระยะถึงจุดขุด (ลบ = อยู่บนจุดขุดพอดี)</summary>
+    public int ScoopDistance(int tileX, int tileY) => SignedAt(ScoopMap, tileX, tileY);
+
+    /// <summary>อ่านค่าจากแผนที่ 1 ไบต์ต่อ tile — ไม่มีข้อมูลคืน fallback</summary>
+    private int ByteAt(byte[] map, int tileX, int tileY, int fallback)
+    {
+        if (map == null || map.Length < Width * Height
+            || tileX < 0 || tileY < 0 || tileX >= Width || tileY >= Height)
+        {
+            return fallback;
+        }
+        return map[tileX + tileY * Width];
+    }
+
+    /// <summary>ความอุดมสมบูรณ์ของดิน 0..31 (ไม่มีข้อมูล = 16 ค่ากลาง)</summary>
+    public int FertilityAt(int tileX, int tileY) => ByteAt(Fertilities, tileX, tileY, 16);
+
+    /// <summary>อุณหภูมิ 0..255 (ไม่มีข้อมูล = 128)</summary>
+    public int TemperatureAt(int tileX, int tileY) => ByteAt(Temperatures, tileX, tileY, 128);
+
+    /// <summary>ความชื้น 0..255 (ไม่มีข้อมูล = 128)</summary>
+    public int HumidityAt(int tileX, int tileY) => ByteAt(Humidities, tileX, tileY, 128);
+
     public bool IsLand(float worldX, float worldY, int minTilesInland)
+    {
+        return IsLand(worldX, worldY, minTilesInland, allowBeach: false);
+    }
+
+    /// <summary>
+    /// [TodoList/08] allowBeach = สัตว์หาด (ฝูงกลุ่ม beach ใน herds.yml) อยู่บนทรายได้ — น้ำยังไม่ได้
+    /// </summary>
+    public bool IsLand(float worldX, float worldY, int minTilesInland, bool allowBeach)
     {
         int tx = (int)(worldX / 200f);
         int ty = (int)(worldY / 200f);
@@ -129,7 +247,12 @@ public class TerrainStore
         {
             return false;
         }
-        return !IsWaterOrBeach(BiomeAt(tx, ty));
+        Shared.Region.Biome b = BiomeAt(tx, ty);
+        if (allowBeach && (b == Shared.Region.Biome.SandBeach || b == Shared.Region.Biome.PebbleBeach))
+        {
+            return LandDistance(tx, ty) >= 1;
+        }
+        return !IsWaterOrBeach(b);
     }
 
     /// <summary>อ่านความสูงพื้นจาก whole.elevations (1 byte ต่อ tile)</summary>
@@ -221,7 +344,17 @@ public class TerrainStore
         LandMap = LoadOrEmpty(dir, "oceans.dm");
         Rivers = LoadOrEmpty(dir, "whole.rivers");
         Garden = LoadOrEmpty(dir, "whole.garden");
+        _gardenOriginal = (byte[])Garden.Clone();     // [regrow] ต้นฉบับไว้หาชนิดของต้นที่จะงอกกลับ
         Elevations = LoadOrEmpty(dir, "whole.elevations");
+        CliffMap = LoadOrEmpty(dir, "cliffs.dm");
+        LakeMap = LoadOrEmpty(dir, "lakes.dm");
+        RiverMap = LoadOrEmpty(dir, "rivers.dm");
+        ScoopMap = LoadOrEmpty(dir, "scoops.dm");
+        Fertilities = LoadOrEmpty(dir, "fertilities");
+        Temperatures = LoadOrEmpty(dir, "whole.temperatures");
+        Humidities = LoadOrEmpty(dir, "whole.humidities");
+        Pois = TerrainPois.Load(dir);
+        Herds = TerrainHerds.Load(dir);
 
         Info = new TerrainInfoJson();
         string infoPath = Path.Combine(dir, "info.yml");
@@ -265,6 +398,45 @@ public class TerrainStore
         else
         {
             Console.WriteLine("[terrain] loaded whole.elevations ({0} tiles)", Elevations.Length);
+        }
+
+        if (CliffMap.Length < Width * Height)
+        {
+            int flagged = 0;
+            for (int i = 0; i < Biomes.Length && i < Width * Height; i++)
+            {
+                if ((Biomes[i] & 0xC0) == 0xC0) { flagged++; }
+            }
+            CliffMap = null;            // ให้ CliffDistance ถอยไปอ่านธง 0xC0 เอง
+            Console.WriteLine("[terrain] ไม่มี cliffs.dm — ใช้ธง 0xC0 ใน whole.biomes แทน ({0} tile เป็นหิน)", flagged);
+        }
+        else
+        {
+            int rock = 0;
+            for (int i = 0; i < Width * Height; i++)
+            {
+                if (CliffMap[i] > 127) { rock++; }
+            }
+            Console.WriteLine("[terrain] cliffs.dm: {0} tile เป็นหิน ({1:F1}% ของเกาะ)",
+                rock, 100.0 * rock / (Width * Height));
+        }
+
+        if (Pois != null)
+        {
+            Console.WriteLine("[terrain] pois.yml: หลุมวาร์ป {0} · รอยแยก {1} · ท่าเรือ {2} · หลุมอุกกาบาต {3} · จุดขุด {4} · สิ่งปลูกสร้าง {5}",
+                Pois.Warpholes.Count, Pois.Rifts.Count, Pois.PortPoints.Count,
+                Pois.Craters.Count, Pois.ScoopSlots.Count, Pois.CampArtifacts.Count);
+        }
+        if (Herds != null)
+        {
+            var parts = new List<string>();
+            foreach (KeyValuePair<string, List<Point2>> g in Herds.Groups)
+            {
+                parts.Add($"{g.Key} {g.Value.Count}");
+            }
+            parts.Sort();
+            Console.WriteLine("[terrain] herds.yml: จุดเกิดสัตว์ {0} จุด ({1})",
+                Herds.Total, string.Join(" · ", parts));
         }
 
         BuildLandmarkChunks(dir);
@@ -410,6 +582,82 @@ public class TerrainStore
     // เก็บเป็น "รายการที่ถูกลบ" แทนการ dump Garden ทั้งก้อน เพราะ Garden derive มาจากไฟล์ terrain
     // ถ้าวันหลังเปลี่ยนแมพ ไฟล์เซฟเก่าก็ยังใช้ได้ (พิกัดไหนไม่มีของก็ข้ามไปเฉย ๆ)
     private readonly HashSet<(int, int)> _removedNaturals = new HashSet<(int, int)>();
+    /// <summary>[regrow] ต้นที่ "เก็บจนหมด/ทำลาย" แล้วงอกกลับได้ → เวลาที่ถูกเก็บ (unix) · ต้นที่ถูกลบเพราะปลูกสร้างทับไม่อยู่ในนี้</summary>
+    private readonly Dictionary<(int, int), double> _regrowAt = new Dictionary<(int, int), double>();
+    private byte[] _gardenOriginal = Array.Empty<byte>();
+
+    /// <summary>[regrow] คู่ (x,y,unix ที่ถูกเก็บ) ของต้นที่งอกกลับได้ — เขียนลงเซฟ</summary>
+    public List<double[]> GetRegrowableNaturals()
+    {
+        lock (_gardenLock)
+        {
+            var list = new List<double[]>(_regrowAt.Count);
+            foreach (KeyValuePair<(int, int), double> kv in _regrowAt)
+            {
+                list.Add(new[] { kv.Key.Item1, kv.Key.Item2, kv.Value });
+            }
+            return list;
+        }
+    }
+
+    public void ApplyRegrowableNaturals(List<double[]> list)
+    {
+        if (list == null) { return; }
+        lock (_gardenLock)
+        {
+            foreach (double[] e in list)
+            {
+                if (e != null && e.Length >= 3 && _removedNaturals.Contains(((int)e[0], (int)e[1])))
+                {
+                    _regrowAt[((int)e[0], (int)e[1])] = e[2];
+                }
+            }
+        }
+    }
+
+    /// <summary>[regrow] ต้นที่ถึงเวลางอกกลับ (ถูกเก็บก่อน cutoff)</summary>
+    public List<(int x, int y)> DueRegrow(double cutoff)
+    {
+        var due = new List<(int, int)>();
+        lock (_gardenLock)
+        {
+            foreach (KeyValuePair<(int, int), double> kv in _regrowAt)
+            {
+                if (kv.Value <= cutoff) { due.Add(kv.Key); }
+            }
+        }
+        return due;
+    }
+
+    /// <summary>[regrow] เอาต้นเดิม (ชนิดตาม whole.garden ต้นฉบับ) กลับมาที่ tile — คืน type ที่งอก (0 = ไม่มีต้นฉบับตรงนั้น)</summary>
+    public ushort RestoreNatural(int tileX, int tileY)
+    {
+        lock (_gardenLock)
+        {
+            _regrowAt.Remove((tileX, tileY));
+            if (!_removedNaturals.Contains((tileX, tileY)))
+            {
+                return 0;
+            }
+            for (int i = 0; i + 6 <= _gardenOriginal.Length; i += 6)
+            {
+                if (BitConverter.ToUInt16(_gardenOriginal, i) != tileX || BitConverter.ToUInt16(_gardenOriginal, i + 2) != tileY)
+                {
+                    continue;
+                }
+                ushort type = BitConverter.ToUInt16(_gardenOriginal, i + 4);
+                byte[] all = new byte[Garden.Length + 6];
+                Array.Copy(Garden, 0, all, 0, Garden.Length);
+                Array.Copy(_gardenOriginal, i, all, Garden.Length, 6);
+                Garden = all;
+                _gardenByChunk = null;
+                _removedNaturals.Remove((tileX, tileY));
+                return type;
+            }
+            _removedNaturals.Remove((tileX, tileY));   // ไม่มีในต้นฉบับ (ของที่ admin เพิ่ม?) — ลืมไปเลย
+            return 0;
+        }
+    }
 
     /// <summary>พิกัดที่ถูกเก็บไปแล้วทั้งหมด (สำเนา) — ใช้ตอนเซฟ</summary>
     public List<int[]> GetRemovedNaturals()
@@ -568,8 +816,25 @@ public class TerrainStore
     // แล้ว chunk ที่ขอใหม่จะไม่มีธรรมชาตินั้นอีก
     public bool RemoveNatural(int tileX, int tileY)
     {
+        return RemoveNatural(tileX, tileY, regrowable: false);
+    }
+
+    /// <summary>
+    /// [regrow] regrowable = ถูก "เก็บจนหมด/ทำลาย" โดยผู้เล่น → งอกกลับหลัง World.NaturalRegrowSeconds
+    /// (false = ลบเพราะปลูกสร้าง/POI ทับ — ไม่งอกกลับ ไม่งั้นต้นไม้ขึ้นกลางบ้าน)
+    /// </summary>
+    public bool RemoveNatural(int tileX, int tileY, bool regrowable)
+    {
         lock (_gardenLock)
         {
+            if (regrowable)
+            {
+                _regrowAt[(tileX, tileY)] = Durango.Utils.Times.UnixTimeNow();
+            }
+            else
+            {
+                _regrowAt.Remove((tileX, tileY));
+            }
             if (Garden.Length % 6 != 0)
             {
                 return false;

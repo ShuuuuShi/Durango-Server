@@ -17,6 +17,13 @@
       "sign": null,
       "signAndEditExecutable": false
     },
+    "extraResources": [
+      {
+        "from": "../MapEditor/lib",
+        "to": "MapEditor/lib",
+        "filter": ["**/*"]
+      }
+    ],
     "portable": {
       "requestExecutionLevel": "user"
     }

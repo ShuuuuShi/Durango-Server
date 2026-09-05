@@ -286,7 +286,9 @@ public class GatheringSystem : GameSystem<GatheringSystem>
 
 	public void Gathering(string id)
 	{
-		UIManager.SystemMsg("test");
+		// [แก้เอง] 31 ส.ค. 2026 — ลบ UIManager.SystemMsg("test") ออก
+		// เศษโค้ด debug ที่ทีมพัฒนาเดิมลืมไว้ในเกมต้นฉบับ เด้งเป็นกล่องประกาศระบบ
+		// (ตัวเดียวกับประกาศจากแอดมิน) ให้ผู้เล่นเห็นคำว่า "test" — ทุกครั้งที่เริ่มเก็บของ
 		GatheringData gatheringData = FindGatheringData(id);
 		if (gatheringData != null)
 		{

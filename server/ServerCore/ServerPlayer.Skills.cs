@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -43,7 +43,7 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[feature] ปฏิเสธ {0}: ระบบสกิลปิดอยู่ในรอบนี้ (Features.Skills)", Name);
             Send(new Info { Text = "ระบบสกิลยังไม่เปิดในรอบนี้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         Console.WriteLine("[skill] learn {0}/{1} lv={2} points={3}", msg.SkillId, msg.SubId, msg.Level, _skillPoints);
@@ -52,18 +52,18 @@ public partial class ServerPlayer
         if (!SkillData.SkillCategory.TryGetValue(msg.SkillId ?? string.Empty, out int catId))
         {
             Console.WriteLine("[skill] ปฏิเสธ {0}: ไม่มีสกิล '{1}' ในเกม", Name, msg.SkillId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (msg.Level < 1 || msg.Level > MaxSkillLevel)
         {
             Console.WriteLine("[skill] ปฏิเสธ {0}: เลเวลสกิล {1} อยู่นอกช่วง 1-{2}", Name, msg.Level, MaxSkillLevel);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!string.IsNullOrEmpty(msg.SubId) && msg.SubId.Length > 40)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         // Beta 1.0: สกิลมีผลกับเกมจริงแล้ว จึงต้องมีราคาและเงื่อนไข
@@ -73,7 +73,7 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[skill] ปฏิเสธ {0}: สกิลเลเวล {1} ต้องมีเลเวลผู้เล่น {2} (ตอนนี้ {3})",
                 Name, msg.Level, requiredPlayerLevel, Level);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -89,14 +89,14 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[skill] ปฏิเสธ {0}: {1}/{2} ต้องเรียนเลเวลถัดไป {3} (ขอ {4})",
                 Name, msg.SkillId, subKey, currentLevel + 1, msg.Level);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!SkillNodeData.TryGet(msg.SkillId, subKey, msg.Level, out SkillNodeData.Node node))
         {
             Console.WriteLine("[skill] ปฏิเสธ {0}: ไม่มี node {1}/{2} lv={3} ในข้อมูลเกม",
                 Name, msg.SkillId, subKey, msg.Level);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (ProficiencyLevel((Shared.Skill.Category)catId) < node.CategoryLevel)
@@ -104,7 +104,7 @@ public partial class ServerPlayer
             Console.WriteLine("[skill] ปฏิเสธ {0}: {1}/{2} lv={3} ต้องการความชำนาญหมวด {4} (ตอนนี้ {5})",
                 Name, msg.SkillId, subKey, msg.Level, node.CategoryLevel,
                 ProficiencyLevel((Shared.Skill.Category)catId));
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         int spent = SkillNodeData.UsedCost(_knownSkills);
@@ -113,7 +113,7 @@ public partial class ServerPlayer
         {
             Console.WriteLine("[skill] ปฏิเสธ {0}: node ใช้ {1} แต้ม เหลือ {2} (รวม {3}, ใช้ไป {4})",
                 Name, node.SkillPoint, remain, _skillPoints, spent);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         Console.WriteLine("[skill] อนุมัติ {0}: node cost={1}, total={2}, spent ก่อน={3}, remain ก่อน={4}",
@@ -163,7 +163,7 @@ public partial class ServerPlayer
         if (!string.IsNullOrEmpty(msg.VoucherId))
         {
             Send(new Info { Text = "การใช้ voucher ยกเลิกสกิลยังไม่เปิดในรอบนี้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         string subKey = msg.SubId ?? "__base__";
@@ -172,13 +172,13 @@ public partial class ServerPlayer
             || !_knownSkills[index].Levels.TryGetValue(subKey, out int currentLevel)
             || currentLevel != msg.Level)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!SkillNodeData.TryGet(msg.SkillId, subKey, currentLevel, out SkillNodeData.Node node)
             || node.UntrainDisabled || node.SkillPoint <= 0)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         _knownSkills[index].Levels.Remove(subKey);
@@ -247,6 +247,19 @@ public partial class ServerPlayer
     /// คิดใหม่ทุกครั้งที่ถาม (ไม่แคช) เพราะเรียนสกิลเพิ่มแล้วต้องเห็นสูตรใหม่ทันที
     /// จำนวนไม่มาก (สกิลที่เรียนได้มีจำกัดตามแต้ม) จึงไม่คุ้มที่จะแคชแล้วต้องคอยล้าง
     /// </summary>
+    /// <summary>
+    /// [3 ก.ย. 2026] พิมพ์เขียว "จำเป็นต่อการเล่น" ที่ต้องให้ผู้เล่นทุกคนสร้างได้เสมอ แม้เปิด HideFreeItems
+    /// (ต้องอยู่ใน AlwaysBlueprints อยู่แล้ว = ไม่ต้องเรียนสกิล) — วงจรเอาชีวิตรอด + สายสอนเล่น + เควสรายวัน
+    /// </summary>
+    private static readonly string[] EssentialBlueprints =
+    {
+        "camp_square_fire", "tutorial_bonfire", "bonfire_01",   // กองไฟ (พัก/ทำอาหาร)
+        "tutorial_boat", "raft", "raft_deck",                    // แพหนีเกาะ (สายเนื้อเรื่อง)
+        "farm_tile_01", "farm_tile_03", "farm_tile_04",          // แปลงผัก (เควสปลูก/รดน้ำ/เก็บเกี่ยว)
+        "fur_box_01", "fur_box_02_leaf", "fur_box_03_leaf",      // กล่องเก็บของ (เควสเก็บของ + ของตกตอนตาย)
+        "camp_warphole", "camp_warehouse", "camp_rest_02", "dock" // วาร์ป/คลัง/ที่พัก/ท่าเรือ (เควสวาร์ป+ย้ายเกาะ)
+    };
+
     private void BuildUnlocked(out HashSet<string> recipes, out HashSet<string> blueprints)
     {
         // [แก้เอง] 25 ส.ค. 2026 (รอบ 3 — ของจริง) — เจ้าของสั่งชัดเจน: "รายการคราฟอ้างอิงจากสกิลเท่านั้น"
@@ -270,7 +283,11 @@ public partial class ServerPlayer
         // non-admin เห็นเฉพาะของที่ปลดล็อกด้วยสกิลจริง · admin ได้ครบเสมอ
         bool hideFree = !IsAdmin && (ServerConfig.Current.CraftMenu?.HideFreeItems ?? false);
         recipes = hideFree ? new HashSet<string>() : new HashSet<string>(RecipeUnlockData.AlwaysRecipes);
-        blueprints = hideFree ? new HashSet<string>() : new HashSet<string>(RecipeUnlockData.AlwaysBlueprints);
+        // [3 ก.ย. 2026] 🐛 HideFreeItems ตั้งใจซ่อนพิมพ์เขียวของแต่ง/เฟอร์นิเจอร์เป็นร้อย ๆ ตัวที่รก
+        //    เมนู แต่มันซ่อน "ทั้ง AlwaysBlueprints" ⇒ ซ่อนของจำเป็นสำหรับเอาชีวิตรอด/สายสอนเล่นไปด้วย
+        //    (กองไฟ/แปลงผัก/กล่องเก็บของ/หลุมวาร์ป/ท่าเรือ/แพหนีเกาะ) ⇒ **ผู้เล่นใหม่จริงก่อไฟ/ต่อแพไม่ได้เลย**
+        //    (เจอตอนให้บอทเล่นแบบคนบนเซิร์ฟ local — build เด้ง blueprint_locked) ⇒ ยกเว้นชุดจำเป็นไว้เสมอ
+        blueprints = hideFree ? new HashSet<string>(EssentialBlueprints) : new HashSet<string>(RecipeUnlockData.AlwaysBlueprints);
         var skillRecipes = new HashSet<string>();
         var skillBlueprints = new HashSet<string>();
         // AUTO-tier skill (skill_point=0) ต้องถูก grant เข้า _knownSkills ก่อนจะไล่ Collect() ด้านล่าง
@@ -432,13 +449,44 @@ public partial class ServerPlayer
         EnsureAutomaticSkills();
         Send(new Skills
         {
-            SkillList = _knownSkills.Count == 0 ? null : _knownSkills.ToArray(),
+            SkillList = _knownSkills.Count == 0 ? null : ClampSkillListForClient(_knownSkills),
             SkillPoint = _skillPoints,
             Categories = BuildSkillCategories(),
             UntrainedCount = 0,
             AdvisedSkills = null,
             AdvisedSkillCategories = null
         });
+    }
+
+    /// <summary>กันเลเวลโหนดที่เซิร์ฟมีเกินไฟล์สกิลฝั่ง client — client.Get(level) คืน null แล้ว NRE</summary>
+    private static SkillBundle[] ClampSkillListForClient(List<SkillBundle> known)
+    {
+        var copy = new SkillBundle[known.Count];
+        for (int i = 0; i < known.Count; i++)
+        {
+            SkillBundle src = known[i];
+            var levels = new Dictionary<string, int>();
+            if (src.Levels != null)
+            {
+                foreach (KeyValuePair<string, int> pair in src.Levels)
+                {
+                    int max = SkillParity.MaxNodeLevel(src.SkillId, pair.Key);
+                    int level = pair.Value;
+                    if (max > 0 && level > max)
+                    {
+                        level = max;
+                    }
+                    levels[pair.Key] = level;
+                }
+            }
+            copy[i] = new SkillBundle
+            {
+                Category = src.Category,
+                SkillId = src.SkillId,
+                Levels = levels
+            };
+        }
+        return copy;
     }
 
     /// <summary>
@@ -534,9 +582,17 @@ public partial class ServerPlayer
                 { Shared.Ability.Derived.StaminaMax, StaminaMax },
                 { Shared.Ability.Derived.FatigueMax, FatigueMax },
                 { Shared.Ability.Derived.FatigueCaution, FatigueCaution },
-                { Shared.Ability.Derived.FatigueDanger, FatigueDanger }
-                , { Shared.Ability.Derived.HungryMax, 100f }
-                , { Shared.Ability.Derived.HungryVelocity, -1f / 60f }
+                { Shared.Ability.Derived.FatigueDanger, FatigueDanger },
+                // 🐛 [แก้เอง 3 ก.ย. 2026] เดิมส่ง HungryMax/HungryVelocity ซึ่ง **เป็นค่าของสัตว์เลี้ยง**
+                //    (constants.json → pet/battle/hungry_ratio_enter_battle · GrowCageGroup · PetAI)
+                //    ผู้เล่นในต้นฉบับไม่มีหลอดหิว — เอาออก
+                //
+                //    ของที่ต้นฉบับมีจริงแต่เราไม่เคยส่ง: อัตราฟื้นเลือด/สตามินา
+                //    (constants.json → animal_survival_effected_by: life=[50,51] stamina=[52,53]
+                //     = LifeMax/LifeVelocity และ StaminaMax/StaminaVelocity)
+                //    ส่งไปด้วยเพื่อให้ของสวมใส่/สกิลดันอัตราฟื้นได้จริงเหมือนต้นฉบับ
+                { Shared.Ability.Derived.LifeVelocity, LifeRegenPerSec },
+                { Shared.Ability.Derived.StaminaVelocity, StaminaRegenPerSec }
             },
             Level = Level,
             Exp = TotalExp,          // client วาดหลอด exp จากค่านี้เทียบกับตาราง level_thresholds

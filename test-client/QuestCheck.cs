@@ -51,11 +51,33 @@ public static class QuestCheck
     ///  เทสไม่ได้ตามไปแก้ เลยขอรายการมาได้ 0 อันตลอดและอ่านของค้างเก่าแทน)</summary>
     private const string CHECKLIST_CATEGORY = "daily";
 
-    private const int ChecklistCount = 12;
+    private const int ChecklistCount = 15;
     private const string CL_PLANT = "permanent_farming_seed_01";        // ปลูกเมล็ด 4 ครั้ง
     private const string CL_EQUIP = "urban_weapon_event_04";            // สวมอุปกรณ์ 2 ชิ้น
     private const string CL_REVIVE = "mainstory_chapter1_5";            // ตายแล้วฟื้น 1 ครั้ง
     private const string CL_SKILL = "permanent_level_skill_gathering_10";  // เรียนสกิล 1 อัน
+    private const string CL_REST = "daily_survival_rest";               // พักที่จุดพัก 1 ครั้ง
+    private const string CL_WARP = "daily_local_warp";                  // วาปในเกาะ 1 ครั้ง
+    private const string CL_TRAVEL = "daily_island_travel";              // ย้ายเกาะที่ท่าเรือ 1 ครั้ง
+
+    private static readonly string[] ChecklistIds =
+    {
+        CL_PLANT,
+        "event_1_farming_cherry_01",
+        "event_1_farming_cherry_02",
+        "event_1_gathering_cherry_bough_01",
+        "event_newyear_2019_quest_04",
+        CL_EQUIP,
+        "urban_weapon_event_10",
+        CL_REVIVE,
+        "mainstory_chapter4_6",
+        "estate_build_lv55_02",
+        CL_SKILL,
+        "urban_cook_event_06",
+        CL_REST,
+        CL_WARP,
+        CL_TRAVEL
+    };
 
     private static readonly Dictionary<string, QuestToDo> _quests = new Dictionary<string, QuestToDo>(StringComparer.Ordinal);
     private static readonly List<NotifyQuestProceed> _proceeds = new List<NotifyQuestProceed>();
@@ -68,6 +90,7 @@ public static class QuestCheck
     private static string _lastArtifact;
     private static Point2 _lastArtifactTile;
     private static Point2 raftTileUsed;
+    private static IslandTravelOptions? _travelOptions;
 
     private static void Pump(Connection conn, int ms)
     {
@@ -98,6 +121,7 @@ public static class QuestCheck
         _quests.Clear();
         _proceeds.Clear();
         _stats = null;
+        _travelOptions = null;
 
         conn.Recv<Welcome>((m, h) => { });
         conn.Recv<Clock>((m, h) => { });
@@ -138,6 +162,8 @@ public static class QuestCheck
         conn.Recv<QuestStarted>((m, h) => { _questStarted++; Absorb(m.Quests); });
         conn.Recv<NotifyQuestProceed>((m, h) => _proceeds.Add(m));
         conn.Recv<QuestRewardResults>((m, h) => _rewardResults++);
+        conn.Recv<IslandTravelOptions>((m, h) => _travelOptions = m);
+        conn.Recv<Emigrated>((m, h) => { });
         conn.StartReceive();
 
         conn.Send(new GetClock { Time = Times.UnixTimeNow() });
@@ -154,7 +180,12 @@ public static class QuestCheck
     public static int Run(string host, int gamePort, int gatewayPort)
     {
         Console.WriteLine($"=== quest check (ระบบเควส): {host}:{gamePort} ===");
-        string id = "quest-" + Guid.NewGuid().ToString("N").Substring(0, 8);
+        string id = CreateCharacter(host, gatewayPort, "quest-" + Guid.NewGuid().ToString("N").Substring(0, 8));
+        if (string.IsNullOrEmpty(id))
+        {
+            Console.WriteLine("สร้างตัวละครทดสอบสำหรับ quest-check ไม่สำเร็จ");
+            return 1;
+        }
         Connection conn = Connect(host, gamePort, gatewayPort, id);
         if (conn == null) { Console.WriteLine("ขอ token ไม่ได้ — เซิร์ฟเปิดอยู่ไหม"); return 1; }
 
@@ -332,7 +363,13 @@ public static class QuestCheck
         // ⚠️ ต้องใช้ **ตัวละครใหม่** เพราะรอบก่อนหน้าใช้ `cheat questskip`
         //    ซึ่งมาร์คทุกเควส (รวมชุดตรวจ) ว่าเสร็จหมด — ตัวนับจะขยับไม่ได้อีก
         Console.WriteLine("รอบ 8 — รายการตรวจเซิร์ฟ (ตัวละครใหม่)");
-        string clId = "cl-" + Guid.NewGuid().ToString("N").Substring(0, 8);
+        string clId = CreateCharacter(host, gatewayPort, "cl-" + Guid.NewGuid().ToString("N").Substring(0, 8));
+        if (string.IsNullOrEmpty(clId))
+        {
+            Check("สร้างตัวละครใหม่สำหรับชุดตรวจได้", false);
+            Console.WriteLine($"\n=== สรุป: ผ่าน {_passed} / ตก {_failed} ===");
+            return 1;
+        }
         Connection cl = Connect(host, gamePort, gatewayPort, clId);
         if (cl == null)
         {
@@ -341,15 +378,25 @@ public static class QuestCheck
             return 1;
         }
         // ⚠️ ชุดตรวจอยู่คนละหมวดกับสายหลักแล้ว (แท็บแยกในหน้าต่างเควส)
+        _quests.Clear();
         cl.Send(new GetQuests { Category = CHECKLIST_CATEGORY });
         Pump(cl, 700);
 
+        string ChecklistCheat(string command, int waitMs = 800)
+        {
+            _infos.Clear();
+            cl.Send(new Cheat { _Cheat = command });
+            Pump(cl, waitMs);
+            return string.Join("\n", _infos);
+        }
+
         int clOpen = 0;
-        foreach (string cid in new[] { CL_PLANT, CL_EQUIP, CL_REVIVE, CL_SKILL })
+        foreach (string cid in ChecklistIds)
         {
             if (Q(cid).HasValue) clOpen++;
         }
-        Check("เควสชุดตรวจโผล่ในรายการด้วย", clOpen == 4, $"เจอ {clOpen}/4 ที่สุ่มเช็ค");
+        Check("เควสชุดตรวจโผล่ครบทุกข้อ", clOpen == ChecklistIds.Length,
+            $"เจอ {clOpen}/{ChecklistIds.Length}");
         Check("ชุดตรวจเปิดพร้อมกันหมดตั้งแต่แรก (ไม่ต้องไล่เป็นสาย)",
             (Q(CL_REVIVE)?.Progress ?? 0) == 0 && (Q(CL_SKILL)?.Progress ?? 0) == 0,
             "ยังไม่ได้ทำอะไรเลย ทุกข้อต้องเป็น 0");
@@ -419,9 +466,105 @@ public static class QuestCheck
         {
             Check("ปลูกผักแล้วตัวนับชุดตรวจขยับ", false, "วางแปลงผักไม่สำเร็จ");
         }
+
+        // ตัวนับใหม่ 4: พักที่จุดพักจริง — ใช้กองไฟที่ server วางให้เป็น fixture
+        string restResult = ChecklistCheat("exhaust");
+        restResult += " | " + ChecklistCheat("place real fire");
+        restResult += " | " + ChecklistCheat("test rest");
+        cl.Send(new GetQuests { Category = CHECKLIST_CATEGORY });
+        Pump(cl, 600);
+        Check("พักที่จุดพักแล้วตัวนับชุดตรวจขยับ", (Q(CL_REST)?.Progress ?? 0) > 0,
+            $"{Q(CL_REST)?.Progress}/{Q(CL_REST)?.GoalCount} — {restResult.Replace('\n', ' ')}");
+
+        // ตัวนับใหม่ 5: วาปในเกาะจริง — หา tile จากรายการ POI ของ server ไม่เดาพิกัด
+        string poiList = ChecklistCheat("poi list");
+        (string id, int x, int y)? warp = FindPoi(poiList, "camp_warphole");
+        if (warp.HasValue)
+        {
+            var w = warp.Value;
+            cl.Send(new Warp { Tile = new Point2(w.x, w.y) });
+            Pump(cl, 1200);
+            cl.Send(new GetQuests { Category = CHECKLIST_CATEGORY });
+            Pump(cl, 600);
+            Check("วาปในเกาะแล้วตัวนับชุดตรวจขยับ", (Q(CL_WARP)?.Progress ?? 0) > 0,
+                $"{Q(CL_WARP)?.Progress}/{Q(CL_WARP)?.GoalCount} — {w.id} @ {w.x},{w.y}");
+        }
+        else
+        {
+            Check("วาปในเกาะแล้วตัวนับชุดตรวจขยับ", false, "ไม่พบ camp_warphole จาก poi list");
+        }
+
+        // ตัวนับใหม่ 6: ย้ายเกาะจากท่าเรือจริง — เพิ่มเลเวลเฉพาะ fixture เพื่อเปิด isle02
+        ChecklistCheat("exp 1000", 900);
+        poiList = ChecklistCheat("poi list");
+        (string id, int x, int y)? dock = FindPoi(poiList, "dock");
+        if (dock.HasValue)
+        {
+            var d = dock.Value;
+            ChecklistCheat("poi tp " + d.id, 900);
+            _travelOptions = null;
+            _proceeds.Clear();
+            cl.Send(new GetIslandTravelOptions
+            {
+                // `poi list` intentionally prints the short id (dock_0), while
+                // the travel packet accepts a null id and authoritatively checks
+                // that the player is next to a real dock. Do not turn a display
+                // id into a fake entity id here.
+                EntityId = null,
+                Tile = new Point2(d.x, d.y)
+            });
+            Pump(cl, 700);
+            int optionCount = _travelOptions?.Ids?.Length ?? 0;
+            string destination = null;
+            if (_travelOptions.HasValue && _travelOptions.Value.Ids != null)
+            {
+                destination = _travelOptions.Value.Ids.FirstOrDefault(x =>
+                    !string.Equals(x, "isle01", StringComparison.OrdinalIgnoreCase));
+            }
+            if (!string.IsNullOrEmpty(destination))
+            {
+                cl.Send(new TravelByRegion
+                {
+                    EntityId = null,
+                    Tile = new Point2(d.x, d.y),
+                    RegionId = destination,
+                    PartierId = null
+                });
+                Pump(cl, 1600);
+            }
+            bool travelProgress = _proceeds.Any(x => x.QuestId == CL_TRAVEL && x.Progress > 0);
+            Check("ย้ายเกาะที่ท่าเรือแล้วตัวนับชุดตรวจขยับ",
+                travelProgress,
+                $"{Q(CL_TRAVEL)?.Progress}/{Q(CL_TRAVEL)?.GoalCount} — options={optionCount} destination={destination ?? "ไม่มี"}");
+        }
+        else
+        {
+            Check("ย้ายเกาะที่ท่าเรือแล้วตัวนับชุดตรวจขยับ", false, "ไม่พบ dock จาก poi list");
+        }
         cl.Close();
 
         Console.WriteLine($"\n=== สรุป: ผ่าน {_passed} / ตก {_failed} ===");
         return _failed == 0 ? 0 : 1;
+    }
+
+    private static string CreateCharacter(string host, int gatewayPort, string name)
+    {
+        return CreateCharacterCheck.CreatePlayer(host, gatewayPort, name, isMale: true, modelInfo: "{}");
+    }
+
+    private static (string id, int x, int y)? FindPoi(string text, string blueprint)
+    {
+        foreach (string line in (text ?? string.Empty).Split('\n'))
+        {
+            string[] parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 4) continue;
+            int blueprintIndex = Array.IndexOf(parts, blueprint);
+            int tileIndex = Array.IndexOf(parts, "tile");
+            if (blueprintIndex < 0 || tileIndex < 0 || tileIndex + 1 >= parts.Length) continue;
+            string[] xy = parts[tileIndex + 1].Split(',');
+            if (xy.Length != 2 || !int.TryParse(xy[0], out int x) || !int.TryParse(xy[1], out int y)) continue;
+            return (parts[0], x, y);
+        }
+        return null;
     }
 }

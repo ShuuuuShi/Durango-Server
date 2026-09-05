@@ -227,7 +227,9 @@ public class InventoryGroup : UIBase
 	[ExposedInEditor(null)]
 	private void OnUpdateBalance(Currency type, long currency, long delta)
 	{
-		UIManager.SystemMsg("test");
+		// [แก้เอง] 31 ส.ค. 2026 — ลบ UIManager.SystemMsg("test") ออก
+		// เศษโค้ด debug ที่ทีมพัฒนาเดิมลืมไว้ในเกมต้นฉบับ เด้งเป็นกล่องประกาศระบบ
+		// (ตัวเดียวกับประกาศจากแอดมิน) ให้ผู้เล่นเห็นคำว่า "test" — ทุกครั้งที่ยอดเงิน/ทรัพยากรเปลี่ยน
 		if (delta <= 0 || type == Currency.Coin)
 		{
 			return;

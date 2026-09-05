@@ -168,6 +168,24 @@ public partial class ServerPlayer
                 Name, string.IsNullOrEmpty(save.LastIsland) ? "(ไม่ระบุ)" : save.LastIsland, here);
         }
 
+        // ที่เก็บ key/value ของ client — ส่งคืนตอนล็อกอินผ่าน Welcome.Storage (ดู SaveModels.ClientStorage)
+        _clientStorage.Clear();
+        if (save.ClientStorage != null)
+        {
+            foreach (KeyValuePair<string, string> pair in save.ClientStorage)
+            {
+                try
+                {
+                    _clientStorage[pair.Key] = Convert.FromBase64String(pair.Value ?? "");
+                }
+                catch (FormatException)
+                {
+                    // ค่าเสีย = ข้ามไป ดีกว่าทำให้โหลดตัวละครทั้งตัวพัง
+                    Console.WriteLine($"[storage] ค่าเสียของ {Name}: key={pair.Key} — ข้าม");
+                }
+            }
+        }
+
         // เฟส C — อุปกรณ์ที่ใส่อยู่ (RebuildEquipments จะกรองของที่หายไปแล้วออกให้เอง)
         _equipmentPresets.Clear();
         _currentEquipSlotType = IsPlayablePreset((Shared.Item.EquipSlotType)save.CurrentEquipSlotType)
@@ -201,6 +219,7 @@ public partial class ServerPlayer
         }
         _accessoryId = string.IsNullOrWhiteSpace(save.AccessoryId) ? null : save.AccessoryId;
 
+        Job = (Shared.Player.Job)save.Job;
         ApplySurvivalSave(save.Survival);     // เฟส C
         ApplyProficiencySave(save.CategoryExp);   // ความชำนาญของหมวดสกิล
         ApplySkillResearchSave(save);
@@ -260,6 +279,7 @@ public partial class ServerPlayer
             Name = Name,
             Level = Level,
             EntityType = EntityType,
+            Job = (int)Job,
             SkillPoints = _skillPoints,
             TotalExp = TotalExp,
             WarpMatterBalance = _warpMatterBalance,
@@ -288,6 +308,11 @@ public partial class ServerPlayer
         FillPoiSave(save);
         save.CurrentEquipSlotType = (int)_currentEquipSlotType;
         save.AccessoryId = _accessoryId;
+        save.ClientStorage.Clear();
+        foreach (KeyValuePair<string, byte[]> pair in _clientStorage)
+        {
+            save.ClientStorage[pair.Key] = Convert.ToBase64String(pair.Value ?? Array.Empty<byte>());
+        }
         foreach (KeyValuePair<Shared.Item.EquipSlotType, Dictionary<string, string>> preset in _equipmentPresets)
         {
             save.EquipmentPresets[((int)preset.Key).ToString()] = new Dictionary<string, string>(preset.Value);

@@ -1,5 +1,18 @@
 # VPS จริง — วิธีที่ Claude เข้าไปจัดการ (2026-08-24)
 
+> ## ⚠️ อัปเดต 3 ก.ย. 2026 — เครื่องจริงตอนนี้คือ **`root@187.53.129.69`** (ไม่ใช่ 187.127.208.20 ด้านล่าง ซึ่งเข้าไม่ได้แล้ว)
+> - ssh key ของเครื่องนี้ (`~/.ssh/id_ed25519`) เข้าได้เลย ไม่ต้องรหัส · โฟลเดอร์ **`/opt/durango`** (ไม่ใช่ /root/durango)
+> - รันด้วย **systemd `durango.service`** (user `durango`, `ExecStop` = announce-restart.sh ประกาศในเกม 8 วิก่อนปิด)
+>   `systemctl stop|start|restart durango` · log = `journalctl -u durango -n 200 --no-pager`
+> - ไฟล์: `/opt/durango/linux-x64/` (binary) · `/opt/durango/admin/index.html` · `/opt/durango/data/` · `/opt/durango/saves/` · `/opt/durango/backups/`
+> - required client version อยู่ที่ `/opt/durango/data/mods/config/DurangoClientCore.json → RequiredVersionOfClient`
+> - terrain ri35te · 2 core · 8 GB · gateway 8190 game 8191 **แชท 8192** · ผู้เล่น 44 คน (3 ก.ย.)
+> - 3 ก.ย.: เพิ่ม `--radiotower` ใน ExecStart ของ durango.service (เดิมไม่มี → แชทไม่เคยใช้ได้บน VPS) · เครื่องนี้ไม่มี ufw
+> - ขั้นตอน deploy ที่ใช้จริง 3 ก.ย.: publish linux-x64 → tar → scp ไป `/opt/durango/incoming/<ver>/` →
+>   `systemctl stop durango` → สำรอง (`backups/before-<ver>-*.tar.gz`) → สลับ `linux-x64` → patch config ด้วย python3 → `chown -R durango:durango` → `systemctl start durango`
+>   (สคริปต์ `tools/deploy-vps.sh` เขียนไว้แต่ยังชี้ path เก่า — ใช้ขั้นตอนนี้แทน)
+
+
 > ⚠️ **กฎเหล็ก: มีผู้เล่นจริงอยู่บนเซิร์ฟนี้แล้ว — ห้ามอัป/รีสตาร์ทโดยไม่ถามเจ้าของก่อนทุกครั้ง**
 > ต้อง **เทสในเครื่อง local ก่อนเสมอ** (`dotnet run` ธรรมดา ดู `docs/server/BETA-OPS.md`) ยืนยันว่าใช้ได้แล้ว
 > ค่อยขออนุญาตอัปขึ้น VPS — แม้แค่ "รีสตาร์ท" (ไม่ใช่แก้โค้ด) ก็ทำให้คนที่กำลังเล่นอยู่หลุดชั่วครู่
@@ -67,7 +80,10 @@ dotnet publish -c Release -r linux-x64 --self-contained true -o "../publish/linu
 "$PLINK" ... "cd /root/durango/linux-x64 && nohup ./DurangoServer \
   --data /root/durango/data --saves /root/durango/saves \
   --public-host 187.127.208.20 --enable-cheat --name 'Durango VPS Test' \
-  --admin-token <TOKEN> > /root/durango/server.log 2>&1 & disown"
+  --radiotower --admin-token <TOKEN> > /root/durango/server.log 2>&1 & disown"
+#    --radiotower = เปิดพอร์ตแชท (พอร์ตเกม+1 = 8192) · ตรวจ session token แล้ว ปลอมชื่อไม่ได้ (M-5 แก้แล้ว)
+#    ⚠️ ต้อง `ufw allow 8192/tcp comment durango-radiotower` ก่อน ไม่งั้น client นอกเครื่องต่อไม่ถึง
+#    ⚠️ ตัวเกมจะต่อพอร์ตนี้ก็ต่อเมื่อ cluster_mode = Online — ดู docs/server/RadiotowerServer.md
 
 # 4) เช็คผล
 "$PLINK" ... "tail -20 /root/durango/server.log"
@@ -83,7 +99,7 @@ curl -s http://187.127.208.20:8190/entry     # ต้องได้ JSON กล
 8190/tcp   durango-gateway     (HTTP: /entry /knock /sessions /admin/* /assetbundles/*)
 8191/tcp   durango-game        (TCP เกมจริง)
 8191/udp   durango-knock       (server list broadcast)
-8192/tcp   durango-radiotower  (แชทส่วนตัว — ปิดอยู่ ไม่ได้เปิด --radiotower)
+8192/tcp   durango-radiotower  (แชทส่วนตัว — เปิดได้แล้ว ใส่ --radiotower ตอนรัน · ยังไม่เปิดใน ufw)
 ```
 เพิ่มด้วย `ufw allow <port>/<tcp|udp> comment durango-xxx` — **ใส่ comment `durango-` เสมอ** จะได้แยกจาก
 rule เดิมของ service อื่นบนเครื่องนี้ได้ง่าย (`ufw status | grep durango`)

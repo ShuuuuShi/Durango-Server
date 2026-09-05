@@ -12,6 +12,8 @@ public class AlarmMessageQueue : MonoBehaviour, AlarmRewardQueue.IMessageGroup
 		public string Text;
 
 		public float Duration;
+
+		public float Scale;
 	}
 
 	[SerializeField]
@@ -148,13 +150,13 @@ public class AlarmMessageQueue : MonoBehaviour, AlarmRewardQueue.IMessageGroup
 	private void AddMessage(MessageSet msg)
 	{
 		AlarmMessageWidget alarmMessageWidget = MsgLabel_Pop();
-		alarmMessageWidget.Set(msg.Key, msg.Text, msg.Duration);
+		alarmMessageWidget.Set(msg.Key, msg.Text, msg.Duration, msg.Scale <= 0f ? 1f : msg.Scale);
 		_msgLabels.Add(alarmMessageWidget);
 		RefreshPosition();
 	}
 
 	[ExposedInEditor(null)]
-	public void PushMessage(string key, string message, float duration)
+	public void PushMessage(string key, string message, float duration, float scale = 1f)
 	{
 		if (string.IsNullOrEmpty(message))
 		{
@@ -186,12 +188,13 @@ public class AlarmMessageQueue : MonoBehaviour, AlarmRewardQueue.IMessageGroup
 			item.Key = key;
 			item.Text = message;
 			item.Duration = duration;
+			item.Scale = scale;
 			_messageQueue.Enqueue(item);
 			base.enabled = true;
 		}
 		else
 		{
-			_msgLabels[num].Set(key, message, duration);
+			_msgLabels[num].Set(key, message, duration, scale <= 0f ? 1f : scale);
 			RefreshPosition();
 		}
 	}

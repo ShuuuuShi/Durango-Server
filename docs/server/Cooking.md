@@ -31,7 +31,9 @@
 
 ```bash
 cd "C:\Users\thana\Desktop\Durango Claude\server"
-python scripts/extract_recipe_meta.py "../game/DurangoV2_Data/resources.strings.txt" ServerCore/RecipeMeta.cs
+python scripts/extract_recipe_meta.py data/assets/item/recipes.json ServerCore/RecipeMeta.cs
+# (3 ก.ย. 2026: ใช้ recipes.json ที่ AssetRipper ถอดจาก client จริง — dump resources.strings.txt เป็นคนละรุ่น
+#  ทำให้ 25 สูตรหาย tag เครื่องมือทางเลือก "knife" เช่น cut_pillar ⇒ client ให้เลือกดาบหินได้แต่เซิร์ฟปฏิเสธ)
 python scripts/extract_food.py        "../game/DurangoV2_Data/resources.strings.txt" ServerCore/FoodData.cs
 python scripts/extract_item_names.py  "../game/DurangoV2_Data/resources.strings.txt" ServerCore/ItemNameData.cs
 ```

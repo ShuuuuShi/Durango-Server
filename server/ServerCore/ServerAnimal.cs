@@ -58,8 +58,23 @@ public sealed class ServerAnimal
 
     public float Yaw { get; private set; }
 
-    /// <summary>จุดที่เกิด — เดินไปไกลกว่า WanderRadius จากตรงนี้ไม่ได้</summary>
-    public WorldPosition Home { get; }
+    /// <summary>
+    /// จุดศูนย์กลางที่เดินสุ่มรอบ ๆ — เดินไปไกลกว่า WanderRadius จากตรงนี้ไม่ได้
+    /// [TodoList/08] สมาชิกฝูงใช้ "บ้านฝูง" ร่วมกัน และบ้านขยับได้ (ฝูงย้ายที่) จึงต้อง set ได้
+    /// </summary>
+    public WorldPosition Home { get; set; }
+
+    /// <summary>[TodoList/08] อยู่ฝูงไหน (0 = ตัวเดี่ยวจากตาราง Spawn แบบเดิม)</summary>
+    public int HerdId { get; set; }
+
+    /// <summary>[TodoList/08] สัตว์หาด — เดิน/เกิดบนทรายได้ (ฝูงกลุ่ม beach)</summary>
+    public bool BeachOk { get; set; }
+
+    /// <summary>[TodoList/08] ต้องอยู่ลึกจากฝั่งกี่ tile (-1 = คิดจาก size_level ตามเดิม)</summary>
+    public int MinInland { get; set; } = -1;
+
+    /// <summary>เวลาเกิดในโลก (Unix) — ใช้นับอายุ lifetime แล้ว despawn + เกิดใหม่</summary>
+    public double SpawnedAt { get; }
 
     public float LifeMax { get; }
     private float _life;
@@ -82,6 +97,7 @@ public sealed class ServerAnimal
         LifeMax = lifeMax;
         _life = lifeMax;
         _lifeAt = now;
+        SpawnedAt = now;
         NextMoveAt = now;
     }
 

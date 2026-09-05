@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -93,6 +93,18 @@ public class GameServer
         public string SkillsJson;
         public int SkillPoints;
         public string KnownSkillsJson;
+
+        // [3 ก.ย. 2026] ข้อมูล "เครื่อง" ของ client — ไว้ให้เซิร์ฟปรับสิ่งที่ส่งให้มือถือของแท้ (ดู ClientPlatform)
+        /// <summary>AssetBundlePlatform จาก /sessions หรือ /entry: "Android" / "WindowsPlayer"</summary>
+        public string Platform;
+        /// <summary>SystemInfo.operatingSystem จาก /sessions (os_version)</summary>
+        public string OsVersion;
+        /// <summary>APK build ชุดเรา จาก query build= (มือถือของแท้ล้วนไม่มี)</summary>
+        public string ClientBuild;
+        /// <summary>Auth.ClientVersion: "5.2.1" (ของแท้) / "CustomClient 0.1.4" (PC ชุดเรา)</summary>
+        public string ClientVersion;
+        /// <summary>Auth.DeviceModel</summary>
+        public string DeviceModel;
     }
 
     private readonly Dictionary<string, PlayerData> _playerData = new Dictionary<string, PlayerData>();
@@ -186,12 +198,55 @@ public class GameServer
         // token จริง — entity id ที่ client อ้างต้องเป็นของ session นี้เท่านั้น
         if (!string.IsNullOrEmpty(auth.EntityId) && auth.EntityId != session.EntityId)
         {
-            reason = $"token เป็นของ {session.EntityId} แต่อ้างเป็น {auth.EntityId}";
-            return false;
+            // 🐛 [แก้เอง] 30 ส.ค. 2026 — เส้นทาง "สร้างตัวละครใหม่" เด้งกลับหน้า Main ตรงนี้
+            //
+            // ลำดับที่เกิดจริง (ดูจาก log):
+            //   1. POST /sessions ตอนยังไม่มีตัวละคร ⇒ เซิร์ฟออก token ผูกกับ **id ชั่วคราวที่สุ่มขึ้นมา**
+            //   2. POST /players ⇒ สร้างตัวละครจริง ได้ id ใหม่คนละตัว
+            //   3. client ต่อ TCP โดยใช้ token เดิม (ของ id ชั่วคราว) แต่อ้างเป็นตัวละครใหม่
+            //   ⇒ ชนเงื่อนไขนี้ ถูกปฏิเสธ ⇒ เกมเด้งกลับหน้า Main แล้วหล่นไปโหมดออฟไลน์
+            //
+            // แก้: ถ้า session ปัจจุบันเป็น "ชั่วคราว" (id นั้นไม่มีไฟล์เซฟ = ยังไม่เคยเป็นตัวละครจริง)
+            // และตัวละครที่อ้างมา **มีเซฟอยู่จริง** ⇒ ให้ย้าย session ไปผูกกับตัวละครใหม่ได้
+            //
+            // ไม่ได้ลดความปลอดภัย: ยังกันการสวมสิทธิ์ตัวละครของคนอื่นอยู่ เพราะถ้า session เดิม
+            // ผูกกับตัวละครจริงอยู่แล้ว (มีเซฟ) จะไม่เข้าเงื่อนไขนี้ และยังถูกปฏิเสธเหมือนเดิม
+            bool sessionIsTemporary =
+                SaveStore.Peek<PlayerSave>(SaveStore.PlayerPath(session.EntityId)) == null;
+            bool claimedCharacterExists =
+                SaveStore.Peek<PlayerSave>(SaveStore.PlayerPath(auth.EntityId)) != null;
+
+            if (sessionIsTemporary && claimedCharacterExists)
+            {
+                Console.WriteLine($"[auth] ย้าย session ชั่วคราว {session.EntityId} " +
+                                  $"→ ตัวละครที่เพิ่งสร้าง {auth.EntityId}");
+                session.EntityId = auth.EntityId;
+                session.Data = null;   // ให้โหลดใหม่จากเซฟของตัวละครจริง
+            }
+            else
+            {
+                reason = $"token เป็นของ {session.EntityId} แต่อ้างเป็น {auth.EntityId}";
+                return false;
+            }
         }
         entityId = session.EntityId;
         data = session.Data ?? GetPlayerData(entityId);
         return true;
+    }
+
+    /// <summary>
+    /// [แก้เอง] 30 ส.ค. 2026 — สร้าง Abort ที่ **มีข้อความเสมอ**
+    ///
+    /// ทำไม: เดิมทุกที่ส่ง `Aborts.Reason()` ซึ่ง `Text` เป็น null ⇒ ฝั่ง client
+    /// `GameManager.DefaultAbortHandler` เรียก `LimitText(null)` แล้ว **NullReferenceException**
+    /// (เห็นจาก log จริง) ⇒ นอกจากผู้เล่นจะถูกเตะแล้ว ยังเจอ exception ซ้ำจนสถานะเกมเพี้ยน
+    /// ส่งข้อความว่าง ๆ ไปด้วยก็พอให้ client ไม่พัง และผู้เล่นเห็นเหตุผลด้วย
+    /// </summary>
+    private static Abort AbortWith(string text)
+    {
+        Abort a = default;
+        a.Text = text ?? "";
+        return a;
     }
 
     private readonly Listener _listener = new Listener();
@@ -204,11 +259,21 @@ public class GameServer
     // Connection 1 ตัวจองบัฟเฟอร์ ~4 MB **ตั้งแต่ตอน accept** (ก่อน Auth)
     // ถ้าไม่มีเพดาน/ไม่มี timeout แค่เปิด TCP ค้างไว้เฉย ๆ ก็ทำให้ RAM หมดได้
 
-    /// <summary>รับพร้อมกันได้กี่เส้น (ตั้งด้วย <c>--max-connections</c>)</summary>
-    public static int MaxConnections = 10;
+    /// <summary>รับพร้อมกันได้กี่เส้น (ตั้งด้วย <c>--max-connections</c>) · 3 ก.ย. 2026 เพดาน 10→50 ตามที่เจ้าของสั่ง</summary>
+    public static int MaxConnections = 50;
 
     /// <summary>จาก IP เดียวกันได้กี่เส้น (กันคนเดียวจองหมด)</summary>
     public static int MaxConnectionsPerIp = 4;
+
+    /// <summary>เพดานจริงที่ใช้ตอนนี้ — config (hot-reload) ชนะ flag/static · ไว้โชว์ "/max" บนหน้าเลือกเซิร์ฟ</summary>
+    public static int EffectiveMaxConnections
+    {
+        get
+        {
+            int cfg = ServerConfig.Current?.MaxOnlinePlayers ?? 0;
+            return cfg > 0 ? cfg : MaxConnections;
+        }
+    }
 
     /// <summary>ต่อเข้ามาแล้วต้อง Auth ภายในกี่วินาที</summary>
     private const double AuthDeadlineSeconds = 15.0;
@@ -238,6 +303,8 @@ public class GameServer
         public double AcceptedAt;
         public bool Authed;
         public bool ModHelloReceived;
+        /// <summary>client มี DurangoClientCore ไหม — ตัดสินว่ามันถือ chunk กว้างแค่ไหน</summary>
+        public bool ClientCoreMod;
         public bool PlayerCreated;
 
         // M-6: หน้าต่างนับ packet
@@ -306,9 +373,15 @@ public class GameServer
                 }
             }
         }
-        if (MaxConnections <= 0 || MaxConnectionsPerIp <= 0 || total >= MaxConnections || fromSameIp >= MaxConnectionsPerIp)
+        // [3 ก.ย. 2026] อ่านเพดานจาก config ก่อน (hot-reload แก้ config.json รอ 5 วิ มีผลทันที) —
+        //   config <= 0 ถึงจะ fallback ไปใช้ค่า static จาก flag --max-connections เดิม
+        int cfgMax = ServerConfig.Current?.MaxOnlinePlayers ?? 0;
+        int cfgPerIp = ServerConfig.Current?.MaxPlayersPerIp ?? 0;
+        int maxConn = cfgMax > 0 ? cfgMax : MaxConnections;
+        int maxPerIp = cfgPerIp > 0 ? cfgPerIp : MaxConnectionsPerIp;
+        if (maxConn <= 0 || maxPerIp <= 0 || total >= maxConn || fromSameIp >= maxPerIp)
         {
-            Console.WriteLine($"[gameserver] ปฏิเสธ {ip}: เต็มเพดาน (ทั้งหมด {total}/{MaxConnections}, จาก IP นี้ {fromSameIp}/{MaxConnectionsPerIp})");
+            Console.WriteLine($"[gameserver] ปฏิเสธ {ip}: เต็มเพดาน (ทั้งหมด {total}/{maxConn}, จาก IP นี้ {fromSameIp}/{maxPerIp})");
             try
             {
                 socket.Close();
@@ -348,7 +421,7 @@ public class GameServer
             if (!TryAuthorize(auth, out string authedId, out PlayerData data, out string reason))
             {
                 Console.WriteLine($"[auth] ปฏิเสธ {socket.RemoteEndPoint}: {reason} (อ้างเป็น {auth.EntityId})");
-                connection.Send(default(Abort), header.Seq);
+                connection.Send(AbortWith("การยืนยันตัวตนไม่ผ่าน: " + reason), header.Seq);
                 connection.Close();
                 return;
             }
@@ -356,19 +429,53 @@ public class GameServer
             if (state.Authed)
             {
                 Console.WriteLine($"[auth] {ip} ส่ง Auth ซ้ำบน connection เดิม — ปฏิเสธ");
-                connection.Send(default(Abort), header.Seq);
+                connection.Send(AbortWith("ส่ง Auth ซ้ำ"), header.Seq);
+                return;
+            }
+            // [4 ก.ย. 2026] คนที่ถูกระงับการเข้าเล่น — ตรวจหลัง TryAuthorize เพราะต้องได้ id จริง
+            // จาก session ก่อน (ก่อนหน้านี้ client อ้าง id อะไรมาก็ได้ จะแบนตามที่อ้างไม่ได้)
+            string banReason = BanList.CheckBanned(authedId, LookupName(authedId));
+            if (banReason != null)
+            {
+                Console.WriteLine($"[auth] ปฏิเสธ {ip}: {banReason} ({authedId})");
+                connection.Send(AbortWith(banReason), header.Seq);
+                connection.Close();
                 return;
             }
             state.Authed = true;
             entityId = authedId;
             authedData = data;
+            // [3 ก.ย. 2026] จำเวอร์ชัน/รุ่นเครื่องที่ client รายงานมาใน Auth — ใช้ตัดสินว่าเป็น client ชุดเรา
+            // หรือเกมของแท้ (มือถือ) ตอนส่งบรอดแคสต์/ข้อความระบบ (ดู ClientPlatform)
+            if (authedData != null)
+            {
+                authedData.ClientVersion = auth.ClientVersion ?? "";
+                authedData.DeviceModel = auth.DeviceModel ?? "";
+            }
             playerName = LookupName(entityId);
             SendWelcome(connection, entityId, playerName, header.Seq);
         });
         connection.Recv<ModHello>(delegate(ModHello hello, PacketHeader header)
         {
-            if (!state.Authed || state.PlayerCreated || state.ModHelloReceived || state.Rejected)
-            { connection.Send(default(Abort), header.Seq); return; }
+            // 🐛 [แก้เอง] 30 ส.ค. 2026 — **ต้นเหตุ "เข้าเกมแล้วเด้งกลับหน้า Main"**
+            //
+            // พอ client มี mod ติดตั้ง (ระบบ mod ใหม่ของเรา) มันจะส่ง ModHello = manifest รายชื่อ mod
+            // แต่บางเส้นทาง ModHello มาถึง **หลัง** Ready แล้ว (state.PlayerCreated เป็น true)
+            // ⇒ เดิมตรงนี้ยิง Abort กลับ ⇒ client เตะตัวเองออกจากโลกทั้งที่ join สำเร็จไปแล้ว
+            // (ซ้ำร้าย DefaultAbortHandler ฝั่ง client ยัง NRE เพราะ Abort.Text เป็น null — ดูด้านล่าง)
+            //
+            // ModHello ที่มาช้า/มาซ้ำ **ไม่ใช่เรื่องร้ายแรง** — แค่ข้อมูลประกอบ ไม่ต้องเตะผู้เล่นออก
+            // ⇒ เปลี่ยนเป็น log แล้วปล่อยผ่าน (ยังกันเฉพาะกรณีที่ยังไม่ auth / ถูกปฏิเสธไปแล้วจริง ๆ)
+            if (state.PlayerCreated || state.ModHelloReceived)
+            {
+                Console.WriteLine($"[mods] {ip} ส่ง ModHello ช้า/ซ้ำ (เข้าโลกไปแล้ว) — ข้าม ไม่เตะออก");
+                // มาช้าก็ยังต้องอ่านรายชื่อ mod: ระยะ chunk ที่ client ถือไว้ขึ้นกับ DurangoClientCore
+                // (ถ้าไม่อัปเดตตรงนี้ ผู้เล่นที่ ModHello มาหลัง Ready จะถูกมองว่าเป็น client เปล่า)
+                ApplyClientCoreMod(state, hello.ManifestJson, entityId);
+                return;
+            }
+            if (!state.Authed || state.Rejected)
+            { connection.Send(AbortWith("ยังไม่ผ่านการยืนยันตัวตน"), header.Seq); return; }
             IReadOnlyList<PluginManager.LoadedModInfo> mods = PluginManager.Instance?.Mods ?? Array.Empty<PluginManager.LoadedModInfo>();
             ModNegotiationResult result = ModNegotiation.Validate(hello.ManifestJson, hello.CatalogHash, mods, ModPolicy);
             if (!result.Accepted)
@@ -379,6 +486,7 @@ public class GameServer
                 connection.Send(error, header.Seq); connection.Close(); return;
             }
             state.ModHelloReceived = true;
+            ApplyClientCoreMod(state, hello.ManifestJson, entityId);
         });
         connection.Recv<Ready>(delegate(Ready ready, PacketHeader header)
         {
@@ -397,7 +505,7 @@ public class GameServer
             if (state.PlayerCreated)
             {
                 Console.WriteLine($"[gameserver] {playerName} ส่ง Ready ซ้ำ — ปฏิเสธ");
-                connection.Send(default(Abort), header.Seq);
+                connection.Send(AbortWith("ส่ง Ready ซ้ำ"), header.Seq);
                 return;
             }
             state.PlayerCreated = true;
@@ -415,6 +523,11 @@ public class GameServer
             // GP-12: ใช้ข้อมูลที่ผูกมากับ token ไม่ใช่ค้นจาก entity id ที่ client อ้าง
             PlayerData data = authedData ?? GetPlayerData(entityId);
             ServerPlayer player = new ServerPlayer(entityId, playerName, connection, _world, data);
+            player.HasClientCoreMod = state.ClientCoreMod;
+            // [3 ก.ย. 2026] platform/build อาจถูกจดไว้คนละ PlayerData กับที่ผูก token (ตัวละครใหม่:
+            // /sessions ออก token ให้ id ชั่วคราว → /players ได้ id จริง → /entry จด platform ที่ id จริง)
+            // ⇒ รวมจากทั้งสองแหล่ง เอาค่าที่ไม่ว่างก่อน
+            ApplyClientInfo(player, authedData, GetPlayerData(entityId));
             player.RegisterHandlers();
             player.SendSpawnBurst();
             _world.AddPlayer(player);
@@ -439,6 +552,27 @@ public class GameServer
         connection.StartReceive();
         Console.WriteLine($"[gameserver] client connected from {socket.RemoteEndPoint}");
     }
+
+    /// <summary>
+    /// จำไว้ว่า client เครื่องนี้มี <c>DurangoClientCore</c> ไหม แล้วบอกผู้เล่นที่อยู่ในโลกด้วย
+    ///
+    /// มอดตัวนี้ขยาย <c>TerrainBase.ChunkPool</c> เป็น <c>world_chunk_range</c> ตอน runtime
+    /// ⇒ client ที่มีมอด **ถือ chunk ไว้กว้าง** ส่วน client เปล่าถือแค่ระยะ 1 ตาม retail
+    /// เซิร์ฟต้องรู้ให้ตรง ไม่งั้นจะส่งซ้ำเกินจำเป็น (กระตุก) หรือส่งขาด (โลกไม่โหลด)
+    /// </summary>
+    private void ApplyClientCoreMod(ConnState state, string? manifestJson, string? entityId)
+    {
+        bool has = ModNegotiation.HasMod(manifestJson, ClientCoreModId);
+        state.ClientCoreMod = has;
+        if (!string.IsNullOrEmpty(entityId))
+        {
+            ServerPlayer? player = _world.FindPlayer(entityId);
+            if (player != null) { player.HasClientCoreMod = has; }
+        }
+    }
+
+    /// <summary>id ของ client mod ที่ขยาย chunk pool (ดู tools/OnlineModeMod ? ApplyWorldChunkRange)</summary>
+    private const string ClientCoreModId = "DurangoClientCore";
 
     private string LookupName(string entityId)
     {
@@ -472,6 +606,80 @@ public class GameServer
         }
     }
 
+    /// <summary>
+    /// [3 ก.ย. 2026] จด platform / APK build ที่ client บอกมาทาง GET /entry (query platform=, build=)
+    /// ไว้กับ entity id นั้น — ServerPlayer หยิบไปตอนสร้าง (ApplyClientInfo) เพื่อรู้ว่าเป็นมือถือไหม
+    /// </summary>
+    public void RegisterClientInfo(string entityId, string platform, string build)
+    {
+        if (string.IsNullOrEmpty(entityId)) return;
+        lock (_playerDataLock)
+        {
+            if (!_playerData.TryGetValue(entityId, out PlayerData data))
+            {
+                data = new PlayerData { EntityId = entityId, Name = "" };
+                _playerData[entityId] = data;
+            }
+            if (!string.IsNullOrEmpty(platform)) data.Platform = platform;
+            if (!string.IsNullOrEmpty(build)) data.ClientBuild = build;
+        }
+    }
+
+    private static void ApplyClientInfo(ServerPlayer player, PlayerData a, PlayerData b)
+    {
+        static string Pick(string x, string y) => !string.IsNullOrEmpty(x) ? x : (y ?? "");
+        player.Platform = Pick(a?.Platform, b?.Platform);
+        player.OsVersion = Pick(a?.OsVersion, b?.OsVersion);
+        player.ClientBuild = Pick(a?.ClientBuild, b?.ClientBuild);
+        player.ClientVersion = Pick(a?.ClientVersion, b?.ClientVersion);
+        player.DeviceModel = Pick(a?.DeviceModel, b?.DeviceModel);
+    }
+
+    /// <summary>
+    /// M-5: ตรวจ session token ให้ <see cref="RadiotowerServer"/> — พอร์ตแชทเดิมไม่มี auth เลย
+    /// ใครต่อเข้ามาก็ประกาศตัวเป็นใครก็ได้ ตอนนี้ Tune ต้องยื่น token ที่ /sessions ออกให้เหมือน Auth
+    /// (ไม่ผูกกับ ServerPlayer เพราะแชทต่อได้ก่อน/หลังตัวละครเข้าโลก)
+    /// </summary>
+    public bool TryAuthorizeChat(string sessionToken, string claimedEntityId, out string entityId, out string name)
+    {
+        entityId = null;
+        name = null;
+
+        Session session = null;
+        if (!string.IsNullOrEmpty(sessionToken))
+        {
+            lock (_sessionLock)
+            {
+                if (_sessions.TryGetValue(sessionToken, out Session s)
+                    && Times.UnixTimeNow() - s.IssuedAt <= SessionTtlSeconds)
+                {
+                    session = s;
+                }
+            }
+        }
+
+        if (session == null)
+        {
+            if (RequireSessionToken)
+            {
+                return false;
+            }
+            // โหมด --insecure-auth เท่านั้น: กลับไปเชื่อ entity id ที่ส่งมา
+            entityId = string.IsNullOrEmpty(claimedEntityId) ? Guid.NewGuid().ToString() : claimedEntityId;
+            name = GetPlayerData(entityId)?.Name ?? entityId;
+            return true;
+        }
+
+        // token จริง — ห้ามอ้างเป็นตัวละครอื่น (เหมือน TryAuthorize ของ Auth)
+        if (!string.IsNullOrEmpty(claimedEntityId) && claimedEntityId != session.EntityId)
+        {
+            return false;
+        }
+        entityId = session.EntityId;
+        name = (session.Data ?? GetPlayerData(entityId))?.Name ?? entityId;
+        return true;
+    }
+
     private void SendWelcome(Durango.Offline.Connection connection, string entityId, string name, uint seq)
     {
         Welcome msg = default;
@@ -481,15 +689,44 @@ public class GameServer
         {
             Id = "1",
             TerrainId = "1",
-            TemplateId = _world.Terrain.Info.region_template,
+            // [4 ก.ย. 2026] override เลเวลเกาะที่โชว์ให้ client (config RegionTemplateId) — เกาะเริ่มต้น Lv10
+            TemplateId = string.IsNullOrWhiteSpace(ServerConfig.Current.RegionTemplateId)
+                ? _world.Terrain.Info.region_template
+                : ServerConfig.Current.RegionTemplateId.Trim(),
             Role = RegionRole,
             Name = _world.ServerName,
             CreatedAt = 0.0
         };
-        msg.Storage = new Storage
+        // [แก้เอง] 31 ส.ค. 2026 — เดิมส่ง dictionary ว่างเสมอ ⇒ ทุกอย่างที่ client สั่งเก็บผ่าน
+        // SetStorageItem หายหมดทุกครั้งที่ล็อกอิน (สารานุกรม จุดแดงเมนูใหม่ ความคืบหน้าคู่มือ ฯลฯ)
+        // ทำตาม reference ของตัวเกม (client/Durango.Offline/Player.cs:516 + PlayerContext.Storage)
+        //
+        // อ่านจากไฟล์เซฟตรง ๆ เพราะ Welcome ถูกส่งตอน Auth ซึ่งยังไม่ได้สร้าง ServerPlayer
+        // (Peek = อ่านอย่างเดียว ไม่ยึดไฟล์ ไม่กระทบตัวที่กำลังเล่นอยู่)
+        Dictionary<string, byte[]> storage = new Dictionary<string, byte[]>();
+        try
         {
-            Data = new Dictionary<string, byte[]>()
-        };
+            PlayerSave save = SaveStore.Peek<PlayerSave>(SaveStore.PlayerPath(entityId));
+            if (save?.ClientStorage != null)
+            {
+                foreach (KeyValuePair<string, string> pair in save.ClientStorage)
+                {
+                    try
+                    {
+                        storage[pair.Key] = Convert.FromBase64String(pair.Value ?? "");
+                    }
+                    catch (FormatException)
+                    {
+                        // ค่าเสียก็ข้ามไป อย่าให้ล็อกอินพังเพราะ key เดียว
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[storage] อ่านของเก่าของ {entityId} ไม่ได้: {ex.Message}");
+        }
+        msg.Storage = new Storage { Data = storage };
         msg.Options = new Options
         {
             Bool = new[]

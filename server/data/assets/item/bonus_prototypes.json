@@ -1,0 +1,601 @@
+{
+  "exp_jelly": [
+    {
+      "rate": 0.2,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "exp_jelly_02"
+        }
+      ]
+    },
+    {
+      "rate": 0.2,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "exp_jelly_01"
+        },
+        {
+          "count": 1,
+          "prototype_id": "exp_gelatine"
+        }
+      ]
+    },
+    {
+      "rate": 0.2,
+      "prototypes": [
+        {
+          "count": 2,
+          "prototype_id": "exp_jelly_01"
+        },
+        {
+          "count": 1,
+          "prototype_id": "exp_gelatine"
+        }
+      ]
+    },
+    {
+      "rate": 0.2,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "exp_gelatine"
+        }
+      ]
+    },
+    {
+      "rate": 0.2,
+      "prototypes": [
+        {
+          "count": 2,
+          "prototype_id": "exp_gelatine"
+        }
+      ]
+    }
+  ],
+  "restore_volc_blueprint": [
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_road5_granite"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_gate3"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_fence3"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_statue_02_a"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_table_04"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_chair_03"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_bench_02"
+        }
+      ]
+    },
+    {
+      "rate": 0.075,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_farm_tile_03"
+        }
+      ]
+    },
+    {
+      "rate": 0.075,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_farm_tile_04"
+        }
+      ]
+    },
+    {
+      "rate": 0.05,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_bed_04"
+        }
+      ]
+    },
+    {
+      "rate": 0.05,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_shelf_02"
+        }
+      ]
+    },
+    {
+      "rate": 0.02,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_kiln_04"
+        }
+      ]
+    },
+    {
+      "rate": 0.02,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_kitchen_table_05"
+        }
+      ]
+    },
+    {
+      "rate": 0.01,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_box_04"
+        }
+      ]
+    },
+    {
+      "rate": 0.001,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_rug_andrew"
+        }
+      ]
+    }
+  ],
+  "breaking_solid_lava": [
+    {
+      "rate": 8.0,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "lava"
+        }
+      ]
+    },
+    {
+      "rate": 24.0,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "clay_gray"
+        }
+      ]
+    },
+    {
+      "rate": 4.0,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "wood_log"
+        }
+      ]
+    },
+    {
+      "rate": 3.0,
+      "prototypes": [
+        {
+          "count": 2,
+          "prototype_id": "bone_leg"
+        }
+      ]
+    },
+    {
+      "rate": 3.0,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "sulphur"
+        }
+      ]
+    },
+    {
+      "rate": 1.0,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "charcoal"
+        }
+      ]
+    },
+    {
+      "rate": 0.5,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_statue_02_a"
+        }
+      ]
+    },
+    {
+      "rate": 0.5,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_statue_02_b"
+        }
+      ]
+    },
+    {
+      "rate": 0.2,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_statue_02_c"
+        }
+      ]
+    },
+    {
+      "rate": 0.2,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "blueprint_statue_02_d"
+        }
+      ]
+    },
+    {
+      "rate": 0.8,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "bag_metal_bucket"
+        }
+      ]
+    },
+    {
+      "rate": 0.2,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "capsulated_chair_01_army"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "bone_head_big"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "bone_leg_thick"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 2,
+          "prototype_id": "bone_rib"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "bone_board"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "bone_ivory"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "leather_raw_armored"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "tire"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 2,
+          "prototype_id": "glass_piece"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 2,
+          "prototype_id": "fabric_plastic"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 4,
+          "prototype_id": "wood_bough"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "pearl"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "bacchus"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "bluebull"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "axe_onehand_emergency"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "signpole_twohand_01"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "signpole_twohand_02"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "capsulated_barrel_01_army_fire"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "capsulated_barrel_01_army"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "ore_copper"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "ore_zinc"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "ore_tin"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "ore_iron"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "ore_gold"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "ore_silver"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "ore_lead"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "ore_iron_black"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "crab_shell"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "sword_onehand_katana"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "chainsaw_twohand"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "capsulated_box_02_army"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "capsulated_box_01_army"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "capsulated_medicinebox_01_army"
+        }
+      ]
+    },
+    {
+      "rate": 0.1,
+      "prototypes": [
+        {
+          "count": 1,
+          "prototype_id": "capsulated_medicinebox_02_army"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "reform_scales": {
+    "r_piece": 20,
+    "tags": {
+      "reform_defense_incr": {
+        "max_level": 10,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_lightening": {
+    "r_piece": 20,
+    "tags": {
+      "reform_heat_resistant": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_clothover": {
+    "r_piece": 20,
+    "tags": {
+      "reform_cold_resistant": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_suncover": {
+    "r_piece": 20,
+    "tags": {
+      "reform_scorching_sun_resistant": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_breathability": {
+    "r_piece": 20,
+    "tags": {
+      "reform_humid_resistant": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_windbreak": {
+    "r_piece": 20,
+    "tags": {
+      "reform_gale_resistant": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_lightening_t2": {
+    "r_piece": 20,
+    "tags": {
+      "reform_max_energy_decr": {
+        "max_level": 8,
+        "min_level": 1,
+        "prob_table": "negative"
+      },
+      "reform_heat_resistant": {
+        "max_level": 25,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_clothover_t2": {
+    "r_piece": 20,
+    "tags": {
+      "reform_max_energy_decr": {
+        "max_level": 8,
+        "min_level": 1,
+        "prob_table": "negative"
+      },
+      "reform_cold_resistant": {
+        "max_level": 25,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_suncover_t2": {
+    "r_piece": 20,
+    "tags": {
+      "reform_max_energy_decr": {
+        "max_level": 8,
+        "min_level": 1,
+        "prob_table": "negative"
+      },
+      "reform_scorching_sun_resistant": {
+        "max_level": 25,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_breathability_t2": {
+    "r_piece": 20,
+    "tags": {
+      "reform_max_energy_decr": {
+        "max_level": 8,
+        "min_level": 1,
+        "prob_table": "negative"
+      },
+      "reform_humid_resistant": {
+        "max_level": 25,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_windbreak_t2": {
+    "r_piece": 20,
+    "tags": {
+      "reform_gale_resistant": {
+        "max_level": 25,
+        "min_level": 1,
+        "prob_table": "positive"
+      },
+      "reform_max_energy_decr": {
+        "max_level": 8,
+        "min_level": 1,
+        "prob_table": "negative"
+      }
+    }
+  },
+  "reform_pocket": {
+    "r_piece": 20,
+    "tags": {
+      "reform_pocket": {
+        "max_level": 10,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_pocket_t2": {
+    "r_piece": 20,
+    "tags": {
+      "reform_pocket": {
+        "max_level": 20,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_armorcrafting": {
+    "r_piece": 20,
+    "tags": {
+      "reform_armorcraft_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      },
+      "reform_tailor_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      },
+      "reform_max_energy_decr": {
+        "max_level": 12,
+        "min_level": 1,
+        "prob_table": "negative"
+      }
+    }
+  },
+  "reform_constructing": {
+    "r_piece": 20,
+    "tags": {
+      "reform_construction_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      },
+      "reform_max_energy_decr": {
+        "max_level": 12,
+        "min_level": 1,
+        "prob_table": "negative"
+      },
+      "reform_furnishing_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_process": {
+    "r_piece": 20,
+    "tags": {
+      "reform_max_energy_decr": {
+        "max_level": 12,
+        "min_level": 1,
+        "prob_table": "negative"
+      },
+      "reform_handicraft_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      },
+      "reform_smith_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_weaponcrafting": {
+    "r_piece": 20,
+    "tags": {
+      "reform_weaponcraft_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      },
+      "reform_max_energy_decr": {
+        "max_level": 12,
+        "min_level": 1,
+        "prob_table": "negative"
+      }
+    }
+  },
+  "reform_cooking_farming": {
+    "r_piece": 20,
+    "tags": {
+      "reform_max_energy_decr": {
+        "max_level": 12,
+        "min_level": 1,
+        "prob_table": "negative"
+      },
+      "reform_cook_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      },
+      "reform_farming_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_gathering": {
+    "r_piece": 20,
+    "tags": {
+      "reform_max_energy_decr": {
+        "max_level": 12,
+        "min_level": 1,
+        "prob_table": "negative"
+      },
+      "reform_all_gathering_ability_incr": {
+        "max_level": 15,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_protect_heat": {
+    "r_piece": 20,
+    "tags": {
+      "reform_max_energy_decr": {
+        "max_level": 8,
+        "min_level": 1,
+        "prob_table": "negative"
+      },
+      "reform_volcanic_heat_resistant": {
+        "max_level": 25,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_nail": {
+    "r_piece": 20,
+    "tags": {
+      "reform_attack_incr": {
+        "max_level": 35,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  },
+  "reform_temper": {
+    "r_piece": 20,
+    "tags": {
+      "reform_attack_rating_incr": {
+        "max_level": 10,
+        "min_level": 1,
+        "prob_table": "positive"
+      },
+      "reform_attack_incr": {
+        "max_level": 25,
+        "min_level": 1,
+        "prob_table": "positive"
+      }
+    }
+  }
+}

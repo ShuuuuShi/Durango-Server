@@ -1,0 +1,500 @@
+{
+  "shop_ui_categories": [
+    {
+      "commodities": [
+        {
+          "tag": 1
+        }
+      ],
+      "view_type": "Large",
+      "name": {
+        "추천 상품": null
+      },
+      "show_promotion": true
+    },
+    {
+      "view_type": "Small",
+      "childs": [
+        {
+          "commodities": [
+            {
+              "type": 0
+            }
+          ],
+          "view_type": "Small",
+          "name": {
+            "듀랑고 코인": null
+          },
+          "key": "durangoCoin",
+          "show_promotion": false
+        },
+        {
+          "commodities": [
+            {
+              "type": 1
+            }
+          ],
+          "view_type": "Small",
+          "name": {
+            "워프젬": null
+          },
+          "key": "gem",
+          "show_promotion": false
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "r_piece",
+              "type": 12
+            }
+          ],
+          "view_type": "Large",
+          "name": {
+            "난수조각": null
+          },
+          "key": "r_piece",
+          "show_promotion": false
+        }
+      ],
+      "name": {
+        "충전": null
+      },
+      "key": "Charge",
+      "show_promotion": false
+    },
+    {
+      "view_type": "Large",
+      "childs": [
+        {
+          "commodities": [
+            {
+              "ui_category": "contents_artifacts",
+              "type": 2
+            }
+          ],
+          "view_type": "Large",
+          "name": {
+            "건축물": null
+          },
+          "key": "contents_artifacts",
+          "show_promotion": false
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "contents_fashion",
+              "type": 2
+            }
+          ],
+          "view_type": "Large",
+          "name": {
+            "패션": null
+          },
+          "key": "contents_fashion",
+          "show_promotion": false
+        },
+        {
+          "commodities": [
+            {
+              "type": 11
+            },
+            {
+              "ui_category": "growth"
+            },
+            {
+              "commodity_ids": [
+                "test_growth_package"
+              ]
+            }
+          ],
+          "view_type": "Large",
+          "name": {
+            "성장": null
+          },
+          "key": "growth",
+          "show_promotion": false
+        },
+        {
+          "commodities": [
+            {
+              "type": 8
+            },
+            {
+              "type": 9
+            },
+            {
+              "type": 10
+            },
+            {
+              "type": 14
+            }
+          ],
+          "view_type": "Large",
+          "name": {
+            "확장": null
+          },
+          "key": "slot",
+          "show_promotion": false
+        }
+      ],
+      "name": {
+        "패키지": null
+      },
+      "key": "Package",
+      "show_promotion": false
+    },
+    {
+      "commodities": [
+        {
+          "ui_category": "pet",
+          "type": 2
+        }
+      ],
+      "view_type": "ModelView",
+      "name": {
+        "동물": null
+      },
+      "key": "Animal",
+      "show_promotion": false
+    },
+    {
+      "childs": [
+        {
+          "commodities": [
+            {
+              "ui_category": "character",
+              "type": 7
+            },
+            {
+              "ui_category": "character",
+              "type": 13
+            }
+          ],
+          "view_type": "Small",
+          "name": {
+            "캐릭터": null
+          },
+          "key": "character",
+          "show_promotion": false
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "pet",
+              "type": 7
+            },
+            {
+              "commodity_ids": [
+                "test_voucher_revert_rank"
+              ]
+            }
+          ],
+          "view_type": "Small",
+          "name": {
+            "동물": null
+          },
+          "key": "petitem",
+          "show_promotion": false
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "clan",
+              "type": 7
+            }
+          ],
+          "view_type": "Small",
+          "name": {
+            "부족": null
+          },
+          "key": "clan",
+          "show_promotion": false
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "warprush",
+              "type": 13
+            },
+            {
+              "ui_category": "warprush",
+              "type": 11
+            }
+          ],
+          "view_type": "Small",
+          "name": {
+            "워프러시": null
+          },
+          "key": "warprush",
+          "show_promotion": false
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "warp_matter",
+              "type": 7
+            },
+            {
+              "ui_category": "warp_matter",
+              "type": 12
+            },
+            {
+              "ui_category": "warp_matter",
+              "type": 13
+            }
+          ],
+          "view_type": "Small",
+          "name": {
+            "워프물질": null
+          },
+          "key": "warp_matter",
+          "show_promotion": false
+        }
+      ],
+      "name": {
+        "아이템": null
+      },
+      "view_type": "Small",
+      "commodities": [
+        {
+          "type": 7
+        },
+        {
+          "type": 13
+        },
+        {
+          "type": 11
+        },
+        {
+          "type": 12
+        }
+      ],
+      "key": "Item",
+      "show_promotion": false
+    },
+    {
+      "view_type": "Modular",
+      "childs": [
+        {
+          "commodities": [
+            {
+              "ui_category": "modular/basic01"
+            }
+          ],
+          "name": {
+            "야생의 벽집": null
+          },
+          "icon": "cashshop_modular_01"
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "modular/basic02"
+            }
+          ],
+          "name": {
+            "보누사우루스 벽집": null
+          },
+          "icon": "cashshop_modular_02"
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "modular/basic03"
+            }
+          ],
+          "name": {
+            "세련된 벽집": null
+          },
+          "icon": "cashshop_modular_03"
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "modular/special01"
+            }
+          ],
+          "name": {
+            "깊은 바다 벽집": null
+          },
+          "icon": "cashshop_modular_04"
+        },
+        {
+          "commodities": [
+            {
+              "ui_category": "modular/special02"
+            }
+          ],
+          "name": {
+            "타르탄 벽집": null
+          },
+          "key": "modularspecial02",
+          "icon": "cashshop_modular_05"
+        }
+      ],
+      "name": {
+        "벽집": null
+      },
+      "key": "Modular",
+      "show_promotion": false
+    },
+    {
+      "childs": [
+        {
+          "name": {
+            "이벤트": null
+          },
+          "view_type": "RandomBox",
+          "commodities": [
+            {
+              "ui_category": "specialpack"
+            }
+          ],
+          "key": "specialrandom",
+          "show_promotion": false,
+          "icon": "cashshop_randombox_special"
+        },
+        {
+          "name": {
+            "외형장비": null
+          },
+          "view_type": "RandomBox",
+          "commodities": [
+            {
+              "ui_category": "avatar"
+            }
+          ],
+          "key": "avatarrandom",
+          "show_promotion": false,
+          "icon": "cashshop_randombox_avatar"
+        },
+        {
+          "name": {
+            "패션": null
+          },
+          "view_type": "RandomBox",
+          "commodities": [
+            {
+              "ui_category": "fashion"
+            }
+          ],
+          "key": "fashionrandom",
+          "show_promotion": false,
+          "icon": "cashshop_randombox_fashion"
+        },
+        {
+          "name": {
+            "가구": null
+          },
+          "view_type": "RandomBox",
+          "commodities": [
+            {
+              "ui_category": "artifact"
+            }
+          ],
+          "key": "artifactrandom",
+          "show_promotion": false,
+          "icon": "cashshop_randombox_artifact"
+        },
+        {
+          "name": {
+            "감정표현": null
+          },
+          "view_type": "RandomBox",
+          "commodities": [
+            {
+              "ui_category": "emotion"
+            }
+          ],
+          "key": "emotionrandom",
+          "show_promotion": false,
+          "icon": "cashshop_randombox_emotion"
+        },
+        {
+          "name": {
+            "염색약": null
+          },
+          "view_type": "RandomBox",
+          "commodities": [
+            {
+              "ui_category": "dye"
+            }
+          ],
+          "key": "dyerandom",
+          "show_promotion": false,
+          "icon": "cashshop_randombox_dye"
+        }
+      ],
+      "name": {
+        "특송 화물": null
+      },
+      "view_type": "RandomBox",
+      "commodities": [
+        {
+          "type": 4
+        },
+        {
+          "type": 5
+        },
+        {
+          "type": 6
+        }
+      ],
+      "key": "RandomBox",
+      "show_promotion": false
+    },
+    {
+      "commodities": [
+        {
+          "ui_category": "mileage",
+          "type": 7
+        }
+      ],
+      "view_type": "Small",
+      "name": {
+        "마일리지샵": null
+      },
+      "key": "Mileage",
+      "show_promotion": false
+    }
+  ],
+  "shop_ui_options": {
+    "show_dyeable": {
+      "item_category": [
+        "clothing",
+        "accessory"
+      ]
+    },
+    "show_tradable": {
+      "item_category": [
+        "clothing",
+        "accessory",
+        "weapon/tool",
+        "material",
+        "building/furniture"
+      ]
+    },
+    "show_avatar": {
+      "item_category": [
+        "clothing",
+        "accessory"
+      ]
+    },
+    "show_repairable": {
+      "item_category": [
+        "clothing",
+        "accessory",
+        "weapon/tool"
+      ]
+    },
+    "show_dumpable": {
+      "item_category": [
+        "clothing",
+        "accessory",
+        "weapon/tool",
+        "material",
+        "building/furniture"
+      ]
+    }
+  }
+}

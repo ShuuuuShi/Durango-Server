@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "generatedAt": "deterministic-from-source",
-  "generatedMessageCount": 985,
-  "inboundRegistrationCount": 225,
+  "generatedMessageCount": 989,
+  "inboundRegistrationCount": 246,
   "rows": [
     {
       "request": "Abort",
@@ -971,12 +971,6 @@
       "status": "protocol-only/unowned"
     },
     {
-      "request": "Dashed",
-      "typeCode": 2491,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
       "request": "DefensiveState",
       "typeCode": null,
       "generatedMessage": true,
@@ -997,12 +991,6 @@
     {
       "request": "DeodorantItem",
       "typeCode": 55555,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "Depart",
-      "typeCode": 2448,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -1163,12 +1151,6 @@
       "status": "protocol-only/unowned"
     },
     {
-      "request": "EngagementAgreementChanged",
-      "typeCode": 1444250,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
       "request": "EntityDied",
       "typeCode": 119,
       "generatedMessage": true,
@@ -1243,12 +1225,6 @@
     {
       "request": "EstateLicenses",
       "typeCode": 3821,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "EstimateCraft",
-      "typeCode": 7,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -1475,20 +1451,8 @@
       "status": "protocol-only/unowned"
     },
     {
-      "request": "GetAdvisorTargets",
-      "typeCode": 3708,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
       "request": "GetAppliers",
       "typeCode": 3682,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "GetAttachableAccessories",
-      "typeCode": 9823457,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -1535,20 +1499,8 @@
       "status": "protocol-only/unowned"
     },
     {
-      "request": "GetDefoggedChunks",
-      "typeCode": 204,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
       "request": "GetDiscoverDistances",
       "typeCode": 2310,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "GetDiscoveryInfo",
-      "typeCode": 5000,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -1589,32 +1541,8 @@
       "status": "protocol-only/unowned"
     },
     {
-      "request": "GetMemos",
-      "typeCode": 2439,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "GetNomadInfo",
-      "typeCode": 100000,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "GetPersonalRegionInfo",
-      "typeCode": 20420,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
       "request": "GetPetInventory",
       "typeCode": 49823,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "GetPioneerGradeInfo",
-      "typeCode": 812234574,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -1681,12 +1609,6 @@
     {
       "request": "GetRepairImmediateCost",
       "typeCode": 417980,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "GetReturnerInfo",
-      "typeCode": 3450983,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -1939,6 +1861,12 @@
     {
       "request": "InvestToCrack",
       "typeCode": 3663,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
+      "request": "IslandTravelOptions",
+      "typeCode": 2131,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -2231,6 +2159,12 @@
       "status": "protocol-only/unowned"
     },
     {
+      "request": "ModHello",
+      "typeCode": 2000000002,
+      "generatedMessage": true,
+      "status": "protocol-only/unowned"
+    },
+    {
       "request": "MonitorOffer",
       "typeCode": 3504,
       "generatedMessage": true,
@@ -2425,12 +2359,6 @@
     {
       "request": "ParticipateTutorialBoat",
       "typeCode": 2303,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "ParticleEffect",
-      "typeCode": 503,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -3701,12 +3629,6 @@
       "status": "protocol-only/unowned"
     },
     {
-      "request": "SetPersonalRegionAdmission",
-      "typeCode": 20423,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
       "request": "SetRecipeLike",
       "typeCode": 3800,
       "generatedMessage": true,
@@ -3715,12 +3637,6 @@
     {
       "request": "SetResurrectionRewards",
       "typeCode": 133,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "SetReturningPoint",
-      "typeCode": 2105,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -3745,12 +3661,6 @@
     {
       "request": "SetSocialOptions",
       "typeCode": 24002,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
-      "request": "SetStorageItem",
-      "typeCode": 2302,
       "generatedMessage": true,
       "status": "protocol-only/unowned"
     },
@@ -4265,12 +4175,6 @@
       "status": "protocol-only/unowned"
     },
     {
-      "request": "TravelByRegion",
-      "typeCode": 2029,
-      "generatedMessage": true,
-      "status": "protocol-only/unowned"
-    },
-    {
       "request": "TravelByRegionInArchipelago",
       "typeCode": 2054,
       "generatedMessage": true,
@@ -4594,7 +4498,7 @@
     {
       "request": "AcceptMilestone",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 162,
+      "line": 161,
       "handler": "HandleAcceptMilestone)",
       "status": "registered",
       "typeCode": 800015,
@@ -4603,7 +4507,7 @@
     {
       "request": "AcceptMission",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 327,
+      "line": 339,
       "handler": "HandleAcceptMission)",
       "status": "registered",
       "typeCode": 3623,
@@ -4621,7 +4525,7 @@
     {
       "request": "ActivateCargoReceiver",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 432,
+      "line": 442,
       "handler": "HandleActivateCargoReceiver)",
       "status": "registered",
       "typeCode": 3811,
@@ -4630,7 +4534,7 @@
     {
       "request": "ActivateFaction",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 272,
+      "line": 269,
       "handler": "HandleActivateFaction)",
       "status": "registered",
       "typeCode": 3610,
@@ -4646,6 +4550,15 @@
       "generatedMessage": true
     },
     {
+      "request": "AnimalLoadFailed",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 449,
+      "handler": "HandleAnimalLoadFailed)",
+      "status": "registered",
+      "typeCode": 2000000003,
+      "generatedMessage": true
+    },
+    {
       "request": "ApproveClanApplier",
       "file": "server/ServerCore/ServerPlayer.Clan.cs",
       "line": 55,
@@ -4657,7 +4570,7 @@
     {
       "request": "AttachAccessory",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 464,
+      "line": 509,
       "handler": "HandleAttachAccessory)",
       "status": "registered",
       "typeCode": 9823459,
@@ -4666,7 +4579,7 @@
     {
       "request": "Bleach",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 710,
+      "line": 713,
       "handler": "HandleBleach)",
       "status": "registered",
       "typeCode": 3669,
@@ -4684,7 +4597,7 @@
     {
       "request": "BuildArtifact",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 601,
+      "line": 689,
       "handler": "HandleBuildArtifact)",
       "status": "registered",
       "typeCode": 2090,
@@ -4702,7 +4615,7 @@
     {
       "request": "CancelDomestication",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 153,
+      "line": 152,
       "handler": "HandleCancelDomestication)",
       "status": "registered",
       "typeCode": 694354,
@@ -4720,7 +4633,7 @@
     {
       "request": "CancelMission",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 328,
+      "line": 340,
       "handler": "HandleCancelMission)",
       "status": "registered",
       "typeCode": 3624,
@@ -4729,7 +4642,7 @@
     {
       "request": "CancelSkillCategoryResearch",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 431,
+      "line": 473,
       "handler": "HandleCancelSkillCategoryResearch)",
       "status": "registered",
       "typeCode": 36431,
@@ -4738,7 +4651,7 @@
     {
       "request": "ChangeEquipSlotType",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 463,
+      "line": 508,
       "handler": "HandleChangeEquipSlotType)",
       "status": "registered",
       "typeCode": 81534,
@@ -4747,7 +4660,7 @@
     {
       "request": "ChangeFarmingEncyclopediaMastery",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 840,
+      "line": 1113,
       "handler": "HandleChangeFarmingEncyclopediaMastery)",
       "status": "registered",
       "typeCode": 37128,
@@ -4756,7 +4669,7 @@
     {
       "request": "ChangeFollowMusic",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 552,
+      "line": 559,
       "handler": "HandleChangeFollowMusic)",
       "status": "registered",
       "typeCode": 47852459,
@@ -4765,7 +4678,7 @@
     {
       "request": "Cheat",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 412,
+      "line": 454,
       "handler": "HandleCheat)",
       "status": "registered",
       "typeCode": 201,
@@ -4774,7 +4687,7 @@
     {
       "request": "CloseGate",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 434,
+      "line": 444,
       "handler": "HandleCloseGate)",
       "status": "registered",
       "typeCode": 3805,
@@ -4783,7 +4696,7 @@
     {
       "request": "Collect",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 540,
+      "line": 622,
       "handler": "HandleCollect)",
       "status": "registered",
       "typeCode": 2026,
@@ -4792,16 +4705,25 @@
     {
       "request": "Craft",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 459,
+      "line": 504,
       "handler": "HandleCraft)",
       "status": "registered",
       "typeCode": 6,
       "generatedMessage": true
     },
     {
+      "request": "Dashed",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 539,
+      "handler": "delegate { })",
+      "status": "registered",
+      "typeCode": 2491,
+      "generatedMessage": true
+    },
+    {
       "request": "DeclareEstate",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 752,
+      "line": 845,
       "handler": "HandleDeclareEstate)",
       "status": "registered",
       "typeCode": 2422,
@@ -4810,7 +4732,7 @@
     {
       "request": "DeleteEngagementData",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 857,
+      "line": 1130,
       "handler": "HandleDeleteEngagementData)",
       "status": "registered",
       "typeCode": 1444251,
@@ -4835,9 +4757,18 @@
       "generatedMessage": true
     },
     {
+      "request": "Depart",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 538,
+      "handler": "delegate { })",
+      "status": "registered",
+      "typeCode": 2448,
+      "generatedMessage": true
+    },
+    {
       "request": "DepartTutorial",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 482,
+      "line": 527,
       "handler": "HandleDepartTutorial)",
       "status": "registered",
       "typeCode": 2306,
@@ -4846,7 +4777,7 @@
     {
       "request": "DepartTutorialFor",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 483,
+      "line": 528,
       "handler": "HandleDepartTutorialFor)",
       "status": "registered",
       "typeCode": 2307,
@@ -4855,7 +4786,7 @@
     {
       "request": "DestructArtifact",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 603,
+      "line": 691,
       "handler": "HandleDestructArtifact)",
       "status": "registered",
       "typeCode": 2051,
@@ -4864,7 +4795,7 @@
     {
       "request": "DisappearEntityOnTile",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 575,
+      "line": 663,
       "handler": "delegate(DisappearEntityOnTile msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 112,
@@ -4882,7 +4813,7 @@
     {
       "request": "DrawWater",
       "file": "server/ServerCore/ServerPlayer.Farming.cs",
-      "line": 33,
+      "line": 34,
       "handler": "HandleDrawWater)",
       "status": "registered",
       "typeCode": 3493,
@@ -4900,7 +4831,7 @@
     {
       "request": "DumpItems",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 421,
+      "line": 463,
       "handler": "HandleDumpItems)",
       "status": "registered",
       "typeCode": 16,
@@ -4909,7 +4840,7 @@
     {
       "request": "Dye",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 709,
+      "line": 712,
       "handler": "HandleDye)",
       "status": "registered",
       "typeCode": 3666,
@@ -4925,9 +4856,18 @@
       "generatedMessage": true
     },
     {
+      "request": "EngagementAgreementChanged",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 762,
+      "handler": "HandleEngagementAgreementChanged)",
+      "status": "registered",
+      "typeCode": 1444250,
+      "generatedMessage": true
+    },
+    {
       "request": "EnterBattle",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 522,
+      "line": 604,
       "handler": "delegate(EnterBattle msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 3495,
@@ -4936,7 +4876,7 @@
     {
       "request": "Equip",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 461,
+      "line": 506,
       "handler": "HandleEquip)",
       "status": "registered",
       "typeCode": 10,
@@ -4945,7 +4885,7 @@
     {
       "request": "EstimateBleach",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 712,
+      "line": 715,
       "handler": "HandleEstimateBleach)",
       "status": "registered",
       "typeCode": 3670,
@@ -4954,16 +4894,25 @@
     {
       "request": "EstimateBuild",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 604,
+      "line": 692,
       "handler": "delegate(EstimateBuild msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 2414,
       "generatedMessage": true
     },
     {
+      "request": "EstimateCraft",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 502,
+      "handler": "HandleEstimateCraft)",
+      "status": "registered",
+      "typeCode": 7,
+      "generatedMessage": true
+    },
+    {
       "request": "EstimateDye",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 711,
+      "line": 714,
       "handler": "HandleEstimateDye)",
       "status": "registered",
       "typeCode": 3668,
@@ -4972,7 +4921,7 @@
     {
       "request": "ExitBattle",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 533,
+      "line": 615,
       "handler": "delegate(ExitBattle msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 3496,
@@ -4981,7 +4930,7 @@
     {
       "request": "ExitConversation",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 630,
+      "line": 635,
       "handler": "HandleExitConversation)",
       "status": "registered",
       "typeCode": 4010,
@@ -4990,7 +4939,7 @@
     {
       "request": "ExpandEstate",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 753,
+      "line": 846,
       "handler": "HandleExpandEstate)",
       "status": "registered",
       "typeCode": 2421,
@@ -4999,7 +4948,7 @@
     {
       "request": "ExplorePOI",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 489,
+      "line": 568,
       "handler": "HandleExplorePOI)",
       "status": "registered",
       "typeCode": 908,
@@ -5008,7 +4957,7 @@
     {
       "request": "ExtendEstateActivation",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 755,
+      "line": 848,
       "handler": "HandleExtendEstateActivation)",
       "status": "registered",
       "typeCode": 3822,
@@ -5017,7 +4966,7 @@
     {
       "request": "FeedInCage",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 156,
+      "line": 155,
       "handler": "HandleFeedInCage)",
       "status": "registered",
       "typeCode": 65101,
@@ -5026,7 +4975,7 @@
     {
       "request": "FertilizePlant",
       "file": "server/ServerCore/ServerPlayer.Farming.cs",
-      "line": 31,
+      "line": 32,
       "handler": "HandleFertilizePlant)",
       "status": "registered",
       "typeCode": 3711,
@@ -5035,7 +4984,7 @@
     {
       "request": "FinishDomestication",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 152,
+      "line": 151,
       "handler": "HandleFinishDomestication)",
       "status": "registered",
       "typeCode": 694355,
@@ -5053,7 +5002,7 @@
     {
       "request": "GetActions",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 512,
+      "line": 593,
       "handler": "HandleGetActions)",
       "status": "registered",
       "typeCode": 314,
@@ -5062,10 +5011,19 @@
     {
       "request": "GetAddOns",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 662,
+      "line": 666,
       "handler": "HandleGetAddOns)",
       "status": "registered",
       "typeCode": 2437,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetAdvisorTargets",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 759,
+      "handler": "HandleGetAdvisorTargets)",
+      "status": "registered",
+      "typeCode": 3708,
       "generatedMessage": true
     },
     {
@@ -5080,7 +5038,7 @@
     {
       "request": "GetArchipelago",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 500,
+      "line": 508,
       "handler": "HandleGetArchipelago)",
       "status": "registered",
       "typeCode": 2121,
@@ -5089,7 +5047,7 @@
     {
       "request": "GetArtifact",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 602,
+      "line": 690,
       "handler": "HandleGetArtifact)",
       "status": "registered",
       "typeCode": 2018,
@@ -5098,16 +5056,25 @@
     {
       "request": "GetArtifactBlueprints",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 450,
+      "line": 492,
       "handler": "delegate(GetArtifactBlueprints msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 2012,
       "generatedMessage": true
     },
     {
+      "request": "GetAttachableAccessories",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 760,
+      "handler": "HandleGetAttachableAccessories)",
+      "status": "registered",
+      "typeCode": 9823457,
+      "generatedMessage": true
+    },
+    {
       "request": "GetAttendanceRewards",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 393,
+      "line": 404,
       "handler": "HandleGetAttendanceRewards)",
       "status": "registered",
       "typeCode": 1097852,
@@ -5125,7 +5092,7 @@
     {
       "request": "GetAvailableEmotions",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 501,
+      "line": 582,
       "handler": "delegate(GetAvailableEmotions msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 9592634,
@@ -5134,7 +5101,7 @@
     {
       "request": "GetAvailableTask",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 160,
+      "line": 159,
       "handler": "HandleGetAvailableTask)",
       "status": "registered",
       "typeCode": 65106,
@@ -5143,7 +5110,7 @@
     {
       "request": "GetCargoReceivers",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 431,
+      "line": 441,
       "handler": "HandleGetCargoReceivers)",
       "status": "registered",
       "typeCode": 3812,
@@ -5152,7 +5119,7 @@
     {
       "request": "GetCargoWarpholeDefenseReward",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 438,
+      "line": 448,
       "handler": "HandleGetCargoWarpholeDefenseReward)",
       "status": "registered",
       "typeCode": 3825,
@@ -5161,7 +5128,7 @@
     {
       "request": "GetClaimedDlc",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 663,
+      "line": 667,
       "handler": "HandleGetClaimedDlc)",
       "status": "registered",
       "typeCode": 841261,
@@ -5170,7 +5137,7 @@
     {
       "request": "GetClanEstateLicense",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 761,
+      "line": 854,
       "handler": "HandleGetClanEstateLicense)",
       "status": "registered",
       "typeCode": 3697,
@@ -5197,7 +5164,7 @@
     {
       "request": "GetCollectible",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 541,
+      "line": 623,
       "handler": "HandleGetCollectible)",
       "status": "registered",
       "typeCode": 2017,
@@ -5213,9 +5180,27 @@
       "generatedMessage": true
     },
     {
+      "request": "GetDefoggedChunks",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 753,
+      "handler": "HandleGetDefoggedChunks)",
+      "status": "registered",
+      "typeCode": 204,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetDiscoveryInfo",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 758,
+      "handler": "HandleGetDiscoveryInfo)",
+      "status": "registered",
+      "typeCode": 5000,
+      "generatedMessage": true
+    },
+    {
       "request": "GetEncyclopedia",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 839,
+      "line": 1112,
       "handler": "HandleGetEncyclopedia)",
       "status": "registered",
       "typeCode": 37125,
@@ -5224,7 +5209,7 @@
     {
       "request": "GetEquipments",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 462,
+      "line": 507,
       "handler": "HandleGetEquipments)",
       "status": "registered",
       "typeCode": 2014,
@@ -5233,7 +5218,7 @@
     {
       "request": "GetEstateLicenseById",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 760,
+      "line": 853,
       "handler": "HandleGetEstateLicenseById)",
       "status": "registered",
       "typeCode": 879534,
@@ -5242,7 +5227,7 @@
     {
       "request": "GetEstateLicenses",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 751,
+      "line": 844,
       "handler": "HandleGetEstateLicenses)",
       "status": "registered",
       "typeCode": 3820,
@@ -5260,7 +5245,7 @@
     {
       "request": "GetExploredPOIs",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 487,
+      "line": 566,
       "handler": "HandleGetExploredPOIs)",
       "status": "registered",
       "typeCode": 902,
@@ -5269,7 +5254,7 @@
     {
       "request": "GetFactionDeliveryCondition",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 274,
+      "line": 271,
       "handler": "HandleGetFactionDeliveryCondition)",
       "status": "registered",
       "typeCode": 3612,
@@ -5278,7 +5263,7 @@
     {
       "request": "GetFactions",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 271,
+      "line": 268,
       "handler": "HandleGetFactions)",
       "status": "registered",
       "typeCode": 3600,
@@ -5296,16 +5281,25 @@
     {
       "request": "GetInventory",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 417,
+      "line": 459,
       "handler": "HandleGetInventory)",
       "status": "registered",
       "typeCode": 2010,
       "generatedMessage": true
     },
     {
+      "request": "GetIslandTravelOptions",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 572,
+      "handler": "HandleGetIslandTravelOptions)",
+      "status": "registered",
+      "typeCode": 2130,
+      "generatedMessage": true
+    },
+    {
       "request": "GetLastSearchedTime",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 488,
+      "line": 567,
       "handler": "HandleGetLastSearchedTime)",
       "status": "registered",
       "typeCode": 906,
@@ -5321,9 +5315,18 @@
       "generatedMessage": true
     },
     {
+      "request": "GetMemos",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 754,
+      "handler": "HandleGetMemos)",
+      "status": "registered",
+      "typeCode": 2439,
+      "generatedMessage": true
+    },
+    {
       "request": "GetMilestoneCandidate",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 161,
+      "line": 160,
       "handler": "HandleGetMilestoneCandidate)",
       "status": "registered",
       "typeCode": 800010,
@@ -5332,7 +5335,7 @@
     {
       "request": "GetMissions",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 325,
+      "line": 337,
       "handler": "HandleGetMissions)",
       "status": "registered",
       "typeCode": 3620,
@@ -5341,7 +5344,7 @@
     {
       "request": "GetMusic",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 548,
+      "line": 555,
       "handler": "HandleGetMusic)",
       "status": "registered",
       "typeCode": 47852452,
@@ -5350,7 +5353,7 @@
     {
       "request": "GetMusics",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 547,
+      "line": 554,
       "handler": "HandleGetMusics)",
       "status": "registered",
       "typeCode": 47852453,
@@ -5366,6 +5369,15 @@
       "generatedMessage": true
     },
     {
+      "request": "GetNomadInfo",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 755,
+      "handler": "HandleGetNomadInfo)",
+      "status": "registered",
+      "typeCode": 100000,
+      "generatedMessage": true
+    },
+    {
       "request": "GetOffers",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
       "line": 36,
@@ -5377,7 +5389,7 @@
     {
       "request": "GetPOICount",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 486,
+      "line": 565,
       "handler": "HandleGetPOICount)",
       "status": "registered",
       "typeCode": 900,
@@ -5398,22 +5410,40 @@
       "line": 33,
       "handler": "HandleGetPersonalProducts)",
       "status": "registered",
-      "typeCode": null,
+      "typeCode": 5014,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetPersonalRegionInfo",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 855,
+      "handler": "HandleGetPersonalRegionInfo)",
+      "status": "registered",
+      "typeCode": 20420,
       "generatedMessage": true
     },
     {
       "request": "GetPetsInfo",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 149,
+      "line": 148,
       "handler": "HandleGetPetsInfo)",
       "status": "registered",
       "typeCode": 14198037,
       "generatedMessage": true
     },
     {
+      "request": "GetPioneerGradeInfo",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 757,
+      "handler": "HandleGetPioneerGradeInfo)",
+      "status": "registered",
+      "typeCode": 812234574,
+      "generatedMessage": true
+    },
+    {
       "request": "GetPreviewPet",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 150,
+      "line": 149,
       "handler": "HandleGetPreviewPet)",
       "status": "registered",
       "typeCode": 181120,
@@ -5431,7 +5461,7 @@
     {
       "request": "GetQuestScoreInfos",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 477,
+      "line": 522,
       "handler": "HandleGetQuestScoreInfos)",
       "status": "registered",
       "typeCode": 237920,
@@ -5440,7 +5470,7 @@
     {
       "request": "GetQuestState",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 475,
+      "line": 520,
       "handler": "HandleGetQuestState)",
       "status": "registered",
       "typeCode": 398132,
@@ -5449,7 +5479,7 @@
     {
       "request": "GetQuests",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 474,
+      "line": 519,
       "handler": "HandleGetQuests)",
       "status": "registered",
       "typeCode": 237918,
@@ -5458,7 +5488,7 @@
     {
       "request": "GetRecipes",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 441,
+      "line": 483,
       "handler": "delegate(GetRecipes msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 2011,
@@ -5467,7 +5497,7 @@
     {
       "request": "GetRecipients",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 631,
+      "line": 636,
       "handler": "HandleGetRecipients)",
       "status": "registered",
       "typeCode": 4012,
@@ -5485,16 +5515,25 @@
     {
       "request": "GetResistanceExpCaps",
       "file": "server/ServerCore/ServerPlayer.Group2.cs",
-      "line": 76,
+      "line": 92,
       "handler": "HandleGetResistanceExpCaps)",
       "status": "registered",
       "typeCode": 349378781,
       "generatedMessage": true
     },
     {
+      "request": "GetReturnerInfo",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 756,
+      "handler": "HandleGetReturnerInfo)",
+      "status": "registered",
+      "typeCode": 3450983,
+      "generatedMessage": true
+    },
+    {
       "request": "GetReviveImmediatelyInfo",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 515,
+      "line": 596,
       "handler": "HandleGetReviveImmediatelyInfo)",
       "status": "registered",
       "typeCode": 210101,
@@ -5503,7 +5542,7 @@
     {
       "request": "GetRouteOfArchipelago",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 501,
+      "line": 509,
       "handler": "HandleGetRouteOfArchipelago)",
       "status": "registered",
       "typeCode": 20301,
@@ -5512,7 +5551,7 @@
     {
       "request": "GetSharedMusic",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 556,
+      "line": 563,
       "handler": "HandleGetSharedMusic)",
       "status": "registered",
       "typeCode": 47852457,
@@ -5530,7 +5569,7 @@
     {
       "request": "GetSkills",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 426,
+      "line": 468,
       "handler": "delegate(GetSkills msg, PacketHeader header) { SendSkills()",
       "status": "registered",
       "typeCode": 2047,
@@ -5557,7 +5596,7 @@
     {
       "request": "GetStatistics",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 413,
+      "line": 455,
       "handler": "delegate(GetStatistics msg, PacketHeader header) { SendStatistics()",
       "status": "registered",
       "typeCode": 2039,
@@ -5566,7 +5605,7 @@
     {
       "request": "GetStatusEffects",
       "file": "server/ServerCore/ServerPlayer.Group2.cs",
-      "line": 74,
+      "line": 90,
       "handler": "(msg, header) => SendStatusEffects())",
       "status": "registered",
       "typeCode": 2016,
@@ -5575,7 +5614,7 @@
     {
       "request": "GetSupportRequests",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 275,
+      "line": 272,
       "handler": "HandleGetSupportRequests)",
       "status": "registered",
       "typeCode": 2347809,
@@ -5584,8 +5623,17 @@
     {
       "request": "GetTargetTitle",
       "file": "server/ServerCore/ServerPlayer.Group2.cs",
-      "line": 79,
+      "line": 95,
       "handler": "(msg, header) => Send(new TargetTitle { TitleId = _targetTitleId }))",
+      "status": "registered",
+      "typeCode": 3906,
+      "generatedMessage": true
+    },
+    {
+      "request": "GetTargetTitle",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 761,
+      "handler": "HandleGetTargetTitle)",
       "status": "registered",
       "typeCode": 3906,
       "generatedMessage": true
@@ -5593,7 +5641,7 @@
     {
       "request": "GetTitles",
       "file": "server/ServerCore/ServerPlayer.Group2.cs",
-      "line": 77,
+      "line": 93,
       "handler": "(msg, header) => SendTitles())",
       "status": "registered",
       "typeCode": 2044,
@@ -5611,7 +5659,7 @@
     {
       "request": "GetWarpBackCost",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 497,
+      "line": 578,
       "handler": "HandleGetWarpBackCost)",
       "status": "registered",
       "typeCode": 2109,
@@ -5620,7 +5668,7 @@
     {
       "request": "GetWarpCosts",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 496,
+      "line": 577,
       "handler": "HandleGetWarpCosts)",
       "status": "registered",
       "typeCode": 2106,
@@ -5629,7 +5677,7 @@
     {
       "request": "GiveAttendanceAppendix",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 395,
+      "line": 406,
       "handler": "HandleGiveAttendanceAppendix)",
       "status": "registered",
       "typeCode": 1097855,
@@ -5638,7 +5686,7 @@
     {
       "request": "GiveAttendanceReward",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 394,
+      "line": 405,
       "handler": "HandleGiveAttendanceReward)",
       "status": "registered",
       "typeCode": 1097854,
@@ -5647,7 +5695,7 @@
     {
       "request": "GrazePets",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 159,
+      "line": 158,
       "handler": "HandleGrazePets)",
       "status": "registered",
       "typeCode": 800000,
@@ -5656,7 +5704,7 @@
     {
       "request": "InventoryOrder",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 424,
+      "line": 466,
       "handler": "HandleInventoryOrder)",
       "status": "registered",
       "typeCode": 15,
@@ -5683,7 +5731,7 @@
     {
       "request": "InviteToConversation",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 629,
+      "line": 634,
       "handler": "HandleInviteToConversation)",
       "status": "registered",
       "typeCode": 2411,
@@ -5692,7 +5740,7 @@
     {
       "request": "IsWarpholeAvailable",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 500,
+      "line": 581,
       "handler": "HandleIsWarpholeAvailable)",
       "status": "registered",
       "typeCode": 3021,
@@ -5737,7 +5785,7 @@
     {
       "request": "LearnSkill",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 428,
+      "line": 470,
       "handler": "HandleLearnSkill)",
       "status": "registered",
       "typeCode": 2048,
@@ -5764,7 +5812,7 @@
     {
       "request": "LockOrUnlockItems",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 425,
+      "line": 467,
       "handler": "HandleLockOrUnlockItems)",
       "status": "registered",
       "typeCode": 3497,
@@ -5809,7 +5857,7 @@
     {
       "request": "Move",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 407,
+      "line": 448,
       "handler": "HandleMove)",
       "status": "registered",
       "typeCode": 4,
@@ -5818,7 +5866,7 @@
     {
       "request": "OccupyArtifactSite",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 599,
+      "line": 687,
       "handler": "HandleOccupyArtifactSite)",
       "status": "registered",
       "typeCode": 2057,
@@ -5827,7 +5875,7 @@
     {
       "request": "OccupyCargoWarphole",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 437,
+      "line": 447,
       "handler": "HandleOccupyCargoWarphole)",
       "status": "registered",
       "typeCode": 3819,
@@ -5836,7 +5884,7 @@
     {
       "request": "OpenGate",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 433,
+      "line": 443,
       "handler": "HandleOpenGate)",
       "status": "registered",
       "typeCode": 3804,
@@ -5852,9 +5900,18 @@
       "generatedMessage": true
     },
     {
+      "request": "ParticleEffect",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 763,
+      "handler": "HandleParticleEffect)",
+      "status": "registered",
+      "typeCode": 503,
+      "generatedMessage": true
+    },
+    {
       "request": "PlaceAddOns",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 664,
+      "line": 668,
       "handler": "HandlePlaceAddOns)",
       "status": "registered",
       "typeCode": 2436,
@@ -5863,7 +5920,7 @@
     {
       "request": "PlaceCapsulatedArtifact",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 466,
+      "line": 511,
       "handler": "HandlePlaceCapsulatedArtifact)",
       "status": "registered",
       "typeCode": 4021,
@@ -5872,7 +5929,7 @@
     {
       "request": "PlantSeed",
       "file": "server/ServerCore/ServerPlayer.Farming.cs",
-      "line": 29,
+      "line": 30,
       "handler": "HandlePlantSeed)",
       "status": "registered",
       "typeCode": 3806,
@@ -5881,7 +5938,7 @@
     {
       "request": "PlayEmoticon",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 542,
+      "line": 624,
       "handler": "delegate(PlayEmoticon msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 9592636,
@@ -5890,7 +5947,7 @@
     {
       "request": "PlayMusic",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 549,
+      "line": 556,
       "handler": "HandlePlayMusic)",
       "status": "registered",
       "typeCode": 3802,
@@ -5899,7 +5956,7 @@
     {
       "request": "PlaySharedMusic",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 551,
+      "line": 558,
       "handler": "HandlePlaySharedMusic)",
       "status": "registered",
       "typeCode": 47852451,
@@ -5908,7 +5965,7 @@
     {
       "request": "PublishMusic",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 555,
+      "line": 562,
       "handler": "HandlePublishMusic)",
       "status": "registered",
       "typeCode": 47852557,
@@ -5917,7 +5974,7 @@
     {
       "request": "PurchaseCommodityWithSteamDlc",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 665,
+      "line": 669,
       "handler": "HandlePurchaseCommodityWithSteamDlc)",
       "status": "registered",
       "typeCode": 841260,
@@ -5926,7 +5983,7 @@
     {
       "request": "PurchaseCommodityWithVoucher",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 666,
+      "line": 670,
       "handler": "HandlePurchaseCommodityWithVoucher)",
       "status": "registered",
       "typeCode": 841253,
@@ -5935,7 +5992,7 @@
     {
       "request": "PutInCage",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 155,
+      "line": 154,
       "handler": "HandlePutInCage)",
       "status": "registered",
       "typeCode": 809,
@@ -5944,7 +6001,7 @@
     {
       "request": "PutInItem",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 418,
+      "line": 460,
       "handler": "HandlePutInItem)",
       "status": "registered",
       "typeCode": 2434,
@@ -5953,7 +6010,7 @@
     {
       "request": "PutMaterialsIntoArtifact",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 600,
+      "line": 688,
       "handler": "HandlePutMaterials)",
       "status": "registered",
       "typeCode": 2092,
@@ -5971,7 +6028,7 @@
     {
       "request": "ReceiveCargoImmediately",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 436,
+      "line": 446,
       "handler": "HandleReceiveCargoImmediately)",
       "status": "registered",
       "typeCode": 3823,
@@ -5980,7 +6037,7 @@
     {
       "request": "RechargeMissionShuffleCount",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 330,
+      "line": 342,
       "handler": "HandleRechargeMissionShuffleCount)",
       "status": "registered",
       "typeCode": 3626,
@@ -5989,7 +6046,7 @@
     {
       "request": "RecommendMissionImmediately",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 331,
+      "line": 343,
       "handler": "HandleRecommendMissionImmediately)",
       "status": "registered",
       "typeCode": 3629,
@@ -5998,7 +6055,7 @@
     {
       "request": "RecommendMissions",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 326,
+      "line": 338,
       "handler": "HandleRecommendMissions)",
       "status": "registered",
       "typeCode": 3621,
@@ -6043,7 +6100,7 @@
     {
       "request": "ReissueArchipelagoTodos",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 503,
+      "line": 511,
       "handler": "HandleReissueArchipelagoTodos)",
       "status": "registered",
       "typeCode": 240005,
@@ -6061,7 +6118,7 @@
     {
       "request": "ReleasePet",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 158,
+      "line": 157,
       "handler": "HandleReleasePet)",
       "status": "registered",
       "typeCode": 74012,
@@ -6070,7 +6127,7 @@
     {
       "request": "RemoveDeathPoint",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 517,
+      "line": 598,
       "handler": "HandleRemoveDeathPoint)",
       "status": "registered",
       "typeCode": 2034,
@@ -6079,7 +6136,7 @@
     {
       "request": "RemoveEstate",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 757,
+      "line": 850,
       "handler": "HandleRemoveEstate)",
       "status": "registered",
       "typeCode": 9518234,
@@ -6106,7 +6163,7 @@
     {
       "request": "RemoveMusicFromSlot",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 554,
+      "line": 561,
       "handler": "HandleRemoveMusicFromSlot)",
       "status": "registered",
       "typeCode": 63459078,
@@ -6115,7 +6172,7 @@
     {
       "request": "Rename",
       "file": "server/ServerCore/ServerPlayer.Group2.cs",
-      "line": 81,
+      "line": 97,
       "handler": "HandleCharacterRename)",
       "status": "registered",
       "typeCode": 324,
@@ -6133,7 +6190,7 @@
     {
       "request": "RenamePet",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 157,
+      "line": 156,
       "handler": "HandleRenamePet)",
       "status": "registered",
       "typeCode": 804,
@@ -6142,7 +6199,7 @@
     {
       "request": "RepairItem",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 423,
+      "line": 465,
       "handler": "HandleRepairItem)",
       "status": "registered",
       "typeCode": 3717,
@@ -6151,7 +6208,7 @@
     {
       "request": "ReportFactionProp",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 273,
+      "line": 270,
       "handler": "HandleReportFactionProp)",
       "status": "registered",
       "typeCode": 3611,
@@ -6160,7 +6217,7 @@
     {
       "request": "RequestArchipelagoRegionClear",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 504,
+      "line": 512,
       "handler": "HandleRequestArchipelagoRegionClear)",
       "status": "registered",
       "typeCode": 240002,
@@ -6178,7 +6235,7 @@
     {
       "request": "RequestQuestReward",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 476,
+      "line": 521,
       "handler": "HandleRequestQuestReward)",
       "status": "registered",
       "typeCode": 237923,
@@ -6187,7 +6244,7 @@
     {
       "request": "ResearchSkillCategory",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 430,
+      "line": 472,
       "handler": "HandleResearchSkillCategory)",
       "status": "registered",
       "typeCode": 2446,
@@ -6196,7 +6253,7 @@
     {
       "request": "ResetAccessory",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 465,
+      "line": 510,
       "handler": "HandleResetAccessory)",
       "status": "registered",
       "typeCode": 9823460,
@@ -6205,7 +6262,7 @@
     {
       "request": "RestOn",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 467,
+      "line": 512,
       "handler": "delegate(RestOn msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 2416,
@@ -6214,7 +6271,7 @@
     {
       "request": "ReturnToEstate",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 758,
+      "line": 851,
       "handler": "HandleReturnToEstate)",
       "status": "registered",
       "typeCode": 10190234,
@@ -6223,7 +6280,7 @@
     {
       "request": "Revive",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 514,
+      "line": 595,
       "handler": "HandleRevive)",
       "status": "registered",
       "typeCode": 2101,
@@ -6232,7 +6289,7 @@
     {
       "request": "ReviveImmediately",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 516,
+      "line": 597,
       "handler": "HandleReviveImmediately)",
       "status": "registered",
       "typeCode": 210201,
@@ -6241,7 +6298,7 @@
     {
       "request": "SaveMusicToSlot",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 553,
+      "line": 560,
       "handler": "HandleSaveMusicToSlot)",
       "status": "registered",
       "typeCode": 47852456,
@@ -6250,7 +6307,7 @@
     {
       "request": "SayInConversation",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 565,
+      "line": 650,
       "handler": "delegate(SayInConversation msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 2409,
@@ -6259,7 +6316,7 @@
     {
       "request": "SayInExclusiveChannel",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 554,
+      "line": 636,
       "handler": "delegate(SayInExclusiveChannel msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 2408,
@@ -6268,7 +6325,7 @@
     {
       "request": "SearchPOIs",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 485,
+      "line": 564,
       "handler": "HandleSearchPOIs)",
       "status": "registered",
       "typeCode": 904,
@@ -6286,7 +6343,7 @@
     {
       "request": "SelectBattleTarget",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 518,
+      "line": 600,
       "handler": "delegate(SelectBattleTarget msg, PacketHeader header)",
       "status": "registered",
       "typeCode": 3441,
@@ -6295,7 +6352,7 @@
     {
       "request": "SelectTargetTitle",
       "file": "server/ServerCore/ServerPlayer.Group2.cs",
-      "line": 80,
+      "line": 96,
       "handler": "HandleSelectTargetTitle)",
       "status": "registered",
       "typeCode": 3900,
@@ -6304,7 +6361,7 @@
     {
       "request": "SelectTitle",
       "file": "server/ServerCore/ServerPlayer.Group2.cs",
-      "line": 78,
+      "line": 94,
       "handler": "HandleSelectTitle)",
       "status": "registered",
       "typeCode": 2046,
@@ -6313,7 +6370,7 @@
     {
       "request": "SendCargo",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 435,
+      "line": 445,
       "handler": "HandleSendCargo)",
       "status": "registered",
       "typeCode": 3814,
@@ -6322,7 +6379,7 @@
     {
       "request": "SendFactionSupportRequest",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 276,
+      "line": 273,
       "handler": "HandleSendFactionSupportRequest)",
       "status": "registered",
       "typeCode": 725982,
@@ -6340,7 +6397,7 @@
     {
       "request": "SetChunk",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 411,
+      "line": 453,
       "handler": "HandleSetChunk)",
       "status": "registered",
       "typeCode": 199,
@@ -6349,7 +6406,7 @@
     {
       "request": "SetEstateLicense",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 756,
+      "line": 849,
       "handler": "HandleSetEstateLicense)",
       "status": "registered",
       "typeCode": 2420,
@@ -6365,9 +6422,36 @@
       "generatedMessage": true
     },
     {
+      "request": "SetPersonalRegionAdmission",
+      "file": "server/ServerCore/ServerPlayer.Systems.cs",
+      "line": 856,
+      "handler": "HandleSetPersonalRegionAdmission)",
+      "status": "registered",
+      "typeCode": 20423,
+      "generatedMessage": true
+    },
+    {
+      "request": "SetReturningPoint",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 599,
+      "handler": "HandleSetReturningPoint)",
+      "status": "registered",
+      "typeCode": 2105,
+      "generatedMessage": true
+    },
+    {
+      "request": "SetStorageItem",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 543,
+      "handler": "delegate (SetStorageItem msg, PacketHeader header)",
+      "status": "registered",
+      "typeCode": 2302,
+      "generatedMessage": true
+    },
+    {
       "request": "ShrinkEstate",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 754,
+      "line": 847,
       "handler": "HandleShrinkEstate)",
       "status": "registered",
       "typeCode": 2426,
@@ -6376,7 +6460,7 @@
     {
       "request": "ShuffleMission",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 329,
+      "line": 341,
       "handler": "HandleShuffleMission)",
       "status": "registered",
       "typeCode": 3627,
@@ -6385,7 +6469,7 @@
     {
       "request": "SkipSkillCategoryResearch",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 432,
+      "line": 474,
       "handler": "HandleSkipSkillCategoryResearch)",
       "status": "registered",
       "typeCode": 3643,
@@ -6403,7 +6487,7 @@
     {
       "request": "StartDomestication",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 151,
+      "line": 150,
       "handler": "HandleStartDomestication)",
       "status": "registered",
       "typeCode": 694357,
@@ -6412,7 +6496,7 @@
     {
       "request": "StopMusic",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 550,
+      "line": 557,
       "handler": "HandleStopMusic)",
       "status": "registered",
       "typeCode": 3803,
@@ -6430,7 +6514,7 @@
     {
       "request": "TakeOutItem",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 419,
+      "line": 461,
       "handler": "HandleTakeOutItem)",
       "status": "registered",
       "typeCode": 2435,
@@ -6439,7 +6523,7 @@
     {
       "request": "ToggleStatusEffect",
       "file": "server/ServerCore/ServerPlayer.Group2.cs",
-      "line": 75,
+      "line": 91,
       "handler": "HandleToggleStatusEffect)",
       "status": "registered",
       "typeCode": 2081,
@@ -6448,7 +6532,7 @@
     {
       "request": "Touch",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 539,
+      "line": 621,
       "handler": "HandleTouch)",
       "status": "registered",
       "typeCode": 2021,
@@ -6461,6 +6545,15 @@
       "handler": "HandleTransferDurangoCoin)",
       "status": "registered",
       "typeCode": 5092384,
+      "generatedMessage": true
+    },
+    {
+      "request": "TravelByRegion",
+      "file": "server/ServerCore/ServerPlayer.Core.cs",
+      "line": 573,
+      "handler": "HandleTravelByRegion)",
+      "status": "registered",
+      "typeCode": 2029,
       "generatedMessage": true
     },
     {
@@ -6484,7 +6577,7 @@
     {
       "request": "UntrainSkill",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 429,
+      "line": 471,
       "handler": "HandleUntrainSkill)",
       "status": "registered",
       "typeCode": 2049,
@@ -6493,7 +6586,7 @@
     {
       "request": "UprootPlant",
       "file": "server/ServerCore/ServerPlayer.Farming.cs",
-      "line": 32,
+      "line": 33,
       "handler": "HandleUprootPlant)",
       "status": "registered",
       "typeCode": 3807,
@@ -6502,7 +6595,7 @@
     {
       "request": "UseBattleAction",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 513,
+      "line": 594,
       "handler": "HandleUseBattleAction)",
       "status": "registered",
       "typeCode": 3440,
@@ -6511,7 +6604,7 @@
     {
       "request": "UseItem",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 422,
+      "line": 464,
       "handler": "HandleUseItem)",
       "status": "registered",
       "typeCode": 17,
@@ -6520,7 +6613,7 @@
     {
       "request": "UseTamingAction",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 154,
+      "line": 153,
       "handler": "HandleUseTamingAction)",
       "status": "registered",
       "typeCode": 1900,
@@ -6529,7 +6622,7 @@
     {
       "request": "VisitEstate",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 759,
+      "line": 852,
       "handler": "HandleVisitEstate)",
       "status": "registered",
       "typeCode": 2104,
@@ -6538,7 +6631,7 @@
     {
       "request": "Warp",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 490,
+      "line": 569,
       "handler": "HandleWarp)",
       "status": "registered",
       "typeCode": 2108,
@@ -6547,7 +6640,7 @@
     {
       "request": "WarpBack",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 491,
+      "line": 570,
       "handler": "HandleWarpBack)",
       "status": "registered",
       "typeCode": 2110,
@@ -6556,7 +6649,7 @@
     {
       "request": "WarpToNextArchipelagoRegion",
       "file": "server/ServerCore/ServerPlayer.Systems.cs",
-      "line": 502,
+      "line": 510,
       "handler": "HandleWarpToNextArchipelagoRegion)",
       "status": "registered",
       "typeCode": 2035,
@@ -6565,7 +6658,7 @@
     {
       "request": "WarpToPort",
       "file": "server/ServerCore/ServerPlayer.Core.cs",
-      "line": 492,
+      "line": 571,
       "handler": "HandleWarpToPort)",
       "status": "registered",
       "typeCode": 9081241,
@@ -6574,7 +6667,7 @@
     {
       "request": "WaterPlant",
       "file": "server/ServerCore/ServerPlayer.Farming.cs",
-      "line": 30,
+      "line": 31,
       "handler": "HandleWaterPlant)",
       "status": "registered",
       "typeCode": 3710,

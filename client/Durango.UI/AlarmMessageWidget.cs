@@ -36,11 +36,14 @@ public class AlarmMessageWidget : MonoBehaviour
 		_init = false;
 	}
 
-	public void Set(string key, string text, float duration)
+	public void Set(string key, string text, float duration, float scale = 1f)
 	{
 		Key = key;
 		Text = text;
 		_textLabel.text = text;
+		// [3 ก.ย. 2026] ขนาดข้อความบรอดแคสต์ — สเกล transform ทั้ง widget (NGUI ไม่มีแท็กขนาดในข้อความ)
+		//   scale=1 = ของเดิมทุกอย่างไม่เปลี่ยน · บรอดแคสต์แอดมินส่ง scale > 1 มาเพื่อให้ตัวใหญ่ขึ้น
+		base.transform.localScale = (scale > 0f) ? Vector3.one * scale : Vector3.one;
 		_textLabel.overflowWidth = UIManager.SafeWidth - 100;
 		if (!_init)
 		{

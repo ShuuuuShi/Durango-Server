@@ -167,7 +167,7 @@ public partial class ServerPlayer
         }
         if (!IsPlayablePreset(msg.SlotType))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         Dictionary<string, string> preset = GetEquipmentPreset(msg.SlotType);
@@ -175,7 +175,7 @@ public partial class ServerPlayer
         if (!ValidSlots.Contains(slot))
         {
             Console.WriteLine("[equip] ปฏิเสธ {0}: ไม่มีช่องชื่อ '{1}'", Name, slot);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         bool equip = msg.Action == "equip";
@@ -194,7 +194,7 @@ public partial class ServerPlayer
             if (prototype == null)
             {
                 Console.WriteLine("[equip] ปฏิเสธ: {0} ไม่มีไอเทม {1}", Name, msg.ItemId);
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             // 🐛 เดิมเช็คแค่ "มีของอยู่ในกระเป๋าไหม" ไม่ได้ดูว่าของชิ้นนั้นใส่ช่องนี้ได้จริงหรือเปล่า
@@ -204,7 +204,7 @@ public partial class ServerPlayer
             {
                 Console.WriteLine("[equip] ปฏิเสธ {0}: {1} ใส่ช่อง '{2}' ไม่ได้ (ของชิ้นนี้เป็นของช่อง '{3}')",
                     Name, prototype, slot, EquipData.SlotOf(prototype) ?? "ใส่ไม่ได้");
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             preset[slot] = msg.ItemId;
@@ -212,7 +212,7 @@ public partial class ServerPlayer
         else if (!preset.Remove(slot))
         {
             // ถอดช่องที่ไม่ได้ใส่อะไรอยู่ — ตอบ Abort ไม่งั้น client รอค้าง
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -246,7 +246,7 @@ public partial class ServerPlayer
         }
         if (!IsPlayablePreset(msg.SlotType))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         _currentEquipSlotType = msg.SlotType;
@@ -267,7 +267,7 @@ public partial class ServerPlayer
         }
         if (string.IsNullOrWhiteSpace(msg.AccessoryId) || msg.AccessoryId.Length > 128)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         _accessoryId = msg.AccessoryId.Trim();

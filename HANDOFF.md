@@ -1,4 +1,584 @@
+# ✅ อัปเดตล่าสุด — 1 ก.ย. 2026: แท็กสูตรคราฟต์ + handoff รอบนี้
+
+**อ่านต่อที่ `HANDOFF-2026-09-01.md`** (ไฟล์นี้ยาวเป็นประวัติสิงหาคม — งานล่าสุดไม่ได้อยู่ด้านล่าง)
+
+เจ้าของยืนยันแล้วว่าหกเหลี่ยมในแผงสูตรสวย (ชุดเดียวกับกระเป๋า)  
+client ที่เล่น: `dist\DurangoTH-Clean` · เปิดเกมต้องมี `-durango-updated` · อย่าก๊อป DLL ตอนเกมเปิด  
+MemoryBot: `tools\MemoryBotMod\HOW-TO-DRIVE.md`
+
+---
+
+# ✅ อัปเดต — 31 ส.ค. 2026 (ดึก): ไล่บั๊ก UI ด้วย MemoryBot + กู้เกมที่เปิดไม่ขึ้น
+
+## 🔥 เรื่องด่วนที่สุด: เกมเปิดไม่ขึ้น — สาเหตุและวิธีกู้
+
+**อาการ:** ดับเงียบ ๆ ก่อนถึงหน้า title · Unity log บูตจนโหลดฉากเสร็จแล้วโปรเซสหาย **ไม่มี error**
+· `clientmods.log` ไม่มีบรรทัดใหม่ · ไฟล์เกมกับ DLL มอด "เหมือนเดิมทุก byte" → ไล่หายากมาก
+
+**ต้นเหตุ (ลูกโซ่ 2 ชั้น):**
+1. `DurangoClientCore` เขียน `durangomod:ui_mode = "mobile"` ลง **PlayerPrefs (registry)** ทุกครั้งที่บูต
+2. รอบถัดไป `ModMenu.UiModeSetting` อ่านค่านั้น → สั่ง **Harmony `RegisterMethodOverride`** บน
+   `Platform_PC::get_UsePCUI` ตอน preload → **Mono ตายทันที**
+
+⚠️ ลบค่าใน registry อย่างเดียว**ไม่พอ** เพราะข้อ 1 ตั้งกลับมาให้ใหม่ทุกรอบ
+
+**แก้แล้วทั้งสองชั้น:** ถอดโค้ดเขียน PlayerPrefs ออก + เพิ่ม `ClearLegacyUiModePref()` ล้างค่าเก่าให้อัตโนมัติ
+(เครื่องคนอื่นที่โดนไปแล้วหายเอง) + ถอด Harmony ออกจาก `UiModeSetting` **ถาวร**
+
+### ⛔ กฎเหล็กที่ยืนยันแล้ว 4 รอบ: **ห้ามใช้ Harmony/method override กับเกมนี้**
+โดนมาแล้ว: `PlayerInfoManager` · `MovePrivateServerPorts` · `UiModeSetting` · `CraftUiClickLog` (ของ Grok)
+อาการเหมือนกันทุกครั้ง ⇒ ใช้ reflection อ่าน/เขียน field · `Connections.Frontend.On<T>()` · แก้ฝั่งเซิร์ฟ แทน
+
+### ⛔ ห้ามเปลี่ยน `DurangoClientModSdk.dll` ที่อยู่ใน `Durango_Data/Managed/`
+ลองอัปเดต SDK (เพิ่มคลาสใหม่) แล้ว **เกมดับ** — loader ผูกกับ SDK ตัวเดิม
+⇒ ถ้าต้องมี helper ใหม่ ให้ก๊อปไว้ในมอดแต่ละตัว อย่าใส่ใน SDK กลาง
+
+### ⚠️ MemoryBot: ใช้ **Release build เท่านั้น** (78336 bytes)
+`bin/Debug` build (85504) ทำเกมดับ — csproj อ้าง `Assembly-CSharp.dll` จาก `client-dist/` คนละตัวกับที่เกมใช้
+
+---
+
+## ระบบ config ของมอด (ใหม่)
+
+ค่าตั้งย้ายจาก PlayerPrefs → **ไฟล์ที่มองเห็นได้** `mods/config/<ชื่อมอด>.cfg`
+(รูปแบบ `key=value` บรรทัดละคู่ · ลบไฟล์ = กลับค่าเริ่มต้น · แก้ด้วย Notepad ได้)
+โค้ดอยู่ที่ `tools/ModMenuMod/ModConfigFile.cs` (คลาส `ModConfig`)
+**ลำดับ: โหลดมอดก่อน แล้วมอดอ่าน config เอง** (lazy + cache) ใช้ได้ทุกเฟสรวม `OnPreLoad`
+
+---
+
+## 🐛 บั๊ก "กดคราฟต์ไม่ได้" — เจ้าของหาเจอ + ผมขยายผล
+
+เจ้าของเจอว่า `Durango.UI.ExpectResultWidget._bonusItemWidget` เป็น **null → NRE** ⇒ หน้าต่างตั้งค่าไม่ครบ
+⇒ ปุ่มกดแล้วเงียบ (เส้นทางคราฟต์มี guard อยู่แล้วตั้งแต่ 17 ส.ค. เลยคราฟต์มีดได้)
+
+**ไล่ต่อพบว่ายังมีรูอีก:** `Set(BuildSlotContainer)` (เส้นทาง**สร้างบ้าน**) ·
+`SetPreviewTextureMode()` · `SetIconMode()` — ไม่มี guard เลย
+**สแกนทั้ง `Durango.UI` พบ 551 ไฟล์** ที่ใช้ `[SerializeField]` โดยไม่เคยเช็ค null
+
+**แก้เป็นมอด** (`tools/OnlineModeMod/ExpectResultWidgetFix.cs`): เติมค่า field ที่เป็น null ด้วย reflection
+ก่อนเกมจะใช้ ⇒ โค้ดเดิมวิ่งผ่านเอง ไม่ต้อง patch IL · ตัวแทนเป็น GameObject เปล่าที่ปิดอยู่
+เฝ้า **16 คลาส**: คราฟต์ · สร้างบ้าน · ต่อสู้ · ปลูกผัก · เควส · สกิล · ข้อมูลไอเทม
+
+### ⚠️ กับดักที่เจอระหว่างทาง (สำคัญเรื่องกันโกง)
+เดิมเติม "ทุก field ที่เป็น UnityEngine.Object" ⇒ เทสจริงแล้วมันไปเติม
+`RecipeSelectorGroup._selectedWorkbench` (ชนิด `Artifact`) ซึ่งเกมใช้เป็น **ตรรกะ** ไม่ใช่ UI
+⇒ หลอกเกมว่า "ยืนอยู่ที่โต๊ะทำงาน" ทั้งที่ไม่มี = **เปิดช่องโกง**
+⇒ แก้เป็น whitelist: เติมเฉพาะ `GameObject` กับ widget ตระกูล `UIWidget` เท่านั้น
+(เจ้าของเตือนไว้พอดีว่า "ทำ UI ต้องคิดถึงคนโกงด้วย")
+
+---
+
+## 🐛 แก้: ผลลัพธ์คำสั่ง admin มองไม่เห็น
+
+`/admin/cheat` ตอบแค่ "ดูผลในหน้าจอเกม" แต่ cheat ตอบผลผ่าน `Info` ซึ่ง**ไม่มีตัวรับในเกม** ⇒ หายเงียบ
+⇒ สั่ง `farm` แล้วไม่รู้เลยว่าสำเร็จหรือพลาดเพราะอะไร
+
+แก้: `ServerPlayer.RunAdminCheatCapturing()` ดูดข้อความ `Info` แล้วคืนกลับทาง HTTP field `result`
+ตอนนี้ได้ผลจริง เช่น `"วางแปลงผักที่ tile 49,170 แล้ว [id=...] · ได้ของสำหรับปลูก 10 ชิ้น"`
+
+---
+
+## ✅ ผลเทสระบบหลักด้วย MemoryBot (บอทขับตัวละครจริงในเกม)
+
+| ระบบ | ผล | หลักฐาน |
+|---|---|---|
+| เก็บของ/แตะวัตถุ | ✅ | เมนู Collect/BuildArtifact ขึ้นครบ |
+| **ต่อสู้** | ✅ | เซิร์ฟ log `[combat] TESTID ใช้ท่า (6 ดาเมจ, bare_hands)` · สัตว์หันมาสู้ |
+| **คราฟต์** | ✅ | `[craft] blade_stone materials=1` · หิน 3→2 · ได้ `blade_stone` จริง |
+| **สร้างบ้าน** | ✅ | เมนู BuildArtifact เปิดได้ · ui-fix ซ่อม `BuildGridGroupBase._background` |
+| **ปลูกผัก** | ✅ | สร้างแปลงได้ · เดินไปแล้วเมนู **Plant** ขึ้น |
+| **เควส** | ✅ | เซิร์ฟมีสายหลัก 9 ขั้น นับคืบหน้าจริง (`เก็บของธรรมชาติ [6/10]`) |
+
+**ยังไม่จบ:** กด Plant แล้วเปิดหน้าต่างเลือกเมล็ด ซึ่งบอทกดต่อไม่ได้ ⇒ **วงจรปลูก→รด→เก็บเกี่ยว ยังไม่ได้ยืนยัน**
+
+### ⚠️ เควสสายหลัก "มองไม่เห็นในแท็บเควส" = **ตั้งใจ ไม่ใช่บั๊ก**
+เซิร์ฟส่งหมวด `sunset` (สายหลัก) ในช่อง **Epic** ของ packet `QuestCategories` ส่วน `daily` อยู่ในช่อง
+`Categories` — และ client กรอง `pair.Key != EpicCategory` ออกจากแท็บโดยตั้งใจ เพราะสายหลัก
+ไปแสดงที่ **หน้า Story** แทน (ดูคอมเมนต์ยาวใน `ServerPlayer.Sync.SendQuestCategories` — ถ้าใส่ซ้ำจะเกิดแท็บซ้ำ)
+⇒ `MemoryBot` อ่านจาก `QuestSystem.VisibleCategories` เลย**ไม่มีวันเห็นสายหลัก** — เป็นข้อจำกัดของเครื่องมือเทส
+(ถ้าจะเทสสายหลักผ่านบอท ต้องอ่าน `QuestSystem.EpicCategory` เพิ่ม)
+
+### กับดักตอนเทสที่ควรจำ
+- `[abort] HandleTouch:75` = **ตัวละครตายอยู่** (ไม่ใช่บั๊กระบบ) — `cheat heal` แล้วลองใหม่
+- artifact จะมองไม่เห็นถ้าอยู่ไกลเกิน ~600 หน่วย — ต้องเดินไปใกล้ก่อน ไม่ใช่บั๊ก broadcast
+- `cheat farms` บอก "ยังไม่มีแปลงผัก" หมายถึง **ยังไม่ได้ปลูกพืช** ไม่ใช่ไม่มีแปลง (ข้อความกำกวม)
+
+---
+
+## UI: เริ่มใช้ของตัวเกมแล้ว
+
+- **ระบบประกาศ** → `UIManager.SystemMsg` (AlarmGroup ของเกม) + ลงแชท System
+- **ป้ายหน้า Title** (ชื่อเซิร์ฟ/สถานะ/ผู้เล่นสีแดง) → NGUI ของเกม โดย **โคลน `UILabel` ที่มีอยู่จริง**
+  (`tools/OnlineModeMod/TitleNativeUi.cs`) ได้ฟอนต์/atlas/material ชุดเดียวกับเกม ไม่ต้องโหลด asset
+  ถ้าหา label ต้นแบบไม่เจอ → ตกกลับไปใช้ IMGUI อัตโนมัติ
+- **ยังเป็น IMGUI:** ปุ่ม "เชื่อมต่อออนไลน์" · รายการเซิร์ฟมุมซ้ายล่าง · เมนู F8
+
+---
+
+# ✅ อัปเดตล่าสุด — 30 ส.ค. 2026 (ค่ำ 2): ระบบ 2 ท่าเรือ + บันทึกจุดเกิด (Returning Point)
+
+> **สถานะ:** Build ผ่าน 0 error, เซิฟรันอยู่, เกมเปิดแล้ว — **ยังไม่ได้เทสยืนยันด้วยตาว่าเหยียบ dock แล้ว log บันทึกจริง**
+
+## สรุปสั้น — ทำ 1 เรื่อง: ระบบ Returning Point (ท่าเรือบันทึกจุดเกิด)
+
+ก่อนหน้า: ฟื้น/วาร์ปกลับ = ไปจุดเกิดเดิมตลอด (entry point tile 40,177 ตายตัว)
+หลังแก้: **เดินเหยียบ dock บันทึกเป็น returning point → ฟื้น/วาร์ปกลับไปที่ dock ที่บันทึกไว้**
+
+### สิ่งที่แก้ (5 ไฟล์ + 1 data)
+
+| ไฟล์ | เปลี่ยนอะไร |
+|------|------------|
+| `ServerCore/SaveModels.cs` | เพิ่ม `HasReturningPoint`, `ReturningPointX`, `ReturningPointY` ใน PlayerSave |
+| `ServerCore/ServerPlayer.Death.cs` | เพิ่ม `_returningPoint` field + `HandleSetReturningPoint()` handler + save/load returningPoint |
+| `ServerCore/ServerPlayer.Combat.cs:364` | `ReviveAtSpawn()` ใช้ returningPoint แทน entry position |
+| `ServerCore/ServerPlayer.POI.cs:197` | `HandleWarpBack()` + `HandleGetWarpBackCost()` ใช้ returningPoint |
+| `ServerCore/ServerPlayer.Core.cs:522` | Register `SetReturningPoint` handler |
+| `ServerCore/ServerWorld.cs:1018-1032` | ท่าเรือใกล้จุดเกิด minDist 5 tile, ท่าเรือไกล minDist 40 tile |
+
+### Flow ที่ทำงาน
+
+1. **เข้าแมพ** → เกิดที่ entry (tile 40,177) — ท่าเรือ dock อยู่ใกล้ ~12 tile
+2. **เดินเหยียบ dock** → client ส่ง `SetReturningPoint` (PlayerTriggerMakeCheckPoint.cs) → เซิฟบันทึก tile ลง `_returningPoint` + ส่ง `BuildPoints()` กลับ
+3. **ตาย → กดฟื้น** → `ReviveAtSpawn()` วาร์ปกลับท่าเรือที่บันทึกไว้ (ไม่ใช่ entry เดิม)
+4. **WarpBack** → ใช้ returningPoint เหมือนกัน
+
+### ท่าเรือ 2 จุด
+
+1. **จุดใกล้** — dock ติดแม่น้ำ ~5-15 tile จากจุดเกิด (`poi_near_dock_0`)
+2. **จุดไกล** — dock ติดแม่น้ำ ~40+ tile จากจุดเกิด (`poi_dock_0`)
+
+### ⚠️ สำคัญ — ต้องลบ world save ถ้าต้องการ POI ใหม่
+
+ถ้ายังใช้ save เก่าอยู่ → dock ตัวเดิมจะยังอยู่ที่ตำแหน่งเดิม (12 tile จาก entry) ไม่ถูกย้าย
+ต้องลบ `server/saves-local-client/world.json` แล้วรีสตาร์ทเซิฟเพื่อให้ POI ถูกวางใหม่ตามระยะที่กำหนด
+
+### วิธีเทส
+
+1. เปิดเกม → เดินเข้า dock ใกล้จุดเกิด
+2. ดู log เซิฟ: `[checkpoint] test บันทึกจุดเกิดที่ tile ...`
+3. ตาย → กดฟื้น → ควรเกิดที่ dock ที่เหยียบไว้ ไม่ใช่ entry
+
+---
+
+# เนื้อหาก่อนหน้า (30 ส.ค. 2026 ค่ำ): แก้ 3 เรื่อง — เทสยืนยันในเกมจริงแล้ว
+
+> เจ้าของเทสยืนยันแล้วว่าเก็บของ/แล่เนื้อกลับมาทำงานได้ปกติ — หยุดไว้ตรงนี้ ที่เหลือทำต่อรอบหน้า
+
+## สรุปสั้น (ทำ 3 เรื่อง ทั้งหมด build ผ่าน 0 error + เทสยืนยันแล้ว)
+
+1. **สัตว์เดินทะลุหิน** (`AnimalSpawner.cs`) — เพิ่มกันชนรอบ POI/สิ่งปลูกสร้างตอนเดินสุ่ม/ไล่/หนี
+   (`IsSafeLand()` ใหม่ เช็ค `SnapshotArtifacts()`) จาก 3 → **6 tile** ตามที่เจ้าของสั่งหลังเทสรอบแรก —
+   ไม่ใช่ fix สมบูรณ์ (เซิร์ฟไม่รู้จักตำแหน่งก้อนหินจริง เป็นแค่หลบพื้นที่รอบ POI) เท่าที่เทสด้วยตา ~2 นาที
+   ไม่เจอซ้ำ แต่หินนอกเขต POI ยังชนได้เหมือนเดิม
+2. **ตีสัตว์แล้วไม่มีเลขดาเมจลอย** (`AnimalSpawner.Damage()`) — พบว่าเดิมไม่เคยส่ง `Damaged` message
+   เลยตอนผู้เล่นตีสัตว์ (ส่งแค่ตอนสัตว์กัดผู้เล่นกลับ) ทั้งที่ระบบ UI (`DamageWidgetIndicators`) พร้อมใช้
+   อยู่แล้วในเกมต้นฉบับ เพิ่ม broadcast ให้ครบ (โครงสร้างฟิลด์เดียวกับฝั่งที่ทำงานอยู่แล้ว) — ยังไม่ได้
+   เห็นเลขขึ้นจริงด้วยตา (จับจังหวะภาพไม่ทัน ตายเร็วเกิน) แต่โค้ด mirror ของที่ทำงานอยู่แล้วเป๊ะ
+3. **🐛 เก็บของ/แล่เนื้อไม่ได้เลยทั้งเกม (บั๊กจริงที่เจ้าของเจอเอง ไม่เกี่ยวกับโค้ด):** ต้นเหตุคือ**กระเป๋า
+   ตัวละครทดสอบ "test" เต็ม** (99/99 ช่อง) จากที่ผมสั่ง cheat ฆ่าสัตว์/เก็บของทดสอบสะสมมาหลาย
+   รอบก่อนหน้า — ทุก path ที่ต้องเก็บของ (`HandleCollect`/`HandleButchery`) เช็ค `InventoryFull` ก่อนเสมอ
+   เลย abort หมด (log: `[abort] ServerPlayer.Gathering.HandleCollect:541` ซ้ำๆ, ในเกมขึ้น "handler
+   144") **แก้โดยล้าง `Inventory`/`InventoryOrder` ในไฟล์เซฟ**
+   `server/saves-local-client/players/d48c28cb-....json` (มี backup
+   `.json.backup-before-clear-inv` ก่อนแก้) ไม่แตะ `EquippedItems` — เทสแล้วเก็บของได้ปกติ
+
+## สภาพเครื่องตอนหยุด
+
+- เซิร์ฟรันอยู่: `DurangoServer.exe --game-port 8291 --gateway-port 8290 --saves saves-local-client
+  --admin-token chunktest --enable-cheat` (log ล่าสุด: `server/realtest8.log`)
+- เกมเปิดอยู่ `dist/DurangoTH-v2/Durango.exe` — entity id ตัวละครทดสอบ:
+  `d48c28cb-bd25-476d-9ac3-0e33fd026c9f` (ชื่อ "test", กระเป๋าว่างแล้ว)
+- **`--enable-cheat` ยังเปิดอยู่** (เดิมปิด) — เอาออกก่อน deploy จริงถ้าจะทำ
+- **⚠️ MemoryBot bridge (8193) ไม่ reconnect เองตอนเซิร์ฟ restart เสมอ** (บางทีเกมถึงกับปิดตัวเองด้วย)
+  ต้องปิด-เปิดเกมใหม่ทุกครั้งที่ restart เซิร์ฟถ้าจะใช้ bridge ต่อ — ยังไม่ได้ไล่ต้นเหตุ
+- **บทเรียนการเทสด้วย bridge**: `interaction.refresh` เป็น async (ส่ง touch ไปเซิร์ฟ รอเมนูตอบทีหลัง)
+  เรียก `interaction.execute` ทันทีไม่รอ (~1-1.5 วิ) จะชน `interaction_action_not_available` เปล่าๆ
+  · `interaction.select_nearest` ไม่ระบุ `entity_id` จะเลือกวัตถุที่ใกล้ที่สุดจริงๆ (อาจเจอหิน/สัตว์อื่น
+  แทนเป้าที่ตั้งใจ) ต้องระบุ `entity_id` ตรงๆ ถ้ารู้อยู่แล้วว่าจะเลือกอะไร
+
+## เพิ่ม (ดึก): ปุ่มเชื่อมต่อออนไลน์ + deploy VPS + ปล่อย release สาธารณะ ✅
+
+### ปุ่ม "เชื่อมต่อออนไลน์" กลับมาแล้ว (`tools/OnlineModeMod/OnlineModePlugin.cs`)
+เจ้าของสั่ง: "เด้งมาหน้า main แล้วเข้าโหมด offline" → "ขอแค่มีปุ่มให้กดกลับไปโหลดออนไลน์" →
+"ให้ปุ่มแสดงแค่ตอนหน้า main เข้าโหมด offline" — ทำครบทั้ง 3 ข้อ:
+- ใส่ปุ่มกลับมากลางหน้า title (เดิมถอดออกตอนทำ auto-connect)
+- **ซ่อนปุ่มเมื่อต่อเซิร์ฟอยู่แล้ว** ผ่าน `IsConnectedToOurServer()` ใหม่
+  ⚠️ **ห้ามใช้ `GameManager.ClusterMode` ตัดสิน** — `EnsureOfflineTransport()` ของมอดเองตั้งเป็น
+  `Mode.Offline` ค้างไว้ตลอดตอนอยู่ title (ทริคให้ Loader อ่าน YAML ในเกมแทน /assets API ที่ตายแล้ว)
+  ⇒ ค่านั้นเป็น Offline เสมอถึงจะต่อสำเร็จ ตัวชี้วัดจริงคือ `GameManager.GatewayUrl`
+- **🐛 เจอบั๊กจริงระหว่างทาง:** `StartChecking()` (ยิง /knock) เดิมทำแค่ครั้งเดียวตอนเกมเปิด ถ้าตอนนั้น
+  เซิร์ฟล่มพอดี จะค้าง "ออฟไลน์" ตลอดไปจนปิดเกมใหม่ — แก้ให้เช็คซ้ำทุกครั้งที่กลับมาหน้า Main
+- เทสยืนยันในเกมจริงครบ (ปุ่มโผล่ตอนออฟไลน์ · กดแล้วต่อติด · หายไปเมื่อต่ออยู่แล้ว)
+
+### 🐛 บั๊กร้ายแรงที่เจอตอนแพ็ก (ถ้าปล่อยไป release พังทุกเครื่อง)
+ชุดแจกรุ่นใหม่ใช้ชื่อ `Durango.exe` (คู่กับ `Durango_Data`) แต่ `เล่นเกม.bat` และ
+`tools/Updater/Program.cs` **ยัง hardcode `DurangoV2.exe` ทั้งคู่** ⇒ updater หาไฟล์ไม่เจอ → ยกเลิก
+อัปเดตเงียบ ๆ ทุกครั้ง (บั๊ก silent-fallback ตัวเดิมกลับมา) และ launcher ขึ้น ERROR เปิดเกมไม่ได้เลย
+**แก้ให้รับทั้งสองชื่อแล้ว** (`GameExeNames` ใน Updater + ตัวเลือก `%GAMEEXE%` ใน .bat)
+
+⚠️ **`tools/package-game.ps1` ใช้ไม่ได้แล้ว** — มันแพ็กจาก `game/` ซึ่งตอนนี้เหลือแค่ `mods/`
+(ไม่มีตัวเกม) และ default `ManifestRepo` ยังเป็น `SuperCodeTH/...` ที่ไม่มีอยู่จริง
+รอบนี้ประกอบ staging เองที่ `dist/DurangoTH-Clean/` — **ถ้าจะแพ็กอีกควรอัปเดตสคริปต์นี้ก่อน**
+
+### สิ่งที่ปล่อยจริงแล้ว
+| รายการ | ค่า |
+|---|---|
+| VPS | `187.53.129.69` — `systemctl restart durango.service` ผ่าน, `/knock` ตอบปกติ |
+| binary เก่า | backup ไว้ที่ `/opt/durango/backups/DurangoServer.<timestamp>.bak` |
+| Release | https://github.com/ShuuuuShi/Durango-TH-Client/releases/tag/DurangoTH (tag `DurangoTH` ตัวเดียวหมุนใช้ซ้ำ) |
+| Zip | `DurangoTH-Clean.zip` 841.6 MB · sha256 `91e7558f...a90f` |
+| version | `2026-08-30-2203` |
+
+ชุดแจกตัดของ dev ออกหมด: ไม่มี log/`AppData`(ตัวละครเทส)/`MemoryBotCaptures`/`DurangoMemoryBot.dll`
+(บอทอัตโนมัติ) · เหลือ mod 2 ตัวที่ผู้เล่นใช้จริง (`DurangoClientCore` + `DurangoModMenu`) ·
+`server.txt` ชี้ VPS · ปิด perf overlay (F9) เป็น default ผ่าน `DURANGO_PERF_OVERLAY=0` ใน .bat
+**เทสชุดแจกจริงก่อนอัป**: เปิดจาก staging → โหลด mod 2 ตัว → ต่อ `187.53.129.69:8190` ติด → "No Character"
+(ยืนยันว่าไม่มีเซฟเทสหลุดไป) · ยืนยัน `releases/latest/download/manifest.json` resolve ถูกต้องหลังอัป
+
+⚠️ **ยังไม่ได้เทส**: วงจร auto-update จริง (ให้ updater ดาวน์โหลด+สลับไฟล์จาก release นี้)
+และ NO-GO 6 ข้อใน `docs/reports/BETA-FIRST-GAMEPLAY-READINESS-2026-08-30.md` ยังค้างอยู่ทั้งหมด
+
+## เพิ่ม (ค่ำ ต่อ): ข้อความ "handler 144" ที่เจ้าของเจอ = debug string ดิบ ไม่ใช่ error จริง — แก้แล้ว
+
+`Aborts.Reason()` (ดู `Aborts.cs`) เดิมถ้าไม่ใส่ `why` จะโชว์ `"File.Method:Line"` ดิบ ๆ ให้ผู้เล่นเห็นตรงๆ
+ในเกม (เช่น "144" ที่เจ้าของเจอ คือเลขบรรทัดของจุด `InventoryFull` check ที่ขยับไปมาตามโค้ด) —
+เพิ่ม property ใหม่ `InventoryFullMessage` (`ServerPlayer.Sync.cs`) ส่งข้อความจริงแทน:
+`"กระเป๋าเต็ม (50/50 ช่อง) — ทิ้งหรือฝากของเข้าโกดังอย่างน้อย 1 ชิ้นก่อนถึงจะเก็บเพิ่มได้"`
+ใช้ที่ 3 จุด (`ServerPlayer.Gathering.cs` HandleCollect + HandleButchery, `ServerPlayer.Farming.cs`
+HandleHarvest) — build ผ่าน 0 error, restart เซิร์ฟใช้แล้ว (**ยังไม่ได้เทสยืนยันด้วยตาว่าข้อความใหม่ขึ้นจริง**)
+
+**ตอบคำถามเจ้าของ — ไอเทมใช้หลายช่องไหม:** ไม่ ระบบนี้ **ทุกไอเทมกินช่องละ 1 เสมอ**
+(`Item.Size` ตั้งเป็น `1` ทุกจุดที่สร้างไอเทมในโค้ด ไม่มีที่ไหนตั้งค่าอื่น) กระเป๋าจำกัดที่ `PlayerInventoryMaxSize = 50`
+ชิ้น (นับจำนวนชิ้นตรงๆ ไม่ใช่ grid ขนาดต่างกันแบบเกมอื่น) ⇒ ต้องทิ้ง **1 ชิ้น** เสมอถึงจะเก็บของใหม่ได้ 1 ชิ้น
+
+## งานที่เจ้าของสั่งไว้แล้วยังไม่ได้ทำ (ค้างจาก session ก่อนหน้า ยังไม่แตะรอบนี้)
+
+1. **ตั้งค่า UI PC/Mobile ในหน้าเมนู** (Harmony postfix บน `Platform_PC.UsePCUI` ตอน preload)
+2. **Pathfinding ตอนสั่งเดินไกล** — หาเส้นทางหลบจุดที่เดินไม่ได้ **และวาดเส้นทางบน minimap**
+3. **ถอด PerfOverlay ออก** เมื่อไม่ต้องใช้แล้ว (`__DurangoPerfOverlay` GameObject แยกไว้ ถอดง่าย)
+4. รายการ NO-GO เดิมใน `docs/reports/BETA-FIRST-GAMEPLAY-READINESS-2026-08-30.md` ยังค้างทั้ง 6 ข้อ
+
+---
+
+
+
+> session ก่อนหน้าไม่ได้ "error" ในเกม — Claude Code เองพัง (`Prompt too long · automatic
+> compaction failed` เพราะ model `claude-opus-5` ที่เลือกไว้ใช้ไม่ได้ตอนนั้น) ระหว่างที่กำลังเทส
+> pathfinding เดินไปหลุมวาร์ป + revive อยู่ — ไม่มีโค้ดพังค้างจากรอบนั้น (`dotnet build` ผ่าน 0 error)
+
+## 0. สรุปสิ่งที่ตรวจ/แก้ในรอบนี้
+
+1. **`interaction_execute_needs_action_id` ที่ session ก่อนเจอ = ไม่ใช่บั๊ก** — เป็น guard ทำงานถูก
+   (สคริปต์ทดสอบด่วนลืมใส่ `action_id`) ตัวละครฟื้นแล้วเองตั้งแต่เกมรีสตาร์ทรอบก่อน
+2. **ยืนยันระบบ POI/Warp ทำงานถูกต้อง** — `interaction.select_nearest` ที่ไม่ระบุ `entity_id` จะเลือก
+   prop ที่ใกล้ที่สุด (อาจเจอก้อนหินแทน POI ถ้ามีอะไรใกล้กว่า) ต้องส่ง `entity_id` ของ POI ตรง ๆ ถึงจะ
+   ได้เมนู "Warp" — ทดสอบแล้วเมนูโผล่จริง (ยังไม่ได้กด Warp ให้จบเพราะ `interaction.refresh` เป็น
+   async ต้องรอเมนูตอบกลับก่อน execute ไม่งั้นชน "interaction_action_not_available")
+3. **🐛 พบ+แก้บั๊กจริง: สัตว์เดินทะลุเข้าไปในก้อนหิน/หน้าผาได้** (เจ้าของเจอเอง เห็น Oviraptor/Raptor
+   ฝังอยู่ในหิน) — ต้นเหตุ: `AnimalSpawner.cs` (`Process()`/`TryLandDestination`) เช็คแค่
+   `Terrain.IsLand()` (บก vs ทะเล) ก่อนเดิน ไม่เคยเช็ค collision วัตถุ (หิน/พุ่มไม้เป็นข้อมูลฝั่ง client
+   ล้วน ๆ เซิร์ฟไม่รู้จักตำแหน่งจริง) แก้ด้วยการเพิ่ม **กันชนรอบ footprint ของ POI/สิ่งปลูกสร้าง** แทน
+   (`IsSafeLand()` ใหม่ เช็ค `SnapshotArtifacts()` + buffer 3 tile) เพราะ POI มักเป็นจุดที่ของตกแต่ง
+   หนาแน่นพอดี (กรณีจริงที่เจอ: `poi_near_camp_warphole_0` วางทับก้อนหินใหญ่) — ใช้ร่วมกันทั้ง
+   เดินสุ่ม/ไล่/หนี (`Process()` wander + flee + chase ทั้ง 3 จุดเรียก `IsSafeLand` เดียวกันแล้ว)
+   ⚠️ **ไม่ใช่ fix สมบูรณ์** — เป็นการหลบเป็นพื้นที่ ไม่ใช่เช็ค collision จริง ก้อนหินที่อยู่นอกระยะ POI
+   ยังชนได้เหมือนเดิม build ผ่าน 0 error แล้ว **ยังไม่ได้ยืนยันด้วยตาในเกมจริง** (bridge MemoryBot
+   หลุดตอนรีสตาร์ตเซิร์ฟรอบล่าสุด ต้องดูด้วยตาเอง/รอ mod reconnect)
+4. `poi_near_camp_warphole_0` (tile 69,166 ขนาด 6×6) **ยังไม่ได้ย้ายออกจากหิน** —ลองหาจุดว่างรอบ ๆ
+   ไม่สำเร็จ (โซนนี้เป็นภูเขา/หินทั้งโซน มีหินให้เก็บแทบทุกจุดที่ลองในระยะ 10+ tile) ถ้าจะย้ายจริงต้องหา
+   ทิศที่พ้นทั้งโซนหินไปเลย (ยังไม่ได้ลอง) หรือปล่อยไว้ตามที่แก้ข้อ 3 (สัตว์จะเลี่ยงไม่เดินเข้าใกล้แล้ว)
+
+## สภาพเครื่องตอนหยุด (รอบนี้)
+
+- เซิร์ฟรันอยู่ (PID เปลี่ยนทุกครั้งที่ restart — เช็คด้วย `tasklist | grep -i durango`):
+  `DurangoServer.exe --game-port 8291 --gateway-port 8290 --saves saves-local-client
+  --admin-token chunktest --enable-cheat` (log: `server/realtest6.log`)
+- เกมเปิดอยู่ `dist/DurangoTH-v2/Durango.exe` (มอด 3 ตัวเดิม) — auto-reconnect เข้าเซิร์ฟใหม่ได้เอง
+  ทุกครั้งที่เซิร์ฟ restart (ไม่ต้องเปิดเกมใหม่) แต่ **MemoryBot bridge (8193) ไม่ reconnect ตาม** ต้อง
+  ปิด-เปิดเกมใหม่ถ้าจะใช้ bridge ต่อ
+- entity id ตัวละครทดสอบ: `d48c28cb-bd25-476d-9ac3-0e33fd026c9f` (ชื่อ "test")
+- `--enable-cheat` เปิดอยู่ (เดิมปิด) — ถ้าจะกลับไปโหมดปกติให้เอา flag นี้ออกตอน restart
+
+---
+
+
+
+> เจ้าของเทสแล้วบอกว่า **ลื่นแล้ว** — หยุดไว้ตรงนี้ ที่เหลือทำต่อรอบหน้า
+
+## 1. ต้นตอ "เดินไปแล้วโลกไม่โหลด" (แก้แล้ว ✅)
+
+`ilspycmd` อ่าน DLL ต้นฉบับที่แจกจริง → `TerrainBase.InitChunkPool` ฮาร์ดโค้ด **`range = 1`**
+แต่มอด `DurangoClientCore.ApplyWorldChunkRange` **ขยาย pool เป็น 81 ก้อน (range 4) ตอน runtime**
+(reflection ล้วน ไม่แตะ DLL — ยืนยันจาก log `world chunk pool expanded: 9 -> 81 (range=4)`)
+
+เซิร์ฟต้องรู้ว่า client **ถือ chunk ไว้กว้างแค่ไหน** ไม่ใช่ "ส่งไปกว้างแค่ไหน":
+`ChunkPool.Load()` ทิ้งก้อนนอกระยะ **เงียบ ๆ** (ไม่เข้า `_failedChunks` ด้วยซ้ำ) แต่เซิร์ฟจำว่าส่งแล้ว
+⇒ ข้ามการส่งซ้ำ ⇒ ก้อนนั้นไม่มีวันกลับมา ⇒ `IsEnoughChunkLoaded()` (ต้องครบ 9) ไม่ผ่าน
+⇒ `IsLoadingChunks` ค้าง true ถาวร terrain หยุดอัปเดตทั้งระบบ
+
+**แก้ (ฝั่งเซิร์ฟล้วน ไม่แตะตัวเกม):**
+- `ServerConfig.cs` — เพิ่ม `World.ClientChunkRetainRange` แยกจาก `ChunkSendRange`
+- `ServerPlayer.Core.cs` — `HandleSetChunk` ใช้ระยะที่ client ถือจริง ทั้งส่งและตัดสินว่าส่งซ้ำไหม
+- ค่าที่ใช้อยู่: `ChunkSendRange: 4` + `ClientChunkRetainRange: 4` (ต้องตรงกับ `WorldChunkRange` ของมอด)
+
+| ตั้งค่า | chunk ต่อการข้ามขอบ | ผล |
+|---|---|---|
+| send=4 retain=4 (**ที่ใช้อยู่**) | 7-17 | ลื่น โลกครบ |
+| send=4 retain=1 | 57-81 | โลกครบ แต่**กระตุกหนัก** (client rebuild ทั้งจอ) |
+| send=1 retain=1 (client เปล่า) | 3 | ถูกต้องสำหรับ client ที่ไม่มีมอด |
+| send=4 retain=4 แต่ client เป็น range 1 | — | **โลกไม่โหลด** (บั๊กเดิม) |
+
+⚠️ **`ClientChunkRetainRange` ต้องเท่ากับ `WorldChunkRange` ใน `data/mods/config/DurangoClientCore.json` เสมอ**
+
+## 2. ต้นตอ "กระตุกเป็นระยะ" ข้อที่ 2 (แก้แล้ว ✅) — เซิร์ฟห้ามแคชเอง
+
+เกมเรียก `RequestChunk(..., disableCache: false)` = **ตั้งใจให้แคช** (BestHTTP)
+แต่ `WebServer.cs` ยัด header เดียวกันให้ทุก response:
+```
+Cache-Control: no-cache, no-store, must-revalidate
+```
+`no-store` = สั่ง BestHTTP ห้ามเก็บแคชเด็ดขาด ⇒ ข้อมูล terrain ที่**ไม่เคยเปลี่ยน**
+ถูกดาวน์โหลดใหม่ทุกก้อนทุกครั้งที่ข้ามขอบ chunk ตลอดชีวิต
+
+**แก้:** `WebServer.Response` เพิ่ม `ETag` / `MaxAgeSeconds` + `NotModifiedResponse` (304)
+`Gateway.cs` ใส่ ETag (FNV-1a ของเนื้อข้อมูล) ให้ `/terrains/1/...`, `/terrains/1/ocean...`, `/terrains/1/rivers...`
+ยืนยันแล้ว: `Cache-Control: public, max-age=86400, immutable` + `If-None-Match` ตรง → **304 ขนาด 0 ไบต์**
+
+## 3. เทสใหม่ `--chunk-check`
+
+`test-client/ChunkStreamCheck.cs` — จำลอง `ChunkPool` ของ client (retain 1, ทิ้งนอกระยะ)
+เดินเป็นวงแล้ววนกลับจุดเดิม ชุด chunk ต้องเท่าเดิมเป๊ะ (ไม่ต้องรู้ขนาดแมพ)
+```
+dotnet run -- --chunk-check 127.0.0.1 <game-port> <gateway-port>
+```
+ผ่าน 12/0 · ตั้งค่าแบบเดิม (send=4 retain=4 กับ client range 1) → ตก 9 = จับบั๊กได้จริง
+
+## 4. ตัววัดเฟรมเรท (โหมดเทส — ยังเปิดอยู่ ต้องถอดออกทีหลัง)
+
+`tools/ModMenuMod/PerfOverlay.cs` ใน `DurangoModMenu` **v1.3.0**
+- **F9** เปิด/ปิด overlay · **F10** ปลดล็อกเพดานเฟรมชั่วคราว (ทดสอบ)
+- โชว์: FPS · เฟรมแย่สุด/3วิ · จำนวน spike · spike ที่เกิดตอนข้ามขอบ chunk · chunk ปัจจุบัน
+  · `targetFrameRate` · `vSync` · `option:fps` · `option:max_frame_rate` · quality level · ความละเอียด
+- เขียน spike ลง `dist/DurangoTH-v2/perf-overlay.log`
+- ปิดไม่ให้ขึ้นตั้งแต่แรกด้วย env `DURANGO_PERF_OVERLAY=0`
+
+### ค่าที่วัดได้จริง (สำคัญ)
+```
+targetFrameRate=65  vSync=0  quality=0  screen=1280x720
+option:fps=(ไม่ได้ตั้ง)  option:max_frame_rate=65
+FPS 36  เฟรมแย่สุด/3วิ 85ms
+```
+⇒ **ไม่ได้โดนล็อกที่ 30** (เพดาน 65, vSync ปิด) ที่ได้ ~30-36 คือทำได้จริงแค่นั้น
+⇒ `quality=0` ต่ำสุดอยู่แล้ว ลดกว่านี้ไม่ได้
+
+**ผู้ต้องสงสัยอันดับ 1 ที่ยังไม่ได้พิสูจน์: มอดขยาย chunk pool 9 → 81 = terrain object มากกว่าเดิม 9 เท่า**
+เทส A/B ที่ค้างไว้: ตั้ง `WorldChunkRange: 2` ใน `data/mods/config/DurangoClientCore.json`
+(พร้อม `ChunkSendRange`/`ClientChunkRetainRange` = 2) แล้วเทียบ FPS กับ range 4
+
+## 5. โค้ดที่ใส่ไว้แต่ยัง "ไม่ทำงาน"
+
+`GameServer.ApplyClientCoreMod()` + `ModNegotiation.HasMod()` — ตั้งใจให้เซิร์ฟตรวจเองรายคนว่า
+client มี `DurangoClientCore` ไหม แต่ **client ไม่เคยส่ง ModHello เลย** (`negotiation=optional`)
+⇒ ตอนนี้ตกไปใช้ `ClientChunkRetainRange` จาก config เสมอ
+จะได้ผลก็ต่อเมื่อเปิด `--require-mods` หรือทำให้มอดส่ง ModHello จริง
+
+## 6. งานที่เจ้าของสั่งไว้แล้วยังไม่ได้ทำ
+
+1. **ตั้งค่า UI PC/Mobile ในหน้าเมนู** — ตกลงแล้วว่า *ตั้งค่าแล้วรีสตาร์ต* และ *ใช้ Harmony ได้ แต่เทสให้ดี*
+   - retail DLL ตอนนี้ `Platform_PC.UsePCUI => true` (ใช้ UI PC อยู่)
+   - ตัวคุมทุกอย่างคือ property เดียว: `UIAnchorPolicy` เลือก anchor, `ConfigInstance` เลือก prefab
+     `config_menu` (mobile) vs `config_menu_pc`
+   - แผน: Harmony postfix `Platform_PC.UsePCUI` ตอน **preload** (ก่อน UI สร้าง) + เก็บค่าใน config ของมอด
+   - ⚠️ HANDOFF เตือน: Harmony hook `PlayerInfoManager` เคยทำ Mono ปิดตัวเองตอน boot — ตัวนี้เป็นแค่
+     property getter สั้น ๆ เสี่ยงน้อยกว่ามาก แต่ต้องเปิดเกมเทสจริงทุกครั้ง
+2. **Pathfinding ตอนสั่งเดินไกล** — ให้หาเส้นทางหลบจุดที่เดินไม่ได้ **และวาดเส้นทางบน minimap**
+3. **ถอด PerfOverlay ออก** เมื่อไม่ต้องใช้แล้ว (แยก GameObject `__DurangoPerfOverlay` ไว้แล้ว ถอดง่าย)
+4. รายการ NO-GO เดิมใน `docs/reports/BETA-FIRST-GAMEPLAY-READINESS-2026-08-30.md` ยังค้างทั้ง 6 ข้อ
+   (ข้อ 1 = `smoke-check` ตั้ง entity id เองโดยไม่เรียก `/players` — ยังตกอยู่ ไม่เกี่ยวกับงานรอบนี้)
+
+## 7. สภาพเครื่องตอนหยุด
+
+- เซิร์ฟรันอยู่: `server/bin/Debug/net9.0/DurangoServer.exe --game-port 8291 --gateway-port 8290 --saves saves-local-client --admin-token chunktest` (log: `server/realtest3.log`)
+- เกมเปิดอยู่ `dist/DurangoTH-v2/Durango.exe` (มอด 3 ตัว: DurangoClientCore 1.0.0 · DurangoMemoryBot 0.1.0 · DurangoModMenu 1.3.0)
+- MemoryBot bridge `127.0.0.1:8193` — ขับเกมด้วย `tools/MemoryBotClient/mb_helpers.py`
+  (`player.local` อ่านตำแหน่ง · `player.move_to` สั่งเดิน · `op=capture` ถ่ายจอ)
+- `server/data/client-mod-allowlist.json` อัปเดต hash ของ DurangoModMenu 1.3.0 แล้ว
+
+---
+
+# ✅ อัปเดตล่าสุด — 30 ส.ค. 2026: แก้ "เดินไปแล้วโลกไม่โหลด"
+
+## อาการ
+เข้าเกมได้ เห็นโลกรอบจุดเกิดปกติ แต่พอเดินออกไป **พื้นข้างหน้าไม่โหลดตาม**
+
+## ต้นตอ (ยืนยันจาก DLL ต้นฉบับที่ใช้จริง ไม่ได้เดา)
+`ilspycmd` อ่าน `dist/DurangoTH-v2/Durango_Data/Managed/Assembly-CSharp.dll` → `TerrainBase.InitChunkPool`
+ฮาร์ดโค้ด **`range = 1`** (3×3 = 9 chunk, pool 9 ช่อง) — แต่ `server/data/config.json` ตั้ง `ChunkSendRange: 4`
+
+กลไกที่พัง:
+1. `ChunkPool.Load()` **ทิ้ง chunk นอกระยะ 1 ทันทีแบบเงียบ ๆ** (ไม่เข้า `_failedChunks` ด้วยซ้ำ) ⇒ ส่ง 81 รับจริง 9
+2. เซิร์ฟจำว่า "ส่งไปแล้ว" ⇒ พอเดินข้ามขอบ chunk จึงข้ามการส่งซ้ำ — ก้อนที่ client ทิ้งจึง**ไม่มีวันกลับมา**
+3. `IsEnoughChunkLoaded()` ต้องครบ 9 ก้อน — พอไม่ครบ `IsLoadingChunks` **ค้าง true ถาวร** terrain หยุดอัปเดตทั้งระบบ
+
+## ที่แก้ (ฝั่งเซิร์ฟล้วน — **ไม่ได้แตะตัวเกม/DLL/มอดเลย**)
+- `server/ServerCore/ServerConfig.cs` — เพิ่ม `World.ClientChunkRetainRange` (default 1) แยกจาก `ChunkSendRange`
+- `server/ServerCore/ServerPlayer.Core.cs` — `HandleSetChunk` ใช้ **retain range** ตัดสินว่า client ยังถือก้อนไหนอยู่
+  (เดิมใช้ `ChunkSendRange` ซึ่งเป็นคนละเรื่องกับระยะที่ client เก็บจริง)
+- `config.json` ทุกตัว (root/server/islands/publish) → `ChunkSendRange: 1` + `ClientChunkRetainRange: 1`
+
+## เทสใหม่: `--chunk-check`
+`test-client/ChunkStreamCheck.cs` — จำลอง `ChunkPool` ของ client ต้นฉบับ (retain 1, ทิ้งนอกระยะ)
+เดินเป็นวงแล้ววนกลับจุดเดิม — ชุด chunk ต้องเท่าเดิมเป๊ะ (ไม่ต้องรู้ขนาดแมพ)
+
+```
+dotnet run -- --chunk-check 127.0.0.1 <game-port> <gateway-port>
+```
+
+| การตั้งค่า | ผล |
+|---|---|
+| send=1 retain=1 (**ค่าใหม่**) | ผ่าน 12 · ตก 0 · ทุกก้าวส่ง 3 ก้อนใหม่พอดี · ทิ้ง 0 |
+| send=4 retain=4 (**จำลองของเดิม**) | ผ่าน 3 · **ตก 9** · chunk ลดลง 9→6→4→4→4 ไม่กลับมาอีก |
+| send=4 retain=1 (ตั้งผิดในอนาคต) | ผ่าน 12 · ตก 0 (แค่เปลืองแบนด์วิดท์ 273 ก้อน — เทสเตือนให้) |
+
+`--recipe-check` ยังผ่าน (เส้นทางเข้าเกมไม่พัง)
+
+## ยังไม่ได้ทำ
+- **ยังไม่ได้เปิดเกมจริงเดินดูด้วยตา** — หลักฐานตอนนี้มาจากเทสจำลอง protocol เท่านั้น
+- `smoke-check` ตก — **บั๊กเก่าที่มีอยู่ก่อนแล้ว** (ตั้ง `id = "smoke-<guid>"` เองโดยไม่เรียก `/players`)
+  = ข้อ 1 ใน `docs/reports/BETA-FIRST-GAMEPLAY-READINESS-2026-08-30.md`
+- `World.ViewRangeTiles = 24` / margin 8 (exit 32 tile) ตั้งไว้สมัย ChunkSendRange 2
+  พอเหลือ range 1 พื้นที่โหลดแน่นอนคือ 16 tile ⇒ สัตว์/คนอาจโผล่นอกพื้นที่โหลด — **ยังไม่ได้แก้ รอเจ้าของตัดสิน**
+
+---
+
+# ✅ อัปเดตล่าสุด — 30 ส.ค. 2026: เข้าแมพสำเร็จ + เชื่อม Desktop Vanilla Server
+
+- Client ที่ใช้: `dist/DurangoTH-v2/` (DLL ต้นฉบับแท้ + client mod loader + `DurangoOnlineMode.dll`)
+- เซิร์ฟเวอร์ที่ทดสอบสำเร็จ: `C:\Users\thana\Desktop\Durango-Vanilla-Server`
+- พอร์ตของชุด Vanilla: gateway HTTP `8080`, game TCP `8191`; client `server.txt` = `http://127.0.0.1:8080`
+- ยืนยัน flow จริง: `/accounts` 200 → `/sessions` 200 → `/admission` 200 → `/entry` 200 → TCP connected → `[world] player joined` → `[chunk] ... 25 ก้อน`; client log ไม่มี exception
+- สาเหตุค้าง loading card ที่แท้จริง: `ServerPlayer.SendSpawnBurst()` ถูกลบ `Send(MakeAppearPlayer())` ออก ทำให้ client ได้เลเวล/กระเป๋า แต่ไม่มี local player และตำแหน่ง จึงไม่ส่ง `SetChunk`; `TerrainBase.IsReady` ไม่เคยเป็น true
+- วิธีแก้: คืน `Send(MakeAppearPlayer())` เป็น packet แรกใน `server/ServerCore/ServerPlayer.Sync.cs` ก่อน `SendSkills()` และ spawn burst อื่น
+- Vanilla Server ต้องมี `0Harmony.dll` ของ build ล่าสุด แม้เปิดด้วย `--mods __vanilla_mods_disabled__` เพราะ `PluginManager/MethodOverrideManager` โหลดชนิดนี้ตอนเริ่ม
+- Vanilla Server ต้องเปิดด้วย `--assetbundles C:\Users\thana\Desktop\Durango Opencode\dist\DurangoTH-v2\Durango_Data\StreamingAssets\AssetBundles`; endpoint `/assetbundles/Info.5.2.1.json` ต้องตอบ 200 ไม่เช่นนั้น prefab/terrain/weather จะเป็น null
+- `Start-VanillaServer.ps1` บน Desktop ถูกอัปเดต path AssetBundles แล้ว และ binary server ถูกอัปเดตเป็น build ที่มี self AppearPlayer fix
+
+---
 # HANDOFF — Durango / งานตัวเกมวันนี้
+
+---
+
+# 🔴 อัปเดตล่าสุด — 30 ส.ค. 2026 (ตี 2): **รีเซ็ตแนวทาง เริ่มใหม่จากเกมต้นฉบับ**
+
+> ⚠️ **อ่านส่วนนี้ก่อนทุกครั้ง** — ทุกอย่างที่อยู่ใต้เส้นแบ่งด้านล่างเป็น **ประวัติเก่า** ที่อ้างถึงโฟลเดอร์
+> ที่ลบไปแล้ว (`game/`, `game-backup/`, `dist/DurangoTH-Clean/`) และวิธีแพตช์แบบเก่า (แพตช์จาก
+> `Assembly-CSharp.dll.bak`) ซึ่ง **เลิกใช้แล้ว**
+
+## ค้นพบสำคัญที่สุด (พลิกแนวทางทั้งหมด)
+
+**DLL ที่แจกให้ผู้เล่นตลอดมา ไม่ใช่ "ต้นฉบับที่ถูกแพตช์" แต่เป็น DLL ที่ decompile แล้ว
+**คอมไพล์ใหม่ทั้งก้อน** จากซอร์สในโฟลเดอร์ `client/`**
+
+พิสูจน์จากโครงสร้าง IL:
+
+| | DLL ต้นฉบับแท้ | DLL ที่เคยแจก |
+|---|---|---|
+| คอมไพเลอร์ | Mono (retail) | Roslyn (คอมไพล์ใหม่) |
+| ชื่อ closure | `<Server>m__0`, `<GetServers>c__Iterator0` | `<>c__DisplayClass21_0`, `<GetServers>d__0` |
+| ขนาด | 6,313,984 | 6,156,288 |
+| รายการเซิร์ฟในเมนู | มีแค่ `free` = "Creative Island" | เพิ่ม Online/Single/Multi Play เข้ามาเอง |
+| `AutoConnectTarget` | **ไม่มี** | มี (ถูกเพิ่มเข้ามา) |
+
+**⇒ การ decompile→recompile คือสาเหตุที่เข้าโลกไม่ได้** ไม่ใช่แพตช์ตัวใดตัวหนึ่ง — ยืนยันด้วยการทดสอบ
+ตรง ๆ: เกมต้นฉบับแท้ **เล่นออฟไลน์ได้สมบูรณ์** (เห็นโลก ตัวละคร มินิแมป เมนูครบ) ส่วนตัวที่คอมไพล์ใหม่
+**ค้างที่การ์ด "Uncharted Island / Year Unknown" ทุกครั้ง**
+
+## สภาพโปรเจกต์ตอนนี้
+
+| โฟลเดอร์ | บทบาท |
+|---|---|
+| **`dist/DurangoTH-v2/`** | 🟢 ชุดที่ทำอยู่ — ก๊อปจาก `Original_Game/Durango_Ver_PC_Final/` + แพตช์เท่าที่จำเป็น · **เล่นออฟไลน์ได้แล้ว (ยืนยันด้วยภาพ)** · ใช้ชื่อเดิม `Durango.exe` + `Durango_Data` |
+| `Original_Game/Durango_Ver_PC_Final/` | ต้นฉบับแท้ — **ห้ามแตะ** ใช้เป็น baseline |
+| `keep-assets/` | ของที่กู้ไว้ก่อนลบ: `locales/th*` (**ไฟล์แปลไทย `.mo` — ไม่มีซอร์ส `.po` สร้างใหม่ไม่ได้**) + `mods/DurangoMemoryBot.dll` (**AutoFarm**) |
+| `tools/DllPatcher/` | ตัวแพตช์ — เพิ่มโหมด `--server-only` แล้ว |
+| `server/` | ซอร์สเซิร์ฟเวอร์ C# — deploy ขึ้น VPS แล้ว |
+| `client/` | ซอร์ส decompile — **อ้างอิงอย่างเดียว ห้ามเอาไป recompile ทับ DLL อีก** |
+| ~~`game/`, `game-backup/`, `dist/DurangoTH-Clean/`, `dist/DurangoTH/`~~ | ลบทิ้งแล้ว (คืนดิสก์ ~5 GB) |
+
+## แนวทางใหม่ที่เจ้าของสั่ง (ยังไม่ได้เริ่ม)
+
+> "ปรับตัว server ให้รองรับระบบจากตัว original เราจะเหลือของต้นฉบับมากที่สุด ไม่ตัดทิ้ง"
+
+**คือ: แก้ที่เซิร์ฟให้พูดภาษาที่ client ต้นฉบับเข้าใจ แทนการผ่าตัด client**
+
+จุดที่กำลังไล่ตอนถูกขัด: client ต้นฉบับได้รายการ cluster มาจากไหน —
+`Durango.Offline.Servers.GetServers(Dictionary<string, Cluster> clusters)` รับ dict เข้ามา
+ถ้าหาได้ว่า dict นี้มาจาก endpoint ของ gateway → **เซิร์ฟเราเสิร์ฟ endpoint นั้นก็จบ ไม่ต้องแพตช์ client เลย**
+(ดู `client/Durango.Logic.Clusters/Clusters.cs` — มี `[JsonProperty("clusters")]` ซึ่งบ่งว่ามาจาก JSON)
+
+## แพตช์ที่ใส่ไปแล้วในชุดใหม่ (`--server-only`)
+
+```bash
+dotnet build tools/DllPatcher/DllPatcher.csproj -c Debug
+./tools/DllPatcher/bin/Debug/net9.0/DllPatcher.exe \
+    "dist/DurangoTH-v2/Durango_Data/Managed/Assembly-CSharp.dll" --server-only
+# ได้ .server-only.dll แล้ว cp ทับตัวเดิม
+```
+
+| แพตช์ | สถานะบน DLL ต้นฉบับ |
+|---|---|
+| `GetServerTargetFromFile()` — อ่าน `server.txt` ตรง ๆ (ข้าม `#`, เติม `http://`, มี try/catch) | ✅ ใส่ได้ |
+| เปลี่ยนชื่อเมนูเป็น `DurangoTH CustomServer` (แทน "Creative Island") | ✅ ใส่ได้ |
+| `AutoConnectTarget` → ว่าง | ➖ ไม่ต้องใช้ (ต้นฉบับไม่มี property นี้) |
+| menu route (กดปุ่มแล้ว `ConnectTo`) | ❌ **ยังไม่ได้** — closure ชื่อไม่ตรง ต้องเขียนใหม่ให้ตรง Mono |
+| account lookup จาก gateway เรา | ❌ **ยังไม่ได้** — เหตุผลเดียวกัน |
+
+ข้อดี: ต้นฉบับมี `Durango.Offline.Server::ConnectTo(String)` และ `Server..ctor` ที่เช็ค `key == "free"`
+พร้อมตั้ง `Cluster.GatewayUrlRoot` อยู่แล้ว → เกาะสองจุดนี้ได้
+
+## ฝั่งเซิร์ฟ VPS — แก้แล้วและใช้งานอยู่
+
+- **IP ใหม่: `187.53.129.69`** (เอกสารเก่าเขียน `187.127.208.20` = ผิด/เครื่องเก่า)
+- รันเป็น `systemd` ชื่อ `durango.service` ที่ `/opt/durango/` (ไม่ใช่ `/root/durango/` แบบเอกสารเก่า)
+- SSH: `root@187.53.129.69` (รหัสถามเจ้าของ) — เครื่องนี้ใช้ **Posh-SSH** ได้ (`New-SSHSession`), ไม่มี plink
+- ⚠️ มี IP แปลกยิง brute-force SSH เข้ามา (`167.126.28.63` ล้มเหลว 55 ครั้ง/24 ชม.) — ควรปิด password auth (มี key อยู่แล้ว) + ลง fail2ban
+- **🐛 แก้บั๊ก 404 ตอนกดสร้างตัวละคร (deploy แล้ว)** — `server/ServerCore/Gateway.cs` route `/sessions`:
+  client แนบ id ตัวละคร dummy ของเกมรีเทล (Lv.60, ชื่อ = 8 ตัวแรกของ GUID, สุ่มใหม่ทุกครั้ง) มาด้วย ⇒
+  เซิร์ฟหาเซฟไม่เจอ ตอบ `character_not_found` 404 ⇒ ตอนนี้ถ้า id ไม่มีเซฟ = ถือว่า "ยังไม่ได้เลือกตัวละคร"
+  ให้ไปสร้างใหม่ได้ (ด่านกันสวมสิทธิ์ `AccountStore.TryClaim` ยังทำงานกับตัวละครที่มีจริงเหมือนเดิม)
+- ตั้งค่าปัจจุบัน: terrain `ri35te` · `--region-role Sandbox` · เซฟว่างเปล่า (ล้างหมดแล้ว)
+
+## ⚠️ ทางที่เดาผิดวันนี้ — อย่าเสียเวลาซ้ำ
+
+ทั้งหมดนี้ **ทดสอบแล้วว่าไม่ใช่สาเหตุ** ของอาการ "ค้างหน้าเข้าเกาะ":
+
+1. ❌ VPS / เน็ต / ISP — เซิร์ฟในเครื่องก็ค้างเหมือนกัน
+2. ❌ แผนที่ — ลอง `ri35te`, `ri40tr`, `ua60vol` ค้างหมด
+3. ❌ `--region-role` Rural vs Sandbox
+4. ❌ AssetBundles — ครบ 4,315 ไฟล์ ไม่มี 404 สักอัน
+5. ❌ `resources.assets` — ลองครบทั้ง 2 เวอร์ชัน (73,458,084 = ต้นฉบับ / 73,554,036 = ที่ build นี้ใช้จริง)
+   **หมายเหตุ: ตัวที่ถูกตั้งชื่อว่า "corrupt" (73,554,036) คือตัวที่ถูกต้องสำหรับ build นี้**
+6. ❌ `PatchSkipRegionSelect` (ที่เคยสงสัยว่าปิด UI ก่อนสร้างตัวละคร) — ปิดแล้วยังค้าง
+7. ❌ ข้อความ `level2/level3/resources.assets is corrupted!` — มีมาแต่ต้นฉบับ ไม่ใช่ตัวการ
+
+**บทเรียน:** ปัญหาอยู่ที่ตัว DLL ที่ recompile ไม่ใช่ config/data ใด ๆ
+
+## ⚠️ กับดักเรื่องดิสก์
+
+ดิสก์ C: เคยเต็ม **0.00 GB** ระหว่างเซสชันนี้ ทำให้**การแตกไฟล์ zip ไม่ครบ** (ได้ 4,190 จาก 4,478 ไฟล์)
+แล้วเกมฟ้อง `Failed to retrieve data (CheckSoundManager)` เพราะขาด `StreamingAssets/Audio/*.bnk`
+— **ถ้าเจอ error นี้ ให้เช็คว่าไฟล์ครบก่อนเสมอ** (`.bnk` ต้องมี 7 ไฟล์) ตอนนี้เหลือว่าง ~10 GB
+
+## งานถัดไป
+
+1. ไล่ต่อว่า client ต้นฉบับโหลด cluster list จาก endpoint ไหน → ทำให้เซิร์ฟเสิร์ฟรูปแบบนั้น
+2. เขียน 2 แพตช์ที่เหลือให้ตรงโครงสร้าง Mono (ถ้าข้อ 1 ไม่พอ)
+3. ใส่ `keep-assets/locales` + `mods/DurangoMemoryBot.dll` กลับเข้าชุดใหม่ (ต้องมี mod loader ก่อน)
+4. อัปเดต `docs/server/VPS-DEPLOY.md` ให้ตรงความจริง (IP/path/systemd ผิดหมด)
+5. ยังไม่ได้อัป GitHub release ใหม่ — ของเดิมที่ผู้เล่นโหลดอยู่ยังเข้าเกมไม่ได้
+
+---
 
 ## อัปเดตล่าสุด — 28 ส.ค. 2026: ตรวจบั๊กตัวเกมและ Server โดยเฉพาะ “มอนล่องหน”
 
@@ -1780,3 +2360,41 @@ powershell -File "C:\Users\thana\Desktop\Durango Claude\tools\connect-game.ps1"
 
 **`Gauge` ทำงานยังไง:** เป็น array ของ keyframe ที่ client ประมาณค่าเอง
 server ส่ง `[(ตอนนี้,ค่า),(อนาคต,เป้าหมาย)]` ครั้งเดียว **ไม่ต้อง tick ทุกเฟรม**
+
+---
+
+## 8. Daily quest bot test work (2026-08-29)
+
+- Added 15 test-only daily quests in `server/ServerCore/QuestData.cs`, including farming, water, equipment, ranged hunt, repair, storage, skill learning, eating, revive, rest, local warp, and island travel.
+- Added real server progress hooks for rest, local warp, and island travel. Island travel now validates dock blueprints from the authoritative artifact id instead of a derived POI index.
+- Added `tools/MemoryBotMod/MemoryBotDaily.cs`: a managed-state runner that reads the daily quest cache and sends the same game messages as the normal client. Test fixture cheats are opt-in through `DURANGO_MEMORYBOT_TEST=1`; the runner is not for production.
+- Added `daily.quests` read path, `bot.start` with `kind=daily`, `bot.status`, and a test-only UI controlled by `DURANGO_MEMORYBOT_UI=1`.
+- Fresh isolated regression run: daily checklist present `15/15`; rest `1/1`; local warp `1/1`; island travel `1/1` with destination `isle02`. Full quest regression was `32 passed / 2 failed`; the two failures are the pre-existing tutorial raft test because `tutorial_boat` is a system-only blueprint and the server correctly rejects player construction.
+- Build/install passed: server, client, test-client, and `DurangoMemoryBot.dll` all built with `0 errors`. The real EXE is currently opened at Title with no `DURANGO_AUTOCONNECT`; MemoryBot bridge is listening on `127.0.0.1:8193`.
+- Safety snapshot pushed before edits: branch `backup/pre-daily-quest-bot-20260829`, commit `86be79f`.
+# อัปเดตล่าสุด — 30 ส.ค. 2026: Main Menu เลือกตัวละคร + portrait จริงผ่านมอด
+
+- `DurangoOnlineMode` v1.2.0 เพิ่ม `CharacterPortraitFixer` แบบไม่ใช้ Harmony และไม่แก้ `Assembly-CSharp.dll`
+- มอดใช้รายชื่อตัวละครเดิมของ `PlayerSelectionSystem` จึงคงปุ่มเลือก/ดับเบิลคลิก/เข้าเกมของเกมเดิมไว้
+- ทุกการ์ดดึง `/players/{entityId}` แบบ no-cache แล้วใช้ `PortraitBuilder` วาด hair/beard/skin/eyes/lips/body size/colors/equipped outfit ตาม `display` จากเซิร์ฟ
+- งาน HTTP ทำใน background thread และนำผลมาวาดบน Unity main thread เพื่อไม่ให้ Main Menu ค้าง
+- เคยทดลอง Harmony hook `PlayerInfoManager` แล้วทำ retail Mono ปิดตัวเองระหว่าง boot จึงถอดออกทั้งหมด; ห้ามนำแนวทางนั้นกลับมา
+
+---
+
+# อัปเดตล่าสุด — 30 ส.ค. 2026: รวมระบบ Vanilla แบบละเอียด + portrait หน้าเลือกตัวละคร
+
+- `C:\Users\thana\Desktop\Durango-Vanilla-Server` เปิด `IslandTravel`, `Farming`, `Quests` และ `QuestChecklist` แล้ว
+- คัดลอก config รายเกาะแบบเต็มจาก `server-vanilla` เข้า `data/islands/isle01` และ `isle02`; คงทะเบียน terrain เริ่มต้น `ri35te` ที่เข้าแผนที่ได้ไว้
+- `DurangoOnlineMode` v1.1.0 แก้ portrait หน้าเลือกตัวละครผ่าน client mod เท่านั้น: บังคับ refresh `PlayerInfoManager` และห้าม retained local player ทับ `display` จาก `/players/{id}` ขณะอยู่หน้า title
+- ไม่ได้แก้หรือคอมไพล์ทับ `Assembly-CSharp.dll`; ไฟล์มอดที่ deploy คือ `dist/DurangoTH-v2/mods/DurangoOnlineMode.dll`
+- endpoint `/players/{id}` ของเซิร์ฟส่ง appearance ครบแล้ว (hair/beard/skin/eyes/lips/body size/portrait/colors/equipped body)
+
+---
+# อัปเดตล่าสุด — 30 ส.ค. 2026: ติดตั้ง Durango Memory Bot สำหรับทดสอบ
+
+- คัดลอก `keep-assets/mods/DurangoMemoryBot.dll` ไป `dist/DurangoTH-v2/mods/DurangoMemoryBot.dll`
+- SHA-256 ต้นทางและไฟล์ติดตั้งตรงกัน: `D37938C3FC3AD60AAE209F66B997EEE57FC4C59F84D228B8078E6EBF5967D9FE`
+- ยังไม่ได้เปิดเกมทดสอบ และไม่ได้ใช้ Computer Use
+
+---

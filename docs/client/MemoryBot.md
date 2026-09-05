@@ -110,3 +110,18 @@ command player.stop -> accepted
 ```
 
 The position change confirms that the mod can drive the local player through the game's managed API while the user keeps control of the mouse. The server still validates the underlying gameplay requests.
+
+## Daily quest runner (test only)
+
+The test-only daily runner reads the real daily quest cache and executes the game's managed APIs in this order: farming, water, equipment, ranged hunt, revive, repair, storage, skill learning, eating, rest, local warp, and island travel. It claims each reward when `auto_reward` is enabled.
+
+Start it through the same loopback protocol:
+
+```json
+{"request_id":"20","op":"command","name":"bot.start","kind":"daily"}
+{"request_id":"21","op":"read","path":"daily.quests","limit":32}
+{"request_id":"22","op":"command","name":"bot.status"}
+{"request_id":"23","op":"command","name":"bot.stop"}
+```
+
+`DURANGO_MEMORYBOT_TEST=1` enables test-fixture provisioning only (items, farms, level, and test animal). It is off by default. `DURANGO_MEMORYBOT_UI=1` adds the test-only in-game panel for Daily/Gather/Stop, fixture provisioning, and reward claiming. This runner is not enabled for production use.

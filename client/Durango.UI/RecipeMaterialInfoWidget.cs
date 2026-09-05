@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Durango.Logic.Item;
 using Durango.UI.Control;
 using Durango.UI.Popup;
 using Durango.Utils.Extensions;
@@ -28,6 +29,8 @@ public class RecipeMaterialInfoWidget : MonoBehaviour
 	private IList<RecipeInfoWidget.SlotStruct> _slots;
 
 	private bool _isInit;
+
+	private TagsViewerWidget _tagsViewer;
 
 	public UIWidget Widget
 	{
@@ -83,7 +86,68 @@ public class RecipeMaterialInfoWidget : MonoBehaviour
 		Vector3 position = _titleWidget.GetPosition(0.5f, 0f);
 		float num = UIUtility.WidgetsReposition(_materialItems, Vector3.down, position);
 		num += (float)_titleWidget.height;
+		num += ShowSlotKindTags(list, num);
 		Widget.height = (int)num;
+	}
+
+	private float ShowSlotKindTags(IList<RecipeInfoWidget.SlotStruct> list, float yOffset)
+	{
+		if (!EnsureTagsViewer())
+		{
+			return 0f;
+		}
+		_tagsViewer.PrepareForHost(Widget.width > 80 ? Widget.width : 280);
+		_tagsViewer.SettingBegin();
+		HashSet<string> seen = new HashSet<string>();
+		int n = 0;
+		for (int i = 0; i < list.Count; i++)
+		{
+			OrTagFilter tags = list[i].Tags;
+			if (tags == null)
+			{
+				continue;
+			}
+			for (int t = 0; t < tags.Length; t++)
+			{
+				TagFilterBase.Tag tag = tags[t];
+				if (string.IsNullOrEmpty(tag.Id) || !seen.Add(tag.Id))
+				{
+					continue;
+				}
+				_tagsViewer.AddTagData(tag.Id, tag.Level < 1 ? 1 : tag.Level);
+				n++;
+			}
+		}
+		bool any = _tagsViewer.SettingEnd() && n > 0;
+		_tagsViewer.gameObject.SetActive(any);
+		if (!any)
+		{
+			return 0f;
+		}
+		_tagsViewer.transform.localPosition = new Vector3(0f, 0f - yOffset - 8f, 0f);
+		return _tagsViewer.height + 16;
+	}
+
+	private bool EnsureTagsViewer()
+	{
+		if (_tagsViewer != null)
+		{
+			return true;
+		}
+		GameObject src = RecipeInfoWidget.FindBagTagsTemplate();
+		if (src == null)
+		{
+			return false;
+		}
+		GameObject go = gameObject.AddChild(src);
+		go.name = "SlotKindTags";
+		go.SetActive(value: true);
+		_tagsViewer = go.GetComponent<TagsViewerWidget>();
+		if (_tagsViewer != null)
+		{
+			_tagsViewer.PrepareForHost(Widget.width > 80 ? Widget.width : 280);
+		}
+		return _tagsViewer != null;
 	}
 
 	public void SetPinButton(bool? isPin)

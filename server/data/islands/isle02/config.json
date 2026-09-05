@@ -4,8 +4,11 @@
     "LifePerLevel": 8.0,
     "DamageBase": 2.0,
     "DamagePerLevel": 0.4,
+    "SpeciesStats": true,
+    "SpeciesReference": 2001,
     "CorpseSeconds": 150.0,
     "RespawnSeconds": 60.0,
+    "LifetimeSeconds": 300.0,
     "ChaseSpeed": 300.0,
     "FleeSpeed": 280.0,
     "SightTiles": 6.0,
@@ -20,7 +23,33 @@
     "InlandTilesPerSize": 3,
     "SpawnRadiusTiles": 30.0,
     "WanderRadiusTiles": 12.5,
-    "MinSeparationTiles": 4.0
+    "MinSeparationTiles": 4.0,
+    "ArtifactAvoidTiles": 1.5,
+    "NaturalAvoidRadius": 0,
+    "CliffAvoidTiles": 0,
+    "WanderTriesPerTick": 8,
+    "Herds": {
+      "Enabled": true,
+      "Template": "",
+      "CountScale": 0.25,
+      "SizeScale": 0.4,
+      "MaxHerds": 8,
+      "AndroidSafeOnly": false,
+      "RadiusTiles": 3.0,
+      "SeparationTiles": 8.0,
+      "WanderTiles": 5.0,
+      "DriftTiles": 10.0,
+      "DriftMinSeconds": 60.0,
+      "DriftMaxSeconds": 180.0,
+      "LevelMin": 1,
+      "LevelMax": 4,
+      "MinTilesFromEntry": 6.0,
+      "CarnivoreMinTilesFromEntry": 15.0
+    },
+    "Defense": {
+      "Enabled": true,
+      "Scale": 1.0
+    }
   },
   "Exp": {
     "KillBase": 4,
@@ -51,7 +80,28 @@
     "BuffStaminaSave": 0.1,
     "DebuffStaminaPenalty": 0.08,
     "LifeUpRegenPerSec": 1.0,
-    "PoisonDamagePerSec": 1.0
+    "PoisonDamagePerSec": 1.0,
+    "StomachacheSeconds": 300.0,
+    "StomachacheDamagePerSec": 0.7
+  },
+  "Sickness": {
+    "Enabled": true,
+    "DurationSeconds": 300.0,
+    "CraftDurationScale": 1.8,
+    "StaminaCostScale": 1.5,
+    "FatiguePerSec": 0.15,
+    "MoveSpeedScale": 0.65,
+    "BaseMoveSpeed": 500.0,
+    "ColdWetSeconds": 90.0,
+    "StomachacheStacksToSick": 3
+  },
+  "Save": {
+    "AutoSaveSeconds": 60,
+    "BackupEnabled": true,
+    "BackupIntervalHours": 4.0,
+    "BackupKeep": 12,
+    "BackupDir": "",
+    "BackupOnStartup": true
   },
   "CraftMenu": {
     "HiddenCategories": [
@@ -69,12 +119,51 @@
     "HideFreeItems": true,
     "AllowFreeBuild": false
   },
+  "Crafting": {
+    "MaterialLevel": true,
+    "EffortFormula": true,
+    "CollectBase": 2.5,
+    "CollectPerLevel": 0.25,
+    "CraftBase": 5.0,
+    "CraftPerLevel": 0.5,
+    "BuildBase": 10.0,
+    "BuildPerLevel": 1.0,
+    "GreatSuccess": true,
+    "GreatBase": 0.05,
+    "GreatLevelBonus": 1,
+    "GreatDurabilityBonus": 0.2,
+    "FailureEnabled": false,
+    "SuccessCorrection": 0.0,
+    "FailureKeepRatio": 0.5
+  },
+  "Death": {
+    "Enabled": true,
+    "ItemDrop": true,
+    "DropRatio": 0.5,
+    "PreventPerLevel": 0.0125,
+    "DeathPointSeconds": 300.0,
+    "GaugeRatios": [
+      0.6,
+      0.4,
+      0.2,
+      0.1
+    ],
+    "FatigueRecoveryRatios": [
+      0.3,
+      0.2,
+      0.1,
+      0.0
+    ],
+    "DeathCountDecaySeconds": 600.0,
+    "EquipWearRatio": 0.05,
+    "BoxBlueprint": "fur_box_03_leaf"
+  },
   "Spawn": [
     {
-      "Type": 2042,
-      "Name": "กิ้งก่า",
+      "Type": 2090,
+      "Name": "โคอีโลฟิซิสทุ่งหิมะ",
       "MinLevel": 10,
-      "MaxLevel": 12,
+      "MaxLevel": 13,
       "Quota": 6,
       "Behavior": "Flee",
       "MinTilesFromEntry": 0,
@@ -82,96 +171,74 @@
       "BehaviorEnum": 0
     },
     {
-      "Type": 2015,
-      "Name": "คอมป์โซกนาทัส",
+      "Type": 2093,
+      "Name": "พาโวมิมัส",
       "MinLevel": 10,
-      "MaxLevel": 13,
-      "Quota": 6,
-      "Behavior": "Flee",
-      "MinTilesFromEntry": 0,
-      "AttackCooltime": 3.0,
-      "BehaviorEnum": 0
-    },
-    {
-      "Type": 2033,
-      "Name": "โดโดฟิซิส",
-      "MinLevel": 11,
       "MaxLevel": 14,
-      "Quota": 4,
-      "Behavior": "Flee",
-      "MinTilesFromEntry": 0,
-      "AttackCooltime": 3.0,
-      "BehaviorEnum": 0
-    },
-    {
-      "Type": 2006,
-      "Name": "เฟนาโคดัส",
-      "MinLevel": 12,
-      "MaxLevel": 16,
-      "Quota": 4,
+      "Quota": 5,
       "Behavior": "Flee",
       "MinTilesFromEntry": 0,
       "AttackCooltime": 1.6,
       "BehaviorEnum": 0
     },
     {
-      "Type": 2017,
-      "Name": "โปรโตเซราท็อปส์",
+      "Type": 2010,
+      "Name": "แองคิโลซอรัส",
       "MinLevel": 12,
       "MaxLevel": 17,
       "Quota": 4,
       "Behavior": "FightBack",
-      "MinTilesFromEntry": 0,
-      "AttackCooltime": 1.3,
-      "BehaviorEnum": 1
-    },
-    {
-      "Type": 2009,
-      "Name": "พาราซอโรโลฟัส",
-      "MinLevel": 14,
-      "MaxLevel": 19,
-      "Quota": 3,
-      "Behavior": "FightBack",
       "MinTilesFromEntry": 4,
-      "AttackCooltime": 2.0,
+      "AttackCooltime": 1.6,
       "BehaviorEnum": 1
     },
     {
       "Type": 2000,
       "Name": "สเตโกซอรัส",
-      "MinLevel": 16,
-      "MaxLevel": 20,
-      "Quota": 2,
+      "MinLevel": 13,
+      "MaxLevel": 18,
+      "Quota": 3,
       "Behavior": "Flee",
       "MinTilesFromEntry": 6,
       "AttackCooltime": 2.1,
       "BehaviorEnum": 0
     },
     {
-      "Type": 2003,
-      "Name": "ทริเซราท็อปส์",
-      "MinLevel": 16,
+      "Type": 2008,
+      "Name": "แมมมอธ",
+      "MinLevel": 14,
       "MaxLevel": 20,
-      "Quota": 2,
+      "Quota": 3,
       "Behavior": "FightBack",
       "MinTilesFromEntry": 6,
-      "AttackCooltime": 1.4,
+      "AttackCooltime": 2.0,
       "BehaviorEnum": 1
     },
     {
-      "Type": 2002,
-      "Name": "โอวิแรปเตอร์",
-      "MinLevel": 13,
-      "MaxLevel": 18,
-      "Quota": 2,
-      "Behavior": "Aggressive",
-      "MinTilesFromEntry": 12,
-      "AttackCooltime": 1.3,
-      "BehaviorEnum": 2
+      "Type": 2020,
+      "Name": "ไดร์วูล์ฟ",
+      "MinLevel": 12,
+      "MaxLevel": 16,
+      "Quota": 3,
+      "Behavior": "FightBack",
+      "MinTilesFromEntry": 10,
+      "AttackCooltime": 1.5,
+      "BehaviorEnum": 1
     },
     {
-      "Type": 2001,
-      "Name": "แร็ปเตอร์",
+      "Type": 2070,
+      "Name": "หมาป่าขนขาว",
+      "MinLevel": 15,
+      "MaxLevel": 19,
+      "Quota": 2,
+      "Behavior": "FightBack",
+      "MinTilesFromEntry": 14,
+      "AttackCooltime": 1.5,
+      "BehaviorEnum": 1
+    },
+    {
+      "Type": 2138,
+      "Name": "เสือเขี้ยวดาบขนขาว",
       "MinLevel": 17,
       "MaxLevel": 20,
       "Quota": 1,
@@ -183,64 +250,69 @@
   ],
   "Zones": [
     {
-      "Id": "meadow",
-      "Name": "ทุ่งหญ้าหน้าบ้าน",
+      "Id": "snowfield",
+      "Name": "ทุ่งหิมะ",
       "OffsetTileX": 0.0,
       "OffsetTileY": 0.0,
-      "RadiusTiles": 14.0,
+      "RadiusTiles": 40.0,
       "Species": [
-        2042,
-        2015,
-        2033
+        2090,
+        2093,
+        2010,
+        2000
       ]
     },
     {
-      "Id": "forest",
-      "Name": "ชายป่า",
-      "OffsetTileX": 22.0,
-      "OffsetTileY": 6.0,
-      "RadiusTiles": 13.0,
+      "Id": "glacier",
+      "Name": "ธารน้ำแข็ง",
+      "OffsetTileX": 30.0,
+      "OffsetTileY": 20.0,
+      "RadiusTiles": 30.0,
       "Species": [
-        2006,
-        2017
+        2008,
+        2020
       ]
     },
     {
-      "Id": "highland",
-      "Name": "ที่ราบสูง",
-      "OffsetTileX": -8.0,
-      "OffsetTileY": 24.0,
-      "RadiusTiles": 13.0,
+      "Id": "wolf_den",
+      "Name": "ถ้ำหมาป่า",
+      "OffsetTileX": -25.0,
+      "OffsetTileY": -20.0,
+      "RadiusTiles": 25.0,
       "Species": [
-        2009,
-        2000,
-        2003
-      ]
-    },
-    {
-      "Id": "raptor_den",
-      "Name": "หุบแร็ปเตอร์",
-      "OffsetTileX": 26.0,
-      "OffsetTileY": -22.0,
-      "RadiusTiles": 10.0,
-      "Species": [
-        2002,
-        2001
+        2070,
+        2138
       ]
     }
   ],
   "World": {
-    "ChunkSendRange": 2,
-    "ViewRangeTiles": 24.0,
-    "ViewMarginTiles": 8.0,
+    "ChunkSendRange": 4,
+    "NaturalRegrowSeconds": 1200.0,
+    "ClientChunkRetainRange": 1,
+    "ViewRangeTiles": 16.0,
+    "ViewMarginTiles": 4.0,
     "ViewCheckSeconds": 0.4,
-    "ViewCulling": true
+    "ViewCulling": true,
+    "ResourceLevel": 0
   },
   "Tools": {
     "Enabled": true,
     "DurabilityBase": 20.0,
     "DurabilityPerTier": 20.0,
-    "WearPerUse": 1.0
+    "WearPerUse": 1.0,
+    "Deltas": {
+      "Enabled": true,
+      "Craft": 3.2,
+      "Collect": 1.6,
+      "Build": 3.2,
+      "Attack": 0.0768,
+      "Defense": 0.064,
+      "Taming": 10.0,
+      "ScaleToMax": true,
+      "ReferenceMax": 100.0,
+      "RepairDamageMin": 0.05,
+      "RepairDamageMax": 0.13
+    }
   },
   "Features": {
     "Gathering": true,
@@ -255,7 +327,7 @@
     "ToolDurability": true,
     "Chat": true,
     "IslandTravel": true,
-    "Jobs": false,
+    "Jobs": true,
     "Cooking": true,
     "Farming": true,
     "Livestock": false,
@@ -265,7 +337,7 @@
     "Quests": true,
     "QuestChecklist": true,
     "Pvp": false,
-    "LandPermission": false,
+    "LandPermission": true,
     "PartyAndClan": false,
     "Emotes": false,
     "Friends": false,
@@ -280,7 +352,7 @@
     "AddOns": false,
     "DyeAndBleach": false,
     "PrivateConversation": false,
-    "MaxPlayerLevel": 20
+    "MaxPlayerLevel": 0
   },
   "Weather": {
     "Enabled": true,
@@ -298,9 +370,9 @@
     "StaminaRegenPerSec": 1.2,
     "StaminaRegenDelaySeconds": 4.0,
     "StaminaRegenWhileResting": 10.0,
-    "StaminaCostCollect": 6.0,
-    "StaminaCostCraft": 4.0,
-    "StaminaCostBuild": 8.0,
+    "StaminaCostCollect": 2.0,
+    "StaminaCostCraft": 5.0,
+    "StaminaCostBuild": 3.0,
     "FatigueMax": 100.0,
     "FatiguePerSec": 0.027777778,
     "FatiguePerAction": 0.35,
@@ -314,7 +386,29 @@
     "StaminaPerWill": 0.5,
     "LifeDrainWhenExhausted": 0.6,
     "RestFatiguePerSec": 4.0,
-    "RestRangeTiles": 3.0
+    "RestRangeTiles": 3.0,
+    "FatigueVelocityBase": 0.04,
+    "FatigueVelocityPerLevel": 0.001,
+    "RegionLevel": 20,
+    "FatigueCostCollect": 0.4,
+    "FatigueCostCraft": 2.0,
+    "FatigueCostBuild": 1.2,
+    "FatigueCostCombat": 0.4,
+    "RestFatigueBase": 0.15,
+    "RestFatiguePerLevel": 0.0015,
+    "RestLifeBase": 0.45,
+    "RestLifePerLevel": 0.05,
+    "ThirstSeconds": 180.0,
+    "ThirstFatigue": 0.2,
+    "DrinkWaterSeconds": 180.0,
+    "DrinkWaterFatigue": -0.3,
+    "BuildSiteEnergyBase": 1.0,
+    "BuildSiteEnergyPerArea": 2.0,
+    "BuildEnergy": 1.0,
+    "DestructEnergyBase": 10.0,
+    "DestructEnergyPerDurability": 0.5,
+    "SatietyMax": 100.0,
+    "SatietyDecayPerSec": 0.016666668
   },
   "Starter": {
     "Recipes": [
@@ -425,6 +519,20 @@
     "WarpMatterPerPhase": 5,
     "WeeklyWarpMatterCap": 100
   },
+  "Android": {
+    "ClusterMode": "Online",
+    "WelcomeInfo": true,
+    "OnlineCountInChat": true,
+    "AlwaysResendChunks": true
+  },
+  "StyledBroadcastMinClientVersion": "0.1.4",
   "SkipPrologueVideo": true,
-  "TotalQuota": 34
+  "RegionTemplateId": "ri20te171228",
+  "MaxOnlinePlayers": 50,
+  "MaxPlayersPerIp": 8,
+  "TotalQuota": 27,
+  "PlayerIds": {
+    "Enabled": true,
+    "Required": false
+  }
 }

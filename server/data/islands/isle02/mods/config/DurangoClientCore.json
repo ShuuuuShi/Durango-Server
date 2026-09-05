@@ -1,0 +1,24 @@
+{
+  "Enabled": true,
+  "RequiredVersion": "1.0.0",
+  "SkipRegionSelection": true,
+  "WorldChunkRange": 4,
+  "ManagedMenus": [
+    "Skill",
+    "Craft",
+    "Quest",
+    "Estate"
+  ],
+  "EnabledMenus": [
+    "Skill",
+    "Craft",
+    "Quest",
+    "Estate"
+  ],
+  "HiddenMenus": [],
+  "RequiredVersionOfClient": "",
+  "AllowRawAndroidClient": true,
+  "RequiredAndroidBuild": "",
+  "AndroidDownloadUrl": "https://github.com/ShuuuuShi/Durango-TH-Client/releases/tag/DurangoTH",
+  "DownloadUrl": "https://github.com/ShuuuuShi/Durango-TH-Client/releases/tag/DurangoTH"
+}

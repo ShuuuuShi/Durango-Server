@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Durango.Logic.Clusters;
 using Durango.Utils;
@@ -31,6 +31,18 @@ public static class Servers
 				yield return server;
 			}
 		}
+		// [แก้เอง] 1 ก.ย. 2026 — เซิร์ฟชุมชนต้องมาเป็นตัวแรก = ตัวที่ถูกเลือกเป็นค่าเริ่มต้น
+		// 🐛 ก่อนหน้านี้ "Creative Island" (โหมดออฟไลน์ในเครื่อง) อยู่บนสุด ⇒ ผู้เล่นใหม่กด "เริ่ม"
+		//    ทันทีจะเข้าโลกออฟไลน์ ไม่ใช่เซิร์ฟเรา และเซฟออฟไลน์ในชุดแจกโหลดไม่ขึ้น
+		//    ⇒ เด้งกลับหน้าไตเติ้ลพร้อม "ไม่สามารถโหลดข้อมูลผู้เล่นได้" (ยืนยันจากการเทสจริง 1 ก.ย.)
+		yield return new Server("online", new Dictionary<string, string>
+		{
+            // [แก้เอง] 31 ส.ค. 2026 — ห้ามใส่ NGUI BBCode สี "[C2185B]...[-]" ตรงนี้
+            // label บางตัว (เช่นปุ่ม Back มุมซ้ายบนหน้า Select Character) ไม่ได้เปิด supportEncoding
+            // จะโชว์แท็กดิบ ๆ ให้ผู้เล่นเห็น ⇒ ใช้ข้อความล้วนเท่านั้น
+            { "en_US", "DurangoTH Community Server" },
+            { "ko_KR", "DurangoTH Community Server" }
+		});
 		yield return new Server("free", new Dictionary<string, string>
 		{
 			{ "en_US", "Creative Island" },
@@ -45,11 +57,6 @@ public static class Servers
 		{
 			{ "en_US", "Multi Play Mode" },
 			{ "ko_KR", "멀티플레이 모드" }
-		});
-		yield return new Server("online", new Dictionary<string, string>
-		{
-            { "en_US", "[C2185B]Dinoworld Server[-]" },
-            { "ko_KR", "[C2185B]Dinoworld Server[-]" }
 		});
 	}
 }

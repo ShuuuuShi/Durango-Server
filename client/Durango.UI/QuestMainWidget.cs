@@ -53,7 +53,7 @@ public class QuestMainWidget : MonoBehaviour, IUIInitializable
 		}
 		// [แก้เอง] แสดงได้แค่ 10 รายการ (ข้อมูลครบในเซิร์ฟ ความคืบหน้าทำงานปกติ)
 		// ลิสต์จาก client เรียง unfinished ก่อน + ตาม Order ของเควสอยู่แล้ว — ตัดท้าย 10 แรก
-		List<QuestToDo> shown = quests.Take(10).ToList();
+		List<QuestToDo> shown = quests;
 		_questView.SetList(shown);
 		if (KUtility.GetSize(shown) == 0)
 		{

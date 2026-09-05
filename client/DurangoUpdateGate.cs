@@ -20,51 +20,17 @@ internal static class DurangoUpdateGate
 
     public static bool EnsureUpdaterLaunchAllowed()
     {
-        if (_handled || Application.isEditor)
+        // [4 ก.ย. 2026] มือถือไม่มี DurangoUpdater/โฟลเดอร์เกม (dataPath = ไฟล์ APK) — ข้ามด่านนี้ไปเลย
+        if (_handled || Application.isEditor || Application.isMobilePlatform)
         {
             return true;
         }
 
         _handled = true;
-        if (HasUpdatedLaunchArgument())
-        {
-            UnityEngine.Debug.Log("[DurangoUpdater] verified launch from updater.");
-            return true;
-        }
-
-        string gameDir = Directory.GetParent(Application.dataPath)?.FullName;
-        if (string.IsNullOrEmpty(gameDir))
-        {
-            UnityEngine.Debug.LogError("[DurangoUpdater] cannot find game directory.");
-            Application.Quit();
-            return false;
-        }
-
-        string updaterPath = Path.Combine(gameDir, "DurangoUpdater.exe");
-        if (!File.Exists(updaterPath))
-        {
-            UnityEngine.Debug.LogError("[DurangoUpdater] DurangoUpdater.exe is missing: " + updaterPath);
-            Application.Quit();
-            return false;
-        }
-
-        try
-        {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = updaterPath,
-                WorkingDirectory = gameDir,
-                UseShellExecute = true
-            });
-            UnityEngine.Debug.Log("[DurangoUpdater] direct launch blocked; updater started.");
-        }
-        catch (Exception ex)
-        {
-            UnityEngine.Debug.LogError("[DurangoUpdater] cannot start updater: " + ex.Message);
-        }
-
-        Application.Quit();
-        return false;
+        // [4 ก.ย. 2026] เลิกใช้ DurangoUpdater.exe แล้ว (เจ้าของสั่งใช้ DinoWorld Launcher แทน)
+        // ด่านเดิม: ไม่มี -durango-updated ⇒ spawn DurangoUpdater แล้วปิดเกม — ตอนนี้ส่งต่อให้ LauncherGate
+        // (เช็ค env DINOWORLD_LAUNCH + launcher.session) เท่านั้น · hook นี้รัน BeforeSceneLoad = บล็อกก่อนขึ้น splash
+        return LauncherGate.Enforce();
     }
 
     private static bool HasUpdatedLaunchArgument()

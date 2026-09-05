@@ -67,6 +67,9 @@ public static class CombatSkillCheck
         {
             return null;
         }
+        // [4 ก.ย. 2026] token ผูกกับ user_id ที่ gateway ออกให้ (id ที่ไม่มีเซฟ = ได้ id ใหม่)
+        // ต้อง Auth ด้วย id นี้ ไม่งั้นโดน "token เป็นของคนอื่น" → player ไม่เข้าจริง → GetActions 0 ท่า
+        if (!string.IsNullOrEmpty(SessionClient.LastUserId)) { id = SessionClient.LastUserId; }
         Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         sock.Connect(host, gamePort);
         Connection conn = new Connection(sock);

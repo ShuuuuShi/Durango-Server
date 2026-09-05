@@ -4,13 +4,23 @@ namespace Messages;
 
 public struct GetPersonalProducts
 {
+	public const uint TypeCode = 5014u;
+
 	public SortCondition? Sort;
 
 	public int Skip;
 
 	public static void Pack(Packer packer, GetPersonalProducts val, bool hint = false)
 	{
-		packer.PackArrayHeader(2);
+		if (hint)
+		{
+			packer.PackArrayHeader(3);
+			packer.Pack(5014u);
+		}
+		else
+		{
+			packer.PackArrayHeader(2);
+		}
 		if (!val.Sort.HasValue)
 		{
 			packer.PackNull();

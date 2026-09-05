@@ -1,0 +1,1714 @@
+{
+  "0": {
+    "teatree_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 30.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "white_rose_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 15.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "chilipepper_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_110_129",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 35.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "jpapricot_02_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_30_49",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 6.0
+          },
+          {
+            "crop_reduce_fertilizer": 20.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "oxalis_seed_yellow": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 10.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "banana_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_170_189",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 3.0
+          },
+          {
+            "crop_reduce_fertilizer": 40.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "pumpkin_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_190_209",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 6.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "coffee_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_70_89",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 3.0
+          },
+          {
+            "crop_reduce_fertilizer": 40.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "oxalis_seed_blue": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 10.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "poppy_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_110_129",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 4.0
+          },
+          {
+            "crop_reduce_fertilizer": 30.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "onion_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_190_209",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 4.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "persimmontree_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 25.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "rose_misterlincoln_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 10.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "cosmos_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 15.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "oxalis_seed_red": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 10.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "desertagave_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 4.0
+          },
+          {
+            "crop_reduce_fertilizer": 40.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "flax_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_170_189",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 10.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "rice_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 14.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "potato_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_190_209",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 6.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "jpapricot_01_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 6.0
+          },
+          {
+            "crop_reduce_fertilizer": 20.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "mango_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 25.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "taro_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_110_129",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 35.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "sunflower_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 10.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "barley_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 14.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "jasmine_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_150_169",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 14.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "tomato_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 16.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "lavender_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 20.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "jpapricot_03_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_30_49",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 6.0
+          },
+          {
+            "crop_reduce_fertilizer": 20.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "orange_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_170_189",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 3.0
+          },
+          {
+            "crop_reduce_fertilizer": 40.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "dogrose_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_150_169",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 14.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "sugarcane_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_150_169",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 16.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "bean_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_170_189",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 10.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "cotton_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 20.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "violettulip_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 3.0
+          },
+          {
+            "crop_reduce_fertilizer": 30.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "mapletree_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 6.0
+          },
+          {
+            "crop_reduce_fertilizer": 20.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "rose_damask_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 15.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "oleander_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_50_69",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 8.0
+          },
+          {
+            "crop_reduce_fertilizer": 25.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "flax_tropical_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_110_129",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 12.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "grape_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 25.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "ginkgotree_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_70_89",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 6.0
+          },
+          {
+            "crop_reduce_fertilizer": 40.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "pepper_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_110_129",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 35.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "fig_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_130_149",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 2.0
+          },
+          {
+            "crop_reduce_fertilizer": 30.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "mushroom_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_90_109",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 16.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "wheat_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_170_189",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 10.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    },
+    "corn_seed": {
+      "max_level": 20,
+      "exp_table_id": "daily_count_170_189",
+      "masteries": {
+        "10": [
+          {
+            "crop_reduce_collect_time": 0.2
+          },
+          {
+            "crop_reduce_collect_energy": 0.2
+          }
+        ],
+        "20": [
+          {
+            "crop_random_tag_rate": 0.2
+          },
+          {
+            "crop_rare_tag_rate": 0.2
+          }
+        ],
+        "5": [
+          {
+            "crop_reduce_water": 1.0
+          },
+          {
+            "crop_reduce_fertilizer": 4.0
+          }
+        ],
+        "15": [
+          {
+            "crop_reduce_growth_time": 0.1
+          },
+          {
+            "crop_product_plus": 0.1
+          }
+        ]
+      }
+    }
+  }
+}

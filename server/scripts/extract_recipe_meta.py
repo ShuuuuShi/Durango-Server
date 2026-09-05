@@ -46,7 +46,13 @@ def load_asset(name):
     raise SystemExit('parse JSON ของ %s ไม่ได้: %s' % (name, last))
 
 
-recipes = load_asset('recipes')
+# [3 ก.ย. 2026] รับ data/assets/item/recipes.json (AssetRipper export จากตัว client ที่ผู้เล่นใช้) ได้ด้วย
+# — dump resources.strings.txt เป็นข้อมูลคนละรุ่นกับ client: เช่น cut_pillar ใน dump รับแค่ axe_onehand_tool
+#   แต่ client จริงรับ knife ด้วย ⇒ client ให้เลือกดาบหินได้ แล้วเซิร์ฟปฏิเสธ "ต้องใช้ขวาน" (ผู้เล่นรายงาน)
+if SRC.suffix.lower() == '.json':
+    recipes = json.loads(io.open(SRC, 'r', encoding='utf-8').read())
+else:
+    recipes = load_asset('recipes')
 
 
 def num(value, default=0.0):
@@ -94,7 +100,9 @@ out.append('using System.Collections.Generic;')
 out.append('')
 out.append('namespace DurangoServer.Core;')
 out.append('')
-out.append('// ข้อมูลรอบ ๆ สูตรคราฟต์ (generated จาก resources.strings.txt TextAsset `recipes`)')
+out.append('// ข้อมูลรอบ ๆ สูตรคราฟต์ (generated จาก %s)' % (
+    'data/assets/item/recipes.json — ข้อมูลชุดเดียวกับ client ที่ผู้เล่นใช้' if SRC.suffix.lower() == '.json'
+    else 'resources.strings.txt TextAsset `recipes`'))
 out.append('// สร้างด้วย scripts/extract_recipe_meta.py — อย่าแก้มือ')
 out.append('//')
 out.append('// ช่องวัตถุดิบอยู่ที่ RecipeRequirements.cs — ไฟล์นี้คือส่วนที่เหลือ:')

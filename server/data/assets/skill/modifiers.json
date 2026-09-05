@@ -1,0 +1,2458 @@
+{
+  "strength_plus": {
+    "default_value": 0,
+    "stat": 0,
+    "name": {
+      "힘": null
+    },
+    "apply_type": 0,
+    "description": {
+      "힘을 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "plus",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "strength_mul": {
+    "default_value": 0,
+    "stat": 0,
+    "name": {
+      "힘": null
+    },
+    "apply_type": 0,
+    "description": {
+      "힘을 비율로 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "rate",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "dexterity_plus": {
+    "default_value": 0,
+    "stat": 2,
+    "name": {
+      "솜씨": null
+    },
+    "apply_type": 0,
+    "description": {
+      "솜씨를 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "plus",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "dexterity_mul": {
+    "default_value": 0,
+    "stat": 2,
+    "name": {
+      "솜씨": null
+    },
+    "apply_type": 0,
+    "description": {
+      "솜씨를 비율로 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "rate",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "agility_plus": {
+    "default_value": 0,
+    "stat": 3,
+    "name": {
+      "민첩": null
+    },
+    "apply_type": 0,
+    "description": {
+      "민첩을 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "plus",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "agility_mul": {
+    "default_value": 0,
+    "stat": 3,
+    "name": {
+      "민첩": null
+    },
+    "apply_type": 0,
+    "description": {
+      "민첩을 비율로 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "rate",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "will_plus": {
+    "default_value": 0,
+    "stat": 5,
+    "name": {
+      "의지": null
+    },
+    "apply_type": 0,
+    "description": {
+      "의지를 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "plus",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "will_mul": {
+    "default_value": 0,
+    "stat": 5,
+    "name": {
+      "의지": null
+    },
+    "apply_type": 0,
+    "description": {
+      "의지를 비율로 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "rate",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "endurance_plus": {
+    "default_value": 0,
+    "stat": 4,
+    "name": {
+      "맷집": null
+    },
+    "apply_type": 0,
+    "description": {
+      "맷집을 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "plus",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "endurance_mul": {
+    "default_value": 0,
+    "stat": 4,
+    "name": {
+      "맷집": null
+    },
+    "apply_type": 0,
+    "description": {
+      "맷집을 비율로 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "rate",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "perception_plus": {
+    "default_value": 0,
+    "stat": 7,
+    "name": {
+      "눈치": null
+    },
+    "apply_type": 0,
+    "description": {
+      "눈치를 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "plus",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "perception_mul": {
+    "default_value": 0,
+    "stat": 7,
+    "name": {
+      "눈치": null
+    },
+    "apply_type": 0,
+    "description": {
+      "눈치를 비율로 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "rate",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "charisma_plus": {
+    "default_value": 0,
+    "stat": 1,
+    "name": {
+      "매력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "매력을 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "plus",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "charisma_mul": {
+    "default_value": 0,
+    "stat": 1,
+    "name": {
+      "매력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "매력을 비율로 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "rate",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "intelligence_plus": {
+    "default_value": 0,
+    "stat": 6,
+    "name": {
+      "지능": null
+    },
+    "apply_type": 0,
+    "description": {
+      "지능을 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "plus",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "intelligence_mul": {
+    "default_value": 0,
+    "stat": 6,
+    "name": {
+      "지능": null
+    },
+    "apply_type": 0,
+    "description": {
+      "지능을 비율로 올려준다": null
+    },
+    "increase_type": -1,
+    "reduce_type": "sum",
+    "operation": "rate",
+    "type": 0,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "accuracy_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "정확도": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "force_hit": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "빗나가지 않음": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "hit_rate_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "명중률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "attack_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "공격력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "damage_bonus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "피해량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "attack_rating_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "방어 관통": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "critical_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "치명도 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "critical_rate_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "치명타 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "critical_damage_bonus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "치명타 피해량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "groggy_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "기절 판정": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "mutilate_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "부위 손상 판정": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "attack_ratio_impact": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "타격 계수": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "attack_ratio_cut": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "베기 계수": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "attack_ratio_pierce": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "찌르기 계수": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "dodge_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "회피 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "force_dodge": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "완전 회피": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "defense_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "방어력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "guard_protection": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "피해감소": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "guard_protection_ratio": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "피해감소율": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "stamina_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "스태미나 소모": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "attack_stamina_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "공격 시 스태미나 소모": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "defense_stamina_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "방어 시 스태미나 소모": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "cooldown_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "재사용 대기시간": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "attack_cooldown_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "공격 액션 재사용 대기시간": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "defense_cooldown_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "방어 액션 재사용 대기시간": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "damage_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "피해 감소": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "damage_penalty": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "받는 피해": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "blow_power_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "저지력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "blow_resistance_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "경직 저항": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "counter_power_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "역습 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "max_health_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "최대 건강": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "max_energy_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "최대 에너지": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "max_fatigue_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "최대 피로도": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "active_time_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "판정 시간": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "max_estate_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "사유지 최대 면적": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      10
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "max_clan_estate_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "영토 최대 면적": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      10
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "armor_penetration_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "방어 무시 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "auto_guard_ratio": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "자동 무기막기 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "auto_evade_ratio": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "자동 회피 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "auto_dodge_ratio": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "자동 구르기 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "health_recovery": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "초당 건강 회복": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "life_recovery": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "초당 생명력 회복": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "stamina_recovery": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "초당 스태미나 회복": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "playback_rate": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "행동 속도": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7,
+      9
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "gathering_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "식물 채집 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "mining_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "채광 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "butchering_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "도축 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "disassembling_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "분해 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "weaponcraft_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "무기 제작 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "armorcraft_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "옷 제작 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "tailor_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "재봉 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "handicraft_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "공예 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "smith_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "금속 가공 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "cook_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "요리 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "furnishing_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "가구 제작 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "construction_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "건설 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "farming_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "농사 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "hiding_power": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "은신 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "swimming_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "수영 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "carry_capacity": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "운송 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "max_modular_size": {
+    "default_value": 2,
+    "reduce_type": "greatest",
+    "name": {
+      "최대 건축 면적": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "exp_multiplier": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "경험치 획득량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "skill_exp_multiplier": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "스킬 숙련치 획득량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "exp_multiplier_55": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "경험치 획득량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "skill_exp_multiplier_55": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "스킬 숙련치 획득량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "exp_multiplier_60": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "경험치 획득량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "skill_exp_multiplier_60": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "스킬 숙련치 획득량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "reduce_skill_research": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "스킬 연구 시간 감소": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "reduce_skill_research_55": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "스킬 연구 시간 감소": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "t_stone_multiplier": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "워프홀과 크레이터 발견시 티스톤 획득량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "poi_searching_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "장소 탐색 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "poi_discover_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "장소 발견 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "prevent_item_drop": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "사망 시 소지품 손실": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "reduce_sail_cost": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "항해 비용": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "reduce_warp_cost": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "워프 비용": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "taming_power_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "포획 능력": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "max_taming_pet_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "귀속 동물 수": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "heat_resistant_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "더위 저항 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "cold_resistant_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "추위 저항 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "humid_resistant_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "습기 저항 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "scorching_sun_resistant_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "땡볕 저항 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "gale_resistant_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "강풍 저항 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "snowstorm_resistant_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "눈보라 저항 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "poison_resistant_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "기름 안개 저항 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "auto_counter_ratio": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "자동 역습 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "all_gathering_ability_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "모든 채집 능력": null
+    },
+    "apply_type": -1,
+    "description": {
+      "": null
+    },
+    "increase_type": -1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "all_crafting_ability_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "모든 제작 능력": null
+    },
+    "apply_type": -1,
+    "description": {
+      "": null
+    },
+    "increase_type": -1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "all_constructing_ability_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "모든 건설 능력": null
+    },
+    "apply_type": -1,
+    "description": {
+      "": null
+    },
+    "increase_type": -1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "random_tag_mul": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "잠재/희귀 속성 획득 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "random_tag_mul_on_tool": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "잠재/희귀 속성 획득 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "dodge_active_time_ratio": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "구르기 판정 시간": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "collect_burst": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "채집물 추가 획득 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "great_success_plus_on_tool": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "대성공 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "great_success_plus_collect_on_tool": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "채집 대성공 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "great_success_plus_craft_on_tool": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "제작 대성공 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "oil_poison_resistant": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "기름독 저항": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "gathering_time_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "식물 채집 시간 감소": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "collect_fatigue_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "채집 피로도 감소": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "craft_fatigue_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "제작 피로도 감소": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "pet_exp_multiplier": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "동물 경험치 획득량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  },
+  "reduce_satiety_ratio": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "포만감 감소": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "energy_recovery": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "초당 에너지 회복": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": "icon_se_food_power"
+  },
+  "poi_searching_cooldown_time": {
+    "default_value": 10,
+    "reduce_type": "least",
+    "name": {
+      "탐색 재사용 대기시간(초)": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "recoveryrate_weaponcraft": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "무기 제작 복구율": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "recoveryrate_armorcraft": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "옷 제작 복구율": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "recoveryrate_handicraft": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "공예 복구율": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "recoveryrate_smith": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "금속 가공 복구율": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "recoveryrate_tailor": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "재봉 복구율": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "recoveryrate_furnishing": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "가구 제작 복구율": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "recoveryrate_construction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "건설 복구율": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "recoveryrate_cook": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "요리 복구율": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "great_success_plus_collect": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "채집 대성공 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "great_success_plus_craft": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "제작 대성공 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "success_plus_craft": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "제작 성공률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "great_success_plus_collect_rainy": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "비오는 날 채집 대성공 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "great_success_plus_craft_rainy": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "비오는 날 제작 대성공 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "collect_time_reduction_safe": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "개인섬/도시섬 채집 시간 단축": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "craft_time_reduction_safe": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "개인섬/도시섬 제작 시간 단축": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_collecting_time_reduction": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "채집 시간 감소": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_fixed_collect_duration": {
+    "default_value": 86400,
+    "reduce_type": "least",
+    "name": {
+      "자연물 채집 시간 고정": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_fixed_growable_collect_duration": {
+    "default_value": 86400,
+    "reduce_type": "least",
+    "name": {
+      "농작물 채집 시간 고정": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_fixed_craft_duration": {
+    "default_value": 86400,
+    "reduce_type": "least",
+    "name": {
+      "제작 시간 고정": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_fixed_build_duration": {
+    "default_value": 86400,
+    "reduce_type": "least",
+    "name": {
+      "건설 시간 고정": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_entrust_deduction_rate": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "맡김 제작 시간 감소": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_postprocess_deduction_rate": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "건설 완료 시간 감소": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_growth_time_deduction_rate": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "농사 완료 시간 감소": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_collect_success_amplifier": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "자연물 채집 성공률 증가": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_farm_collect_success_amplifier": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "농작물 채집 성공률 증가": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_craft_success_amplifier": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "제작 성공률 증가": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_build_success_amplifier": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "건설 성공률 증가": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_farm_survivability_amplifier": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "농사 성공률 증가": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "normal_speed_bonus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "평시 이동 속도 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_living_action_fixed_duration": {
+    "default_value": 86400,
+    "reduce_type": "least",
+    "name": {
+      "제작/채집/건설/농사 행동 시간 고정(초)": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_living_action_deduction_rate": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "제작/건설/농사 완성 시간 감소": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "bm_living_success_amplifier": {
+    "default_value": 0,
+    "reduce_type": "greatest",
+    "name": {
+      "제작/채집/건설/농사 성공률 증가": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "warp_rush_reward_multiplier": {
+    "default_value": 1,
+    "reduce_type": "greatest",
+    "name": {
+      "워프러시 보상 배율": null
+    },
+    "apply_type": 1,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": ""
+  },
+  "battle_move_speed_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "전투 이동 속도 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": [
+      7
+    ],
+    "icon": ""
+  },
+  "volcanic_heat_resistant_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "열기 저항 증가": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "icon_se_food_power"
+  }
+}

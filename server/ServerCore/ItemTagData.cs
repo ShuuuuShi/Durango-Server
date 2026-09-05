@@ -21,7 +21,7 @@ public static class ItemTagData
     private static Tag T(string id, int level) => new Tag { Id = id, Level = level };
 
     /// <summary>prototype → tag ทั้งหมดของไอเทมชิ้นนั้น</summary>
-    public static readonly Dictionary<string, Tag[]> Map = new Dictionary<string, Tag[]>
+    public static Dictionary<string, Tag[]> Map = new Dictionary<string, Tag[]>
     {
         { "air_freshener_high", new[] { T("incense_store",1) } },
         { "air_freshener_normal", new[] { T("incense_store",1) } },

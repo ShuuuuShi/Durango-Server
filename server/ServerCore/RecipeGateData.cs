@@ -21,7 +21,7 @@ namespace DurangoServer.Core;
 public static class RecipeGateData
 {
     /// <summary>รหัสสูตร → (ความสามารถที่ต้องใช้ (Shared.Ability.Derived ตัวเลข), ตัวคูณของ "N × เลเวลตัวละคร")</summary>
-    public static readonly Dictionary<string, (int Ability, float LevelMultiplier)> Required =
+    public static Dictionary<string, (int Ability, float LevelMultiplier)> Required =
         new Dictionary<string, (int, float)>
     {
         { "antidote_heatpoison", (217, 0.75f) }, { "artifact_repair_kit_01", (210, 0.5f) }, { "artifact_repair_kit_02", (210, 0.5f) },
@@ -267,7 +267,7 @@ public static class RecipeGateData
 /// <summary>เหมือน <see cref="RecipeGateData"/> แต่สำหรับแบบก่อสร้าง (blueprint) — สกัดจากฟิลด์เดียวกัน</summary>
 public static class BlueprintGateData
 {
-    public static readonly Dictionary<string, (int Ability, float LevelMultiplier)> Required =
+    public static Dictionary<string, (int Ability, float LevelMultiplier)> Required =
         new Dictionary<string, (int, float)>
     {
         { "2018_summer_pool_01_w", (219, 0.75f) }, { "2018_summer_pool_02_w", (219, 0.75f) }, { "2018_summer_sunbed_01", (219, 0.5f) },

@@ -87,6 +87,9 @@ public partial class ServerWorld
     /// <summary>รอยแยก/วาร์ปเรกเซเลอเรเตอร์ — state machine ของกิจกรรมป้องกันคลื่นสัตว์ (ดู WarpAcceleratorManager)</summary>
     public WarpAcceleratorManager WarpAccelerators { get; }
 
+    /// <summary>ที่ดินส่วนตัวบนเกาะนี้</summary>
+    public EstateManager Estates { get; }
+
     public ServerWorld(TerrainStore terrain, string serverName)
     {
         Terrain = terrain;
@@ -94,6 +97,7 @@ public partial class ServerWorld
         Animals = new AnimalSpawner(this);
         Weather = new ServerWeather(this);
         WarpAccelerators = new WarpAcceleratorManager(this);
+        Estates = new EstateManager(this);
     }
 
     // จุดเกิด = entry point ของ terrain (1 tile = 200 หน่วย client)
@@ -123,7 +127,9 @@ public partial class ServerWorld
 
         // ให้คนที่อยู่ในระยะเห็นคนใหม่ทันที (คนไกลจะเห็นเองตอน TickVisibility รอบถัดไป)
         AnnouncePlayer(player);
-        Console.WriteLine($"[world] player joined: {player.EntityId} ({player.Name}), total={Count}, artifacts={artifacts.Length}, สัตว์={Animals.Count}");
+        Console.WriteLine($"[world] player joined: {player.EntityId} ({player.Name}), total={Count}, artifacts={artifacts.Length}, สัตว์={Animals.Count}, client={player.ClientDescription}");
+        // [3 ก.ย. 2026] มือถือของแท้ไม่มีตัวเลขคนออนไลน์บนแท็บแชทแบบ PC ชุดเรา ⇒ เซิร์ฟบอกให้เอง
+        NotifyOnlineCount(player, joined: true);
         // [แก้เอง] ระบบ mod: แจ้ง mod ที่ลงทะเบียน OnPlayerJoined ไว้
         PluginManager.Instance?.FirePlayerJoined(player);
     }
@@ -136,8 +142,67 @@ public partial class ServerWorld
         }
         AnnounceGone(player.EntityId);
         Console.WriteLine($"[world] player left: {player.EntityId} ({player.Name}), total={Count}");
+        NotifyOnlineCount(player, joined: false);
         // [แก้เอง] ระบบ mod: แจ้ง mod ที่ลงทะเบียน OnPlayerLeft ไว้
         PluginManager.Instance?.FirePlayerLeft(player);
+    }
+
+    /// <summary>
+    /// [3 ก.ย. 2026] "ระบบเหมือน PC" ให้มือถือ (ServerConfig.Android):
+    ///   · คนที่เพิ่งเข้า (ถ้าเป็นมือถือ) ได้ popup ยินดีต้อนรับ + จำนวนคนออนไลน์
+    ///   · มือถือคนอื่น ๆ ได้บรรทัดแชทช่อง System "X เข้าเกม/ออกจากเกม · ออนไลน์ N คน"
+    /// PC ชุดเราไม่ได้รับ (มีตัวเลขบนแท็บแชทจาก /knock อยู่แล้ว — ChattingTabList) จะได้ไม่ซ้ำ
+    /// </summary>
+    private void NotifyOnlineCount(ServerPlayer who, bool joined)
+    {
+        AndroidConfig cfg = ServerConfig.Current?.Android;
+        if (cfg == null) return;
+        int online = Count;
+        if (joined && cfg.WelcomeInfo && who.WantsServerSideOnlineCount)
+        {
+            // เกมของแท้ไม่แสดง Info ⇒ ใช้ RadioNotice (popup + บรรทัดในแท็บ "ระบบ")
+            who.SendNotice($"ยินดีต้อนรับสู่ {ServerName} · ออนไลน์ตอนนี้ {online} คน");
+        }
+        if (!cfg.OnlineCountInChat) return;
+        string name = string.IsNullOrEmpty(who.Name) ? "ผู้เล่น" : who.Name;
+        string text = joined
+            ? $"{name} เข้าเกม · ออนไลน์ {online} คน"
+            : $"{name} ออกจากเกม · ออนไลน์ {online} คน";
+        ServerPlayer[] snapshot;
+        lock (_lock)
+        {
+            snapshot = _players.ToArray();
+        }
+        foreach (ServerPlayer p in snapshot)
+        {
+            if (p == who || !p.WantsServerSideOnlineCount) continue;
+            p.SendSystemChat(text);
+        }
+    }
+
+    /// <summary>
+    /// [3 ก.ย. 2026] บรอดแคสต์ Info (popup) ให้ทุกคน — ข้อความแบบมีสไตล์ "##bc|d=|z=|c=|ข้อความ"
+    /// ส่งเต็ม ๆ เฉพาะ client ที่รู้จัก (CustomClient ≥ StyledBroadcastMinClientVersion)
+    /// ที่เหลือ (มือถือของแท้ / PC รุ่นเก่า) ได้เฉพาะข้อความ ไม่งั้นเห็นรหัสดิบบนจอ
+    /// </summary>
+    public void BroadcastInfo(string payload)
+    {
+        string plain = ClientPlatform.PlainBroadcastText(payload);
+        ServerPlayer[] snapshot;
+        lock (_lock)
+        {
+            snapshot = _players.ToArray();
+        }
+        foreach (ServerPlayer p in snapshot)
+        {
+            if (p.IsAndroid)
+            {
+                // [4 ก.ย. 2026] เกมมือถือของแท้ไม่แสดง Info เลย ⇒ ส่งเป็น RadioNotice (popup ของเกมเอง)
+                p.SendNotice(plain);
+                continue;
+            }
+            p.Send(new Info { Text = p.SupportsStyledBroadcast ? payload : plain });
+        }
     }
 
     /// <summary>
@@ -792,6 +857,29 @@ public partial class ServerWorld
     /// AnimalSpawner ตั้งใจไม่เซฟสัตว์) และ WarpAcceleratorManager.Process() เรียกฟังก์ชันนี้ได้บ่อยมาก
     /// (ทุก tick ที่สถานะเปลี่ยน) — เรียก MarkDirty ทุกครั้งจะยิง disk I/O ถี่เกินจำเป็นโดยไม่มีประโยชน์
     /// </summary>
+    /// <summary>
+    /// [4 ก.ย. 2026] เติมโมเดล (Display.Parts) ของสิ่งปลูกสร้างที่เพิ่งสร้างเสร็จ แล้ว re-announce
+    /// (ไซต์ถูกส่งด้วย Parts เปล่า — ดู ArtifactFactory.Make ⇒ ต้องเติมตอนเสร็จ ไม่งั้นสร้างเสร็จแล้วมองไม่เห็น)
+    /// </summary>
+    public void RefreshArtifactDisplayParts(string entityId, string blueprintId)
+    {
+        AppearArtifact updated;
+        lock (_artifactLock)
+        {
+            if (!_artifacts.TryGetValue(entityId ?? string.Empty, out AppearArtifact a))
+            {
+                return;
+            }
+            ArtifactDisplay display = a.Display;
+            display.Parts = ArtifactFactory.BuildParts(blueprintId);
+            a.Display = display;
+            _artifacts[entityId] = a;
+            updated = a;
+        }
+        AnnounceArtifact(updated);
+        MarkDirty();
+    }
+
     public void SetArtifactWarpAccelerator(string entityId, Messages.WarpAccelerator state)
     {
         AppearArtifact updated;
@@ -818,7 +906,8 @@ public partial class ServerWorld
         WorldSave save = new WorldSave
         {
             TerrainId = Terrain.TerrainId,
-            RemovedNaturals = Terrain.GetRemovedNaturals()
+            RemovedNaturals = Terrain.GetRemovedNaturals(),
+            RegrowableNaturals = Terrain.GetRegrowableNaturals()
         };
         lock (_artifactLock)
         {
@@ -854,6 +943,8 @@ public partial class ServerWorld
             }
             save.ArtifactMaterials[kv.Key] = slots;
         }
+
+        save.Estates = Estates.ToSave();
 
         // แปลงผัก — เก็บ "จำนวนที่เหลือจริง" จาก generator ไปด้วย ไม่งั้นรีสตาร์ทแล้วผลผลิตเกิดใหม่
         FarmPlot[] plots = SnapshotFarms();
@@ -912,6 +1003,7 @@ public partial class ServerWorld
         }
 
         int naturals = Terrain.ApplyRemovedNaturals(save.RemovedNaturals ?? new List<int[]>());
+        Terrain.ApplyRegrowableNaturals(save.RegrowableNaturals);
         save.Artifacts ??= new List<ArtifactSave>();
         save.Farms ??= new List<FarmSave>();
         save.Boxes ??= new Dictionary<string, List<ItemSave>>();
@@ -996,9 +1088,10 @@ public partial class ServerWorld
 
         // แปลงผัก — ต้องหลัง artifact เพราะ ApplyFarmToArtifact ต้องเจอ artifact ในตารางแล้ว
         LoadFarms(save.Farms);
+        Estates.Load(save.Estates);
 
         _dirty = false;
-        Console.WriteLine($"[save] โหลดโลกแล้ว: สิ่งปลูกสร้าง {loaded} ชิ้น, ธรรมชาติที่ถูกเก็บไปแล้ว {naturals} จุด, กล่องที่มีของ {boxes} ใบ, วัสดุฝาก {depositedSlots} slots, แปลงผัก {FarmCount} แปลง");
+        Console.WriteLine($"[save] โหลดโลกแล้ว: สิ่งปลูกสร้าง {loaded} ชิ้น, ธรรมชาติที่ถูกเก็บไปแล้ว {naturals} จุด, กล่องที่มีของ {boxes} ใบ, วัสดุฝาก {depositedSlots} slots, แปลงผัก {FarmCount} แปลง, ที่ดิน {Estates.ToSave().Count} แปลง");
         EnsureNaturalPOIs();
     }
 
@@ -1022,14 +1115,25 @@ public partial class ServerWorld
         // มีต้นไม้/หินทับ 2-6 จุด) เพราะโค้ดเคลียร์ทำงานตอน "วางใหม่" เท่านั้น
         // ⇒ กวาดซ้ำทุกครั้งที่เปิดเซิร์ฟ โลกเก่าจะได้ซ่อมตัวเอง
         bool cleared = ClearNaturalsUnderPOIs();
-        bool placed = EnsureNearEntryPOIs();
-        placed |= PlacePOISpots(spots: new[]
+
+        // [แก้เอง] 2 ก.ย. 2026 — ใช้พิกัดที่ "มากับเกาะ" ก่อนเสมอ
+        //
+        // เกาะของเกมทุกใบมี pois.yml ที่ทีมสร้างเกมวางตำแหน่งไว้ให้แล้ว (หลุมวาร์ป 5 · รอยแยก 2
+        // · ท่าเรือ 1 · สิ่งปลูกสร้าง 1) ตรวจแล้วว่าไม่มีจุดไหนตกน้ำหรือทับหินเลยสักจุด
+        // และ port_points ตรงกับ entry_points เป๊ะ — แต่เดิมเซิร์ฟไม่เคยอ่านไฟล์นี้
+        // เลยไปสุ่มตำแหน่งเองทั้งหมด ซึ่งเป็นที่มาของอาการ POI ลอยกลางน้ำ/โดนหินทับ
+        bool placed = PlaceIslandPois();
+
+        // เกาะที่ไม่มี pois.yml (เช่นเกาะที่ปั่นเอง) ค่อยถอยไปสุ่มแบบเดิม
+        if (Terrain.Pois == null)
         {
-            // เจ้าของสั่ง: โลกใหม่ไม่วางหลุมวาร์ป/รอยแยกอัตโนมัติเลย
-            // ท่าเรือยังวางให้เป็นจุดเริ่มต้นการเดินทาง (ติดแม่น้ำเท่านั้น)
-            ("dock", (ushort)7001, new Point2(3, 3), 0, 20, true),
-            ("camp_warphole", (ushort)9101, new Point2(6, 6), 0, 35, false),
-        }, prefix: "poi_", nearEntry: false);
+            placed |= EnsureNearEntryPOIs();
+            placed |= PlacePOISpots(spots: new[]
+            {
+                // ท่าเรือที่ 2 — ติดแม่น้ำ ห่างจากจุดเกิด 40+ tile (ท่าเรือรองสำหรับเดินทาง)
+                ("dock", (ushort)7001, new Point2(3, 3), 0, 40, true),
+            }, prefix: "poi_", nearEntry: false);
+        }
         if (placed || cleared)
         {
             MarkDirty();
@@ -1097,30 +1201,251 @@ public partial class ServerWorld
         }
     }
 
+    /// <summary>
+    /// วาง POI ตามพิกัดที่มากับเกาะ (`pois.yml`) — id ขึ้นต้น `poi_island_`
+    ///
+    /// ชนิดที่จับคู่ไว้ (entity type จาก RecipeData):
+    ///   port_points    -> dock 7001 (3x3)
+    ///   warpholes      -> neutral_warphole 9450 (6x6)
+    ///   rifts          -> warp_accelerator 6282 (4x4) — ArtifactFactory เรียกสถานะนี้ว่า RiftInactivated
+    ///   camp_artifacts -> ใช้ entity_type ที่ไฟล์ระบุมาเอง (ri35te = 9450)
+    ///
+    /// พิกัดในไฟล์คือมุมของ footprint ถ้าวางตรงนั้นแล้วล้นลงน้ำจะขยับหาที่ใกล้ ๆ ให้เอง
+    /// </summary>
+    private bool PlaceIslandPois()
+    {
+        TerrainPois? pois = Terrain.Pois;
+        if (pois == null)
+        {
+            return false;
+        }
+
+        // ⚠️ id ต้อง **คงที่** ผูกกับลำดับในไฟล์ ไม่ใช่ไล่เลขตอนวาง
+        //    ไม่งั้นเปิดเซิร์ฟรอบสองจะเห็นว่า id เดิมถูกใช้แล้วเลยตั้งเลขใหม่ แล้ววางซ้ำอีกชุด
+        //    (เจอจริง: เปิด 3 รอบได้ POI 28 จุดจากที่ควรมี 9)
+        var wanted = new List<(string Key, string Bp, ushort Type, Point2 Size, Point2 Tile)>();
+        for (int i = 0; i < pois.PortPoints.Count; i++)
+        {
+            wanted.Add(("port_" + i, "dock", (ushort)7001, new Point2(3, 3), pois.PortPoints[i]));
+        }
+        for (int i = 0; i < pois.Warpholes.Count; i++)
+        {
+            wanted.Add(("warphole_" + i, "neutral_warphole", (ushort)9450, new Point2(6, 6), pois.Warpholes[i]));
+        }
+        for (int i = 0; i < pois.Rifts.Count; i++)
+        {
+            wanted.Add(("rift_" + i, "warp_accelerator", (ushort)6282, new Point2(4, 4), pois.Rifts[i]));
+        }
+        for (int i = 0; i < pois.CampArtifacts.Count; i++)
+        {
+            (ushort type, Point2 tile) = pois.CampArtifacts[i];
+            // ไฟล์บอก entity_type มาเอง — แปลงกลับเป็น blueprint จากตารางที่ cheat poi ใช้อยู่
+            string bp = "neutral_warphole";
+            var size = new Point2(6, 6);
+            foreach (KeyValuePair<string, (ushort Type, int SizeX, int SizeY)> kv in ServerPlayer.POIBlueprints)
+            {
+                if (kv.Value.Type == type)
+                {
+                    bp = kv.Key;
+                    size = new Point2(kv.Value.SizeX, kv.Value.SizeY);
+                    break;
+                }
+            }
+            wanted.Add(("camp_" + i, bp, type, size, tile));
+        }
+
+        // โลกเก่าที่เคยเปิดด้วยระบบสุ่มมี POI อยู่แล้ว (id `poi_` / `poi_near_`) ถ้าไม่เอาออก
+        // จะได้ POI ซ้อนกันสองชุด — ชุดที่สุ่มมั่วกับชุดที่ถูกต้อง
+        // ⇒ ย้ายมาใช้ชุดของเกมแทน แต่สำรอง world.json ไว้ก่อนเสมอ (ย้อนกลับได้ถ้าไม่ถูกใจ)
+        var stale = new List<string>();
+        lock (_artifactLock)
+        {
+            foreach (string id in _artifacts.Keys)
+            {
+                if ((id.StartsWith("poi_", StringComparison.Ordinal)
+                     || id.StartsWith("poi_near_", StringComparison.Ordinal))
+                    && !id.StartsWith("poi_island_", StringComparison.Ordinal))
+                {
+                    stale.Add(id);
+                }
+            }
+        }
+        if (stale.Count > 0)
+        {
+            BackupWorldSave("ก่อนเปลี่ยนไปใช้ POI จาก pois.yml");
+            foreach (string id in stale)
+            {
+                RemoveArtifact(id);
+            }
+            Console.WriteLine("[world] เอา POI ที่ระบบสุ่มวางไว้ออก {0} จุด แล้วใช้พิกัดจาก pois.yml แทน ({1})",
+                stale.Count, string.Join(", ", stale));
+        }
+
+        var existing = new HashSet<string>(StringComparer.Ordinal);
+        lock (_artifactLock)
+        {
+            foreach (string id in _artifacts.Keys) { existing.Add(id); }
+        }
+
+        // เก็บกวาดของที่เคยวางซ้ำจากบั๊กรอบก่อน — อะไรที่ขึ้นต้น poi_island_ แต่ไม่อยู่ในชุดที่ควรมี ให้เอาออก
+        var shouldHave = new HashSet<string>(wanted.Select(x => "poi_island_" + x.Key), StringComparer.Ordinal);
+        var extras = existing.Where(id => id.StartsWith("poi_island_", StringComparison.Ordinal)
+                                          && !shouldHave.Contains(id)).ToList();
+        if (extras.Count > 0)
+        {
+            BackupWorldSave("ก่อนเก็บ POI ที่วางซ้ำ");
+            foreach (string id in extras)
+            {
+                RemoveArtifact(id);
+                existing.Remove(id);
+            }
+            Console.WriteLine("[world] เก็บ POI ที่วางซ้ำออก {0} จุด", extras.Count);
+        }
+
+        int placed = 0;
+        foreach ((string key, string bp, ushort type, Point2 size, Point2 tile) in wanted)
+        {
+            string entityId = "poi_island_" + key;
+            if (existing.Contains(entityId))
+            {
+                continue;               // วางไปแล้วตั้งแต่รอบก่อน ไม่ต้องทำอะไร
+            }
+
+            if (!TryFitPoi(tile, size, out Point2 at))
+            {
+                Console.WriteLine("[world] POI {0} ที่ tile {1},{2} วางไม่ได้ (ไม่ใช่พื้นดินหรือมีของทับ) — ข้าม",
+                    bp, tile.x, tile.y);
+                continue;
+            }
+            existing.Add(entityId);
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
+                    Terrain.RemoveNatural(at.x + x, at.y + y);
+                }
+            }
+            AppearArtifact artifact = ArtifactFactory.Make(
+                null, entityId, type, at, size, Rotation.None, 0, 1, bp, BuildingState.Completed);
+            AddArtifact(artifact, bp);
+            Console.WriteLine("[world] วาง POI จาก pois.yml: {0} (tile {1},{2})", bp, at.x, at.y);
+            placed++;
+        }
+        if (placed > 0)
+        {
+            Console.WriteLine("[world] วาง POI ตามพิกัดที่มากับเกาะแล้ว {0} จุด", placed);
+        }
+        return placed > 0;
+    }
+
+    /// <summary>สำรองไฟล์เซฟโลกไว้ก่อนแก้อะไรที่ย้อนกลับเองไม่ได้</summary>
+    private static void BackupWorldSave(string why)
+    {
+        try
+        {
+            string path = SaveStore.WorldPath;
+            if (!File.Exists(path))
+            {
+                return;
+            }
+            string backup = path + ".bak-" + System.DateTime.Now.ToString("yyyyMMdd-HHmmss");
+            File.Copy(path, backup, overwrite: false);
+            Console.WriteLine("[save] สำรองเซฟโลกไว้ที่ {0} ({1})", Path.GetFileName(backup), why);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("[save] สำรองเซฟโลกไม่สำเร็จ: {0}", e.Message);
+        }
+    }
+
+    /// <summary>
+    /// หาที่วาง POI ให้พอดี — ลองพิกัดที่ไฟล์บอกก่อน ถ้าล้นน้ำ/ทับของเดิมค่อยขยับหารอบ ๆ
+    /// คืน false ถ้าไม่มีที่ว่างเลยในรัศมี 6 tile (แปลว่าไฟล์กับ terrain ไม่เข้ากันจริง ๆ)
+    /// </summary>
+    private bool TryFitPoi(Point2 tile, Point2 size, out Point2 result)
+    {
+        result = tile;
+        // ลองมุมตามไฟล์ก่อน แล้วค่อยลองแบบเอาพิกัดเป็นจุดกึ่งกลาง
+        var candidates = new List<Point2>
+        {
+            tile,
+            new Point2(tile.x - size.x / 2, tile.y - size.y / 2),
+        };
+        for (int r = 1; r <= 6; r++)
+        {
+            for (int dx = -r; dx <= r; dx++)
+            {
+                for (int dy = -r; dy <= r; dy++)
+                {
+                    if (Math.Abs(dx) == r || Math.Abs(dy) == r)
+                    {
+                        candidates.Add(new Point2(tile.x + dx, tile.y + dy));
+                    }
+                }
+            }
+        }
+        foreach (Point2 c in candidates)
+        {
+            if (FitsAsPoi(c, size))
+            {
+                result = c;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool FitsAsPoi(Point2 at, Point2 size)
+    {
+        if (at.x < 0 || at.y < 0 || at.x + size.x > Terrain.Width || at.y + size.y > Terrain.Height)
+        {
+            return false;
+        }
+        for (int x = 0; x < size.x; x++)
+        {
+            for (int y = 0; y < size.y; y++)
+            {
+                // ⚠️ ใช้ oceans.dm เท่านั้น (IsLand/WaterDepthAt พัง — ดูหมายเหตุใน TouchesWater)
+                if (Terrain.LandDistance(at.x + x, at.y + y) < 1)
+                {
+                    return false;
+                }
+                if (Terrain.BiomeAt(at.x + x, at.y + y) == Shared.Region.Biome.River)
+                {
+                    return false;
+                }
+            }
+        }
+        return !HasArtifactOverlapping(at, size);
+    }
+
     /// <summary>ชุด POI รอบจุดเกิด (id ขึ้นต้น poi_near_) — วางที่ยังขาด</summary>
     private bool EnsureNearEntryPOIs()
     {
         bool placed = PlacePOISpots(spots: new[]
         {
-            // เจ้าของสั่ง: โลกใหม่ไม่วางหลุมวาร์ปใกล้จุดเกิด
-            // ท่าเรือยังวางให้เป็นจุดเริ่มต้นการเดินทาง (ติดแม่น้ำเท่านั้น)
-            ("dock", (ushort)7001, new Point2(3, 3), 0, 12, true),
+            // ท่าเรือที่ 1 — ใกล้จุดเกิดที่สุดที่ยังติดแม่น้ำได้ (เกาะนี้แม่น้ำใกล้สุด ~47 tile)
+            ("dock", (ushort)7001, new Point2(3, 3), 0, 5, true),
+            // หลุมวาร์ปใกล้จุดเกิด
             ("camp_warphole", (ushort)9101, new Point2(6, 6), 0, 20, false),
         }, prefix: "poi_near_", nearEntry: true);
         if (placed)
         {
-            Console.WriteLine("[world] วาง POI ชุดใกล้จุดเกิดแล้ว — สแกนหลุมรอบจุดเกิดควรเจอแน่นอน");
+            Console.WriteLine("[world] วาง POI ชุดใกล้จุดเกิดแล้ว — ท่าเรือใกล้จุดเกิด + วาร์ปใกล้");
         }
         return placed;
     }
 
-    /// <summary>วาง POI ตามรายการ spots ลงบนบก ไม่ทับของเดิม (nearEntry=true → ระยะ 12-35 tile จากจุดเกิด)
-    /// WaterEdge=true → ต้องติดน้ำ (มี tile น้ำล้อมรอบ footprint ≥2 จุด) — สำหรับท่าเรือ</summary>
+    /// <summary>วาง POI ตามรายการ spots ลงบนบก ไม่ทับของเดิม (nearEntry=true → วงค้นหาสูงสุด 60 tile จากจุดเกิด)
+    /// WaterEdge=true → ต้องติดแม่น้ำ (มี tile River ล้อมรอบ footprint ≥2 จุด) — สำหรับท่าเรือ</summary>
     private bool PlacePOISpots((string Bp, ushort Type, Point2 Size, int MinInland, int MinDistFromEntry, bool WaterEdge)[] spots, string prefix, bool nearEntry)
     {
         Point2 entry = Terrain.EntryPoint;
         var rng = new Random();
         int placed = 0;
+        // เกาะ ri35te: แม่น้ำใกล้จุดเกิด (40,177) เริ่มประมาณ 47 tile — วง 35 เดิมหา dock ไม่เจอ
+        const int nearEntryMaxDist = 60;
+        const int placeAttempts = 2000;
 
         // 🐛 เดิมเช็คแค่ "blueprint นี้มีอยู่แล้วไหม" ⇒ รายการที่ขอ **ชนิดเดียวกันสองอัน**
         //    (warp_accelerator ×2, camp_warphole ×2) ได้วางจริงแค่อันเดียว
@@ -1160,21 +1485,21 @@ public partial class ServerWorld
                 continue;
             }
             bool found = false;
-            for (int attempt = 0; attempt < 400; attempt++)
+            for (int attempt = 0; attempt < placeAttempts; attempt++)
             {
                 int tx, ty;
                 if (nearEntry)
                 {
-                    // วงแหวน 12-35 tile รอบจุดเกิด (วนหาจนได้ระยะขั้นต่ำ)
+                    // วงแหวน minDist..nearEntryMaxDist รอบจุดเกิด (วนหาจนได้ระยะขั้นต่ำ)
                     int d;
                     do
                     {
-                        tx = entry.x + rng.Next(-60, 61);
-                        ty = entry.y + rng.Next(-60, 61);
+                        tx = entry.x + rng.Next(-nearEntryMaxDist, nearEntryMaxDist + 1);
+                        ty = entry.y + rng.Next(-nearEntryMaxDist, nearEntryMaxDist + 1);
                         d = distSq(tx - entry.x, ty - entry.y);
                     }
                     while (d < minDist * minDist);
-                    if (d > 35 * 35)
+                    if (d > nearEntryMaxDist * nearEntryMaxDist)
                     {
                         continue;
                     }
@@ -1318,6 +1643,74 @@ public partial class ServerWorld
     }
 
     /// <summary>สิ่งปลูกสร้างทั้งหมด ณ ตอนนี้ — ใช้ส่งให้ผู้เล่นที่เพิ่งเข้ามา</summary>
+    private double _nextRegrowCheckAt;
+
+    /// <summary>
+    /// [regrow] ต้นไม้/หิน/บ่อโคลนที่ผู้เล่นเก็บจนหมดหรือทำลาย งอกกลับหลัง World.NaturalRegrowSeconds
+    /// (เกมต้นฉบับมี eco simulation ให้ทรัพยากรฟื้น — ของเราเดิมหายถาวร 108 ต้นแล้วบนเกาะเทส)
+    /// ไม่งอกถ้ามีสิ่งปลูกสร้างทับ tile นั้นอยู่ · client ที่อยู่ใกล้ได้ AppearEntityOnTile · ที่เหลือเห็นตอนโหลด chunk ใหม่
+    /// </summary>
+    private void TickNaturalRegrowth(double now)
+    {
+        if (now < _nextRegrowCheckAt) { return; }
+        _nextRegrowCheckAt = now + 30.0;
+        double seconds = ServerConfig.Current.World.NaturalRegrowSeconds;
+        if (seconds <= 0) { return; }
+        List<(int x, int y)> due = Terrain.DueRegrow(now - seconds);
+        int grown = 0;
+        foreach ((int x, int y) in due)
+        {
+            if (HasArtifactOverlapping(new Point2(x, y), new Point2(1, 1)))
+            {
+                continue;                   // มีบ้านทับอยู่ — รอจนกว่าจะทุบ
+            }
+            ushort type = Terrain.RestoreNatural(x, y);
+            if (type == 0) { continue; }
+            grown++;
+            MarkDirty();
+            // [3 ก.ย. 2026] 🐛 **ต้นเหตุคนหลุดยกแผง** — เดิมส่ง AppearEntityOnTile ให้ client ที่อยู่ใกล้
+            //   แต่ message นี้ **ไม่มี TypeCode ทั้งฝั่ง server และ client และ client ก็ไม่มี handler**
+            //   ⇒ MessagePacking.Pack คืน false ("Not registered message") ⇒ SerializeMsg คืน 0 ไบต์
+            //   ⇒ throw "Outbound packet exceeds buffer capacity: 0 bytes" ในลูปส่งของ BroadcastNear
+            //   ⇒ ทุกคนที่อยู่ใกล้จุดที่ต้นไม้งอก **หลุดพร้อมกัน** (เจอ 1502 ครั้งใน log · มีมาตั้งแต่ 08:46)
+            //   เอาการส่งออก — regrowth ยังทำงาน (RestoreNatural + MarkDirty) ผู้เล่นเห็นต้นไม้ที่งอกใหม่
+            //   ตอนโหลด chunk รอบนั้นใหม่ (เดินออกไปแล้วกลับมา / รีเข้าเกม) ตามที่คอมเมนต์หัวเมธอดบอกไว้
+        }
+        if (grown > 0)
+        {
+            Console.WriteLine("[natural] งอกกลับ {0} ต้น (ถูกเก็บไปนานเกิน {1:0} นาที)", grown, seconds / 60);
+        }
+    }
+
+    private double _nextDeathBoxSweepAt;
+
+    /// <summary>
+    /// [TodoList/07] กล่องของตกที่หมดอายุแล้ว (id = deathbox_&lt;unix หมดอายุ&gt;_xxx) ถูกเก็บจากฝั่งโลกทุก 30 วิ
+    /// — ตัวผู้เล่นเก็บเองตอนออนไลน์อยู่แล้ว ตัวนี้กันกรณีเจ้าของออฟไลน์/เซิร์ฟล้มแล้วกล่องค้างในโลกตลอดกาล
+    /// </summary>
+    private void SweepDeathBoxes(double now)
+    {
+        if (now < _nextDeathBoxSweepAt) { return; }
+        _nextDeathBoxSweepAt = now + 30.0;
+        List<string> expired = null;
+        foreach (AppearArtifact art in SnapshotArtifacts())
+        {
+            string id = art.EntityId;
+            if (id == null || !id.StartsWith("deathbox_", StringComparison.Ordinal)) { continue; }
+            int sep = id.IndexOf('_', 9);
+            if (sep < 0 || !long.TryParse(id.Substring(9, sep - 9), out long expiresAt)) { continue; }
+            if (now >= expiresAt) { (expired ??= new List<string>()).Add(id); }
+        }
+        if (expired == null) { return; }
+        foreach (string id in expired)
+        {
+            int left = GetBoxItems(id).Length;
+            RemoveArtifact(id);
+            AnnounceGone(id);
+            Console.WriteLine("[death] กล่องของตก {0} หมดอายุ (เจ้าของไม่อยู่) — เก็บทิ้ง ของที่เหลือ {1} ชิ้น", id, left);
+        }
+    }
+
     public AppearArtifact[] SnapshotArtifacts()
     {
         lock (_artifactLock)
@@ -1676,6 +2069,27 @@ public partial class ServerWorld
     /// GP-03: ขอ generator ของจุดนี้ ยังไม่เคยมีก็สร้างใหม่จาก factory
     /// คืน "สำเนา" เสมอ เพื่อไม่ให้ผู้เรียกไปแก้ของกลางโดยไม่ผ่าน lock
     /// </summary>
+    /// <summary>ล้าง cache จุดธรรมชาติ เพื่อให้แตะรอบหน้าสร้าง generator จาก gathering_tools.json ใหม่</summary>
+    public int ForgetNaturalGeneratorCache()
+    {
+        lock (_genLock)
+        {
+            List<string> keys = new List<string>();
+            foreach (string key in _generators.Keys)
+            {
+                if (key.StartsWith("natural_", StringComparison.Ordinal))
+                {
+                    keys.Add(key);
+                }
+            }
+            for (int i = 0; i < keys.Count; i++)
+            {
+                _generators.Remove(keys[i]);
+            }
+            return keys.Count;
+        }
+    }
+
     public Generator[] GetOrCreateGenerators(string naturalId, ushort entityType, Func<ushort, List<Generator>> factory)
     {
         lock (_genLock)
@@ -1684,6 +2098,16 @@ public partial class ServerWorld
             {
                 gens = factory(entityType);
                 _generators[naturalId] = gens;
+            }
+            int want = ServerConfig.ResourceLevel;
+            for (int i = 0; i < gens.Count; i++)
+            {
+                Generator g = gens[i];
+                if (g.Level != want)
+                {
+                    g.Level = want;
+                    gens[i] = g;
+                }
             }
             return gens.ToArray();
         }
@@ -1928,11 +2352,15 @@ public partial class ServerWorld
         double now = Durango.Utils.Times.UnixTimeNow();
         try { Weather.Process(now, snapshot); }
         catch (Exception e) { Console.WriteLine($"[world] weather process failed: {e.Message}"); }
+        try { SweepDeathBoxes(now); }
+        catch (Exception e) { Console.WriteLine($"[world] death box sweep failed: {e.Message}"); }
         if (ServerConfig.Current.Features.WarpAccelerator)
         {
             try { WarpAccelerators.Process(now); }
             catch (Exception e) { Console.WriteLine($"[world] warp process failed: {e.Message}"); }
         }
+        try { TickNaturalRegrowth(now); }
+        catch (Exception e) { Console.WriteLine($"[world] natural regrowth failed: {e.Message}"); }
         try { TickFarms(now); }
         catch (Exception e) { Console.WriteLine($"[world] farms process failed: {e.Message}"); }
         // ใครเข้า/ออกระยะมองเห็นบ้าง — ต้องทำหลัง Process เพราะตำแหน่งเพิ่งขยับ

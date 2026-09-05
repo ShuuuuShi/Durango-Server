@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Shared.Skill;
 using UnityEngine;
 using Yaml;
@@ -80,7 +80,17 @@ public class Skill
 		int num = 0;
 		for (int i = 1; i <= Level; i++)
 		{
-			num += Get(i).SkillPoints;
+			// [แก้เอง 1 ก.ย. 2026] เดิมเรียก Get(i).SkillPoints ตรง ๆ — Get() คืน null ทันทีที่
+			// Level ที่เซิร์ฟส่งมาเกินจำนวนโหนดในไฟล์สกิลของ client (ข้อมูลสองฝั่งไม่ตรงกัน)
+			// ⇒ NullReferenceException ทุกครั้งที่รับแพ็กเก็ต Skills ซึ่งส่งถี่มาก
+			//    (เจอจริง 1 ก.ย.: log ท่วมด้วย SkillSystem.OnReceiveSkillMsg → Bundle.UsedSp → Skill.UsedSp)
+			// ข้ามโหนดที่ไม่มีจริงแทนการพัง — SP ที่นับได้จะน้อยกว่าจริงเฉพาะสกิลที่ข้อมูลเพี้ยน
+			Node node = Get(i);
+			if (node == null)
+			{
+				continue;
+			}
+			num += node.SkillPoints;
 		}
 		return num;
 	}

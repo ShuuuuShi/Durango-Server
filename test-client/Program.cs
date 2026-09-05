@@ -201,6 +201,16 @@ public static class Program
             return;
         }
 
+        // --fallback-check [host] [port เกม] [port gateway] = ทุกแพ็กเก็ตต้องได้คำตอบ (ServerPlayer.Fallback.cs)
+        if (args.Length >= 1 && args[0] == "--fallback-check")
+        {
+            string fh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int fp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int fgw = args.Length >= 4 ? int.Parse(args[3]) : fp - 1;
+            Environment.ExitCode = FallbackCheck.Run(fh, fp, fgw);
+            return;
+        }
+
         // --stamina-check [host] [port เกม] [port gateway] = เทสระบบสตามินา/ความล้าด้วยตัวละครเลเวล 1
         if (args.Length >= 1 && args[0] == "--stamina-check")
         {
@@ -310,12 +320,32 @@ public static class Program
             return;
         }
 
+        // --android-check [host] [port เกม] [port gateway] [admin token] = เทส "ระบบเหมือน PC" ที่เซิร์ฟทำแทนให้มือถือ (docs/server/Android.md)
+        if (args.Length >= 1 && args[0] == "--android-check")
+        {
+            string h = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int p = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int gw = args.Length >= 4 ? int.Parse(args[3]) : p - 1;
+            string token = args.Length >= 5 ? args[4] : null;
+            Environment.ExitCode = AndroidParityCheck.Run(h, p, gw, token);
+            return;
+        }
+
         if (args.Length >= 1 && args[0] == "--create-check")
         {
             string h = args.Length >= 2 ? args[1] : "127.0.0.1";
             int p = args.Length >= 3 ? int.Parse(args[2]) : 8191;
             int gw = args.Length >= 4 ? int.Parse(args[3]) : p - 1;
             Environment.ExitCode = CreateCharacterCheck.Run(h, p, gw);
+            return;
+        }
+
+        if (args.Length >= 1 && args[0] == "--chunk-check")
+        {
+            string h = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int p = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int gw = args.Length >= 4 ? int.Parse(args[3]) : p - 1;
+            Environment.ExitCode = ChunkStreamCheck.Run(h, p, gw);
             return;
         }
 
@@ -358,6 +388,36 @@ public static class Program
         }
 
         // --blueprint-requirements-check = ตรวจ generated requirement data โดยไม่ต้องเปิด server
+        // --bow-craft-check = ต่อเชือกได้เชือกยาว แล้วคราฟต์ธนูได้จริงไหม
+        if (args.Length >= 1 && args[0] == "--bow-craft-check")
+        {
+            string h = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int gp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int gw = args.Length >= 4 ? int.Parse(args[3]) : gp - 1;
+            Environment.ExitCode = BowCraftCheck.Run(h, gp, gw);
+            return;
+        }
+
+        // --wet-sick-check = สถานะเปียก/สกปรก (บั๊ก #7) + ระบบป่วย
+        if (args.Length >= 1 && args[0] == "--wet-sick-check")
+        {
+            string h = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int gp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int gw = args.Length >= 4 ? int.Parse(args[3]) : gp - 1;
+            Environment.ExitCode = WetSickCheck.Run(h, gp, gw);
+            return;
+        }
+
+        // --built-parts-check = สิ่งปลูกสร้างที่เสร็จแล้วต้องมีโมเดล ไม่ใช่โครงไม้
+        if (args.Length >= 1 && args[0] == "--built-parts-check")
+        {
+            string h = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int gp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int gw = args.Length >= 4 ? int.Parse(args[3]) : gp - 1;
+            Environment.ExitCode = BuiltPartsCheck.Run(h, gp, gw);
+            return;
+        }
+
         if (args.Length >= 1 && args[0] == "--blueprint-requirements-check")
         {
             Environment.ExitCode = BlueprintRequirementsCheck.Run();
@@ -406,6 +466,26 @@ public static class Program
             return;
         }
 
+        // --presence-check = ผู้เล่น 2 คนเข้าโลกเดียวกันแล้วเห็นกันไหม (multiplayer presence)
+        if (args.Length >= 1 && args[0] == "--presence-check")
+        {
+            string ph = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int pp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int pgw = args.Length >= 4 ? int.Parse(args[3]) : pp - 1;
+            Environment.ExitCode = PresenceCheck.Run(ph, pp, pgw);
+            return;
+        }
+
+        // --island-options-check = เทสหน้าเลือกเกาะของ UI เกม (warp→options→travel) ครบวงจร
+        if (args.Length >= 1 && args[0] == "--island-options-check")
+        {
+            string oh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int op = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int ogw = args.Length >= 4 ? int.Parse(args[3]) : op - 1;
+            Environment.ExitCode = IslandOptionsCheck.Run(oh, op, ogw);
+            return;
+        }
+
         // --party-gate-check = เทสว่า packet ปาร์ตี้ถูกปิดก่อนเปลี่ยน state (GetParty ตอบว่างเสมอ)
         if (args.Length >= 1 && args[0] == "--party-gate-check")
         {
@@ -430,6 +510,53 @@ public static class Program
             int tp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
             int tgw = args.Length >= 4 ? int.Parse(args[3]) : tp - 1;
             Environment.ExitCode = ToolCheck.Run(th, tp, tgw);
+            return;
+        }
+
+        // --estate-reload-check [host] [port เกม] [port gateway] [entityId] = ที่ดินต้องยังอยู่หลังรีสตาร์ท
+        if (args.Length >= 1 && args[0] == "--estate-reload-check")
+        {
+            string rh2 = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int rp2 = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int rgw2 = args.Length >= 4 ? int.Parse(args[3]) : rp2 - 1;
+            string rid = args.Length >= 5 ? args[4] : null;
+            if (string.IsNullOrEmpty(rid))
+            {
+                Console.WriteLine("ต้องระบุ entityId ที่ --estate-check พิมพ์ไว้");
+                Environment.ExitCode = 2;
+                return;
+            }
+            Environment.ExitCode = EstateCheck.RunReload(rh2, rp2, rgw2, rid);
+            return;
+        }
+
+        // --radiotower-check [host] [port แชท] [port gateway] = เทส auth + ชื่อคนพูดบนพอร์ตแชท
+        if (args.Length >= 1 && args[0] == "--radiotower-check")
+        {
+            string rh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int rp = args.Length >= 3 ? int.Parse(args[2]) : 8192;
+            int rgw = args.Length >= 4 ? int.Parse(args[3]) : rp - 2;
+            Environment.ExitCode = RadiotowerCheck.Run(rh, rp, rgw);
+            return;
+        }
+
+        // --fatigue-probe [host] [port เกม] [port gateway] = ดัมป์ packet ความล้าดิบ ๆ (ไล่บั๊ก)
+        if (args.Length >= 1 && args[0] == "--fatigue-probe")
+        {
+            string fh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int fp = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int fgw = args.Length >= 4 ? int.Parse(args[3]) : fp - 1;
+            Environment.ExitCode = FatigueProbe.Run(fh, fp, fgw);
+            return;
+        }
+
+        // --estate-check [host] [port เกม] [port gateway] = เทสระบบที่ดิน (ประกาศ/ขยาย/สิทธิ์/วาร์ป/สละ)
+        if (args.Length >= 1 && args[0] == "--estate-check")
+        {
+            string eh = args.Length >= 2 ? args[1] : "127.0.0.1";
+            int ep = args.Length >= 3 ? int.Parse(args[2]) : 8191;
+            int egw = args.Length >= 4 ? int.Parse(args[3]) : ep - 1;
+            Environment.ExitCode = EstateCheck.Run(eh, ep, egw);
             return;
         }
 

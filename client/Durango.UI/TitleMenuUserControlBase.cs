@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Durango.Logic.Clusters;
 using Durango.System;
@@ -171,6 +171,7 @@ public class TitleMenuUserControlBase : MonoBehaviour
 
 	protected virtual void OnConfirm()
 	{
+		UnityEngine.Debug.Log("[durango] OnConfirm: state=" + LastState + " accountReady=" + IsAccountReady + " autoTarget='" + Durango.Offline.Server.AutoConnectTarget + "' emigrated=" + GameManager.Emigrated);
 		// [แก้เอง] 24 ส.ค. 2026 — เอา "โชว์กล่องกรอก IP ทันที" ออกจากตรงนี้แล้ว (เคยดักปุ่มยืนยันของ
 		// **ทุกโหมด** ไว้หมด ตราบใดที่ Emigrated == None ⇒ เลือกโหมดจากหน้า "เลือกเซิร์ฟเวอร์" ไม่ได้จริง)
 		// เจ้าของสั่งชัดว่า "mainUI ต้องเลือกได้ว่าจะเล่นโหมดไหน ไม่ใช่บังคับออนไลน์แบบนี้" — ตอนนี้ปุ่ม
@@ -310,6 +311,8 @@ public class TitleMenuUserControlBase : MonoBehaviour
 		_clusterSelectionButton.Disabled = false;
 		_clusterSelectionButtonLabel.text = cluster.GetName(LocalizeSystem.Locale);
 		_clusterSelectionButtonLabel.color = new Color32(194, 24, 91, 255);
+		// [แก้เอง] 31 ส.ค. 2026 — จุดสถานะเซิร์ฟไปโชว์ที่ป้าย "Select Server" แทน (ดู TitleMenuUserControl_PC)
+		Durango.Offline.Server.RefreshServerStatus();
 		UpdateButtonLayout(showPlayerButton: false);
 		IsAccountReady = false;
 		SetExplainLabel(ManualTranslator.LoadingUserInfo);
@@ -389,12 +392,63 @@ public class TitleMenuUserControlBase : MonoBehaviour
 	public bool TryUpdateClusters(string response)
 	{
 		Clusters.LoadFromJson(response);
+		PromoteCommunityCluster();
 		if (Clusters.Count > 0)
 		{
 			GameManager.SetArenaAuthServer(Clusters.ArenaAuthUrl);
 			return true;
 		}
 		return false;
+	}
+
+	/// <summary>
+	/// [แก้เอง] 1 ก.ย. 2026 — ดัน "DurangoTH Community Server" ให้เป็นคลัสเตอร์แนะนำ + ใส่ gateway ให้จริง
+	///
+	/// 🐛 บั๊กที่เจอตอนเทส: ผู้เล่นเลือกเซิร์ฟชุมชนแล้วเข้าเกมได้ปกติ แต่พอปิด-เปิดเกมใหม่กลับเด้งไป
+	///    "Creative Island" (โหมดออฟไลน์ในเครื่อง) ทุกครั้ง แล้วขึ้น "ไม่สามารถโหลดข้อมูลผู้เล่นได้"
+	///    ต้นเหตุอยู่ที่ LastSelectedClusterKey: มันเก็บคีย์ "online" ลง Preferences จริง แต่ตอนอ่านกลับมา
+	///    มีเงื่อนไข `string.IsNullOrEmpty(GetCluster(text).GatewayUrlRoot)` — คลัสเตอร์ "online" ในไฟล์
+	///    clusters ของเกมไม่มี gateway ใส่ไว้ (ของ NEXON ตายไปแล้ว) ⇒ ถือว่าคีย์ใช้ไม่ได้ แล้วรีเซ็ต
+	///    กลับไปคลัสเตอร์แนะนำ ซึ่งเดิมคือ "free" = Creative Island
+	///
+	/// เติม gateway จาก server.txt ให้ตั้งแต่ตอนโหลดรายการ ⇒ คีย์ค้างได้จริง และเป็นค่าเริ่มต้นของคนใหม่
+	/// (ยังเห็นรายการเซิร์ฟครบเหมือนเดิม เลือกโหมดออฟไลน์เองได้อยู่)
+	/// </summary>
+	private void PromoteCommunityCluster()
+	{
+		string target = Durango.Offline.Server.ResolveOnlineTarget();
+		if (string.IsNullOrEmpty(target))
+		{
+			return;
+		}
+		string gateway = Durango.Offline.Server.ToGatewayUrl(target);
+		if (string.IsNullOrEmpty(gateway))
+		{
+			return;
+		}
+		string[] keys = Clusters.GetClusterKeys();
+		bool found = false;
+		for (int i = 0; i < keys.Length; i++)
+		{
+			Durango.Logic.Clusters.Cluster cluster = Clusters.GetCluster(keys[i]);
+			if (cluster == null)
+			{
+				continue;
+			}
+			// คีย์จริงที่ Clusters.LoadFromJson ลงทะเบียนคือ "<key>_offline" (ดู Clusters.cs)
+			// เทียบกับ "online" เฉย ๆ จะไม่มีวันตรง แล้วจะไปล้างธง IsRecommendable ทิ้งทั้งหมด
+			bool isOnline = keys[i] == "online" || keys[i] == "online_offline";
+			cluster.IsRecommendable = isOnline;
+			if (isOnline)
+			{
+				cluster.GatewayUrlRoot = gateway;
+				found = true;
+			}
+		}
+		if (!found)
+		{
+			UnityEngine.Debug.LogWarning("[durango] ไม่พบคลัสเตอร์ \"online\" ในรายการ — ใช้ค่าเริ่มต้นของเกมแทน");
+		}
 	}
 
 	public void ForceSetClusters(string gateway)

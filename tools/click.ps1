@@ -70,7 +70,9 @@ public class CK {
 }
 $ErrorActionPreference = $prevEap
 
+# DurangoV2 = ชุดเก่า, Durango = ชุดแจกจริง (dist\DurangoTH-Clean\Durango.exe) - รับทั้งสองชื่อ
 $proc = @(Get-Process -Name DurangoV2 -ErrorAction SilentlyContinue)
+if ($proc.Count -eq 0) { $proc = @(Get-Process -Name Durango -ErrorAction SilentlyContinue) }
 if ($proc.Count -eq 0) { Write-Output "game is not running"; exit 1 }
 $h = [CK]::FindMainWindow([uint32]$proc[0].Id)
 if ($h -eq [IntPtr]::Zero) { Write-Output "no window handle"; exit 1 }

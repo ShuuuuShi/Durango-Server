@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -67,9 +67,17 @@ public static class SkillCheck
     }
 
     /// <summary>ต่อเข้าเซิร์ฟด้วย id เดิม แล้วคืน connection ที่พร้อมใช้</summary>
+    /// <summary>id จริงที่ gateway ออกให้ครั้งล่าสุด — ใช้ต่อกลับให้เป็นตัวละครเดิม</summary>
+    private static string _resolvedId;
+
     private static Connection Connect(string host, int gamePort, int gatewayPort, string id)
     {
         string token = SessionClient.Fetch(host, gatewayPort, id, id);
+        // token ผูกกับ user_id ที่ gateway ออกให้ ไม่ใช่ชื่อที่ขอไป (ไม่งั้น auth โดนปฏิเสธเงียบ ๆ)
+        // ⚠️ ต้องจำ id ที่ได้ไว้ด้วย — ถ้าต่อกลับเข้ามาด้วย "ชื่อ" อีกครั้ง gateway จะออก id ใหม่
+        //    = กลายเป็นตัวละครคนละตัว แล้วเทส "ค่ายังอยู่ไหมหลังเข้าใหม่" จะตกทั้งที่เซิร์ฟไม่ผิด
+        if (!string.IsNullOrEmpty(SessionClient.LastUserId)) { id = SessionClient.LastUserId; }
+        _resolvedId = id;
         if (string.IsNullOrEmpty(token))
         {
             return null;
@@ -215,7 +223,7 @@ public static class SkillCheck
         Console.WriteLine("รอบ 4 — ออกเกมแล้วเข้าใหม่");
         conn.Close();
         Thread.Sleep(1500);
-        Connection again = Connect(host, gamePort, gatewayPort, id);
+        Connection again = Connect(host, gamePort, gatewayPort, _resolvedId ?? id);
         if (again == null)
         {
             Check("ต่อกลับเข้ามาได้", false);

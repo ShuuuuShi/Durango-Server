@@ -11,10 +11,10 @@ public class TitleMessageBoxBase : MonoBehaviour
 	protected SelectableButton _okButton;
 
 	[SerializeField]
-	private UILabel _title;
+	protected UILabel _title;
 
 	[SerializeField]
-	private UILabel _message;
+	protected UILabel _message;
 
 	[SerializeField]
 	private SelectableButton _cancelButton;
@@ -86,8 +86,40 @@ public class TitleMessageBoxBase : MonoBehaviour
 		{
 			message = message.Substring(0, 2500);
 		}
-		_message.text = message;
+		if (_message != null)
+		{
+			_message.multiLine = true;
+			_message.overflowMethod = UILabel.Overflow.ClampContent;
+			_message.text = message;
+		}
+		LayoutDialog(onCancel == null);
 		base.gameObject.SetActive(value: true);
+	}
+
+	/// <summary>ปุ่มเดียวชิดล่างของกล่อง ข้อความอยู่เหนือปุ่ม ไม่ทับกัน</summary>
+	private void LayoutDialog(bool singleOk)
+	{
+		if (_okButton == null || _okButton.Widget == null)
+		{
+			return;
+		}
+		UIWidget ok = _okButton.Widget;
+		if (singleOk)
+		{
+			ok.bottomAnchor.Set(0f, 16f);
+			ok.topAnchor.Set(0f, 80f);
+			if (_message != null)
+			{
+				_message.bottomAnchor.Set(0f, 96f);
+				_message.UpdateAnchors();
+			}
+		}
+		else
+		{
+			ok.bottomAnchor.absolute = 140;
+			ok.topAnchor.absolute = 206;
+		}
+		ok.UpdateAnchors();
 	}
 
 	public virtual void Close()

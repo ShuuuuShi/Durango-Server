@@ -16,6 +16,9 @@ public static class SessionClient
     /// <summary>พอร์ต gateway เริ่มต้น (พอร์ตเกม 8191 - 1)</summary>
     public const int DefaultGatewayPort = 8190;
 
+    /// <summary>user_id ที่ gateway ออกให้ในคำขอ Fetch ล่าสุด — ใช้เป็น EntityId ตอน Auth</summary>
+    public static string LastUserId;
+
     /// <summary>
     /// คืน session token ถ้าขอสำเร็จ, คืน null ถ้าติดต่อ gateway ไม่ได้
     /// (เรียกต่อได้ — server ที่รัน --insecure-auth ยังรับ Auth ที่ไม่มี token)
@@ -42,7 +45,10 @@ public static class SessionClient
                 Console.WriteLine("[session] gateway ไม่ได้ส่ง session_token กลับมา: " + reply);
                 return null;
             }
-            Console.WriteLine($"[session] ได้ token จาก {url} (…{token.Substring(Math.Max(0, token.Length - 6))})");
+            // [4 ก.ย. 2026] gateway ผูก token กับ user_id ที่มันออกให้ (id ที่ไม่มีเซฟ = ตัวละคร local ⇒ ได้ id ใหม่)
+            // ตัวเทสต้อง Auth ด้วย id นี้ ไม่ใช่ id ที่ตัวเองตั้งมา ไม่งั้นโดน "token เป็นของคนอื่น"
+            LastUserId = ReadJsonString(reply, "user_id");
+            Console.WriteLine($"[session] ได้ token จาก {url} (…{token.Substring(Math.Max(0, token.Length - 6))}) user_id={LastUserId ?? "(ไม่มี)"}");
             return token;
         }
         catch (Exception e)

@@ -1,0 +1,515 @@
+{
+  "daily_cost_exchange_rate": [
+    {
+      "grade": 1,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 300
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 300
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 300
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 2,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 450
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 450
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 450
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 3,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 600
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 600
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 600
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 4,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 900
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 900
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 900
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 5,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 1200
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 1200
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 1200
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 6,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 1500
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 1500
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 1500
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 1800
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 1800
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 1800
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 2100
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 2100
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 2100
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 2250
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 2250
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 2250
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 2400
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 2400
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 2400
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": 2400
+        },
+        {
+          "rate": 0.01,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 2550
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 2550
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 2550
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": 2550
+        },
+        {
+          "rate": 0.01,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 2700
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 2700
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 2700
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": 2700
+        },
+        {
+          "rate": 0.01,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 13,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 2850
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 2850
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 2850
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": 2850
+        },
+        {
+          "rate": 0.01,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 14,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 3000
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 3000
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 3000
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": 3000
+        },
+        {
+          "rate": 0.01,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    },
+    {
+      "grade": 15,
+      "rates": [
+        {
+          "rate": 4.0,
+          "paid": true,
+          "point": 4500
+        },
+        {
+          "rate": 2.0,
+          "paid": false,
+          "point": 4500
+        },
+        {
+          "rate": 1.0,
+          "paid": false,
+          "point": 4500
+        },
+        {
+          "rate": 0.1,
+          "paid": false,
+          "point": 4500
+        },
+        {
+          "rate": 0.01,
+          "paid": false,
+          "point": -1
+        }
+      ]
+    }
+  ],
+  "estate_size": {
+    "1": 100,
+    "2": 150,
+    "6": 200,
+    "7": 250,
+    "11": 300,
+    "15": 350,
+    "-1": 400
+  },
+  "grade_point": {
+    "2": 657,
+    "3": 1458,
+    "4": 2809,
+    "5": 5305,
+    "6": 7394,
+    "7": 12261,
+    "8": 15811,
+    "9": 19771,
+    "10": 25954,
+    "11": 40848,
+    "12": 41701,
+    "13": 56857,
+    "14": 72561,
+    "15": 102857
+  },
+  "region_access": [
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      4,
+      3
+    ],
+    [
+      5,
+      4
+    ],
+    [
+      7,
+      5
+    ],
+    [
+      9,
+      6
+    ],
+    [
+      11,
+      7
+    ],
+    [
+      13,
+      8
+    ]
+  ],
+  "reward_blueprints": {
+    "3": {
+      "10": [
+        "living_tech_01"
+      ]
+    },
+    "4": {
+      "10": [
+        "light_tech_01"
+      ]
+    },
+    "5": {
+      "10": [
+        "heavy_tech_01"
+      ]
+    },
+    "8": {
+      "10": [
+        "living_tech_02"
+      ]
+    },
+    "9": {
+      "10": [
+        "light_tech_02"
+      ]
+    },
+    "10": {
+      "10": [
+        "heavy_tech_02"
+      ]
+    },
+    "12": {
+      "10": [
+        "living_tech_03"
+      ]
+    },
+    "13": {
+      "10": [
+        "light_tech_03"
+      ]
+    },
+    "14": {
+      "10": [
+        "heavy_tech_03"
+      ]
+    }
+  }
+}

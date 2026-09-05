@@ -1,0 +1,153 @@
+{
+  "player": {
+    "bare_hands": {
+      "attack_type": "bare_hands",
+      "battle_speed": 350,
+      "weapon_framework": "barehand"
+    },
+    "dead_motion_name": "Barehand_Die",
+    "groggy_section": [
+      5,
+      1,
+      1,
+      0
+    ],
+    "inventory_capacity": 100,
+    "blow_duration": 2.1,
+    "defense": 0,
+    "knock_down_duration": 2.1,
+    "damage_ratio_table": {
+      "front": 1.0,
+      "right": 1.0,
+      "back": 1.2,
+      "left": 1.0
+    },
+    "playback_rate": 1.0,
+    "attack_rating": 40,
+    "combat_level": 1,
+    "attack": 40,
+    "blow_resistance": 350,
+    "bound_radius": 50.0,
+    "accuracy": 100,
+    "dodge": 0,
+    "survival": {
+      "life": {
+        "velocity": 1.0,
+        "type": "Gauge",
+        "value": 300,
+        "max_gauge": {
+          "max": 300,
+          "value": 300,
+          "velocity": 0.001157
+        }
+      },
+      "energy": {
+        "incr_outbound": "ONCE",
+        "ref": "stamina.max_gauge",
+        "type": "ProxyGauge",
+        "decr_fallback": {
+          "health": 10
+        },
+        "on_reset": "maximum * 0.1"
+      },
+      "groggy": {
+        "max": 600,
+        "value": 600,
+        "decr_outbound": "CLAMP",
+        "velocity": 1,
+        "type": "Gauge",
+        "on_reset": 1
+      },
+      "stamina": {
+        "velocity": 5.0,
+        "type": "Gauge",
+        "value": 100,
+        "max_gauge": {
+          "max": 100,
+          "value": 100,
+          "velocity": 0.004629
+        }
+      },
+      "fatigue": {
+        "max": 100,
+        "value": 0,
+        "decr_outbound": "CLAMP",
+        "velocity": -0.083333,
+        "type": "Gauge",
+        "on_reset": "past"
+      },
+      "health": {
+        "ref": "life.max_gauge",
+        "type": "ProxyGauge",
+        "decr_outbound": "CLAMP",
+        "on_reset": "maximum * 0.1"
+      }
+    },
+    "base_skills": [
+      "combat_actions"
+    ],
+    "moving": {
+      "maximum_normal_speed": 1000,
+      "default_normal_speed": 500
+    },
+    "knock_back_duration": 0.7,
+    "max_effected_by": {
+      "fatigue": 6,
+      "energy": 3,
+      "groggy": 0,
+      "health": 0
+    },
+    "body_parts": {
+      "body": {
+        "dodge_ratio": 1.0,
+        "defense_ratio": {
+          "impact": 1.0,
+          "pierce": 1.0,
+          "cut": 1.0
+        },
+        "max_hp": 300
+      }
+    },
+    "online_momenta": {
+      "fatigue": 0.083333
+    },
+    "battle_retreat_distance": 2400.0,
+    "counter_power": 20,
+    "battle_retreat_time": 8.0,
+    "size_level": 1,
+    "groggy_damage_ratio_table": {
+      "front": 1.0,
+      "right": 1.0,
+      "back": 2.0,
+      "left": 1.0
+    },
+    "critical": 0,
+    "groggy_duration": 3.0,
+    "knock_back_resistance": 250,
+    "momentum_effected_by": {
+      "stamina": "stamina_recovery",
+      "life": "life_recovery",
+      "health": "health_recovery",
+      "energy": "energy_recovery"
+    }
+  },
+  "1000:male": {
+    "__extend__": "player",
+    "default_inner_model": "Models/PC/Male/Inner/m_inner_basic.FBX",
+    "default_head_model": "Models/PC/Male/Head/m_head_base1.FBX",
+    "default_hair_model": "Models/PC/Male/Hair/m_hair_bear",
+    "default_body_model": "Models/PC/Male/Body/m_body_nothing.FBX"
+  },
+  "1001:female": {
+    "__extend__": "player",
+    "default_inner_model": "Models/PC/Female/Inner/f_inner_basic.FBX",
+    "default_head_model": "Models/PC/Female/Head/f_head_base1.FBX",
+    "default_hair_model": "Models/PC/Female/Hair/f_hair_longwave",
+    "default_body_model": "Models/PC/Female/Body/f_body_nothing.FBX"
+  },
+  "1500:npc_k": {
+    "__extend__": "female",
+    "portrait_icon": "todo_icon_npc_TheFirm",
+    "name": "K"
+  }
+}

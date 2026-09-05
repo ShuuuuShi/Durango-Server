@@ -17,8 +17,12 @@ android-apk/
 server/saves/
 saves/
 saves-backup-*/
+saves-*/
 server/saves-backup-*/
+server/logs/
 server/data/whitelist.txt
+server/admin-token.txt
+server/data/reports/
 *.log
 *.log.err
 *.pid
@@ -58,3 +62,45 @@ tools/asset-browser/output/
 # Local agent session files
 .zcode/
 
+
+# ซอร์สเกมต้นฉบับที่ถอดจาก DLL ของ NEXON — ใช้เทียบในเครื่องเท่านั้น ห้ามอัปขึ้น GitHub
+# (เป็นงานมีลิขสิทธิ์ ถ้าโดน DMCA จะโดนลบทั้ง repo พร้อมงานเซิร์ฟที่ทำมา)
+nexonSRC/
+
+# === ขอบเขต repo สาธารณะ (เฉพาะ server + test-client + mods) ===
+# ไฟล์เกม/ข้อมูลเกมจากตัว client จริง — ลิขสิทธิ์ NEXON ห้ามแจก
+server/data/gamefiles/
+server/data/terrains/
+extracted/
+client-dist/
+keep-assets/
+game-bot/
+server-nx/
+node_modules/
+.superpowers/
+TodoList/
+dist*/
+publish/
+*.backup-*
+*.bak-*
+docs/operations/
+docs/parity/
+docs/reports/
+docs/superpowers/
+HANDOFF*.md
+PATCH-LIST.md
+/agent-brief/
+/discord-bot/
+/data/
+/json_manager.py
+/map_*.py
+/open_island.py
+/terrain_themes.py
+/เปิดเซิร์ฟ*.bat
+/package.json
+/package-lock.json
+/run_manager.bat
+/tools/*
+!/tools/MemoryBotMod/
+/client/
+/1.0.0 beta.txt

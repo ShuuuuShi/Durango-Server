@@ -1,4 +1,4 @@
-// DinoWorld Launcher — Electron main process
+﻿// DinoWorld Launcher — Electron main process
 // หน้าต่าง frameless ธีมดำ-ชมพู + preload ให้ renderer เรียกฟังก์ชันเปิดเกม/อ่านไฟล์ผ่าน IPC
 const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
@@ -8,11 +8,51 @@ const http = require('http');
 const https = require('https');
 const crypto = require('crypto');
 let mapEditorCore;
-try {
-  mapEditorCore = require(path.join(__dirname, '..', 'MapEditor', 'lib', 'map-editor-core'));
-} catch (error) {
-  console.warn('[map-editor] core unavailable:', error.message);
+function resolveImportTerrainArg() {
+  const idx = process.argv.findIndex((a) => typeof a === 'string' && a.startsWith('--import-terrain='));
+  if (idx < 0) return null;
+  let value = process.argv[idx].slice('--import-terrain='.length);
+  if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+    value = value.slice(1, -1);
+  }
+  const tryPath = (p) => {
+    try { return p && fs.existsSync(p) && fs.statSync(p).isDirectory() ? path.resolve(p) : null; } catch (_) { return null; }
+  };
+  let hit = tryPath(value);
+  if (hit) return hit;
+  const parts = [value];
+  for (let i = idx + 1; i < process.argv.length; i++) {
+    const next = process.argv[i];
+    if (!next || String(next).startsWith('--')) break;
+    parts.push(next);
+    hit = tryPath(parts.join(' '));
+    if (hit) return hit;
+  }
+  return value ? path.resolve(parts.join(' ')) : null;
 }
+
+function loadMapEditorCore() {
+  const candidates = [
+    path.join(__dirname, '..', 'MapEditor', 'lib', 'map-editor-core'),
+    path.join(__dirname, 'MapEditor', 'lib', 'map-editor-core'),
+    path.join(process.resourcesPath || '', 'MapEditor', 'lib', 'map-editor-core'),
+    path.join(path.dirname(process.execPath), 'resources', 'MapEditor', 'lib', 'map-editor-core'),
+  ];
+  let lastError = null;
+  for (const candidate of candidates) {
+    try {
+      if (!fs.existsSync(candidate + '.js') && !fs.existsSync(candidate)) continue;
+      const mod = require(candidate);
+      console.log('[map-editor] core loaded from', candidate);
+      return mod;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  console.warn('[map-editor] core unavailable:', lastError && lastError.message, 'tried', candidates);
+  return null;
+}
+mapEditorCore = loadMapEditorCore();
 
 let win;
 let mapEditorWin;
@@ -61,6 +101,16 @@ ipcMain.handle('open-map-editor', () => {
   });
   mapEditorWin.setMenuBarVisibility(false);
   mapEditorWin.loadFile(path.join(__dirname, 'map-editor.html'));
+  const importFolder = resolveImportTerrainArg();
+  if (importFolder && mapEditorCore) {
+    mapEditorWin.webContents.once('did-finish-load', () => {
+      setTimeout(() => {
+        mapEditorWin.webContents.executeJavaScript('importTerrain()').catch((error) => {
+          console.error('[map-editor] auto-import failed:', error);
+        });
+      }, 400);
+    });
+  }
   mapEditorWin.on('closed', () => { mapEditorWin = null; });
   return true;
 });
@@ -145,10 +195,10 @@ function serializeTerrainImport(result) {
       metadataRaw: terrain.metadataRaw,
       metadataUnknown: terrain.metadataUnknown,
       layers: {
-        biomes: terrain.layers.biomes?.toString('base64') || null,
-        ocean: terrain.layers.ocean?.toString('base64') || null,
-        rivers: terrain.layers.rivers?.toString('base64') || null,
-        coastDistance: terrain.layers.coastDistance?.toString('base64') || null,
+        biomes: terrain.layers?.biomes?.toString('base64') || null,
+        ocean: terrain.layers?.ocean?.toString('base64') || null,
+        rivers: terrain.layers?.rivers?.toString('base64') || null,
+        coastDistance: terrain.layers?.coastDistance?.toString('base64') || null,
       },
       garden: terrain.garden,
       landmarks: terrain.landmarks,
@@ -258,20 +308,38 @@ ipcMain.handle('editor-scan-game', async () => {
 
 ipcMain.handle('editor-import-terrain', async () => {
   if (!mapEditorCore) return mapEditorUnavailable();
-  const result = await dialog.showOpenDialog(mapEditorWin, {
-    title: 'เลือกโฟลเดอร์ terrain ที่สกัดแล้ว',
-    defaultPath: path.join(projectRoot, 'server', 'data', 'terrains', 'extracted'),
-    properties: ['openDirectory'],
-  });
-  if (result.canceled || !result.filePaths[0]) return { canceled: true };
-  try {
-    const imported = mapEditorCore.readTerrainSource(result.filePaths[0]);
-    lastImport = {
-      terrainFolder: result.filePaths[0],
-      hashes: (imported.report && imported.report.hashes) || {},
-      mapId: imported.terrain && imported.terrain.mapId,
-    };
-    return { canceled: false, terrainFolder: result.filePaths[0], ...serializeTerrainImport(imported) };
+  let chosen = resolveImportTerrainArg();
+    if (!chosen) {
+      const result = await dialog.showOpenDialog(mapEditorWin, {
+        title: 'เลือกโฟลเดอร์ terrain ที่สกัดแล้ว',
+        defaultPath: path.join(projectRoot, 'server', 'bin', 'Debug', 'net9.0', 'data', 'terrains', 'extracted'),
+        properties: ['openDirectory'],
+      });
+      if (result.canceled || !result.filePaths[0]) return { canceled: true };
+      chosen = result.filePaths[0];
+    }
+    try {
+      const infoYml = path.join(chosen, 'info.yml');
+      const biomesFile = path.join(chosen, 'whole.biomes');
+      if (!fs.existsSync(infoYml) || !fs.existsSync(biomesFile)) {
+        return {
+          canceled: false,
+          error: 'โฟลเดอร์นี้ไม่ใช่ terrain map — เลือกโฟลเดอร์ย่อย เช่น ri35te (ต้องมี info.yml และ whole.biomes) ไม่ใช่โฟลเดอร์ extracted',
+        };
+      }
+      const imported = mapEditorCore.readTerrainSource(chosen);
+      if (!imported || !imported.terrain) {
+        const details = ((imported && imported.report && imported.report.issues) || [])
+          .map((x) => (x.severity || 'error').toUpperCase() + ': ' + (x.message || x.code || ''))
+          .join('\n');
+        return { canceled: false, error: details || ('ไม่พบข้อมูล terrain ใน ' + chosen) };
+      }
+      lastImport = {
+        terrainFolder: chosen,
+        hashes: (imported.report && imported.report.hashes) || {},
+        mapId: imported.terrain && imported.terrain.mapId,
+      };
+      return { canceled: false, terrainFolder: chosen, ...serializeTerrainImport(imported) };
   } catch (error) {
     return { canceled: false, error: String(error.message || error) };
   }

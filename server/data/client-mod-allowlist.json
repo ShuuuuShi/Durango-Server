@@ -1,0 +1,17 @@
+[
+  {
+    "id": "durangoclientcore",
+    "version": "1.0.0",
+    "sha256": "09687c1c673b1ddca036ab3b81fb4fe43f1e068b6d81a0818a9df5d5c88c804f"
+  },
+  {
+    "id": "durangomemorybot",
+    "version": "0.1.0",
+    "sha256": "2932ccd3d45709f13971c451bc9f505cadf3bec85c640d683e71647a21368db4"
+  },
+  {
+    "id": "durangomodmenu",
+    "version": "1.5.0",
+    "sha256": "fc3c0ed47c7e491a1960d6f12ef8853341b630ee9b7207858499b201b57a2d1e"
+  }
+]

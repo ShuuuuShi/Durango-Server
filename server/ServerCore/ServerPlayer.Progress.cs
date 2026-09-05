@@ -141,6 +141,14 @@ public partial class ServerPlayer
         {
             // เควสที่เจาะจงหมวดสูตร เช่น "คราฟต์เครื่องมือ 5 ชิ้น" (หมวด tool)
             QuestProgress(QuestData.Goal.Craft, meta.Category);
+            // [3 ก.ย. 2026] 🐛 มีด/ขวานหินของผู้เล่นใหม่อยู่หมวด "weapon_and_tool" ไม่ใช่ "tool"
+            //    เควสสอนเล่น daily_weaponcrafting_b_01 ("คราฟต์เครื่องมือ 5 ชิ้น — ไม่มีขวานก็ตัดไม้ไม่ได้
+            //    ไม่มีมีดก็แล่ซากไม่ได้") จึงไม่เคยนับมีด/ขวานเลย — หมวด "tool" แท้ ๆ มีแต่ชุดซ่อม/เลื่อย/จอบ
+            //    ที่ต้องมีขวานอยู่ก่อน ⇒ ผู้เล่นใหม่ติดเควสข้อ 2 ตลอดกาล (เจอตอนให้บอทเล่นแบบคนบนเซิร์ฟ local)
+            if (meta.Category == "weapon_and_tool")
+            {
+                QuestProgress(QuestData.Goal.Craft, "tool");
+            }
             if (meta.Category == "cook" || meta.Category == "cook_season2")
             {
                 QuestProgress(QuestData.Goal.Cook);

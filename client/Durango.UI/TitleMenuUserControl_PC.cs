@@ -31,10 +31,39 @@ public class TitleMenuUserControl_PC : TitleMenuUserControlBase
 		_startButton.Clicked = OnConfirm;
 		_startButton.Text = ManualTranslator.Start;
 		_exitGameLabel.text = ManualTranslator.ExitGame;
+		// [แก้เอง] 31 ส.ค. 2026 — เจ้าของขอจุดสถานะต่อท้ายคำว่า "Select Server"
+		// เขียว = เซิร์ฟรันอยู่ (พร้อมจำนวนคนออนไลน์) · แดง = ติดต่อไม่ได้ · เทา = กำลังเช็ค
+		// ต้องเปิด supportEncoding ก่อนใช้แท็กสี ไม่งั้น NGUI โชว์แท็กดิบให้ผู้เล่นเห็น (เคยพลาดมาแล้ว)
+		_serverSelectionLabel.supportEncoding = true;
+		// ตัวป้าย "Select Server" เป็นสีขาว — สีจะมีเฉพาะส่วนสถานะที่ต่อท้าย (แท็บ [RRGGBB]…[-])
+		_serverSelectionLabel.color = Color.white;
 		_serverSelectionLabel.text = ManualTranslator.SelectServer;
 		_playerSelectionLabel.text = ManualTranslator.SelectCharacter;
 		_logoutButton.GetComponent<UIRect>().rightAnchor.Set(_exitGameLabel.transform, 1f, 0f);
 		_logoutButton.GetComponent<UIRect>().UpdateAnchors();
+	}
+
+	/// <summary>ข้อความสถานะที่วาดไปแล้ว — เทียบก่อนวาดใหม่ จะได้ไม่แตะ UI ทุกเฟรม</summary>
+	private string _shownStatusSuffix;
+
+	/// <summary>
+	/// วาดจุดสถานะเซิร์ฟต่อท้าย "Select Server"
+	/// ค่ามาจาก thread เบื้องหลัง (Server.RefreshServerStatus) ⇒ ต้องมาวาดที่นี่
+	/// เพราะ Unity แตะ UI ได้เฉพาะ main thread
+	/// </summary>
+	private void Update()
+	{
+		if (_serverSelectionLabel == null)
+		{
+			return;
+		}
+		Durango.Offline.Server.RefreshServerStatus();   // มีตัวกันยิงถี่ในตัว (10 วิ/ครั้ง)
+		string suffix = Durango.Offline.Server.StatusSuffix();
+		if (suffix != _shownStatusSuffix)
+		{
+			_shownStatusSuffix = suffix;
+			_serverSelectionLabel.text = ManualTranslator.SelectServer + suffix;
+		}
 	}
 
 	public override void OnStateChanged(TitleMenuGroup.State state)

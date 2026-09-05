@@ -1,0 +1,452 @@
+{
+  "modular": {
+    "wall": {
+      "min_level": 1,
+      "name": {
+        "벽 개조": null
+      },
+      "required_ability": 219,
+      "energy": "10",
+      "postprocess_time": 3600,
+      "tool_tags": {
+        "hammer_twohand": 20,
+        "hammer_onehand": 20
+      },
+      "max_level": 60,
+      "postprocess_helper_max": 3,
+      "required_ability_value": "0.25 * level",
+      "slots": [
+        {
+          "count": 1,
+          "source_info": [
+            {
+              "recipe_id": "modular_wall_stem",
+              "type": 1
+            },
+            {
+              "recipe_id": "modular_wall_stone",
+              "type": 1
+            }
+          ],
+          "size_factor": "2 * ( x + y)",
+          "description": {
+            "": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "벽재": null
+          },
+          "slot_id": "wall",
+          "required_tags": {
+            "modular_wall": 1
+          },
+          "required_materials": {}
+        },
+        {
+          "count": 4,
+          "source_info": [
+            {
+              "text": {
+                "지원 단체 중 <em>위원회 6단계</em>에서 획득할 수 있습니다.": null
+              },
+              "type": 0
+            }
+          ],
+          "description": {
+            "개조를 하기 위한 보조 재료입니다.": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "벽 결합제": null
+          },
+          "slot_id": "결합제",
+          "required_tags": {
+            "glue": 1
+          },
+          "required_materials": {
+            "remodeling_wall_01": 1
+          }
+        }
+      ],
+      "effort": "20",
+      "description": {
+        "개조를 통해 벽의 외형을 변경할 수 있습니다.": null
+      }
+    },
+    "tile": {
+      "min_level": 1,
+      "name": {
+        "바닥 개조": null
+      },
+      "required_ability": 219,
+      "energy": "10",
+      "postprocess_time": 3600,
+      "tool_tags": {
+        "hammer_twohand": 20,
+        "hammer_onehand": 20
+      },
+      "max_level": 60,
+      "postprocess_helper_max": 3,
+      "required_ability_value": "0.25 * level",
+      "slots": [
+        {
+          "count": 1,
+          "source_info": [
+            {
+              "recipe_id": "modular_ground_leaf",
+              "type": 1
+            },
+            {
+              "recipe_id": "modular_ground_dirt",
+              "type": 1
+            }
+          ],
+          "size_factor": "x * y",
+          "description": {
+            "": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "바닥재": null
+          },
+          "slot_id": "tile",
+          "required_tags": {
+            "modular_ground": 1
+          },
+          "required_materials": {}
+        },
+        {
+          "count": 4,
+          "source_info": [
+            {
+              "text": {
+                "지원 단체 중 <em>위원회 6단계</em>에서 획득할 수 있습니다.": null
+              },
+              "type": 0
+            }
+          ],
+          "description": {
+            "개조를 하기 위한 보조 재료입니다.": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "바닥 결합제": null
+          },
+          "slot_id": "결합제",
+          "required_tags": {
+            "glue": 1
+          },
+          "required_materials": {
+            "remodeling_ground_01": 1
+          }
+        }
+      ],
+      "effort": "20",
+      "description": {
+        "개조를 통해 바닥의 외형을 변경할 수 있습니다.": null
+      }
+    },
+    "pillar": {
+      "min_level": 1,
+      "name": {
+        "기둥 개조": null
+      },
+      "required_ability": 219,
+      "energy": "5",
+      "postprocess_time": 1200,
+      "tool_tags": {
+        "hammer_twohand": 20,
+        "hammer_onehand": 20
+      },
+      "max_level": 60,
+      "postprocess_helper_max": 2,
+      "required_ability_value": "0.25 * level",
+      "slots": [
+        {
+          "count": 4,
+          "source_info": [
+            {
+              "collectible_id": "tree_sandalwood",
+              "type": 2,
+              "generator_id": "wood_log"
+            },
+            {
+              "recipe_id": "pillar_metal",
+              "type": 1
+            }
+          ],
+          "description": {
+            "": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "기둥": null
+          },
+          "slot_id": "pillar",
+          "required_tags": {
+            "pillar_thin": 1,
+            "pillar_thick": 1,
+            "pillar_normal": 1
+          },
+          "required_materials": {
+            "wood": 1,
+            "metal": 1,
+            "bone": 1
+          }
+        },
+        {
+          "count": 2,
+          "source_info": [
+            {
+              "text": {
+                "지원 단체 중 <em>위원회 6단계</em>에서 획득할 수 있습니다.": null
+              },
+              "type": 0
+            }
+          ],
+          "description": {
+            "개조를 하기 위한 보조 재료입니다.": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "기둥 결합제": null
+          },
+          "slot_id": "결합제",
+          "required_tags": {
+            "glue": 1
+          },
+          "required_materials": {
+            "remodeling_pillar_01": 1
+          }
+        }
+      ],
+      "effort": "10",
+      "description": {
+        "개조를 통해 기둥의 외형을 변경할 수 있습니다.": null
+      }
+    },
+    "roof": {
+      "min_level": 1,
+      "name": {
+        "지붕 개조": null
+      },
+      "required_ability": 219,
+      "energy": "10",
+      "postprocess_time": 3600,
+      "tool_tags": {
+        "hammer_twohand": 20,
+        "hammer_onehand": 20
+      },
+      "max_level": 60,
+      "postprocess_helper_max": 3,
+      "required_ability_value": "0.25 * level",
+      "slots": [
+        {
+          "count": 1,
+          "source_info": [
+            {
+              "recipe_id": "modular_roof_leaf",
+              "type": 1
+            },
+            {
+              "recipe_id": "modular_roof_leather",
+              "type": 1
+            }
+          ],
+          "size_factor": "x * y",
+          "description": {
+            "": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "지붕재": null
+          },
+          "slot_id": "roof",
+          "required_tags": {
+            "modular_roof": 1
+          },
+          "required_materials": {}
+        },
+        {
+          "count": 4,
+          "source_info": [
+            {
+              "text": {
+                "지원 단체 중 <em>위원회 6단계</em>에서 획득할 수 있습니다.": null
+              },
+              "type": 0
+            }
+          ],
+          "description": {
+            "개조를 하기 위한 보조 재료입니다.": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "지붕 결합제": null
+          },
+          "slot_id": "결합제",
+          "required_tags": {
+            "glue": 1
+          },
+          "required_materials": {
+            "remodeling_roof_01": 1
+          }
+        }
+      ],
+      "effort": "20",
+      "description": {
+        "개조를 통해 지붕의 외형을 변경할 수 있습니다.": null
+      }
+    }
+  },
+  "roof_modular": {
+    "pillar": {
+      "min_level": 1,
+      "name": {
+        "기둥 개조": null
+      },
+      "required_ability": 219,
+      "energy": "3",
+      "postprocess_time": 900,
+      "tool_tags": {
+        "hammer_twohand": 15,
+        "hammer_onehand": 15
+      },
+      "max_level": 60,
+      "postprocess_helper_max": 2,
+      "required_ability_value": "0.25 * level",
+      "slots": [
+        {
+          "count": 4,
+          "source_info": [
+            {
+              "collectible_id": "tree_sandalwood",
+              "type": 2,
+              "generator_id": "wood_log"
+            },
+            {
+              "recipe_id": "pillar_metal",
+              "type": 1
+            }
+          ],
+          "description": {
+            "": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "기둥": null
+          },
+          "slot_id": "pillar",
+          "required_tags": {
+            "pillar_thin": 1,
+            "pillar_thick": 1,
+            "pillar_normal": 1
+          },
+          "required_materials": {}
+        },
+        {
+          "count": 2,
+          "source_info": [
+            {
+              "text": {
+                "지원 단체 중 <em>위원회 6단계</em>에서 획득할 수 있습니다.": null
+              },
+              "type": 0
+            }
+          ],
+          "description": {
+            "개조를 하기 위한 보조 재료입니다.": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "기둥 결합제": null
+          },
+          "slot_id": "결합제",
+          "required_tags": {
+            "glue": 1
+          },
+          "required_materials": {
+            "remodeling_pillar_01": 1
+          }
+        }
+      ],
+      "effort": "6",
+      "description": {
+        "개조를 통해 지붕의 외형을 변경할 수 있습니다.": null
+      }
+    },
+    "roof": {
+      "min_level": 1,
+      "name": {
+        "지붕 개조": null
+      },
+      "required_ability": 219,
+      "energy": "6",
+      "postprocess_time": 1800,
+      "tool_tags": {
+        "hammer_twohand": 15,
+        "hammer_onehand": 15
+      },
+      "max_level": 60,
+      "postprocess_helper_max": 2,
+      "required_ability_value": "0.25 * level",
+      "slots": [
+        {
+          "count": 1,
+          "source_info": [
+            {
+              "recipe_id": "modular_roof_leaf",
+              "type": 1
+            },
+            {
+              "recipe_id": "modular_roof_leather",
+              "type": 1
+            }
+          ],
+          "size_factor": "x * y",
+          "description": {
+            "": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "지붕재": null
+          },
+          "slot_id": "roof",
+          "required_tags": {
+            "modular_roof": 1
+          },
+          "required_materials": {}
+        },
+        {
+          "count": 2,
+          "source_info": [
+            {
+              "text": {
+                "지원 단체 중 <em>위원회 6단계</em>에서 획득할 수 있습니다.": null
+              },
+              "type": 0
+            }
+          ],
+          "description": {
+            "개조를 하기 위한 보조 재료입니다.": null
+          },
+          "weight": 1,
+          "slot_name": {
+            "지붕 결합제": null
+          },
+          "slot_id": "결합제",
+          "required_tags": {
+            "glue": 1
+          },
+          "required_materials": {
+            "remodeling_roof_01": 1
+          }
+        }
+      ],
+      "effort": "12",
+      "description": {
+        "개조를 통해 지붕의 외형을 변경할 수 있습니다.": null
+      }
+    }
+  }
+}

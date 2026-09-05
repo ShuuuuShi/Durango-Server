@@ -289,7 +289,15 @@ internal sealed class ClientMethodOverrideManager
 
     private static Type FindClientType(string name)
     {
-        Assembly assembly = typeof(ClientModLoader).Assembly;
+        // 🐛 [แก้เอง] 30 ส.ค. 2026 — เดิมใช้ typeof(ClientModLoader).Assembly ซึ่งถูกตอนที่โค้ด mod
+        // ถูกคอมไพล์รวมอยู่ใน Assembly-CSharp.dll (แนวทางเก่าที่เลิกใช้แล้ว เพราะทำให้เข้าโลกไม่ได้)
+        //
+        // ตอนนี้ ClientModLoader อยู่ใน **DurangoClientMods.dll แยกต่างหาก** ⇒ บรรทัดเดิมไปค้นหา type
+        // ในไฟล์ของเราเอง ไม่ใช่ของเกม ⇒ RegisterMethodOverride พังทุกครั้งด้วย
+        // "target type not found in Assembly-CSharp" (เจอจริงตอนจะ hook Durango.Offline.Listener::Start)
+        //
+        // แก้เป็นอ้างอิงจาก GameManager ซึ่งอยู่ใน Assembly-CSharp.dll เสมอไม่ว่าจะแนวทางไหน
+        Assembly assembly = typeof(GameManager).Assembly;
         Type type = assembly.GetType(name, false, false);
         if (type != null) return type;
         return assembly.GetTypes().FirstOrDefault(delegate(Type x) { return (x.FullName ?? "").Replace('+', '.') == name; });

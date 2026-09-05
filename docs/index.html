@@ -1,0 +1,975 @@
+<title>DurangoTH Mod vs Patch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  /* กลางที่เอียงไปทางเขียว-ดิน (โทนป่าของเกม) ไม่ใช่เทากลางเปล่า ๆ */
+  --ground:   #E7EAE3;
+  --surface:  #FBFCF9;
+  --sunken:   #DDE1D7;
+  --line:     #C6CCBB;
+  --line-soft:#D8DDCE;
+  --ink:      #1A1E14;
+  --ink-mid:  #495042;
+  --ink-soft: #6B7362;
+  /* อำพัน/ยางไม้กลายเป็นหิน — สีเน้นเดียวของทั้งหน้า */
+  --amber:    #A9760F;
+  --amber-ink:#7A5407;
+  --amber-wash:#F2E7CE;
+  --ok:       #3B6B3A;
+  --ok-wash:  #DDE8DA;
+  --warn:     #8A6614;
+  --warn-wash:#F0E6CB;
+  --stop:     #A03A24;
+  --stop-wash:#F1DCD5;
+
+  --step--1: 0.813rem;
+  --step-0:  0.975rem;
+  --step-1:  1.19rem;
+  --step-2:  1.55rem;
+  --step-3:  2.1rem;
+  --step-4:  2.9rem;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:   #12150F;
+    --surface:  #1A1E17;
+    --sunken:   #0D100A;
+    --line:     #333A2C;
+    --line-soft:#262C21;
+    --ink:      #E6EADD;
+    --ink-mid:  #A9B29B;
+    --ink-soft: #838C76;
+    --amber:    #D9A441;
+    --amber-ink:#EDC470;
+    --amber-wash:#2A2416;
+    --ok:       #7FB877;
+    --ok-wash:  #1B2718;
+    --warn:     #D2AC55;
+    --warn-wash:#2A2415;
+    --stop:     #DE8A70;
+    --stop-wash:#2E1B15;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ground:   #12150F;
+  --surface:  #1A1E17;
+  --sunken:   #0D100A;
+  --line:     #333A2C;
+  --line-soft:#262C21;
+  --ink:      #E6EADD;
+  --ink-mid:  #A9B29B;
+  --ink-soft: #838C76;
+  --amber:    #D9A441;
+  --amber-ink:#EDC470;
+  --amber-wash:#2A2416;
+  --ok:       #7FB877;
+  --ok-wash:  #1B2718;
+  --warn:     #D2AC55;
+  --warn-wash:#2A2415;
+  --stop:     #DE8A70;
+  --stop-wash:#2E1B15;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "IBM Plex Sans Thai", "Segoe UI", system-ui, sans-serif;
+  font-size: var(--step-0);
+  line-height: 1.72;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 0 1.5rem 6rem;
+}
+
+/* ---------- หัวเรื่อง ---------- */
+
+.masthead {
+  border-bottom: 2px solid var(--line);
+  padding: 3.5rem 0 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.eyebrow {
+  font-family: "Chakra Petch", "IBM Plex Sans Thai", sans-serif;
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 0 0 0.9rem;
+}
+
+h1 {
+  font-family: "Chakra Petch", "IBM Plex Sans Thai", sans-serif;
+  font-size: var(--step-4);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  margin: 0 0 1rem;
+}
+
+.standfirst {
+  font-size: var(--step-1);
+  color: var(--ink-mid);
+  max-width: 36em;
+  margin: 0 0 2rem;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--step--1);
+}
+
+.meta span {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.2rem 0.6rem;
+  color: var(--ink-mid);
+  background: var(--surface);
+}
+
+.meta b { color: var(--ink); font-weight: 500; }
+
+/* ---------- สารบัญ ---------- */
+
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.toc h2 {
+  border: 0;
+  padding: 0;
+  margin: 0 0 0.75rem;
+  font-size: var(--step--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.3rem 1.5rem;
+  counter-reset: toc;
+}
+
+.toc li { counter-increment: toc; }
+
+.toc li a { text-decoration: none; color: var(--ink); }
+.toc li a:hover { color: var(--amber-ink); text-decoration: underline; }
+
+.toc li a::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: var(--step--1);
+  color: var(--amber);
+  margin-right: 0.6rem;
+}
+
+/* ---------- โครงหัวข้อ ---------- */
+
+section { margin-bottom: 3.75rem; scroll-margin-top: 1.5rem; }
+
+h2 {
+  font-family: "Chakra Petch", "IBM Plex Sans Thai", sans-serif;
+  font-size: var(--step-2);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  margin: 0 0 0.4rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+h2 .num {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: var(--step--1);
+  color: var(--amber);
+  margin-right: 0.75rem;
+  vertical-align: 0.35em;
+}
+
+.lede {
+  color: var(--ink-mid);
+  max-width: 42em;
+  margin: 0 0 1.75rem;
+}
+
+h3 {
+  font-family: "Chakra Petch", "IBM Plex Sans Thai", sans-serif;
+  font-size: var(--step-1);
+  font-weight: 600;
+  margin: 2rem 0 0.6rem;
+}
+
+h3:first-child { margin-top: 0; }
+
+p { max-width: 44em; }
+
+/* ---------- กล่องเน้น ---------- */
+
+.verdict {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--amber);
+  padding: 1.5rem 1.75rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.verdict p { margin: 0; }
+.verdict strong { color: var(--amber-ink); }
+
+.alarm {
+  background: var(--stop-wash);
+  border: 1px solid var(--stop);
+  border-left: 4px solid var(--stop);
+  padding: 1.25rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.alarm p { margin: 0; color: var(--ink); }
+.alarm strong { color: var(--stop); }
+
+/* ---------- เทียบสองทาง ---------- */
+
+.versus {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.card.retired { background: var(--sunken); }
+
+.card-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.card.retired  .card-tag { color: var(--stop); }
+.card.current  .card-tag { color: var(--ok); }
+.card.maybe    .card-tag { color: var(--warn); }
+
+.card h3 { margin: 0; }
+
+.card .good, .card .bad {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.45rem;
+  color: var(--ink-mid);
+  font-size: var(--step--1);
+}
+
+.card .good li::marker { color: var(--ok); }
+.card .bad  li::marker { color: var(--stop); }
+
+.card .sub {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0.25rem 0 -0.35rem;
+}
+
+/* ---------- ตาราง ---------- */
+
+.scroller { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+  min-width: 38rem;
+}
+
+thead th {
+  text-align: left;
+  font-family: "Chakra Petch", "IBM Plex Sans Thai", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line);
+  padding: 0 0.9rem 0.55rem;
+}
+
+tbody td {
+  border-bottom: 1px solid var(--line-soft);
+  padding: 0.8rem 0.9rem;
+  vertical-align: top;
+  color: var(--ink-mid);
+}
+
+tbody td:first-child {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+tbody tr:hover td { background: var(--surface); }
+
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", monospace; }
+
+tbody tr.group td {
+  background: var(--sunken);
+  font-family: "Chakra Petch", "IBM Plex Sans Thai", sans-serif;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  padding: 0.5rem 0.9rem;
+}
+
+.pill {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.55rem;
+  border-radius: 2px;
+  border: 1px solid transparent;
+}
+
+.pill.ok   { color: var(--ok);   background: var(--ok-wash);   border-color: var(--ok); }
+.pill.warn { color: var(--warn); background: var(--warn-wash); border-color: var(--warn); }
+.pill.stop { color: var(--stop); background: var(--stop-wash); border-color: var(--stop); }
+
+code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.88em;
+  background: var(--sunken);
+  border: 1px solid var(--line-soft);
+  border-radius: 2px;
+  padding: 0.05em 0.35em;
+}
+
+pre {
+  background: var(--sunken);
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--line);
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--step--1);
+  line-height: 1.65;
+  margin: 1.25rem 0;
+}
+
+pre code { background: none; border: 0; padding: 0; font-size: 1em; }
+
+/* ---------- กับดัก ---------- */
+
+.traps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+.trap {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--stop);
+  padding: 1.15rem 1.3rem;
+}
+
+.trap h3 { font-size: var(--step-0); margin: 0 0 0.4rem; }
+.trap p { margin: 0; font-size: var(--step--1); color: var(--ink-mid); }
+.trap .evidence {
+  display: block;
+  margin-top: 0.7rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.03em;
+}
+
+/* ---------- ตัวเลขยืนยัน ---------- */
+
+.figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1rem;
+}
+
+.figure {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.15rem 1.3rem;
+}
+
+.figure .n {
+  font-family: "Chakra Petch", monospace;
+  font-size: var(--step-3);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.figure .k { font-size: var(--step--1); color: var(--ink-mid); }
+
+/* ---------- ท้ายเรื่อง ---------- */
+
+.footer {
+  border-top: 2px solid var(--line);
+  padding-top: 1.5rem;
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+}
+
+.footer p { max-width: 46em; }
+
+a { color: var(--amber-ink); text-underline-offset: 0.15em; }
+a:focus-visible, :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+@media (max-width: 40rem) {
+  :root { --step-4: 2.1rem; --step-3: 1.65rem; --step-2: 1.3rem; }
+  .masthead { padding-top: 2.5rem; }
+}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Durango: Wild Lands · เซิร์ฟไทย</p>
+    <h1>เลิกใช้มอด มาแก้ที่ตัวเกมแทน</h1>
+    <p class="standfirst">
+      บันทึกให้ทีมอ่าน ว่าเราเปลี่ยนวิธีแก้เกมเพราะอะไร ตอนนี้อะไรใช้ได้จริง
+      อะไรยังไม่ได้ อะไรที่ <em>ห้ามทำ</em> เพราะพิสูจน์แล้วว่าทำให้เกมดับ
+      และผลตรวจว่าซอร์สที่เราถืออยู่ครบจริงไหม
+    </p>
+    <div class="meta">
+      <span>อัปเดต <b>31 ส.ค. 2026</b></span>
+      <span>เซิร์ฟ <b>187.53.129.69:8190</b></span>
+      <span>ไคลเอนต์ <b>Unity 2017.4.34f1 · Mono</b></span>
+      <span>เซิร์ฟเวอร์ <b>.NET 9</b></span>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <h2>ในหน้านี้</h2>
+    <ol>
+      <li><a href="#s1">สรุปการตัดสินใจ</a></li>
+      <li><a href="#s2">มอดกับแพตช์ต่างกันยังไง</a></li>
+      <li><a href="#s3">สถานะฟีเจอร์ทั้งหมด</a></li>
+      <li><a href="#s4">ข้อห้ามที่พิสูจน์แล้ว</a></li>
+      <li><a href="#s5">ซอร์สที่เราถือครบไหม</a></li>
+      <li><a href="#s6">AssetRipper ให้อะไรเพิ่ม</a></li>
+      <li><a href="#s7">สามทางเลือก ข้อดีข้อเสีย</a></li>
+      <li><a href="#s8">ขั้นตอนทำงาน</a></li>
+      <li><a href="#s9">แผนผังไฟล์</a></li>
+      <li><a href="#s10">งานค้าง</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============================================ -->
+  <section id="s1">
+    <h2><span class="num">01</span>สรุปการตัดสินใจ</h2>
+    <div class="verdict">
+      <p>
+        <strong>เราเลิกใช้ระบบมอดทั้งหมด</strong> ไม่มีโฟลเดอร์ <code>mods/</code> ในชุดแจกอีกแล้ว
+        ทุกอย่างที่เคยเป็นมอด ย้ายไปแก้ที่ซอร์สของ <code>Assembly-CSharp.dll</code> โดยตรง แล้วบิลด์ใหม่
+      </p>
+      <p>
+        เหตุผลไม่ใช่เรื่องรสนิยม แต่เพราะมอดพึ่งไฟล์นอกตัวเกม ซึ่งหลุดหายได้จริงและเคยหายมาแล้ว
+        อาการตอนหายคือ <em>ผู้เล่นเห็นเมนูค้างที่ “กำลังตรวจสอบ…”</em> ต่อเซิร์ฟไม่ได้ หาตัวละครไม่เจอ
+        โดยไม่มี error ขึ้นให้เดาถูกเลยว่าเกิดอะไร ต้องไปไล่ log ถึงจะรู้ว่าไฟล์ DLL หายไปเฉย ๆ
+      </p>
+      <p>
+        แพตช์ไม่มีปัญหานี้ เพราะโค้ดฝังอยู่ในตัวเกม — <strong>ถ้าเกมเปิดได้ แปลว่าแพตช์อยู่ครบแน่นอน</strong>
+        ไม่มีสถานะกึ่ง ๆ ให้ผู้เล่นเจอ
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="s2">
+    <h2><span class="num">02</span>มอดกับแพตช์ต่างกันยังไง</h2>
+    <p class="lede">
+      ทั้งสองทางเขียน C# เหมือนกัน ต่างกันที่โค้ดไปอยู่ตรงไหน และเข้าถึงตัวเกมได้ลึกแค่ไหน
+    </p>
+
+    <div class="versus">
+      <article class="card retired">
+        <p class="card-tag">เลิกใช้แล้ว</p>
+        <h3>มอด</h3>
+        <p class="sub">ข้อดี</p>
+        <ul class="good">
+          <li>แก้แล้วไม่ต้องแตะไฟล์เกม อัปเดตทีละตัวได้</li>
+          <li>ผู้เล่นถอดออกเองได้ถ้าไม่ชอบ</li>
+        </ul>
+        <p class="sub">ข้อเสีย</p>
+        <ul class="bad">
+          <li>เข้าถึงได้แค่ของที่เป็น <code>public</code> หรือต้องงัดผ่าน reflection ซึ่งช้าและพังเงียบ</li>
+          <li><strong>แก้บั๊กที่อยู่ข้างในเมธอดที่คอมไพล์แล้วไม่ได้เลย</strong> — บั๊กคราฟต์ติดตรงนี้อยู่หลายวัน</li>
+          <li>ไฟล์หาย = ฟีเจอร์หายเงียบ ไม่มีสัญญาณเตือน</li>
+          <li>เวอร์ชันมอดกับตัวเกมหลุดกันได้ ต้องมาไล่จับคู่เอง</li>
+          <li>ถ้าจะแก้พฤติกรรมเดิมต้อง override เมธอด ซึ่ง<a href="#s4">ทำให้เกมดับ</a></li>
+        </ul>
+      </article>
+
+      <article class="card current">
+        <p class="card-tag">ใช้อยู่ตอนนี้</p>
+        <h3>แพตช์ซอร์ส</h3>
+        <p class="sub">ข้อดี</p>
+        <ul class="good">
+          <li>แก้ได้ทุกบรรทัด รวมข้างในเมธอด</li>
+          <li>เรียกคลาสของเกมตรง ๆ ไม่ต้อง reflection ให้เปลืองและเสี่ยง</li>
+          <li>คอมไพเลอร์จับพิมพ์ผิด/ชนิดข้อมูลผิดให้ตั้งแต่ตอนบิลด์</li>
+          <li>ไฟล์เดียว หายไม่ได้ เกมเปิดได้ = แพตช์ครบ</li>
+          <li>เขียนคอมเมนต์กำกับไว้ในที่เดียวกับโค้ด อ่านย้อนได้ว่าแก้ทำไม</li>
+        </ul>
+        <p class="sub">ข้อเสีย</p>
+        <ul class="bad">
+          <li>ต้องบิลด์ใหม่แล้วก๊อป DLL ทับทุกครั้ง (ต้องปิดเกมก่อน)</li>
+          <li><strong>แตะ asset ไม่ได้เลย</strong> — ทำ UI ใหม่/โมเดล/เสียง ไม่ได้</li>
+          <li>ผู้เล่นถอดออกไม่ได้ ถ้าแพตช์พังคือพังทั้งเกม</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="s3">
+    <h2><span class="num">03</span>สถานะฟีเจอร์ทั้งหมด</h2>
+    <p class="lede">
+      <span class="pill ok">ใช้ได้</span> เทสแล้วเห็นผลจริง ·
+      <span class="pill warn">ยังไม่ได้เทส</span> เขียนเสร็จแล้วแต่ยังไม่มีใครกดยืนยัน ·
+      <span class="pill stop">ยังไม่ได้ทำ</span> หายไปพร้อมมอด ยังไม่ได้ย้ายมา
+    </p>
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr><th>ความสามารถ</th><th>สถานะ</th><th>รายละเอียด</th></tr>
+        </thead>
+        <tbody>
+          <tr class="group"><td colspan="3">การเข้าเกม</td></tr>
+          <tr>
+            <td>เข้าเซิร์ฟจากเมนูในเกม</td>
+            <td><span class="pill warn">ยังไม่ได้เทส</span></td>
+            <td>ปุ่ม <code>DurangoTH Community Server</code> อ่าน <code>server.txt</code> แล้วต่อให้เลย เดิมมันอ่านแต่ IP ที่ผู้เล่นเคยกรอกเอง ซึ่งคนโหลดใหม่ไม่มี เลยตกไปที่ <code>127.0.0.1</code> แล้วค้าง</td>
+          </tr>
+          <tr>
+            <td>ชื่อเซิร์ฟในเมนู</td>
+            <td><span class="pill ok">ใช้ได้</span></td>
+            <td>เดิมเป็น <code>Dinoworld Server</code> ที่หลุดมาจากโค้ดเก่า แก้ที่ซอร์สแล้ว ไม่ใส่แท็กสี NGUI เพราะบางหน้าจอไม่รองรับแล้วจะโชว์แท็กดิบให้เห็น</td>
+          </tr>
+          <tr>
+            <td>ตัวละครไม่หายตอนล็อกอิน</td>
+            <td><span class="pill ok">ใช้ได้</span></td>
+            <td>ผูกบัญชีกับตัวละครแล้ว และรองรับคนที่ IP เปลี่ยนตลอด (จับคู่ระดับวง /24) เดิมต้องสร้างตัวใหม่แทบทุกครั้งที่เข้า</td>
+          </tr>
+
+          <tr class="group"><td colspan="3">ระบบหลักในเกม</td></tr>
+          <tr>
+            <td>คราฟต์ของ · สร้างบ้าน</td>
+            <td><span class="pill ok">ใช้ได้</span></td>
+            <td>เดิมกดยืนยันสูตรแล้ว <code>NullReferenceException</code> ทุกครั้ง เพราะโค้ดอ้างชิ้นส่วน UI ที่ไม่มีอยู่จริงในเลย์เอาต์นั้น ใส่ null guard 42 จุดใน <code>ExpectResultWidget</code> แล้ว ครอบเส้นทางสร้างบ้านด้วย</td>
+          </tr>
+          <tr>
+            <td>ตัวเลขดาเมจตอนตี</td>
+            <td><span class="pill ok">ใช้ได้</span></td>
+            <td>เซิร์ฟไม่เคยส่งแพ็กเก็ต <code>Damaged</code> ให้คนที่เห็นเหตุการณ์ เพิ่มการกระจายแล้ว</td>
+          </tr>
+          <tr>
+            <td>ข้อความกระเป๋าเต็ม</td>
+            <td><span class="pill ok">ใช้ได้</span></td>
+            <td>เดิมโชว์ <code>handler 144</code> ดิบ ๆ ให้ผู้เล่นเห็น ซึ่งเป็นข้อความ debug ไม่ใช่ error จริง ตอนนี้บอกจำนวนช่องที่ใช้อยู่ (ของทุกชิ้นกินช่องละ 1)</td>
+          </tr>
+          <tr>
+            <td>สัตว์มุดเข้าไปในหิน</td>
+            <td><span class="pill ok">ใช้ได้</span></td>
+            <td>เพิ่มระยะเลี่ยงสิ่งกีดขวางเป็น 6 ช่องฝั่งเซิร์ฟ ทั้งตอนเดินและตอนเลือกจุดหมาย</td>
+          </tr>
+          <tr>
+            <td>ระยะโหลดแมพ</td>
+            <td><span class="pill warn">ยังไม่ได้เทส</span></td>
+            <td>ขยาย 5×5 เป็น 9×9 chunk ตามที่เซิร์ฟบอกมาทาง <code>/knock</code> แก้อาการ “วิ่งไปแล้วแมพรีเฟรช” ตอนนี้ตั้งค่าตั้งแต่ตอนสร้าง pool ไม่ใช่สร้างใหม่ทับทีหลังแบบที่มอดทำ</td>
+          </tr>
+          <tr>
+            <td>ปลดล็อกเมนู สกิล/คราฟต์/เควส</td>
+            <td><span class="pill warn">ยังไม่ได้เทส</span></td>
+            <td>ดึงค่า <code>enabled_menus</code> จากเซิร์ฟมาเก็บไว้แล้ว แต่ยังไม่ได้เอาไปใช้จริง</td>
+          </tr>
+
+          <tr class="group"><td colspan="3">ยังหายอยู่ — เคยอยู่ในมอด</td></tr>
+          <tr>
+            <td>ประกาศจากแอดมิน</td>
+            <td><span class="pill stop">ยังไม่ได้ทำ</span></td>
+            <td>รับแพ็กเก็ต <code>Info</code> มาแสดงบนจอด้วย UI ของเกมเอง ฝั่งเซิร์ฟส่งได้อยู่แล้ว รอฝั่งเกมมารับ</td>
+          </tr>
+          <tr>
+            <td>วาปข้ามเซิร์ฟ A/B ตอนรีสตาร์ต</td>
+            <td><span class="pill stop">ยังไม่ได้ทำ</span></td>
+            <td>ฝั่งเซิร์ฟเสร็จแล้ว — นับถอยหลัง เซฟ ส่ง <code>##goto</code> แล้วย้ายผู้เล่นโดยคงพิกัดเดิม ใช้กลไกเดียวกับการย้ายเกาะของเกม ใช้เวลา 1.1 วินาที แต่ตัวรับคำสั่งอยู่ในมอด</td>
+          </tr>
+          <tr>
+            <td>รายชื่อเซิร์ฟมุมจอ + ต่ออัตโนมัติ</td>
+            <td><span class="pill stop">ยังไม่ได้ทำ</span></td>
+            <td>เดิมโชว์ชื่อเซิร์ฟ สถานะ และจำนวนคนออนไลน์ ตอนนี้ต้องกดเข้าเองจากเมนู ซึ่งตรงกับที่ตกลงกันไว้ว่าไม่ต้องต่ออัตโนมัติ</td>
+          </tr>
+          <tr>
+            <td>บอทขับตัวละครอัตโนมัติ</td>
+            <td><span class="pill ok">ใช้ได้</span></td>
+            <td>ยังเป็นมอดอยู่ ใช้เฉพาะเครื่องพัฒนา <strong>ไม่ได้ใส่ไปในชุดแจก</strong> ใช้ไล่เทสระบบแทนคนกดเอง</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="s4">
+    <h2><span class="num">04</span>ข้อห้ามที่พิสูจน์แล้ว</h2>
+    <p class="lede">
+      สามข้อนี้ไม่ใช่ข้อสงสัย แต่เจอซ้ำจนสรุปได้แล้ว อย่าเสียเวลาลองใหม่
+    </p>
+    <div class="traps">
+      <article class="trap">
+        <h3>ห้าม override เมธอดของเกม</h3>
+        <p>
+          ใช้ Harmony หรือ method override เมื่อไหร่ เกมดับทันทีตั้งแต่ก่อนถึงหน้าไตเติ้ล
+          ไม่มี error ให้ดู log จบดื้อ ๆ กลางคัน Mono ของเกมรุ่นนี้รับไม่ได้
+          <span class="evidence">เจอมาแล้ว 4 ครั้ง จาก 4 จุดที่ไม่เกี่ยวกันเลย</span>
+        </p>
+      </article>
+
+      <article class="trap">
+        <h3>ห้ามเดาว่าฟิลด์ที่ว่างคือของเสีย</h3>
+        <p>
+          เคยเขียนตัวไล่เติมค่าให้ฟิลด์ UI ที่เป็น null อัตโนมัติ แล้วมันไปเติม
+          <code>_selectedWorkbench</code> ให้ด้วย ผลคือเกมนึกว่ามีโต๊ะคราฟต์ทั้งที่ไม่มี
+          <span class="evidence">= ช่องโกงที่เราสร้างขึ้นเอง</span>
+        </p>
+      </article>
+
+      <article class="trap">
+        <h3>ห้ามเชื่อไคลเอนต์</h3>
+        <p>
+          โค้ดฝั่งเกมอยู่ในเครื่องผู้เล่น แก้ได้หมด ทุกอย่างที่มีผลต่อของในเกมต้องให้เซิร์ฟตัดสิน
+          ฝั่งเกมมีหน้าที่แค่วาดภาพกับส่งคำขอ
+          <span class="evidence">ตอนทำ UI ให้ถามก่อนเสมอว่าถ้าคนแก้ฝั่งนี้ได้ เขาจะได้อะไรฟรี</span>
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="s5">
+    <h2><span class="num">05</span>ซอร์สที่เราถือครบไหม</h2>
+    <p class="lede">
+      คำถามที่ค้างมานาน — ซอร์สที่ถอดไว้ตั้งแต่แรกครบจริงหรือเปล่า
+      ตอบด้วยการถอดใหม่ทั้งเกมด้วย AssetRipper 2.0 แล้วเทียบ 3 ชั้น
+    </p>
+
+    <h3>ชั้นที่ 1 — จำนวนไฟล์</h3>
+    <div class="figures">
+      <div class="figure"><span class="n">3,777</span><span class="k">ไฟล์ที่ AssetRipper ถอดได้</span></div>
+      <div class="figure"><span class="n">3,772</span><span class="k">ไฟล์ในซอร์สที่เราใช้อยู่</span></div>
+      <div class="figure"><span class="n">0</span><span class="k">ไฟล์ที่เราขาด</span></div>
+    </div>
+
+    <h3>ชั้นที่ 2 — เนื้อโค้ดทีละบรรทัด</h3>
+    <p>
+      ผลดิบออกมาว่า <strong>ต่างกัน 96.9%</strong> ซึ่งดูน่าตกใจ แต่พอเปิดไฟล์จริงมาดูก็เจอว่า
+      สาเหตุคือรูปแบบการเขียน ไม่ใช่เนื้อโค้ด:
+    </p>
+    <pre><code>ของเรา                          AssetRipper
+──────────────────────────────  ──────────────────────────────
+namespace Durango.System;       namespace Durango.System
+public class Platform           {
+{                                   public class Platform
+    public virtual string NPSN      {
+        =&gt; string.Empty;                public virtual string NPSN
+                                        {
+                                            get { return string.Empty; }
+                                        }</code></pre>
+    <p>
+      เราใช้ <code>namespace X;</code> แบบบรรทัดเดียว ส่วน AssetRipper ใช้แบบครอบปีกกา
+      ทุกบรรทัดในไฟล์เลยเยื้องไม่ตรงกันหมด บวกกับ property แบบ <code>=&gt;</code> ที่ถูกคลี่เป็น getter เต็ม
+      เครื่องมือเทียบบรรทัดจึงบอกว่าต่าง ทั้งที่ผลลัพธ์ตอนคอมไพล์เหมือนกันเป๊ะ
+    </p>
+
+    <h3>ชั้นที่ 3 — เทียบที่ตัวโครงสร้างโค้ด</h3>
+    <p>เลิกเทียบบรรทัด มาเทียบว่ามีคลาสอะไรและเมธอดชื่ออะไรบ้างแทน:</p>
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr><th>เทียบ</th><th class="num">AssetRipper</th><th class="num">ของเรา</th><th class="num">ตรงกัน</th><th>เราขาด</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>class / struct / enum / interface</td><td class="num">4,242</td><td class="num">4,237</td><td class="num">4,237</td><td><span class="pill ok">0</span></td></tr>
+          <tr><td>ชื่อเมธอด</td><td class="num">11,664</td><td class="num">11,673</td><td class="num">11,643</td><td><span class="pill ok">0</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:1.5rem">5 คลาสที่ AssetRipper มีเกิน อธิบายได้ครบ:</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>ชื่อ</th><th>คืออะไร</th></tr></thead>
+        <tbody>
+          <tr><td><code>EmbeddedAttribute</code><br><code>IsReadOnlyAttribute</code></td><td>คอมไพเลอร์ใส่ให้เอง ไม่ใช่โค้ดเกม</td></tr>
+          <tr><td><code>_003C_003Ec</code></td><td>ชื่อจริงคือ <code>&lt;&gt;c</code> — คลาสที่คอมไพเลอร์สร้างเก็บ lambda</td></tr>
+          <tr><td><code>_003CResearchableIds_003Ed__1</code></td><td>state machine ที่คอมไพเลอร์สร้างจาก <code>yield return</code></td></tr>
+          <tr><td><code>StreamReaderEx</code></td><td><strong>เรามีอยู่แล้ว</strong> ที่ <code>client/BotBridge.cs:868</code> — ตัวสแกนของผมอ่านพลาดเอง</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:1.5rem">
+      ส่วนที่ต่างจริงฝั่งเรามีอย่างเดียวคือเมธอด <code>FetchServerPolicy</code> ที่เพิ่งเขียน
+      <em>หลัง</em> ถอดไฟล์ไปแล้ว — ซึ่งเป็นหลักฐานว่าวิธีเทียบนี้จับของใหม่เจอจริง
+    </p>
+
+    <div class="verdict" style="margin-top:2rem">
+      <p>
+        <strong>สรุป: ซอร์สที่ใช้อยู่สมบูรณ์ ไม่ต้องเปลี่ยนไปใช้ของที่ถอดใหม่</strong>
+        ของเดิมมีค่ามากกว่าด้วยซ้ำ เพราะมีคอมเมนต์ภาษาไทยกำกับไว้ทุกจุดที่แก้
+        ว่าของเดิมทำอะไรและทำไมต้องเปลี่ยน ซึ่งของที่ถอดใหม่ไม่มี
+      </p>
+      <p>
+        และเมื่อถอด DLL ตัวที่เกมใช้อยู่จริงออกมาดู ก็เห็นแพตช์ของเราครบทุกตัว
+        ยืนยันว่าที่แก้ไปลงถึงเกมจริง ไม่ได้หายระหว่างทาง
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="s6">
+    <h2><span class="num">06</span>AssetRipper ให้อะไรเพิ่ม</h2>
+    <p class="lede">
+      ไม่ได้เก่งกว่าเราเรื่องโค้ด แต่ได้ของที่เราไม่เคยมีเลย คือ <em>asset</em>
+    </p>
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr><th>หมวด</th><th class="num">ขนาด</th><th class="num">ไฟล์</th><th>เราเคยมีไหม</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>AnimationClip</td><td class="num">1.5 GB</td><td class="num">4,350</td><td><span class="pill stop">ไม่เคยมี</span></td></tr>
+          <tr><td>Texture2D</td><td class="num">796 MB</td><td class="num">9,124</td><td><span class="pill stop">ไม่เคยมี</span></td></tr>
+          <tr><td>Mesh + models</td><td class="num">491 MB</td><td class="num">11,253</td><td><span class="pill stop">ไม่เคยมี</span></td></tr>
+          <tr><td>soundbanks</td><td class="num">373 MB</td><td class="num">152</td><td><span class="pill stop">ไม่เคยมี</span></td></tr>
+          <tr><td>particle</td><td class="num">135 MB</td><td class="num">1,512</td><td><span class="pill stop">ไม่เคยมี</span></td></tr>
+          <tr><td><strong>GameObject (prefab)</strong></td><td class="num">28 MB</td><td class="num">424</td><td><span class="pill stop">ไม่เคยมี</span></td></tr>
+          <tr><td><strong>Scene</strong></td><td class="num">—</td><td class="num">4</td><td><span class="pill stop">ไม่เคยมี</span></td></tr>
+          <tr><td>Material · Shader · Font</td><td class="num">16 MB</td><td class="num">5,570</td><td><span class="pill stop">ไม่เคยมี</span></td></tr>
+          <tr><td>Scripts (โค้ด C#)</td><td class="num">23 MB</td><td class="num">5,673</td><td><span class="pill ok">มีครบแล้ว</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:1.75rem">
+      <strong>ของที่มีค่าที่สุดคือ prefab กับ scene</strong> เพราะตรงกับปัญหาที่เราติดอยู่จริง
+      ทุกวันนี้สร้าง UI ใหม่ไม่ได้ ต้องโคลน <code>UILabel</code> ที่มีอยู่มาดัดแปลง
+      เพราะไม่รู้ว่าเกมประกอบ UI ไว้ยังไง ตอนนี้เปิดดูได้แล้ว:
+    </p>
+    <pre><code>extracted/UnityProject/ExportedProject/Assets/
+├── GameObject/     424 prefab — Alert, ArtifactInfoGroup, AlarmGroup …
+├── Main.unity      ฉากหลักตอนเล่นจริง
+├── Title.unity     หน้าไตเติ้ล/เมนู
+├── Prologue.unity  ฉากเปิดเกม
+└── Initializer_PC.unity</code></pre>
+
+    <div class="alarm">
+      <p>
+        <strong>อย่า commit โฟลเดอร์นี้ขึ้น git</strong> — ขนาด 4.1 GB
+        ให้ใส่ <code>extracted/</code> ใน <code>.gitignore</code> ก่อนทำอย่างอื่น
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="s7">
+    <h2><span class="num">07</span>สามทางเลือก ข้อดีข้อเสีย</h2>
+    <div class="versus">
+
+      <article class="card retired">
+        <p class="card-tag">ทิ้งแล้ว</p>
+        <h3>มอด</h3>
+        <p class="sub">ข้อดี</p>
+        <ul class="good">
+          <li>อัปเดตแยกจากตัวเกมได้</li>
+        </ul>
+        <p class="sub">ข้อเสีย</p>
+        <ul class="bad">
+          <li>แก้ข้างในเมธอดไม่ได้</li>
+          <li>ไฟล์หายแล้วเงียบ</li>
+          <li>ต้อง override ซึ่งทำเกมดับ</li>
+        </ul>
+      </article>
+
+      <article class="card current">
+        <p class="card-tag">ทางหลัก</p>
+        <h3>แพตช์ซอร์ส</h3>
+        <p class="sub">ข้อดี</p>
+        <ul class="good">
+          <li>แก้ได้ทุกบรรทัด</li>
+          <li>คอมไพเลอร์ช่วยตรวจ</li>
+          <li>ใช้งานได้จริงแล้ว บิลด์ 27 วินาที</li>
+        </ul>
+        <p class="sub">ข้อเสีย</p>
+        <ul class="bad">
+          <li>แตะ asset ไม่ได้เลย</li>
+          <li>ต้องปิดเกมก่อนก๊อป DLL</li>
+        </ul>
+      </article>
+
+      <article class="card maybe">
+        <p class="card-tag">ยังไม่คุ้ม</p>
+        <h3>รื้อทั้งเกมใน Unity Editor</h3>
+        <p class="sub">ข้อดี</p>
+        <ul class="good">
+          <li>ทำ asset ใหม่ได้หมด UI/โมเดล/เอฟเฟกต์</li>
+          <li>แก้ scene ตรง ๆ ได้</li>
+        </ul>
+        <p class="sub">ข้อเสีย</p>
+        <ul class="bad">
+          <li>project ที่ถอดมาแทบไม่เคย build ผ่านทันที shader/reference พังเป็นปกติ</li>
+          <li>ต้อง build เกมใหม่ทั้งก้อน แพตช์ที่สะสมมาต้องทำใหม่หมด</li>
+          <li>เสี่ยงพังระบบอัปเดตที่ปล่อยให้ผู้เล่นไปแล้ว</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="verdict" style="margin-top:2rem">
+      <p><strong>ที่แนะนำ: ใช้แพตช์เป็นทางหลัก และใช้ <code>extracted/</code> เป็นเอกสารอ้างอิงอย่างเดียว ไม่ต้อง build</strong></p>
+      <p>
+        เปิดดูว่า prefab ประกอบยังไง แล้วเอาความรู้นั้นไปเขียนโค้ดโคลน/ดัดแปลงตอนเกมรัน
+        ได้ประโยชน์จาก asset โดยไม่ต้องเสี่ยงรื้อของที่ผู้เล่นใช้งานอยู่
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="s8">
+    <h2><span class="num">08</span>ขั้นตอนทำงาน</h2>
+
+    <h3>แก้เกม</h3>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>ขั้น</th><th>ทำอะไร</th><th>หมายเหตุ</th></tr></thead>
+        <tbody>
+          <tr><td>1. แก้ซอร์ส</td><td><code>client/</code></td><td>เขียนคอมเมนต์กำกับทุกจุด ว่าของเดิมทำอะไรและทำไมต้องเปลี่ยน</td></tr>
+          <tr><td>2. บิลด์</td><td><code>dotnet build -c Release</code></td><td>ได้ <code>Assembly-CSharp.dll</code> ประมาณ 27 วินาที</td></tr>
+          <tr><td>3. ก๊อปทับ</td><td><code>Durango_Data/Managed/</code></td><td>ต้องปิดเกมก่อน ไม่งั้นไฟล์ถูกล็อกเขียนทับไม่ได้</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>เปิดเกม</h3>
+    <p>
+      ผู้เล่นเปิดผ่าน <code>เล่นเกม.bat</code> ซึ่งเรียก <code>DurangoUpdater.exe</code> ให้เช็กอัปเดตก่อน
+      ตัวเกมจะไม่ยอมเปิดถ้าไม่ได้มาทางนี้ ตอนพัฒนาให้ใส่อาร์กิวเมนต์เปิดตรงได้:
+    </p>
+    <pre><code>Durango.exe -durango-updated -force-d3d11 -screen-fullscreen 0</code></pre>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="s9">
+    <h2><span class="num">09</span>แผนผังไฟล์</h2>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>ที่อยู่</th><th>คืออะไร</th></tr></thead>
+        <tbody>
+          <tr><td><code>client/</code></td><td>ซอร์สตัวเกม 3,772 ไฟล์ — <strong>ที่ทำงานจริงของเรา</strong></td></tr>
+          <tr><td><code>server/</code></td><td>เซิร์ฟเวอร์ .NET 9</td></tr>
+          <tr><td><code>dist/DurangoTH-Clean/</code></td><td>ชุดที่แจกผู้เล่น ไม่มีมอด ไม่มีบอท</td></tr>
+          <tr><td><code>dist/DurangoTH-v2/</code></td><td>ชุดพัฒนา มีบอทไว้ไล่เทส</td></tr>
+          <tr><td><code>extracted/</code></td><td>ของที่ AssetRipper ถอด 4.1 GB — อ้างอิงอย่างเดียว <strong>ห้าม commit</strong></td></tr>
+          <tr><td><code>tools/AssetRipper/</code></td><td>ตัวถอด รันแบบ headless แล้วสั่งผ่าน HTTP ได้ ไม่ต้องมีคนกดหน้าจอ</td></tr>
+          <tr><td><code>server.txt</code></td><td>ที่อยู่เซิร์ฟ อยู่ในโฟลเดอร์เกม แก้ด้วย Notepad ได้</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="s10">
+    <h2><span class="num">10</span>งานค้าง</h2>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>เรื่อง</th><th>สถานะ</th><th>ติดตรงไหน</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>เทสปุ่มเข้าเซิร์ฟ</td>
+            <td><span class="pill warn">รอเทส</span></td>
+            <td>เขียนเสร็จแล้ว ยังไม่มีใครกดยืนยันว่าเข้าได้จริง</td>
+          </tr>
+          <tr>
+            <td>ชื่อเซิร์ฟบน VPS</td>
+            <td><span class="pill stop">ยังผิดอยู่</span></td>
+            <td>ยังขึ้น <code>Multi Play Server</code> ต้อง SSH เข้าไปแก้แล้วรีสตาร์ตเซอร์วิส ยังไม่มีรหัส</td>
+          </tr>
+          <tr>
+            <td>ปล่อยอัปเดตให้ผู้เล่น</td>
+            <td><span class="pill warn">ยังไม่ปล่อย</span></td>
+            <td>ที่แก้วันนี้ยังอยู่แค่ในเครื่อง รอเทสผ่านก่อนค่อยแพ็กขึ้น release</td>
+          </tr>
+          <tr>
+            <td>ย้ายประกาศ + วาป A/B มาเป็นแพตช์</td>
+            <td><span class="pill stop">ยังไม่เริ่ม</span></td>
+            <td>ฝั่งเซิร์ฟพร้อมแล้ว รอทำฝั่งเกม</td>
+          </tr>
+          <tr>
+            <td>ใส่ <code>extracted/</code> ใน .gitignore</td>
+            <td><span class="pill stop">ยังไม่ทำ</span></td>
+            <td>4.1 GB ถ้าเผลอ commit จะกู้ยาก</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>
+      เอกสารนี้เป็นบันทึกภายในทีม ไม่ใช่คู่มือผู้เล่น
+      ถ้าเจอข้อไหนไม่ตรงกับของจริง ให้ยึดพฤติกรรมของเกมเป็นหลักแล้วแก้เอกสารตาม
+    </p>
+  </footer>
+
+</div>

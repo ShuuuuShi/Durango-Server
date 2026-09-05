@@ -93,6 +93,13 @@ public class ChattingTabList : MonoBehaviour, IUIInitializable
 			ChatFilterType key = _tabInfos[i].Key;
 			string tabName = key.GetName();
 			uint value = _tabInfos[i].Value;
+			// [3 ก.ย. 2026] แท็บ "ภูมิภาค"/"ทั้งหมด" โชว์จำนวนคนออนไลน์ทั้งเซิร์ฟ (จาก /knock online_players)
+			//   ถ้ายังไม่รู้ค่า (< 0) ใช้ค่าเดิมของช่อง
+			if ((key == ChatFilterType.Region || key == ChatFilterType.All)
+				&& Durango.Offline.Server.OnlinePlayers >= 0)
+			{
+				value = (uint)Durango.Offline.Server.OnlinePlayers;
+			}
 			string subText = ((value != 0) ? $"[icon=icon_person:0.8] {value}" : string.Empty);
 			bool pushOff = SocialSystem.IsKindOfClanChannelFilter(key) && !GameSystem<SocialSystem>.Instance().IsClanPushEnabled(key);
 			bool hided = GameSystem<SocialSystem>.Instance().ChannelInfo.IsHidden(key);

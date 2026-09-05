@@ -1,0 +1,1145 @@
+{
+  "modifiers": {},
+  "container": {
+    "capacity": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 1
+    }
+  },
+  "armor": {
+    "cook_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 20
+    },
+    "poi_discover_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 33
+    },
+    "attack_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 39
+    },
+    "defense": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 2
+    },
+    "gathering_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 26
+    },
+    "max_health_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 31
+    },
+    "will_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 9
+    },
+    "intelligence_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 17
+    },
+    "hit_rate_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 28
+    },
+    "mutilate_plus": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 45
+    },
+    "slot": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": false,
+      "type": 1,
+      "order": 1
+    },
+    "farming_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 24
+    },
+    "endurance_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 12
+    },
+    "dodge_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 23
+    },
+    "agility_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 7
+    },
+    "weaponcraft_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 38
+    },
+    "groggy_plus": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 44
+    },
+    "handicraft_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 42
+    },
+    "construction_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 19
+    },
+    "agility_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 8
+    },
+    "hiding_power": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 27
+    },
+    "furnishing_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 25
+    },
+    "mining_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 32
+    },
+    "dexterity_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 5
+    },
+    "disassembling_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 43
+    },
+    "perception_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 13
+    },
+    "endurance_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 11
+    },
+    "charisma_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 15
+    },
+    "butchering_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 41
+    },
+    "strength_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 4
+    },
+    "armorcraft_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 18
+    },
+    "tailor_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 37
+    },
+    "damage_bonus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 22
+    },
+    "perception_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 14
+    },
+    "critical_damage_bonus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 21
+    },
+    "poi_searching_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 34
+    },
+    "life_recovery": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 29
+    },
+    "smith_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 35
+    },
+    "will_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 10
+    },
+    "intelligence_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 16
+    },
+    "stamina_recovery": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 36
+    },
+    "dexterity_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 6
+    },
+    "strength_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 3
+    },
+    "accuracy_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 40
+    },
+    "max_energy_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 30
+    }
+  },
+  "weapon": {
+    "aim_time": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 33
+    },
+    "will_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 25
+    },
+    "intelligence_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 32
+    },
+    "mutilate_plus": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 35
+    },
+    "slot": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": false,
+      "type": 1,
+      "order": 1
+    },
+    "attack_cooltime": {
+      "digits": 1,
+      "min_value": 0.5,
+      "negative": false,
+      "emphasize": false,
+      "type": 0,
+      "order": 7
+    },
+    "endurance_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 28
+    },
+    "agility_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 23
+    },
+    "attack": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 2
+    },
+    "groggy_plus": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 34
+    },
+    "dexterity_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 21
+    },
+    "accuracy": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 3
+    },
+    "agility_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 24
+    },
+    "perception_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 29
+    },
+    "action5": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 2,
+      "order": 13
+    },
+    "action4": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 2,
+      "order": 12
+    },
+    "action7": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 2,
+      "order": 15
+    },
+    "action6": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 2,
+      "order": 14
+    },
+    "action1": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 2,
+      "order": 9
+    },
+    "action0": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 2,
+      "order": 8
+    },
+    "action3": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 2,
+      "order": 11
+    },
+    "action2": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 2,
+      "order": 10
+    },
+    "strength_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 20
+    },
+    "attack_rating": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": false,
+      "type": 0,
+      "order": 5
+    },
+    "policy_slot2": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 1,
+      "order": 18
+    },
+    "policy_slot1": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 1,
+      "order": 17
+    },
+    "policy_slot0": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 1,
+      "order": 16
+    },
+    "perception_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 30
+    },
+    "critical_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 4,
+      "order": 4
+    },
+    "will_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 26
+    },
+    "range_bonus": {
+      "digits": 0,
+      "min_value": 50.0,
+      "negative": false,
+      "emphasize": false,
+      "type": 0,
+      "order": 6
+    },
+    "intelligence_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 31
+    },
+    "endurance_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 27
+    },
+    "dexterity_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 22
+    },
+    "strength_plus": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 19
+    }
+  },
+  "rejuvenating": {
+    "rejuvenating_days": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 1
+    }
+  },
+  "food": {
+    "cook_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 36
+    },
+    "energy_ratio": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 4
+    },
+    "energy": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 1
+    },
+    "life_ratio": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 8
+    },
+    "gathering_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 40
+    },
+    "will_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 22
+    },
+    "intelligence_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 30
+    },
+    "handicraft_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 44
+    },
+    "energy_per_sec": {
+      "digits": 1,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": false,
+      "type": 0,
+      "order": 3
+    },
+    "farming_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 39
+    },
+    "endurance_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 25
+    },
+    "agility_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 20
+    },
+    "weaponcraft_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 33
+    },
+    "max_energy_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 31
+    },
+    "armorcraft_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 34
+    },
+    "health": {
+      "digits": 0,
+      "min_value": -3000.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 5
+    },
+    "satiety": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 9
+    },
+    "construction_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 38
+    },
+    "agility_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 21
+    },
+    "life": {
+      "digits": 0,
+      "min_value": -3000.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 7
+    },
+    "health_ratio": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 6
+    },
+    "status_effect_on": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 1,
+      "order": 10
+    },
+    "furnishing_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 37
+    },
+    "mining_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 41
+    },
+    "dexterity_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 18
+    },
+    "disassembling_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 45
+    },
+    "perception_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 26
+    },
+    "endurance_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 24
+    },
+    "charisma_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 28
+    },
+    "butchering_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 43
+    },
+    "fatigue": {
+      "digits": 0,
+      "min_value": -3000.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 32
+    },
+    "attack_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 4,
+      "order": 14
+    },
+    "tailor_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 35
+    },
+    "perception_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 27
+    },
+    "strength_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 17
+    },
+    "energy_stored": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 2
+    },
+    "critical_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 4,
+      "order": 13
+    },
+    "status_effect_off": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": true,
+      "emphasize": true,
+      "type": 1,
+      "order": 11
+    },
+    "smith_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 42
+    },
+    "will_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 23
+    },
+    "intelligence_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 29
+    },
+    "dexterity_mul": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 19
+    },
+    "strength_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 5,
+      "order": 16
+    },
+    "accuracy_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 4,
+      "order": 12
+    },
+    "defense_plus": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 4,
+      "order": 15
+    }
+  },
+  "pet_food": {
+    "vigor": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 1
+    },
+    "decrease_domesticate_time_ratio": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 3
+    },
+    "increase_domesticate_success_rate": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 4
+    },
+    "decrease_grow_time_ratio": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 6,
+      "order": 6
+    },
+    "decrease_domesticate_time": {
+      "digits": 1,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 2
+    },
+    "decrease_grow_time": {
+      "digits": 0,
+      "min_value": 0.0,
+      "negative": false,
+      "emphasize": true,
+      "type": 0,
+      "order": 5
+    }
+  },
+  "fertilizer": {
+    "boost_crop_fiber": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": false,
+      "type": 6,
+      "order": 8
+    },
+    "boost_crop_fruit": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": false,
+      "type": 6,
+      "order": 6
+    },
+    "boost_crop_grain": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": false,
+      "type": 6,
+      "order": 7
+    },
+    "boost_crop_wood": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": false,
+      "type": 6,
+      "order": 4
+    },
+    "boost_crop_flower": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": false,
+      "type": 6,
+      "order": 3
+    },
+    "boost_crop_vegetable": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": false,
+      "type": 6,
+      "order": 5
+    },
+    "fertilizer": {
+      "digits": 0,
+      "min_value": 1.0,
+      "negative": false,
+      "emphasize": false,
+      "type": 0,
+      "order": 1
+    },
+    "boost_crop_leaf": {
+      "digits": 0,
+      "min_value": 0.01,
+      "negative": false,
+      "emphasize": false,
+      "type": 6,
+      "order": 2
+    }
+  }
+}

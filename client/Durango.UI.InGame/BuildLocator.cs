@@ -368,6 +368,14 @@ public class BuildLocator : Singleton<BuildLocator>
 	{
 		if (_isPreviewVisible)
 		{
+			// [4 ก.ย. 2026] กันหารด้วยศูนย์: 61 artifact ในข้อมูลเกมมี rotatable_directions = 0
+			// (ป้าย/ตึกเผ่า/แล็บ/สระ) ปุ่มหมุนถูกซ่อน (SetButtons(>0)) แต่คีย์ T ยังยิงเข้ามาได้
+			// ⇒ (Rotation+1) % 0 = DivideByZeroException ⇒ preview พัง โมเดลไม่เรนเดอร์
+			// <=1 = หมุนไม่ได้อยู่แล้ว ไม่ต้องทำอะไร
+			if (_arguments.RotatableDirections <= 1)
+			{
+				return;
+			}
 			Point2 centerTile = GetCenterTile();
 			int num = (int)(Rotation + 1) % _arguments.RotatableDirections;
 			Rotation = (Enum.IsDefined(typeof(Rotation), num) ? ((Rotation)num) : Rotation.None);

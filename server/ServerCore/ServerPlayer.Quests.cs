@@ -194,38 +194,41 @@ public partial class ServerPlayer
         if (!QuestsEnabled)
         {
             Send(new Info { Text = "ระบบเควสยังไม่เปิดในรอบนี้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!QuestData.TryGet(msg.QuestId, out QuestData.Quest q))
         {
             Console.WriteLine("[quest] ปฏิเสธ {0}: ไม่มีเควส '{1}' ในตาราง", Name, msg.QuestId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (IsHidden(q))
         {
             Console.WriteLine("[quest] ปฏิเสธ {0}: {1} เป็นเควสชุดตรวจที่ปิดอยู่", Name, q.Id);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (!_questDone.Contains(q.Id))
         {
+            // [4 ก.ย. 2026] บั๊ก #11 — client เปิดปุ่ม "ได้รับ" ให้กดทั้งที่ยังทำไม่ครบ แล้วไม่จัดการ Abort
+            // ⇒ ผู้เล่นเห็นแต่ไอคอนหมุนค้าง ไม่รู้ว่าเกิดอะไร · ส่งข้อความบอกเหตุไปด้วย
             Console.WriteLine("[quest] ปฏิเสธ {0}: {1} ยังทำไม่ครบ ({2}/{3})", Name, q.Id, ProgressOf(q.Id), q.Count);
-            Send(default(Abort), header.Seq);
+            Send(new Info { Text = $"เควสนี้ยังทำไม่ครบ ({ProgressOf(q.Id)}/{q.Count}) — ทำให้ครบก่อนจึงจะรับรางวัลได้" }, header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (_questRewarded.Contains(q.Id))
         {
             Console.WriteLine("[quest] ปฏิเสธ {0}: {1} รับรางวัลไปแล้ว", Name, q.Id);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (_grantingQuestReward)
         {
             // กันเรียกซ้อน: การให้ exp ทำให้ขึ้นเลเวล → เช็คเควสเลเวล → อาจวิ่งกลับมาที่นี่
             Console.WriteLine("[quest] ปฏิเสธ {0}: กำลังให้รางวัลอยู่ (กันเรียกซ้อน)", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -450,7 +453,7 @@ public partial class ServerPlayer
             if (QuestData.IsChecklist(q.Id))
             {
                 freshChecklist.Add(MakeTodo(q));
-                // ชุดตรวจเปิดพร้อมกันทีเดียว 12 ข้อ — ถ้าประกาศทีละอันจะท่วมกล่องข้อความ
+                // ชุดตรวจเปิดพร้อมกันทีเดียว — ถ้าประกาศทีละอันจะท่วมกล่องข้อความ
                 // สรุปเป็นบรรทัดเดียวข้างล่างแทน
                 checklistFresh++;
                 continue;

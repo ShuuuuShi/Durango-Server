@@ -214,7 +214,9 @@ public class PresetCurrencyWidget : UIWidget
 	{
 		if (_currencyType != Currency.Invalid)
 		{
-			UIManager.SystemMsg("test");
+			// [แก้เอง] 31 ส.ค. 2026 — ลบ UIManager.SystemMsg("test") ออก
+		// เศษโค้ด debug ที่ทีมพัฒนาเดิมลืมไว้ในเกมต้นฉบับ เด้งเป็นกล่องประกาศระบบ
+		// (ตัวเดียวกับประกาศจากแอดมิน) ให้ผู้เล่นเห็นคำว่า "test" — ทุกครั้งที่กระเป๋าเงินอัปเดต และตอนตั้งค่าไอคอนสกุลเงิน
 			_amountLabel.text = Durango.Logic.Item.Inventory.CurrencyFormat(InventorySystem.Wallet.GetBalance(_currencyType));
 		}
 		else if (!string.IsNullOrEmpty(_voucherId))
@@ -372,10 +374,14 @@ public class PresetCurrencyWidget : UIWidget
 		switch (type.Normalize())
 		{
 		case Currency.TStone:
-			UIManager.SystemMsg("test");
+			// [แก้เอง] 31 ส.ค. 2026 — ลบ UIManager.SystemMsg("test") ออก
+		// เศษโค้ด debug ที่ทีมพัฒนาเดิมลืมไว้ในเกมต้นฉบับ เด้งเป็นกล่องประกาศระบบ
+		// (ตัวเดียวกับประกาศจากแอดมิน) ให้ผู้เล่นเห็นคำว่า "test" — ทุกครั้งที่กระเป๋าเงินอัปเดต และตอนตั้งค่าไอคอนสกุลเงิน
 			break;
 		case Currency.Gem:
-			UIManager.SystemMsg("test");
+			// [แก้เอง] 31 ส.ค. 2026 — ลบ UIManager.SystemMsg("test") ออก
+		// เศษโค้ด debug ที่ทีมพัฒนาเดิมลืมไว้ในเกมต้นฉบับ เด้งเป็นกล่องประกาศระบบ
+		// (ตัวเดียวกับประกาศจากแอดมิน) ให้ผู้เล่นเห็นคำว่า "test" — ทุกครั้งที่กระเป๋าเงินอัปเดต และตอนตั้งค่าไอคอนสกุลเงิน
 			break;
 		case Currency.MobileCoin:
 		case Currency.PcCoin:

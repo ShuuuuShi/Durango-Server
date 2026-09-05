@@ -1,0 +1,113 @@
+{
+  "push_categories": [
+    {
+      "policies": [
+        {
+          "policy": 2,
+          "local": false,
+          "id": 88,
+          "policy_name": {
+            "제작 완료": null
+          }
+        },
+        {
+          "policy": 3,
+          "local": false,
+          "id": 89,
+          "policy_name": {
+            "건설 완료": null
+          }
+        },
+        {
+          "policy": 4,
+          "local": true,
+          "id": 90,
+          "policy_name": {
+            "스킬 연구 완료": null
+          }
+        },
+        {
+          "policy": 5,
+          "local": false,
+          "id": 91,
+          "policy_name": {
+            "단체": null
+          }
+        },
+        {
+          "policy": 6,
+          "local": false,
+          "id": 92,
+          "policy_name": {
+            "탐험": null
+          }
+        }
+      ],
+      "category_name": {
+        "활동": null
+      }
+    },
+    {
+      "policies": [
+        {
+          "policy": 7,
+          "local": false,
+          "id": 93,
+          "policy_name": {
+            "우편": null
+          }
+        },
+        {
+          "policy": 8,
+          "local": false,
+          "id": 94,
+          "policy_name": {
+            "장터": null
+          }
+        },
+        {
+          "policy": 9,
+          "local": false,
+          "id": 95,
+          "policy_name": {
+            "새 그룹대화": null
+          }
+        },
+        {
+          "policy": 10,
+          "local": false,
+          "id": 96,
+          "policy_name": {
+            "사유지": null
+          }
+        },
+        {
+          "policy": 11,
+          "local": false,
+          "id": 97,
+          "policy_name": {
+            "부족": null
+          }
+        }
+      ],
+      "category_name": {
+        "소셜": null
+      }
+    },
+    {
+      "policies": [
+        {
+          "policy": 12,
+          "local": false,
+          "id": 98,
+          "policy_name": {
+            "이벤트": null
+          }
+        }
+      ],
+      "category_name": {
+        "광고": null
+      }
+    }
+  ]
+}

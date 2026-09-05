@@ -121,6 +121,44 @@ public static class ConfigInstance
 				}
 			}
 		}
+		InjectUiModeSetting();
+	}
+
+	private static void InjectUiModeSetting()
+	{
+		if (Settings == null || Settings.Count == 0)
+		{
+			return;
+		}
+		string cat = Settings.ContainsKey("game") ? "game" : null;
+		if (cat == null)
+		{
+			foreach (string key in Settings.Keys)
+			{
+				cat = key;
+				break;
+			}
+		}
+		if (cat == null)
+		{
+			return;
+		}
+		List<Setting> list = Settings[cat];
+		for (int i = 0; i < list.Count; i++)
+		{
+			if (list[i] != null && list[i].Key == "ui_mode")
+			{
+				return;
+			}
+		}
+		list.Add(new ToggleSetting
+		{
+			Key = "ui_mode",
+			Type = SettingType.Toggle,
+			Options = new[] { "มือถือ", "PC" },
+			Default = "มือถือ",
+			PrepareLabelText = "รูปแบบ UI"
+		});
 	}
 
 	private static void LoadConfigValue()
@@ -243,6 +281,12 @@ public static class ConfigInstance
 			break;
 		case "visual_effect":
 			Firefly.ChangeFireflyOption(value == "high");
+			break;
+		case "ui_mode":
+			if (save)
+			{
+				value = ChangeUiMode(value);
+			}
 			break;
 		}
 		SetValue(key, value);
@@ -672,6 +716,28 @@ public static class ConfigInstance
 		{
 			UIManager.SetUISize(result);
 		}
+	}
+
+	private static string ChangeUiMode(string value)
+	{
+		if (string.IsNullOrEmpty(value))
+		{
+			return "มือถือ";
+		}
+		string current = PlayerPrefs.GetString(GetSaveKey("ui_mode"), "มือถือ");
+		if (string.Equals(current, value, StringComparison.Ordinal))
+		{
+			return value;
+		}
+		UIManager.MessageBox.Show("สลับ UI แล้วต้องปิดเกมแล้วเปิดใหม่\nปิดเกมเลยไหม?", delegate(int index)
+		{
+			if (index == 0)
+			{
+				SaveValue("ui_mode", value);
+				Application.Quit();
+			}
+		}, new MessageBox.Button("ปิดเกม"), "ยกเลิก");
+		return current;
 	}
 
 	private static void ChangeFps(string value)

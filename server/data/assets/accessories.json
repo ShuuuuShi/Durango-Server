@@ -1,0 +1,44 @@
+{
+  "clan_honour_04": {
+    "description": {
+      "부족 거점 4연속 방어 성공의 상징물": null
+    },
+    "limits": {
+      "1": 4
+    },
+    "model": "Models/Equipment/Flag/flag_honored_04.Prefab",
+    "type": 1,
+    "id": "clan_honour_04",
+    "name": {
+      "의지의 깃발": null
+    }
+  },
+  "clan_honour_05": {
+    "description": {
+      "부족 거점 5연속 방어 성공의 상징물": null
+    },
+    "limits": {
+      "1": 5
+    },
+    "model": "Models/Equipment/Flag/flag_honored_05.Prefab",
+    "type": 1,
+    "id": "clan_honour_05",
+    "name": {
+      "굳건의 깃발": null
+    }
+  },
+  "clan_honour_06": {
+    "description": {
+      "부족 거점 6연속 방어 성공의 상징물": null
+    },
+    "limits": {
+      "1": 6
+    },
+    "model": "Models/Equipment/Flag/flag_honored_06.Prefab",
+    "type": 1,
+    "id": "clan_honour_06",
+    "name": {
+      "우월의 깃발": null
+    }
+  }
+}

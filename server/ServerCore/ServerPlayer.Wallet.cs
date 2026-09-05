@@ -33,7 +33,7 @@ public partial class ServerPlayer
     private bool RejectWalletDisabled(PacketHeader header)
     {
         Send(new Info { Text = "ระบบกระเป๋าเงินยังไม่เปิดใช้งาน" }, header.Seq);
-        Send(default(Abort), header.Seq);
+        Send(Aborts.Reason(), header.Seq);
         return false;
     }
 
@@ -50,12 +50,12 @@ public partial class ServerPlayer
         long amount = msg.Amount;
         if (string.IsNullOrEmpty(recipientId) || recipientId == EntityId)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (amount <= 0)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -63,7 +63,7 @@ public partial class ServerPlayer
         if (balance < amount)
         {
             Send(new Info { Text = $"DurangoCoin ไม่พอ (มี {balance}, ต้องการ {amount})" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 

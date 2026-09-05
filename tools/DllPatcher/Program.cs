@@ -643,6 +643,281 @@ class Patcher
         Console.WriteLine("patched TitleMenuUserControlBase.ForceSetClusters account refresh");
     }
 
+    /// <summary>
+    /// [แก้เอง] 29 ส.ค. 2026 — helper ที่ฝังเข้า DLL: อ่านที่อยู่เซิร์ฟ **จาก server.txt โดยตรง**
+    /// (เจ้าของสั่ง: "การกำหนด ip เซิฟ แก้ให้อ่านจาก server.txt จริง ๆ ไม่ hardcode")
+    ///
+    /// ลำดับ: server.txt (บรรทัดแรกที่ไม่ใช่คอมเมนต์ #) → env DURANGO_AUTOCONNECT → null
+    /// เติม "http://" ให้อัตโนมัติถ้าในไฟล์ใส่มาแค่ "ip:port" — เพราะ Cluster.GatewayUrlRoot ต้องมี scheme
+    /// ห่อ try/catch ไว้ทั้งก้อน อ่านไฟล์พังยังไงก็ไม่ทำให้เกมล้มที่หน้าไตเติ้ล
+    /// </summary>
+    static MethodDef AddServerTargetHelper()
+    {
+        TypeDef server = module.Find("Durango.Offline.Server", false);
+        if (server == null)
+        {
+            Console.WriteLine("WARN: Durango.Offline.Server not found for server.txt reader");
+            return null;
+        }
+        MethodDef existing = server.FindMethod("GetServerTargetFromFile");
+        if (existing != null)
+        {
+            Console.WriteLine("server.txt reader already present");
+            return existing;
+        }
+
+        AssemblyRef mscorlib = module.CorLibTypes.AssemblyRef;
+        SZArraySig strArr = new SZArraySig(module.CorLibTypes.String);
+
+        TypeRef fileType = new TypeRefUser(module, "System.IO", "File", mscorlib);
+        MemberRef fileExists = new MemberRefUser(module, "Exists",
+            MethodSig.CreateStatic(module.CorLibTypes.Boolean, module.CorLibTypes.String), fileType);
+        MemberRef readAllLines = new MemberRefUser(module, "ReadAllLines",
+            MethodSig.CreateStatic(strArr, module.CorLibTypes.String), fileType);
+
+        TypeRef strType = new TypeRefUser(module, "System", "String", mscorlib);
+        MemberRef trim = new MemberRefUser(module, "Trim",
+            MethodSig.CreateInstance(module.CorLibTypes.String), strType);
+        MemberRef getLength = new MemberRefUser(module, "get_Length",
+            MethodSig.CreateInstance(module.CorLibTypes.Int32), strType);
+        MemberRef startsWith = new MemberRefUser(module, "StartsWith",
+            MethodSig.CreateInstance(module.CorLibTypes.Boolean, module.CorLibTypes.String), strType);
+        MemberRef concat = new MemberRefUser(module, "Concat",
+            MethodSig.CreateStatic(module.CorLibTypes.String, module.CorLibTypes.String, module.CorLibTypes.String), strType);
+
+        TypeRef envType = new TypeRefUser(module, "System", "Environment", mscorlib);
+        MemberRef getEnv = new MemberRefUser(module, "GetEnvironmentVariable",
+            MethodSig.CreateStatic(module.CorLibTypes.String, module.CorLibTypes.String), envType);
+
+        TypeRef objType = new TypeRefUser(module, "System", "Object", mscorlib);
+
+        MethodDef m = new MethodDefUser("GetServerTargetFromFile",
+            MethodSig.CreateStatic(module.CorLibTypes.String),
+            MethodImplAttributes.IL | MethodImplAttributes.Managed,
+            MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig);
+        m.Body = new CilBody { InitLocals = true };
+        Local vPath = new Local(module.CorLibTypes.String);
+        Local vLines = new Local(strArr);
+        Local vI = new Local(module.CorLibTypes.Int32);
+        Local vT = new Local(module.CorLibTypes.String);
+        Local vRet = new Local(module.CorLibTypes.String);
+        foreach (Local l in new[] { vPath, vLines, vI, vT, vRet }) m.Body.Variables.Add(l);
+
+        // labels
+        Instruction tryStart = OpCodes.Ldstr.ToInstruction("server.txt");
+        Instruction bodyStart = OpCodes.Ldloc.ToInstruction(vLines);
+        Instruction next = OpCodes.Ldloc.ToInstruction(vI);
+        Instruction loopChk = OpCodes.Ldloc.ToInstruction(vI);
+        Instruction endTry = OpCodes.Leave.ToInstruction(OpCodes.Nop.ToInstruction());
+        Instruction catchStart = OpCodes.Pop.ToInstruction();
+        Instruction fallback = OpCodes.Ldstr.ToInstruction("DURANGO_AUTOCONNECT");
+        Instruction retInstr = OpCodes.Ldloc.ToInstruction(vRet);
+        Instruction storeHit = OpCodes.Ldloc.ToInstruction(vT);
+        endTry.Operand = fallback;
+
+        var il = m.Body.Instructions;
+        il.Add(tryStart);                                     // "server.txt"
+        il.Add(OpCodes.Stloc.ToInstruction(vPath));
+        il.Add(OpCodes.Ldloc.ToInstruction(vPath));
+        il.Add(OpCodes.Call.ToInstruction(fileExists));
+        il.Add(OpCodes.Brfalse.ToInstruction(endTry));
+        il.Add(OpCodes.Ldloc.ToInstruction(vPath));
+        il.Add(OpCodes.Call.ToInstruction(readAllLines));
+        il.Add(OpCodes.Stloc.ToInstruction(vLines));
+        il.Add(OpCodes.Ldc_I4_0.ToInstruction());
+        il.Add(OpCodes.Stloc.ToInstruction(vI));
+        il.Add(OpCodes.Br.ToInstruction(loopChk));
+        il.Add(bodyStart);                                    // lines
+        il.Add(OpCodes.Ldloc.ToInstruction(vI));
+        il.Add(OpCodes.Ldelem_Ref.ToInstruction());
+        il.Add(OpCodes.Callvirt.ToInstruction(trim));
+        il.Add(OpCodes.Stloc.ToInstruction(vT));
+        il.Add(OpCodes.Ldloc.ToInstruction(vT));
+        il.Add(OpCodes.Callvirt.ToInstruction(getLength));
+        il.Add(OpCodes.Brfalse.ToInstruction(next));          // บรรทัดว่าง -> ข้าม
+        il.Add(OpCodes.Ldloc.ToInstruction(vT));
+        il.Add(OpCodes.Ldstr.ToInstruction("#"));
+        il.Add(OpCodes.Callvirt.ToInstruction(startsWith));
+        il.Add(OpCodes.Brtrue.ToInstruction(next));           // คอมเมนต์ -> ข้าม
+        // เจอบรรทัดที่ใช้ได้: เติม http:// ถ้ายังไม่มี
+        il.Add(storeHit);                                     // t
+        il.Add(OpCodes.Ldstr.ToInstruction("http"));
+        il.Add(OpCodes.Callvirt.ToInstruction(startsWith));
+        Instruction doStore = OpCodes.Ldloc.ToInstruction(vT);
+        il.Add(OpCodes.Brtrue.ToInstruction(doStore));
+        il.Add(OpCodes.Ldstr.ToInstruction("http://"));
+        il.Add(OpCodes.Ldloc.ToInstruction(vT));
+        il.Add(OpCodes.Call.ToInstruction(concat));
+        il.Add(OpCodes.Stloc.ToInstruction(vT));
+        il.Add(doStore);                                      // t
+        il.Add(OpCodes.Stloc.ToInstruction(vRet));
+        il.Add(OpCodes.Leave.ToInstruction(retInstr));
+        il.Add(next);                                         // i
+        il.Add(OpCodes.Ldc_I4_1.ToInstruction());
+        il.Add(OpCodes.Add.ToInstruction());
+        il.Add(OpCodes.Stloc.ToInstruction(vI));
+        il.Add(loopChk);                                      // i
+        il.Add(OpCodes.Ldloc.ToInstruction(vLines));
+        il.Add(OpCodes.Ldlen.ToInstruction());
+        il.Add(OpCodes.Conv_I4.ToInstruction());
+        il.Add(OpCodes.Blt.ToInstruction(bodyStart));
+        il.Add(endTry);                                       // leave -> fallback
+        il.Add(catchStart);                                   // pop
+        il.Add(OpCodes.Leave.ToInstruction(fallback));
+        il.Add(fallback);                                     // "DURANGO_AUTOCONNECT"
+        il.Add(OpCodes.Call.ToInstruction(getEnv));
+        il.Add(OpCodes.Stloc.ToInstruction(vRet));
+        il.Add(retInstr);                                     // ret value
+        il.Add(OpCodes.Ret.ToInstruction());
+
+        m.Body.ExceptionHandlers.Add(new ExceptionHandler(ExceptionHandlerType.Catch)
+        {
+            TryStart = tryStart,
+            TryEnd = catchStart,
+            HandlerStart = catchStart,
+            HandlerEnd = fallback,
+            CatchType = objType,
+        });
+        m.Body.SimplifyBranches();
+        m.Body.OptimizeBranches();
+        server.Methods.Add(m);
+        Console.WriteLine("added Durango.Offline.Server.GetServerTargetFromFile() (อ่าน server.txt ตรง ๆ)");
+        return m;
+    }
+
+    static MethodDef _serverTarget;
+
+    /// <summary>
+    /// [แก้เอง] 30 ส.ค. 2026 — เปิดระบบ mod บน DLL ต้นฉบับ ด้วยการแทรก **คำสั่งเดียว**
+    /// `ClientModLoader.LoadAll()` ที่ต้น `GameManager.Start()`
+    ///
+    /// จุดสำคัญ: ตัว loader (1,744 บรรทัด) **ไม่ได้ถูกยัดเข้า DLL ต้นฉบับ** แต่อยู่ใน assembly แยก
+    /// `DurangoClientMods.dll` (ดู tools/ClientModHost/) ⇒ แตะต้นฉบับน้อยที่สุด และแก้ระบบ mod ทีหลัง
+    /// ได้โดยไม่ต้องแพตช์เกมใหม่
+    ///
+    /// ไฟล์ที่ต้องวางคู่กันในโฟลเดอร์ Managed: DurangoClientMods.dll · DurangoClientModSdk.dll · 0Harmony.dll
+    /// (ถ้าไฟล์หาย เกมจะโยน TypeLoadException ตอนบูต — จึงต้องแจกไปพร้อมกันเสมอ)
+    /// </summary>
+    static void PatchInjectModLoader()
+    {
+        TypeDef gameManager = module.Find("GameManager", false);
+        MethodDef start = gameManager?.FindMethod("Start");
+        if (start == null || !start.HasBody)
+        {
+            Console.WriteLine("WARN: GameManager.Start not found — ข้ามการเปิดระบบ mod");
+            return;
+        }
+        if (start.Body.Instructions.Any(i => i.Operand is IMethod m && m.Name == "LoadAll"))
+        {
+            Console.WriteLine("mod loader hook already present");
+            return;
+        }
+
+        // อ้างอิงข้ามไปยัง assembly ภายนอก DurangoClientMods
+        AssemblyRefUser modAsm = new AssemblyRefUser("DurangoClientMods", new Version(0, 0, 0, 0));
+        TypeRefUser loaderType = new TypeRefUser(module, string.Empty, "ClientModLoader", modAsm);
+        MemberRefUser loadAll = new MemberRefUser(module, "LoadAll",
+            MethodSig.CreateStatic(module.CorLibTypes.Void), loaderType);
+
+        start.Body.Instructions.Insert(0, OpCodes.Call.ToInstruction(loadAll));
+        start.Body.SimplifyBranches();
+        start.Body.OptimizeBranches();
+        Console.WriteLine("patched GameManager.Start -> ClientModLoader.LoadAll() (เปิดระบบ mod)");
+    }
+
+    /// <summary>
+    /// [แก้เอง] 29 ส.ค. 2026 — บังคับ Server.AutoConnectTarget ให้คืนค่าว่างเสมอ
+    /// (เจ้าของสั่ง: "จะเอาแบบเดิม กดปุ่มค่อยเชื่อมเซิร์ฟ" / "auto connect อีกละ")
+    ///
+    /// ต้นตอ: ใน DLL ฐาน (.bak) getter ตัวนี้คืนค่า env DURANGO_AUTOCONNECT ซึ่ง DurangoUpdater ตั้งให้จาก
+    /// server.txt ⇒ TitleMenuUserControlBase.OnConfirm เห็นว่ามีค่า เลยยิง ConnectTo ทันทีตั้งแต่หน้าไตเติ้ล
+    /// ⇒ **ข้ามหน้า Main UI ไปเข้าโปรล็อกเลย** ผู้เล่นไม่ได้เลือกโหมดเอง
+    /// (DLL ชุดที่เคยแจกถูกบังคับให้คืน String.Empty อยู่แล้ว จึงมีเมนูให้เลือก — ทำให้เหมือนกัน)
+    ///
+    /// การต่อเซิร์ฟจริงไม่ได้หายไป — ย้ายไปตอนกดปุ่ม "Dinoworld Server" ซึ่งอ่าน server.txt ผ่าน
+    /// GetServerTargetFromFile() แทน
+    /// </summary>
+    static void PatchDisableAutoConnectTarget()
+    {
+        TypeDef server = module.Find("Durango.Offline.Server", false);
+        MethodDef getter = server?.FindMethod("get_AutoConnectTarget");
+        if (getter == null || !getter.HasBody)
+        {
+            Console.WriteLine("WARN: Server.get_AutoConnectTarget not found");
+            return;
+        }
+        MemberRef empty = new MemberRefUser(module, "Empty",
+            new FieldSig(module.CorLibTypes.String),
+            new TypeRefUser(module, "System", "String", module.CorLibTypes.AssemblyRef));
+        getter.Body.Instructions.Clear();
+        getter.Body.ExceptionHandlers.Clear();
+        getter.Body.Variables.Clear();
+        getter.Body.Instructions.Add(OpCodes.Ldsfld.ToInstruction(empty));
+        getter.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
+        Console.WriteLine("patched Server.AutoConnectTarget -> String.Empty (ไม่ auto-connect ที่หน้าไตเติ้ล)");
+    }
+
+    // [แก้เอง] 29 ส.ค. 2026 — ข้ามหน้า "Region / Get Your Own Tamed Island!" ตอนสร้างตัวละคร
+    // (เจ้าของสั่ง: "หน้านี้เอาออกได้ไหม ข้ามไปเลย")
+    //
+    // ปลอดภัยเพราะ: (1) SelectPersonalRegion.Awake() สุ่มเลือกเกาะให้อยู่แล้ว SelectedRegionid จึงไม่ว่าง
+    // (2) ฝั่งเซิร์ฟ CharacterService.Create() **แค่ log ค่า region เฉย ๆ ไม่ได้เอาไปใช้จริง** — โลก/เกาะ
+    // มาจาก data/config.json ของเซิร์ฟ ⇒ ผู้เล่นเลือกอะไรก็ไม่มีผลกับเกมนี้อยู่แล้ว
+    //
+    // วิธี: ไม่ลบหน้าออกจาก _pages (เสี่ยงพัง index) แต่ทำ 2 อย่างใน OpenCreateCharacter
+    //   1. บังคับหน้าเริ่มต้นเป็น index 1 (Preset = เพศ/อาชีพ) แทน 0 (Region)
+    //   2. ตั้ง CanBack ของหน้า Preset เป็น false — กันผู้เล่นกด Back ย้อนกลับเข้าหน้า Region
+    static void PatchSkipRegionSelect()
+    {
+        TypeDef group = module.Find("Durango.UI.EditPlayerDisplayGroup", false);
+        MethodDef open = group?.FindMethod("OpenCreateCharacter");
+        if (open == null || !open.HasBody)
+        {
+            Console.WriteLine("WARN: EditPlayerDisplayGroup.OpenCreateCharacter not found");
+            return;
+        }
+        var code = open.Body.Instructions;
+
+        // 1. ทุกจุดที่เขียนค่าลงตัวแปร "page" (local 1) ให้ push 1 แทนค่าเดิม
+        //    (มี 2 จุด: ค่าเริ่มต้น page=0 และในลูปที่เจอ State.Region แล้ว page=i)
+        int pageWrites = 0;
+        for (int i = 1; i < code.Count; i++)
+        {
+            Local target = code[i].GetLocal(open.Body.Variables);
+            bool isStoreToPage = target != null && target.Index == 1 &&
+                (code[i].OpCode == OpCodes.Stloc_1 || code[i].OpCode == OpCodes.Stloc || code[i].OpCode == OpCodes.Stloc_S);
+            if (!isStoreToPage) continue;
+            if (code[i - 1].OpCode == OpCodes.Ldc_I4_1) continue;   // แพตช์ไปแล้ว
+            code[i - 1].OpCode = OpCodes.Ldc_I4_1;
+            code[i - 1].Operand = null;
+            pageWrites++;
+        }
+
+        // 2. หน้าที่ 2 (Preset) — CanBack: true -> false
+        int canBackSeen = 0;
+        bool canBackPatched = false;
+        for (int i = 1; i < code.Count; i++)
+        {
+            if (code[i].OpCode != OpCodes.Stfld) continue;
+            if (!(code[i].Operand is IField f) || f.Name != "CanBack") continue;
+            canBackSeen++;
+            if (canBackSeen != 2) continue;                          // 1=Region, 2=Preset
+            if (code[i - 1].OpCode == OpCodes.Ldc_I4_1)
+            {
+                code[i - 1].OpCode = OpCodes.Ldc_I4_0;
+                code[i - 1].Operand = null;
+                canBackPatched = true;
+            }
+            break;
+        }
+
+        open.Body.SimplifyBranches();
+        open.Body.OptimizeBranches();
+        Console.WriteLine(pageWrites > 0 || canBackPatched
+            ? $"patched EditPlayerDisplayGroup to skip Region page (page writes={pageWrites}, preset CanBack={canBackPatched})"
+            : "Region page skip already patched");
+    }
+
     static void PatchStaleAutoConnectTarget()
     {
         TypeDef server = module.Find("Durango.Offline.Server", false);
@@ -700,6 +975,16 @@ class Patcher
             MethodSig.CreateStatic(module.CorLibTypes.Boolean, module.CorLibTypes.String, module.CorLibTypes.String), strType);
         MemberRef isNullOrEmpty = new MemberRefUser(module, "IsNullOrEmpty",
             MethodSig.CreateStatic(module.CorLibTypes.Boolean, module.CorLibTypes.String), strType);
+        // 🐛 [แก้เอง] 29 ส.ค. 2026 — เดิม default ตรงนี้เป็น "127.0.0.1" ตายตัว ⇒ ผู้เล่นใหม่ที่ไม่เคยกรอก IP
+        // เองผ่านเมนู "เยี่ยมชมเกาะเพื่อน" (Preferences "last_connect_ip" ยังว่าง) กด "Dinoworld Server" แล้ว
+        // ต่อเข้าเครื่องตัวเองเปล่า ๆ ทุกครั้ง ⇒ เห็นเป็น "Cannot connect to the game" ทั้งที่เซิร์ฟจริงปกติดี
+        // ⇒ ให้อ่าน env DURANGO_AUTOCONNECT ก่อน (DurangoUpdater ตั้งให้จาก server.txt ทุกครั้งที่เปิดเกม)
+        // แล้วค่อย fallback เป็น Preferences เดิม — เปลี่ยน IP เซิร์ฟทีหลังแก้แค่ server.txt ไม่ต้องแพตช์ DLL ใหม่
+        if (_serverTarget == null)
+        {
+            Console.WriteLine("WARN: server.txt reader missing — ข้ามการแพตช์เมนู Online Server");
+            return;
+        }
         confirm.Body.InitLocals = true;
         Local ipLocal = new Local(module.CorLibTypes.String);
         confirm.Body.Variables.Add(ipLocal);
@@ -707,6 +992,7 @@ class Patcher
         int at = confirm.Body.Instructions.IndexOf(ret);
         Instruction skip = ret;
         Instruction connectLabel = OpCodes.Ldloc.ToInstruction(ipLocal);
+        Instruction prefFallback = OpCodes.Ldstr.ToInstruction("last_connect_ip");
         var ins = new[]
         {
             OpCodes.Ldarg_0.ToInstruction(),
@@ -714,7 +1000,14 @@ class Patcher
             OpCodes.Ldstr.ToInstruction("online"),
             OpCodes.Call.ToInstruction(equals),
             OpCodes.Brfalse.ToInstruction(skip),
-            OpCodes.Ldstr.ToInstruction("last_connect_ip"),
+            // 1) อ่าน server.txt ตรง ๆ (fallback ในตัวไปที่ env DURANGO_AUTOCONNECT) — ถ้ามีค่า ใช้เลย
+            OpCodes.Call.ToInstruction(_serverTarget),
+            OpCodes.Stloc.ToInstruction(ipLocal),
+            OpCodes.Ldloc.ToInstruction(ipLocal),
+            OpCodes.Call.ToInstruction(isNullOrEmpty),
+            OpCodes.Brfalse.ToInstruction(connectLabel),
+            // 2) fallback: IP ที่ผู้เล่นเคยกรอกเองในเมนู "เยี่ยมชมเกาะเพื่อน"
+            prefFallback,
             OpCodes.Ldstr.ToInstruction("127.0.0.1"),
             OpCodes.Ldc_I4_0.ToInstruction(),
             OpCodes.Call.ToInstruction(getString),
@@ -740,21 +1033,35 @@ class Patcher
     static void PatchOnlineServerDisplayName()
     {
         int replaced = 0;
-        TypeDef iterator = module.Find("Durango.Offline.Servers/<GetServers>d__0", false);
+        // [แก้เอง] 30 ส.ค. 2026 — DLL ต้นฉบับ (Mono retail) ใช้ iterator ชื่อ `<GetServers>c__Iterator0`
+        // และมีรายการเซิร์ฟแค่ "Creative Island" (key=free) เท่านั้น ส่วนตัวที่คอมไพล์ใหม่จากซอร์ส client/
+        // (Roslyn) ใช้ `<GetServers>d__0` และมี "Online Server (For Test)" เพิ่มมา
+        // ⇒ รองรับทั้งสองแบบ เพื่อให้แพตช์ได้ทั้ง DLL ต้นฉบับและ DLL ที่คอมไพล์ใหม่
+        TypeDef iterator = module.Find("Durango.Offline.Servers/<GetServers>d__0", false)
+                        ?? module.Find("Durango.Offline.Servers/<GetServers>c__Iterator0", false);
         MethodDef moveNext = iterator?.FindMethod("MoveNext");
         if (moveNext?.HasBody == true)
         {
             foreach (Instruction instr in moveNext.Body.Instructions)
             {
-                if (instr.OpCode == OpCodes.Ldstr && string.Equals(instr.Operand as string, "Online Server (For Test)", StringComparison.Ordinal))
+                // [แก้เอง] 29 ส.ค. 2026 — เดิมใส่ NGUI BBCode สี "[C2185B]...[-]" เพื่อให้ชื่อเป็นสีชมพูเข้ม
+                // แต่ label บางตัว **ไม่ได้เปิด supportEncoding** จึงโชว์แท็กดิบ ๆ ให้เห็น เช่นปุ่ม Back
+                // มุมซ้ายบนของหน้า Select Character (เจ้าของแจ้ง: "แก้มุมซ้ายบน")
+                // ⇒ ใช้ข้อความล้วน ชื่อจะแสดงถูกต้องทุกหน้าจอ (แลกกับการไม่มีสีที่หน้าเลือกเซิร์ฟ)
+                string s = instr.Operand as string;
+                if (instr.OpCode == OpCodes.Ldstr && s != null &&
+                    (s == "Online Server (For Test)" ||
+                     s == "[C2185B]Dinoworld Server[-]" ||
+                     s == "Dinoworld Server" ||
+                     s.TrimEnd() == "Creative Island"))   // ← ชื่อรายการเดียวที่ DLL ต้นฉบับมี
                 {
-                    instr.Operand = "[C2185B]Dinoworld Server[-]";
+                    instr.Operand = "DurangoTH CustomServer";
                     replaced++;
                 }
             }
         }
         Console.WriteLine(replaced > 0
-            ? "patched Online Server display name to dark-pink Dinoworld Server"
+            ? "patched Online Server display name to plain 'DurangoTH CustomServer'"
             : "Online Server display name already patched or not found");
     }
 
@@ -893,6 +1200,20 @@ class Patcher
             Console.WriteLine("WARN: Server constructor account setter not found");
             return;
         }
+        // 🐛 [แก้เอง] 29 ส.ค. 2026 — เดิม GatewayUrlRoot ตรงนี้ถูก hardcode เป็น localhost ⇒ การดึงข้อมูล
+        // บัญชี/ตัวละครของปุ่ม "Dinoworld Server" วิ่งไปเครื่องผู้เล่นเอง ไม่ใช่เซิร์ฟจริง (คู่กับบั๊กใน
+        // PatchOnlineServerMenuRoute) ⇒ อ่าน env DURANGO_AUTOCONNECT ก่อน เหมือนกัน แล้ว fallback ค่าเดิม
+        MemberRef isNullOrEmptyUrl = new MemberRefUser(module, "IsNullOrEmpty",
+            MethodSig.CreateStatic(module.CorLibTypes.Boolean, module.CorLibTypes.String), strType);
+        if (_serverTarget == null)
+        {
+            Console.WriteLine("WARN: server.txt reader missing — ข้ามการแพตช์ account lookup");
+            return;
+        }
+        ctor.Body.InitLocals = true;
+        Local urlLocal = new Local(module.CorLibTypes.String);
+        ctor.Body.Variables.Add(urlLocal);
+        Instruction haveUrl = OpCodes.Ldarg_0.ToInstruction();
         int at = ctor.Body.Instructions.IndexOf(setter) + 1;
         var ins = new[]
         {
@@ -901,9 +1222,16 @@ class Patcher
             OpCodes.Ldstr.ToInstruction("online"),
             OpCodes.Call.ToInstruction(equals),
             OpCodes.Brfalse.ToInstruction(skip),
-            OpCodes.Ldarg_0.ToInstruction(),
-            OpCodes.Call.ToInstruction(getCluster),
+            OpCodes.Call.ToInstruction(_serverTarget),
+            OpCodes.Stloc.ToInstruction(urlLocal),
+            OpCodes.Ldloc.ToInstruction(urlLocal),
+            OpCodes.Call.ToInstruction(isNullOrEmptyUrl),
+            OpCodes.Brfalse.ToInstruction(haveUrl),
             OpCodes.Ldstr.ToInstruction("http://127.0.0.1:8190"),
+            OpCodes.Stloc.ToInstruction(urlLocal),
+            haveUrl,
+            OpCodes.Call.ToInstruction(getCluster),
+            OpCodes.Ldloc.ToInstruction(urlLocal),
             OpCodes.Stfld.ToInstruction(gateway),
             OpCodes.Ldarg_0.ToInstruction(),
             OpCodes.Call.ToInstruction(getCluster),
@@ -918,6 +1246,34 @@ class Patcher
         ctor.Body.SimplifyBranches();
         ctor.Body.OptimizeBranches();
         Console.WriteLine("patched Online Server account lookup to external gateway");
+    }
+
+    static void PatchForceConnectMenuVisible()
+    {
+        TypeDef menuSystem = module.Find("MenuSystem", false);
+        MethodDef isHidden = menuSystem?.FindMethod("IsHiddenMenu");
+        if (isHidden == null || !isHidden.HasBody || !isHidden.IsStatic)
+        {
+            Console.WriteLine("WARN: MenuSystem.IsHiddenMenu not found");
+            return;
+        }
+
+        Instruction originalFirst = isHidden.Body.Instructions[0];
+        var prologue = new[]
+        {
+            OpCodes.Ldarg_0.ToInstruction(),
+            OpCodes.Ldc_I4.ToInstruction(31),
+            OpCodes.Bne_Un.ToInstruction(originalFirst),
+            OpCodes.Ldc_I4_0.ToInstruction(),
+            OpCodes.Ret.ToInstruction(),
+        };
+        for (int i = prologue.Length - 1; i >= 0; i--)
+        {
+            isHidden.Body.Instructions.Insert(0, prologue[i]);
+        }
+        isHidden.Body.SimplifyBranches();
+        isHidden.Body.OptimizeBranches();
+        Console.WriteLine("patched MenuSystem.IsHiddenMenu: Connect is always visible");
     }
 
     static void DumpMethods(string typeName, string namePart)
@@ -964,6 +1320,39 @@ class Patcher
             return;
         }
 
+        if (args.Length > 1 && args[1] == "--connect-menu-only")
+        {
+            PatchForceConnectMenuVisible();
+            module.Write(dllPath + ".connect-menu.dll");
+            Console.WriteLine("done (connect-menu-only) -> " + dllPath + ".connect-menu.dll");
+            return;
+        }
+
+        // [แก้เอง] 30 ส.ค. 2026 — "--server-only": แพตช์ **เฉพาะเรื่องเซิร์ฟของเรา** บน DLL ต้นฉบับแท้
+        // (เจ้าของสั่ง: "มาทำตัวใหม่เริ่มจาก original ให้เล่น offline ได้ก่อน" แล้วค่อย "ปรับหน้า Main UI
+        // ให้แสดง server เราก่อน")
+        //
+        // ทำแค่ 5 อย่าง ไม่แตะพอร์ต/AppData path/Mobile UI/craft/สัตว์/ซ่อนเมนู — ของพวกนั้นคือชุดแพตช์
+        // เต็มที่เคยทำให้เข้าโลกไม่ได้ ต้องใส่กลับทีละตัวแล้วเทสออฟไลน์ทุกครั้ง
+        if (args.Length > 1 && args[1] == "--server-only")
+        {
+            PatchInjectModLoader();                         // ⭐ hook เดียวที่แตะไฟล์เกม — ที่เหลือเขียนเป็น mod
+
+            // [แก้เอง] 30 ส.ค. 2026 — **เคยใส่ PatchConstField ย้ายพอร์ตตรงนี้ แล้วถอนออก**
+            // เหตุผล: DefaultPort เป็น `const` ⇒ C# inline ค่าลงทุก call site ตอนคอมไพล์
+            // แก้ค่า field ทีหลังจึงไม่มีผลเลย (เทสแล้ว SocketException ยังขึ้นเหมือนเดิม)
+            // ทางที่ได้ผลจริงคือ Harmony prefix ที่ Durango.Offline.Listener::Start(int)
+            // ซึ่ง "รับพอร์ตเป็น argument" ⇒ เปลี่ยนค่าตอน runtime ได้ — ทำใน mod DurangoOnlineMode แทน
+            _serverTarget = AddServerTargetHelper();        // อ่าน server.txt ตรง ๆ
+            PatchDisableAutoConnectTarget();                // ไม่ auto-connect ที่หน้าไตเติ้ล (เห็นเมนู)
+            PatchOnlineServerDisplayName();                 // ชื่อ "DurangoTH CustomServer"
+            PatchOnlineServerMenuRoute();                   // กดปุ่มแล้วต่อเซิร์ฟจาก server.txt
+            PatchOnlineServerAccountLookup();               // ดึงบัญชี/ตัวละครจาก gateway ของเรา
+            module.Write(dllPath + ".server-only.dll");
+            Console.WriteLine("done (server-only) -> " + dllPath + ".server-only.dll");
+            return;
+        }
+
         if (minimal)
         {
             // PatchAutoConnect() แทรกที่ Server.BeginServer เฉย ๆ ไม่พอ — BeginServer ถูกเรียกแค่ตอน
@@ -985,7 +1374,15 @@ class Patcher
         PatchAppDataBasePath();
         GuardTitleWidget();
         PatchSelfIpFilter();
-        PatchAutoConnect();
+        _serverTarget = AddServerTargetHelper();   // ต้องสร้างก่อน 2 แพตช์ที่เรียกใช้ด้านล่าง
+        PatchDisableAutoConnectTarget();           // กันหน้าไตเติ้ลกระโดดข้าม Main UI
+        // [แก้เอง] 29 ส.ค. 2026 — **ปิด PatchAutoConnect() โดยตั้งใจ** (เจ้าของสั่ง: "จะเอาแบบเดิม
+        // กดปุ่มค่อยเชื่อมเซิร์ฟ") — แพตช์นี้ยิง ConnectTo ตั้งแต่ BeginServer ตอนเปิดเกม ทำให้หน้าไตเติ้ล
+        // ข้ามเมนู "Select Server" ไปเป็น "Select Character" ทันที ผู้เล่นเลือกโหมดเองไม่ได้
+        // การต่อเซิร์ฟจริงย้ายไปอยู่ที่ PatchOnlineServerMenuRoute แทน (ทำงานตอนกดปุ่ม "Dinoworld Server"
+        // → อ่าน env DURANGO_AUTOCONNECT ที่ DurangoUpdater ตั้งจาก server.txt) ⇒ ได้ทั้งเมนูเดิมและ IP ที่ถูก
+        // ถ้าจะเปิดกลับ ให้เอาคอมเมนต์บรรทัดล่างออก
+        // PatchAutoConnect();
         PatchServerAnimalSpawn();
         PatchHideUnimplementedMenus();
         PatchForceSetClustersAccountRefresh();
@@ -997,6 +1394,11 @@ class Patcher
         PatchMobileClickToWalk();
         PatchDisableCraftLayout();
         PatchOnlineServerAccountLookup();
+        // [แก้เอง] 29 ส.ค. 2026 — **ปิดไว้ก่อน** เพราะต้องสงสัยว่าทำให้ "ค้างหน้าเข้าเกาะ"
+        // SelectPersonalRegion.Show() มี gameObject.SetActive(true) ⇒ object เริ่มมาแบบ inactive
+        // ⇒ ถ้าข้ามหน้านี้ Awake() (ที่เป็นคนสุ่มตั้ง SelectedRegionid) จะไม่เคยทำงาน
+        // ⇒ ตัวละครถูกสร้างโดยไม่มี region ⇒ client เข้าเกาะไม่ได้
+        // PatchSkipRegionSelect();
 
         MethodDef helper = AddIslandPortHelper();
 

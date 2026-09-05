@@ -185,9 +185,29 @@ public class ExpectResultWidget : UIWidget
 		_isCraft = false;
 		_build = slotContainer;
 		RefreshHelpLabel();
-		_remodelingWidget.gameObject.SetActive(slotContainer.Blueprint.IsRemodeling);
-		_quantitySelector.gameObject.SetActive(value: false);
-		_bonusItemWidget.gameObject.SetActive(value: false);
+		// [แก้เอง 31 ส.ค. 2026] เส้นทาง "สร้างบ้าน" ยังเรียกตรง ๆ อยู่ 3 บรรทัด ทั้งที่เส้นทางคราฟต์
+		// ใส่ guard ไปแล้วตั้งแต่ 17 ส.ค. — prefab บางตัวไม่มี widget พวกนี้ผูกมา (bonus/quantity/remodeling)
+		// พอเป็น null แล้ว `.gameObject` โยน NullReferenceException ⇒ หน้าต่างสร้างพังทั้งบาน
+		// เป็นบั๊กตัวเดียวกับที่ทำให้ "กดคราฟต์ไม่ได้" ก่อนหน้านี้ แค่คนละเมธอด
+		if (_remodelingWidget != null)
+		{
+			_remodelingWidget.gameObject.SetActive(slotContainer != null && slotContainer.Blueprint.IsRemodeling);
+		}
+		if (_quantitySelector != null)
+		{
+			_quantitySelector.gameObject.SetActive(value: false);
+		}
+		if (_bonusItemWidget != null)
+		{
+			_bonusItemWidget.gameObject.SetActive(value: false);
+		}
+		if (_remodelingWidget == null || _quantitySelector == null || _bonusItemWidget == null)
+		{
+			Debug.LogWarning("[แก้เอง] ExpectResultWidget.Set(build): widget หาย — remodeling="
+				+ (_remodelingWidget == null ? "null" : "ok") + " quantity="
+				+ (_quantitySelector == null ? "null" : "ok") + " bonus="
+				+ (_bonusItemWidget == null ? "null" : "ok"));
+		}
 	}
 
 	public void Refresh()
@@ -218,23 +238,31 @@ public class ExpectResultWidget : UIWidget
 
 	public void SetPreviewTextureMode()
 	{
-		_iconResult.gameObject.SetActive(value: false);
-		_iconResultLabel.gameObject.SetActive(value: false);
-		_previewTexture.gameObject.SetActive(value: true);
-		_moreInfoButton.SetActive(value: true);
-		_previewWidget.height = 215;
+		// [แก้เอง 31 ส.ค. 2026] guard เหมือนเมธอดอื่นในคลาสนี้ — prefab บางตัวไม่ผูก widget ครบ
+		if (_iconResult != null) { _iconResult.gameObject.SetActive(value: false); }
+		if (_iconResultLabel != null) { _iconResultLabel.gameObject.SetActive(value: false); }
+		if (_previewTexture != null) { _previewTexture.gameObject.SetActive(value: true); }
+		if (_moreInfoButton != null) { _moreInfoButton.SetActive(value: true); }
+		if (_previewWidget != null) { _previewWidget.height = 215; }
 		UpdateLayout();
 	}
 
 	public void SetIconMode(bool expectPreviewTexture, bool isBig = false)
 	{
-		_iconResult.gameObject.SetActive(value: true);
-		_previewTexture.gameObject.SetActive(value: false);
-		_moreInfoButton.SetActive(value: false);
-		_iconResultLabel.gameObject.SetActive(expectPreviewTexture);
-		_iconResult.alpha = ((!expectPreviewTexture) ? 1f : 0.2f);
-		_iconResultLabel.text = T._("모든 재료를 선택하면 미리보기 가능");
-		_previewWidget.height = ((!isBig) ? 120 : 215);
+		// [แก้เอง 31 ส.ค. 2026] guard เหมือนเมธอดอื่นในคลาสนี้ (ดูเหตุผลที่ SetPreviewTextureMode)
+		if (_iconResult != null)
+		{
+			_iconResult.gameObject.SetActive(value: true);
+			_iconResult.alpha = ((!expectPreviewTexture) ? 1f : 0.2f);
+		}
+		if (_previewTexture != null) { _previewTexture.gameObject.SetActive(value: false); }
+		if (_moreInfoButton != null) { _moreInfoButton.SetActive(value: false); }
+		if (_iconResultLabel != null)
+		{
+			_iconResultLabel.gameObject.SetActive(expectPreviewTexture);
+			_iconResultLabel.text = T._("모든 재료를 선택하면 미리보기 가능");
+		}
+		if (_previewWidget != null) { _previewWidget.height = ((!isBig) ? 120 : 215); }
 		UpdateLayout();
 	}
 

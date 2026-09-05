@@ -59,6 +59,8 @@ public sealed class ItemSave
     /// ไม่เก็บไว้ = ออกเกมแล้วเข้าใหม่ เนื้อย่างกลับไปเป็นเนื้อดิบ เพราะ tag สร้างจาก prototype ล้วน
     /// </summary>
     public bool Processed { get; set; }
+    /// <summary>[TodoList/03] max ความทนของชิ้นนี้ (-1 = ใช้ค่าตาม prototype)</summary>
+    public float DurabilityMax { get; set; } = -1f;
 
     public static ItemSave From(Item item)
     {
@@ -83,6 +85,8 @@ public sealed class ItemSave
             CapsuleBlueprintId = capsule,
             // เก็บเฉพาะของที่มีความทนทานจริง ๆ ไฟล์เซฟจะได้ไม่รกด้วยเลข −1 ทุกบรรทัด
             Durability = ToolDurability.HasDurability(item) ? ToolDurability.RemainingOf(item) : -1f,
+            // [TodoList/03] max ของชิ้นนี้ (ลดลงทุกครั้งที่ซ่อม / สำเร็จมากได้เพิ่ม) — เดิมสร้างใหม่จาก MaxFor ทุกครั้งที่โหลด
+            DurabilityMax = ToolDurability.HasDurability(item) ? ToolDurability.MaxOf(item) : -1f,
             // ดิบตามตาราง prototype แต่ tag ที่ติดมากับชิ้นนี้ไม่ดิบแล้ว = ผ่านการแปรรูปมา
             Processed = ItemTagData.LevelOf(item.Prototype, ItemProcessing.RawTag) > 0 && !ItemProcessing.IsRaw(item)
         };
@@ -92,8 +96,8 @@ public sealed class ItemSave
     {
         // เซฟเก่า (Durability = −1) หรือของที่เพิ่งกลายเป็นเครื่องมือเพราะเราปรับตาราง
         // ⇒ เริ่มที่เต็มหลอด · ไม่ใช่เครื่องมือ ⇒ MaxFor คืน 0 แล้ว MakeGauge ให้หลอด 1/1 เหมือนเดิม
-        float max = ToolDurability.MaxFor(Prototype);
-        float current = Durability >= 0f ? Durability : max;
+        float max = DurabilityMax > 0f ? DurabilityMax : ToolDurability.MaxFor(Prototype);
+        float current = Durability >= 0f ? Math.Min(Durability, max) : max;
         return new Item
         {
             Id = Id,
@@ -118,9 +122,10 @@ public sealed class ItemSave
             ModifiedCount = 0,
             Size = Size,
             Durability = ToolDurability.MakeGauge(current, max),
-            ColorR = string.IsNullOrEmpty(ColorR) ? "FFFFFF" : ColorR,
-            ColorG = string.IsNullOrEmpty(ColorG) ? "FFFFFF" : ColorG,
-            ColorB = string.IsNullOrEmpty(ColorB) ? "FFFFFF" : ColorB,
+            // [4 ก.ย. 2026] สีไอเทม — ดู PickColor: รองรับเซฟเก่าที่เก็บชื่อ palette ดิบ/ขาวล้วนไว้
+            ColorR = PickColor(ColorR, Prototype, 0),
+            ColorG = PickColor(ColorG, Prototype, 1),
+            ColorB = PickColor(ColorB, Prototype, 2),
             Unstable = false,
             RepairRequirement = ToolDurability.RepairRequirementFor(Prototype),
             FounderId = null,
@@ -148,6 +153,28 @@ public sealed class ItemSave
             EmotionalMotions = null,
             PioneerCost = 0f
         };
+    }
+
+    /// <summary>
+    /// [4 ก.ย. 2026] เลือกสีที่จะส่งให้ client (บั๊ก "ไอเทมขาวหมด")
+    ///
+    /// ค่าในเซฟมีได้ 3 แบบ:
+    ///   1. hex จริง ("5796C0")      → ใช้เลย (ของที่ย้อม/คราฟต์มาแล้ว)
+    ///   2. ชื่อ palette ดิบ ("color_rock_stone") → เซฟรุ่นก่อนเขียนดิบลงไป · client แปลงไม่ได้ ⇒ ต้อง resolve
+    ///   3. ว่าง หรือ "FFFFFF"        → placeholder เก่า ⇒ เอาสีจริงของ prototype มาแทน
+    ///
+    /// ⚠️ client (StringExtensions.ToColor) รับ hex เฉพาะ 6/8 ตัวอักษร นอกนั้นคืน Color.white
+    /// </summary>
+    private static string PickColor(string saved, string prototype, int channel)
+    {
+        string resolved = GameData.ResolveColor(saved, prototype);
+        if (!string.IsNullOrEmpty(resolved)
+            && !string.Equals(resolved, "FFFFFF", StringComparison.OrdinalIgnoreCase))
+        {
+            return resolved;
+        }
+        var c = GameData.ItemColorOrWhite(prototype);
+        return channel switch { 0 => c.R, 1 => c.G, _ => c.B };
     }
 }
 
@@ -184,6 +211,8 @@ public sealed class PlayerSave : SaveEnvelope
     public string Name { get; set; }
     public int Level { get; set; }
     public ushort EntityType { get; set; }
+    /// <summary>อาชีพที่เลือกตอนสร้างตัว (Shared.Player.Job) — -1 = เซฟเก่าที่ยังไม่มี</summary>
+    public int Job { get; set; } = -1;
     public double? DeletesAt { get; set; }
 
     /// <summary>GP-14: หน้าตาที่ใช้ล่าสุด — ใช้ตอน login รอบหน้าถ้า client ไม่ได้ส่งมา</summary>
@@ -228,6 +257,22 @@ public sealed class PlayerSave : SaveEnvelope
     /// <summary>เฟส C — อุปกรณ์ที่ใส่อยู่: ช่อง → item id</summary>
     public Dictionary<string, string> EquippedItems { get; set; } = new Dictionary<string, string>();
     public int CurrentEquipSlotType { get; set; } = 1;
+
+    /// <summary>
+    /// ที่เก็บ key/value ของ client (`SetStorageItem` → คืนกลับทาง `Welcome.Storage`)
+    ///
+    /// [เพิ่มเอง] 31 ส.ค. 2026 — ทำตาม reference ที่ตัวเกมเขียนไว้เอง
+    /// (client/Durango.Offline/Player.cs:516 — `_context.Storage[msg.Key] = msg.Value`)
+    /// เดิมเราไม่มี handler เลย ⇒ ทุกอย่างที่เกมสั่งเก็บถูกทิ้งหมด (27 ครั้ง/ชม. บน VPS จริง)
+    ///
+    /// ของที่หายไปเพราะไม่มีตัวนี้ — ทั้งหมดอ่านกลับจาก `Welcome.Storage.Data`:
+    ///   "encyclopedia"              → สารานุกรม (MemoSystem.cs:153)
+    ///   "RecentlyUnlockedMenuList"  → จุดแดง "เมนูใหม่" (MenuSystem.cs:149)
+    ///   PlayGuide / Social / สถิติ / ชื่อตำแหน่งที่ชอบ
+    ///
+    /// เก็บเป็น base64 ใน JSON เพราะค่าเป็น byte[] ดิบ
+    /// </summary>
+    public Dictionary<string, string> ClientStorage { get; set; } = new Dictionary<string, string>();
     public Dictionary<string, Dictionary<string, string>> EquipmentPresets { get; set; } =
         new Dictionary<string, Dictionary<string, string>>();
     public string AccessoryId { get; set; }
@@ -235,8 +280,19 @@ public sealed class PlayerSave : SaveEnvelope
     public int DeathTileX { get; set; }
     public int DeathTileY { get; set; }
     public int ImmediateReviveCount { get; set; }
+    /// <summary>[TodoList/07] ตายติดกันกี่ครั้ง · ตายล่าสุดเมื่อไร · กล่องของตก + หมดเวลาเมื่อไร</summary>
+    public int DeathCount { get; set; }
+    public double LastDeathAt { get; set; }
+    public string DeathBoxId { get; set; }
+    public double DeathBoxExpiresAt { get; set; }
+    public double DeathPointExpiresAt { get; set; }
     /// <summary>ตายอยู่ไหม — ต้อง persist ไม่งั้นรีสตาร์ทเซิร์ฟแล้วคนตายฟื้นเอง (auto-revive)</summary>
     public bool Dead { get; set; }
+
+    /// <summary>จุดเกิดที่บันทึกไว้จากท่าเรือ (SetReturningPoint) — 0,0 = ยังไม่เคยเหยียบ</summary>
+    public bool HasReturningPoint { get; set; }
+    public int ReturningPointX { get; set; }
+    public int ReturningPointY { get; set; }
 
     /// <summary>เฟส C — ค่าสถานะ (เลือด/สตามินา/ความล้า)</summary>
     public SurvivalSave Survival { get; set; }
@@ -433,6 +489,8 @@ public sealed class WorldSave : SaveEnvelope
 
     /// <summary>ต้นไม้/ก้อนหินที่ถูกเก็บจนหมดไปแล้ว (พิกัด tile) — เอาไปลบออกจาก Garden ตอนโหลด</summary>
     public List<int[]> RemovedNaturals { get; set; } = new List<int[]>();
+    /// <summary>[regrow] (x, y, unix ที่ถูกเก็บ) เฉพาะต้นที่งอกกลับได้</summary>
+    public List<double[]> RegrowableNaturals { get; set; } = new List<double[]>();
 
     /// <summary>ของในกล่องเก็บของ: entity id ของกล่อง → รายการไอเทม</summary>
     public Dictionary<string, List<ItemSave>> Boxes { get; set; } = new Dictionary<string, List<ItemSave>>();
@@ -445,6 +503,26 @@ public sealed class WorldSave : SaveEnvelope
 
     /// <summary>แคลนทั้งหมดบนเกาะ (id → member list)</summary>
     public List<ClanSave> Clans { get; set; } = new List<ClanSave>();
+
+    /// <summary>ที่ดินส่วนตัวบนเกาะนี้ (ประกาศ 4×4 แล้วขยายได้)</summary>
+    public List<EstateSave> Estates { get; set; } = new List<EstateSave>();
+}
+
+public sealed class EstateSave
+{
+    public string Id { get; set; }
+    public string OwnerId { get; set; }
+    public string OwnerName { get; set; }
+    public int Type { get; set; }
+    public int OriginX { get; set; }
+    public int OriginY { get; set; }
+    public int Size { get; set; }
+    public int LargestSize { get; set; }
+    public double ActivatedAt { get; set; }
+    public double UpkeepUntil { get; set; }
+    public int Others { get; set; }
+    public int Friends { get; set; }
+    public List<int[]> Cells { get; set; } = new List<int[]>();
 }
 
 /// <summary>

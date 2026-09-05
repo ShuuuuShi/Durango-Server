@@ -81,7 +81,13 @@ public partial class ServerPlayer
     public float ButcheryDurationScale() => 1f - SkillRatio(Category.Butchery) * SkillRates.ButcherySpeed;
 
     /// <summary>เวลาคราฟต์ × ค่านี้</summary>
-    public float CraftDurationScale() => 1f - CraftRatio() * SkillRates.CraftSpeed;
+    /// <summary>เวลาคราฟต์ × ค่านี้ (ป่วย = ช้าลงตาม Sickness.CraftDurationScale)</summary>
+    public float CraftDurationScale()
+    {
+        float scale = 1f - CraftRatio() * SkillRates.CraftSpeed;
+        if (IsSick) { scale *= Math.Max(1f, SickCfg.CraftDurationScale); }
+        return scale;
+    }
 
     /// <summary>ดาเมจที่ตีออก × ค่านี้</summary>
     public float MeleeDamageScale() => 1f + SkillRatio(Category.MeleeCombat) * SkillRates.MeleeDamage;
@@ -100,6 +106,8 @@ public partial class ServerPlayer
     {
         float scale = 1f - SkillRatio(Category.Survival) * SkillRates.StaminaSave;
         scale += StatusStaminaCostDelta();
+        // ป่วย = เปลืองแรงขึ้น (ค่า "ของ" ที่เสียต่อการกระทำ)
+        if (IsSick) { scale *= Math.Max(1f, SickCfg.StaminaCostScale); }
         return Math.Max(0.1f, scale);
     }
 
@@ -108,6 +116,34 @@ public partial class ServerPlayer
 
     /// <summary>แล่รอบนี้ได้ชิ้นส่วนเพิ่มไหม</summary>
     public bool RollButcheryBonus() => Roll(SkillRatio(Category.Butchery) * SkillRates.ButcheryBonus);
+
+    /// <summary>เก็บของรอบนี้เป็น "สำเร็จมาก" ไหม — ขึ้นกับความชำนาญหมวดเก็บของ</summary>
+    public bool RollGatherGreatSuccess() => Roll(0.05f + SkillRatio(Category.Gathering) * 0.20f);
+
+    /// <summary>แล่รอบนี้สำเร็จมากไหม</summary>
+    public bool RollButcheryGreatSuccess() => Roll(0.05f + SkillRatio(Category.Butchery) * 0.20f);
+
+    /// <summary>
+    /// เลเวลของไอเทมที่ได้จากงานนี้ — ฐานจากเกาะ/ทรัพยากร แล้วบวกความชำนาญ + สกิลที่เรียน
+    /// สำเร็จมาก = +1 ให้เห็นผลสกิลชัดบนของที่เก็บได้
+    /// </summary>
+    public int ResolveSkillItemLevel(Category category, int resourceLevel, bool greatSuccess)
+    {
+        int resource = Math.Max(1, resourceLevel);
+        int prof = Math.Max(1, ProficiencyLevel(category));
+        int trained = SkillLevelIn(category);
+        int level = Math.Max(resource, prof);
+        level += trained / 4;
+        if (greatSuccess)
+        {
+            level += 1;
+        }
+        if (level > 60)
+        {
+            level = 60;
+        }
+        return level;
+    }
 
     private static bool Roll(float chance)
     {

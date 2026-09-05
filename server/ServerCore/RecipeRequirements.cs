@@ -33,7 +33,8 @@ public static class RecipeRequirements
         return new Slot(id, min, max, tags, materials);
     }
 
-    public static readonly Dictionary<string, Slot[]> Recipes = new Dictionary<string, Slot[]>()
+    // [4 ก.ย. 2026] เดิม readonly. RecipeJsonLoader เขียนทับจาก recipes.json ตอนสตาร์ท (fallback = ตารางนี้)
+    public static Dictionary<string, Slot[]> Recipes = new Dictionary<string, Slot[]>()
     {
         { "antidote_heatpoison", new[] { S("root", 2, 2, null, new[] { new TagRequirement("root_birdsofparadise", 30) }), S("stick", 1, 1, new[] { new TagRequirement("stick_long", 30), new TagRequirement("stick_normal", 30), new TagRequirement("stick_short", 30) }, new[] { new TagRequirement("wood", 30) }) } },
         { "artifact_repair_kit_01", new[] { S("main", 1, 1, new[] { new TagRequirement("stick_long", 1), new TagRequirement("stick_normal", 1), new TagRequirement("stick_short", 1) }, new[] { new TagRequirement("wood", 1) }), S("sub", 2, 2, new[] { new TagRequirement("nail", 1) }, null), S("sub_02", 2, 2, new[] { new TagRequirement("string_long", 1), new TagRequirement("string_normal", 1), new TagRequirement("string_short", 1) }, null) } },

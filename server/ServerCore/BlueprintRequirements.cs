@@ -25,7 +25,8 @@ public static class BlueprintRequirements
         return new Slot(id, count, count, tags, materials);
     }
 
-    public static readonly Dictionary<string, Slot[]> Blueprints = new Dictionary<string, Slot[]>()
+    // [4 ก.ย. 2026] เดิม readonly. GameData เขียนทับจาก blueprints.json ตอนสตาร์ท (fallback = ตารางนี้)
+    public static Dictionary<string, Slot[]> Blueprints = new Dictionary<string, Slot[]>()
     {
         { "2018_summer_pool_01_w", new Slot[0] },
         { "2018_summer_pool_02_w", new Slot[0] },

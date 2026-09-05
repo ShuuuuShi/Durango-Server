@@ -14,6 +14,24 @@ public partial class ServerPlayer
     private const int BoxMaxSize = 200;
 
     /// <summary>
+    /// ⚠️ อย่าสับสนกับกล่องเก็บของข้างบน — คนละเรื่องกันคนละอย่าง
+    ///
+    /// นี่คือที่เก็บ key/value ของ client เอง (`SetStorageItem` → `Welcome.Storage`)
+    /// ใช้จำสถานะ UI/ความคืบหน้า เช่น "encyclopedia", "RecentlyUnlockedMenuList"
+    /// ไม่ใช่ไอเทมในเกม ดูคอมเมนต์เต็มที่ PlayerSave.ClientStorage
+    /// </summary>
+    private readonly Dictionary<string, byte[]> _clientStorage = new Dictionary<string, byte[]>();
+
+    /// <summary>ขนาดค่าสูงสุดต่อ key — กันผู้เล่นยัดข้อมูลจนไฟล์เซฟบวม</summary>
+    private const int MaxStorageValueBytes = 64 * 1024;
+
+    /// <summary>จำนวน key สูงสุดต่อผู้เล่น</summary>
+    private const int MaxStorageKeys = 64;
+
+    /// <summary>ค่าที่เก็บไว้ทั้งหมด — GameServer หยิบไปใส่ Welcome ตอนล็อกอิน</summary>
+    public IReadOnlyDictionary<string, byte[]> ClientStorage => _clientStorage;
+
+    /// <summary>
     /// client ขอดูของในกระเป๋าตัวเอง (Target = null) หรือในกล่อง (Target = สิ่งปลูกสร้าง)
     /// </summary>
     private void HandleGetInventory(GetInventory msg, PacketHeader header)
@@ -64,24 +82,24 @@ public partial class ServerPlayer
         if (!_world.IsStorage(boxId))
         {
             Console.WriteLine("[storage] {0}: {1} ไม่ใช่กล่อง", Name, boxId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         if (!_world.TryGetArtifact(boxId, out AppearArtifact box))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         if (!CanModifyArtifact(box))
         {
             Console.WriteLine("[storage] ปฏิเสธ {0}: กล่อง {1} ไม่ใช่ของตัวเอง", Name, boxId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         if (!IsWithinReach(box.Tile))
         {
             Console.WriteLine("[storage] ปฏิเสธ {0}: กล่อง {1} อยู่ไกลเกินเอื้อม", Name, boxId);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return false;
         }
         return true;
@@ -97,14 +115,14 @@ public partial class ServerPlayer
         }
         if (msg.ItemIds == null || msg.ItemIds.Length == 0)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         for (int i = 0; i < msg.ItemIds.Length; i++)
         {
             if (IsItemLocked(msg.ItemIds[i]))
             {
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
         }
@@ -126,7 +144,7 @@ public partial class ServerPlayer
         }
         if (moving.Count == 0)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -138,7 +156,7 @@ public partial class ServerPlayer
                 _inventory.AddRange(moving);
             }
             Console.WriteLine("[storage] กล่อง {0} เต็ม — คืนของ {1} ชิ้นให้ {2}", boxId, moving.Count, Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -168,7 +186,7 @@ public partial class ServerPlayer
         }
         if (msg.ItemIds == null || msg.ItemIds.Length == 0)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -180,7 +198,7 @@ public partial class ServerPlayer
         if (free <= 0)
         {
             Console.WriteLine("[storage] กระเป๋า {0} เต็ม หยิบของไม่ได้", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -188,7 +206,7 @@ public partial class ServerPlayer
         List<Item> taken = _world.TakeFromBox(boxId, msg.ItemIds, free);
         if (taken.Count == 0)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -210,6 +228,7 @@ public partial class ServerPlayer
         // ตอบอะไรก็ได้ที่ไม่ใช่ Abort — client เช็คด้วย Packet.IsSuccess
         Send(default(OK), header.Seq);
         SendInventory();
+        AfterTakeFromBox(boxId);       // [TodoList/07] กล่องของตกว่างแล้ว → เก็บกล่อง + เอาหมุดออก
     }
 
     /// <summary>

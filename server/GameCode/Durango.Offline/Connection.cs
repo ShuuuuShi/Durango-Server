@@ -153,8 +153,18 @@ public class Connection
 			try
 			{
 				int num = Packet.SerializeMsg(Times.UnixTimeNow(), seq, replyOf, msg, SendBuffer, _sendBufferSize, _packingBuffer, _compressingBuffer, _messagePacker);
-				if (num <= 0 || num > BufferCapacity - _sendBufferSize)
+				// [3 ก.ย. 2026] num <= 0 = แพ็กไม่สำเร็จ (message ไม่ได้ลงทะเบียน TypeCode — บั๊กฝั่งเซิร์ฟ
+				//   ไม่ใช่ปัญหาของ connection) ⇒ **ข้ามข้อความนี้ไปเฉย ๆ ห้ามปิด connection**
+				//   เดิมโยน exception → _willBeClosed=true ⇒ คนที่อยู่ใกล้จุด broadcast หลุดยกแผง
+				//   (เจอจริง: natural regrowth ส่ง AppearEntityOnTile ที่ไม่มี TypeCode 1769 ครั้ง)
+				if (num <= 0)
 				{
+					Debug.LogError("[conn] ข้ามข้อความที่แพ็กไม่ได้ (ไม่ปิด connection): " + typeof(T).Name);
+					return false;
+				}
+				if (num > BufferCapacity - _sendBufferSize)
+				{
+					// บัฟเฟอร์ส่งเต็มจริง ๆ = ปัญหาของ connection นี้ ปิดได้
 					throw new InvalidDataException($"Outbound packet exceeds buffer capacity: {num} bytes");
 				}
 				_sendBufferSize += num;
@@ -179,15 +189,12 @@ public class Connection
 	private bool RegisterMessageHandlerToRegistry<T>(Dictionary<uint, PacketHandler> registry, MessageHandler<T> handler)
 	{
 		System.Reflection.FieldInfo fieldInfo = typeof(T).GetField("TypeCode", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-		uint key = 0u;
 		if (fieldInfo == null || !fieldInfo.IsLiteral)
 		{
-			Console.WriteLine("[connection] warning: {0} has no TypeCode, handler registered under key 0", typeof(T).FullName);
+			Console.WriteLine("[connection] FATAL: {0} has no TypeCode — handler NOT registered (key 0 ทับกันได้)", typeof(T).FullName);
+			return false;
 		}
-		else
-		{
-			key = (uint)fieldInfo.GetValue(null);
-		}
+		uint key = (uint)fieldInfo.GetValue(null);
 		bool flag = registry.ContainsKey(key);
 		if (flag)
 		{
@@ -415,6 +422,25 @@ public class Connection
 	// ผลเดิม: main loop ~64 รอบ/วินาที = เพดาน ~64 packet/วินาที/ผู้เล่น → ดีเลย์สะสมไล่ไม่ทัน
 	private const int MaxPacketsPerTick = 512;
 
+	/// <summary>
+	/// นับ message ที่ client ส่งมาแต่เซิร์ฟไม่มี handler — แชร์ทุก connection
+	/// ใช้ตอบคำถาม "เซิร์ฟเราทำงานครบตามที่ตัวเกมต้องการไหม" โดยดูจากของจริงที่เกมส่ง
+	/// ไม่ใช่เดาจากโค้ด — ดูสรุปได้ที่ endpoint /admin/status
+	/// </summary>
+	public static readonly Dictionary<uint, int> UnhandledCounts = new Dictionary<uint, int>();
+
+	/// <summary>
+	/// [4 ก.ย. 2026] ตัวรับ "แพ็กเก็ตที่ไม่มี handler" — ServerPlayer ใช้ตอบ Abort กลับไปตาม Seq
+	/// เพื่อไม่ให้ client ค้างรอคำตอบ (เดิมแค่ log แล้วทิ้ง ⇒ ปุ่มในเกมกดแล้วเงียบ/ค้าง)
+	/// </summary>
+	public Action<PacketHeader, byte[]> OnUnhandled;
+
+	/// <summary>มี handler สำหรับ TypeCode นี้แล้วหรือยัง — ใช้กัน fallback ทับของจริง</summary>
+	public bool HasHandler(uint typeCode)
+	{
+		return _packetHandlers.ContainsKey(typeCode);
+	}
+
 	private void ProcessPacketQueue()
 	{
 		int processed = 0;
@@ -435,8 +461,27 @@ public class Connection
 			processed++;
 			try
 			{
-				_packetHandlers.TryGetValue(packet.Header.TypeCode, out var value);
-				value?.Invoke(packet.Header, packet.Payload);
+				if (!_packetHandlers.TryGetValue(packet.Header.TypeCode, out var value) || value == null)
+				{
+					// [แก้เอง] 31 ส.ค. 2026 — เดิมพิมพ์ทุกครั้งที่เจอ ⇒ ข้อความที่ client ส่งถี่ ๆ
+					// (Depart 587 ครั้ง/ชม.) ท่วม log จนหาปัญหาจริงไม่เจอ
+					// ตอนนี้พิมพ์ครั้งแรกครั้งเดียวต่อชนิด พร้อมนับรวมไว้ให้เรียกดูทีหลังได้
+					lock (UnhandledCounts)
+					{
+						UnhandledCounts.TryGetValue(packet.Header.TypeCode, out int seen);
+						UnhandledCounts[packet.Header.TypeCode] = seen + 1;
+						if (seen == 0)
+						{
+							Console.WriteLine("[conn] ไม่มี handler สำหรับ type={0} (bytes={1}) — จะไม่เตือนซ้ำอีก",
+								packet.Header.TypeCode, packet.Payload?.Length ?? 0);
+						}
+					}
+					OnUnhandled?.Invoke(packet.Header, packet.Payload);
+				}
+				else
+				{
+					value.Invoke(packet.Header, packet.Payload);
+				}
 			}
 			catch (Exception exception)
 			{

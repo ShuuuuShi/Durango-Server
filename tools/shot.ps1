@@ -25,7 +25,9 @@ $ErrorActionPreference = "Stop"
 $root    = Split-Path -Parent $PSScriptRoot
 $shotDir = Join-Path $root "shots"
 
+# DurangoV2 = ชุดเก่า, Durango = ชุดแจกจริง (dist\DurangoTH-Clean\Durango.exe) - รับทั้งสองชื่อ
 $proc = @(Get-Process -Name DurangoV2 -ErrorAction SilentlyContinue)
+if ($proc.Count -eq 0) { $proc = @(Get-Process -Name Durango -ErrorAction SilentlyContinue) }
 if ($proc.Count -eq 0) { Write-Output "game is not running"; exit 1 }
 if (-not (Test-Path $shotDir)) { New-Item -ItemType Directory -Force $shotDir | Out-Null }
 

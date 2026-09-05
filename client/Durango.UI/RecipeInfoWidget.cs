@@ -9,6 +9,7 @@ using Durango.UI.Popup;
 using Durango.Utils;
 using JetBrains.Annotations;
 using L10N;
+using NestedPrefab;
 using Shared.Ability;
 using UnityEngine;
 using Yaml;
@@ -101,6 +102,8 @@ public class RecipeInfoWidget : MonoBehaviour, IUIInitializable
 	private bool _likeIconAnimation;
 
 	private BlurTexture _blurTexture;
+
+	private TagsViewerWidget _resultTagsViewer;
 
 	private AnimationWidget AnimWidget
 	{
@@ -308,6 +311,7 @@ public class RecipeInfoWidget : MonoBehaviour, IUIInitializable
 		}
 		SetNonResiable();
 		SetMaterials(recipeSlotInfos, toolInfo);
+		ShowCraftResultTags(recipe);
 		SetNextButton(T._("제작"));
 		UpdatePin();
 		UIUtility.UpdateAnchors(base.transform);
@@ -404,6 +408,10 @@ public class RecipeInfoWidget : MonoBehaviour, IUIInitializable
 			toolInfo = default(SlotStruct);
 		}
 		SetMaterials(recipeSlotInfos, toolInfo);
+		if (_resultTagsViewer != null)
+		{
+			_resultTagsViewer.gameObject.SetActive(value: false);
+		}
 		SetNextButton(T._("건설"));
 		UpdatePin();
 		UIUtility.UpdateAnchors(base.transform);
@@ -536,6 +544,124 @@ public class RecipeInfoWidget : MonoBehaviour, IUIInitializable
 			}
 			_materialWidget.height = num2;
 			_materialItemWidgets.Reposition(Vector3.down);
+		}
+	}
+
+	internal static GameObject FindBagTagsTemplate()
+	{
+		GameObject fromInventory = FindTagsPrefabOn(typeof(ItemDetailView));
+		if (fromInventory != null)
+		{
+			return fromInventory;
+		}
+		GameObject fromPet = FindTagsPrefabOn(typeof(PetInfoWidget));
+		if (fromPet != null)
+		{
+			return fromPet;
+		}
+		UnityEngine.Object[] widgets = Resources.FindObjectsOfTypeAll(typeof(TagsViewerWidget));
+		if (widgets == null)
+		{
+			return null;
+		}
+		GameObject sceneFallback = null;
+		for (int i = 0; i < widgets.Length; i++)
+		{
+			TagsViewerWidget widget = widgets[i] as TagsViewerWidget;
+			if (widget == null || widget.name == "SlotKindTags" || widget.name == "CraftResultTags")
+			{
+				continue;
+			}
+			if (!widget.gameObject.scene.IsValid())
+			{
+				return widget.gameObject;
+			}
+			sceneFallback = widget.gameObject;
+		}
+		return sceneFallback;
+	}
+
+	private static GameObject FindTagsPrefabOn(Type ownerType)
+	{
+		UnityEngine.Object[] owners = Resources.FindObjectsOfTypeAll(ownerType);
+		if (owners == null)
+		{
+			return null;
+		}
+		for (int i = 0; i < owners.Length; i++)
+		{
+			Component owner = owners[i] as Component;
+			if (owner == null)
+			{
+				continue;
+			}
+			NestedPrefabLinker[] linkers = owner.GetComponentsInChildren<NestedPrefabLinker>(true);
+			for (int j = 0; j < linkers.Length; j++)
+			{
+				GameObject prefab = linkers[j].SourcePrefab;
+				if (prefab != null && prefab.GetComponent<TagsViewerWidget>() != null)
+				{
+					return prefab;
+				}
+			}
+		}
+		return null;
+	}
+
+	private void ShowCraftResultTags(Crafting.Recipe recipe)
+	{
+		RecipeCraft craft = recipe as RecipeCraft;
+		if (craft == null || string.IsNullOrEmpty(craft.PrototypeId))
+		{
+			if (_resultTagsViewer != null)
+			{
+				_resultTagsViewer.gameObject.SetActive(value: false);
+			}
+			return;
+		}
+		Yaml.Prototype proto = Yaml.PrototypeYaml.GetItemPrototype(craft.PrototypeId, 1)
+			?? Yaml.PrototypeYaml.GetItemPrototype(craft.PrototypeId);
+		if (proto == null || proto.Tags == null || proto.Tags.Count == 0)
+		{
+			if (_resultTagsViewer != null)
+			{
+				_resultTagsViewer.gameObject.SetActive(value: false);
+			}
+			return;
+		}
+		if (_resultTagsViewer == null)
+		{
+			GameObject src = FindBagTagsTemplate();
+			if (src == null)
+			{
+				return;
+			}
+			GameObject go = _materialWidget.gameObject.AddChild(src);
+			go.name = "CraftResultTags";
+			_resultTagsViewer = go.GetComponent<TagsViewerWidget>();
+		}
+		if (_resultTagsViewer == null)
+		{
+			return;
+		}
+		_resultTagsViewer.PrepareForHost(_materialWidget.width > 80 ? _materialWidget.width : 280);
+		_resultTagsViewer.gameObject.SetActive(value: true);
+		_resultTagsViewer.SettingBegin();
+		foreach (KeyValuePair<string, string> tag in proto.Tags)
+		{
+			int level;
+			if (!int.TryParse(tag.Value, out level) || level < 1)
+			{
+				level = 1;
+			}
+			_resultTagsViewer.AddTagData(tag.Key, level);
+		}
+		bool any = _resultTagsViewer.SettingEnd();
+		_resultTagsViewer.gameObject.SetActive(any);
+		if (any)
+		{
+			_resultTagsViewer.transform.localPosition = new Vector3(0f, (float)(-_materialWidget.height) - 8f, 0f);
+			_materialWidget.height += _resultTagsViewer.height + 16;
 		}
 	}
 

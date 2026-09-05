@@ -1,0 +1,1548 @@
+{
+  "15Sa": {
+    "biome": 5,
+    "max_population": 200,
+    "level": 15,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri15sa190710"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri15sa190710"
+  },
+  "20Te": {
+    "biome": 0,
+    "max_population": 300,
+    "level": 20,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri20te190710"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri20te190710"
+  },
+  "25Tr": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 25,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri25tr190710"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri25tr190710"
+  },
+  "30TuT01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 30,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri30tu171228",
+      "ri30tuSub01",
+      "ri30tuSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri30tu171228"
+  },
+  "30TuQ01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 30,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri30tu171228",
+      "ri30tuSub01",
+      "ri30tuSub02",
+      "ri30tuSub03_camp"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri30tu171228"
+  },
+  "35TeT01": {
+    "biome": 0,
+    "max_population": 300,
+    "level": 35,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri35te171228",
+      "ri35teSub01",
+      "ri35teSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri35te171228"
+  },
+  "35TeQ01": {
+    "biome": 0,
+    "max_population": 300,
+    "level": 35,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri35te171228",
+      "ri35teSub01",
+      "ri35teSub02",
+      "ri35teSub03_copper"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri35te171228"
+  },
+  "35TuSeason1": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 35,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "s01_ri35tu180405"
+    ],
+    "active": false,
+    "prerequisite_quests": {},
+    "start_region_template_id": "s01_ri35tu180405"
+  },
+  "35DeT01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 35,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri35de171228",
+      "ri35deSub01",
+      "ri35deSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri35de171228"
+  },
+  "35DeQ01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 35,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri35de171228",
+      "ri35deSub01",
+      "ri35deSub02",
+      "ri35deSub03_car"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri35de171228"
+  },
+  "40TuT01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 40,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri40tu171228",
+      "ri40tuSub01",
+      "ri40tuSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri40tu171228"
+  },
+  "40TuQ01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 40,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri40tu171228",
+      "ri40tuSub01",
+      "ri40tuSub02",
+      "ri40tuSub03_powerbox"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri40tu171228"
+  },
+  "40TrT01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 40,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri40tr171228",
+      "ri40trSub01",
+      "ri40trSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri40tr171228"
+  },
+  "40TrQ01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 40,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri40tr171228",
+      "ri40trSub01",
+      "ri40trSub02",
+      "ri40trSub03_car"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri40tr171228"
+  },
+  "45SaT01": {
+    "biome": 5,
+    "max_population": 300,
+    "level": 45,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri45sa171228",
+      "ri45saSub01",
+      "ri45saSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri45sa171228"
+  },
+  "45SaQ01": {
+    "biome": 5,
+    "max_population": 300,
+    "level": 45,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri45sa171228",
+      "ri45saSub01",
+      "ri45saSub02",
+      "ri45saSub03_mud"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri45sa171228"
+  },
+  "45SwT01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 45,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri45sw171228",
+      "ri45swSub01",
+      "ri45swSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri45sw171228"
+  },
+  "45SwQ01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 45,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri45sw171228",
+      "ri45swSub01",
+      "ri45swSub02",
+      "ri45swSub03_billboard"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri45sw171228"
+  },
+  "45TrSeason1": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 45,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "s01_ri45tr180405"
+    ],
+    "active": false,
+    "prerequisite_quests": {},
+    "start_region_template_id": "s01_ri45tr180405"
+  },
+  "50DeT01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 50,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri50de171228",
+      "ri50deSub01",
+      "ri50deSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri50de171228"
+  },
+  "50DeQ01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 50,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri50de171228",
+      "ri50deSub01",
+      "ri50deSub02",
+      "ri50deSub03_overpass"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri50de171228"
+  },
+  "50SnT01": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 50,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri50sn171228",
+      "ri50snSub01",
+      "ri50snSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri50sn171228"
+  },
+  "50SnQ01": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 50,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri50sn171228",
+      "ri50snSub01",
+      "ri50snSub02",
+      "ri50snSub03_mammoth"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri50sn171228"
+  },
+  "55TrT01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 55,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri55tb171228",
+      "ri55trSub01",
+      "ri55trSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri55tb171228"
+  },
+  "55TrQ01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 55,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri55tb171228",
+      "ri55trSub01",
+      "ri55trSub02",
+      "ri55trSub03_camp"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri55tb171228"
+  },
+  "55TuT01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 55,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri55tu171228",
+      "ri55tuSub01",
+      "ri55tuSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri55tu171228"
+  },
+  "55TuQ01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 55,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri55tu171228",
+      "ri55tuSub01",
+      "ri55tuSub02",
+      "ri55tuSub03_camp"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri55tu171228"
+  },
+  "55SwT01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 55,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri55sw171228",
+      "ri55swSub01",
+      "ri55swSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri55sw171228"
+  },
+  "55SwQ01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 55,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri55sw171228",
+      "ri55swSub01",
+      "ri55swSub02",
+      "ri55swSub03_billboard"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri55sw171228"
+  },
+  "55SnSeason1": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 55,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "s01_ri55sn180405"
+    ],
+    "active": false,
+    "prerequisite_quests": {},
+    "start_region_template_id": "s01_ri55sn180405"
+  },
+  "60DeSeason1": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "s01_ri60de180405"
+    ],
+    "active": false,
+    "prerequisite_quests": {},
+    "start_region_template_id": "s01_ri60de180405"
+  },
+  "60SnRaid": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ra60sn171228"
+    ],
+    "active": false,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ra60sn171228"
+  },
+  "60SwRaid": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ra60sw180226"
+    ],
+    "active": false,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ra60sw180226"
+  },
+  "60TrD01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60trMain01",
+      "ua60trSub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60trMain01"
+  },
+  "60TrT01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60trMain01",
+      "ua60trSub01",
+      "ua60trSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60trMain01"
+  },
+  "60TrQ01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60trMain01",
+      "ua60trSub01",
+      "ua60trSub02",
+      "ua60trSub03_car"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60trMain01"
+  },
+  "60SnD01": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60snMain03",
+      "ua60snSub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60snMain03"
+  },
+  "60SnT01": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60snMain03",
+      "ua60snSub01",
+      "ua60snSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60snMain03"
+  },
+  "60SnQ01": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60snMain03",
+      "ua60snSub01",
+      "ua60snSub02",
+      "ua60snSub03_mammoth"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60snMain03"
+  },
+  "60SnQ02_elite": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60snMain04_elite",
+      "ua60snSub01",
+      "ua60snSub02",
+      "ua60snSub03_mammoth"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60snMain04_elite"
+  },
+  "60TuD01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60tuMain01",
+      "ua60tuSub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60tuMain01"
+  },
+  "60TuT01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60tuMain01",
+      "ua60tuSub01",
+      "ua60tuSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60tuMain01"
+  },
+  "60TuQ01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60tuMain01",
+      "ua60tuSub01",
+      "ua60tuSub02",
+      "ua60tuSub03_camp"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60tuMain01"
+  },
+  "60DeD01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60deMain01",
+      "ua60deSub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60deMain01"
+  },
+  "60DeT01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60deMain01",
+      "ua60deSub01",
+      "ua60deSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60deMain01"
+  },
+  "60DeQ01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60deMain01",
+      "ua60deSub01",
+      "ua60deSub02",
+      "ua60deSub03_car"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60deMain01"
+  },
+  "60DeQ02_elite": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60deMain02_elite",
+      "ua60deSub01",
+      "ua60deSub02",
+      "ua60deSub03_car"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60deMain02_elite"
+  },
+  "60SwD01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60swMain05",
+      "ua60swSub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60swMain05"
+  },
+  "60SwT01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60swMain05",
+      "ua60swSub01",
+      "ua60swSub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60swMain05"
+  },
+  "60SwQ01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60swMain05",
+      "ua60swSub01",
+      "ua60swSub02",
+      "ua60swSub03_billboard"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60swMain05"
+  },
+  "60SwQ02_elite": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60swMain06_elite",
+      "ua60swSub01",
+      "ua60swSub02",
+      "ua60swSub03_billboard"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60swMain06_elite"
+  },
+  "24Gr_event": {
+    "biome": 5,
+    "max_population": 300,
+    "level": 25,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri24grSub01"
+    ],
+    "active": false,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri24grSub01"
+  },
+  "60Tr02D01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60tr02Main01",
+      "ua60tr02Sub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60tr02Main01"
+  },
+  "60Tr02T01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60tr02Main01",
+      "ua60tr02Sub01",
+      "ua60tr02Sub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60tr02Main01"
+  },
+  "60Tr02Q01": {
+    "biome": 1,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60tr02Main01",
+      "ua60tr02Sub01",
+      "ua60tr02Sub02",
+      "ua60tr02Sub03_car"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60tr02Main01"
+  },
+  "60Sn02D01": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60sn02Main03",
+      "ua60sn02Sub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60sn02Main03"
+  },
+  "60Sn02T01": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60sn02Main03",
+      "ua60sn02Sub01",
+      "ua60sn02Sub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60sn02Main03"
+  },
+  "60Sn02Q01": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60sn02Main03",
+      "ua60sn02Sub01",
+      "ua60sn02Sub02",
+      "ua60sn02Sub03_mammoth"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60sn02Main03"
+  },
+  "60Sn02Q02_elite": {
+    "biome": 4,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60sn02Main04_elite",
+      "ua60sn02Sub01",
+      "ua60sn02Sub02",
+      "ua60sn02Sub03_mammoth"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60sn02Main04_elite"
+  },
+  "60Tu02D01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60tu02Main01",
+      "ua60tu02Sub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60tu02Main01"
+  },
+  "60Tu02T01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60tu02Main01",
+      "ua60tu02Sub01",
+      "ua60tu02Sub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60tu02Main01"
+  },
+  "60Tu02Q01": {
+    "biome": 3,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60tu02Main01",
+      "ua60tu02Sub01",
+      "ua60tu02Sub02",
+      "ua60tu02Sub03_camp"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60tu02Main01"
+  },
+  "60De02D01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60de02Main01",
+      "ua60de02Sub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60de02Main01"
+  },
+  "60De02T01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60de02Main01",
+      "ua60de02Sub01",
+      "ua60de02Sub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60de02Main01"
+  },
+  "60De02Q01": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60de02Main01",
+      "ua60de02Sub01",
+      "ua60de02Sub02",
+      "ua60de02Sub03_car"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60de02Main01"
+  },
+  "60De02Q02_elite": {
+    "biome": 2,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60de02Main02_elite",
+      "ua60de02Sub01",
+      "ua60de02Sub02",
+      "ua60de02Sub03_car"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60de02Main02_elite"
+  },
+  "60Sw02D01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60sw02Main05",
+      "ua60sw02Sub01"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60sw02Main05"
+  },
+  "60Sw02T01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60sw02Main05",
+      "ua60sw02Sub01",
+      "ua60sw02Sub02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60sw02Main05"
+  },
+  "60Sw02Q01": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60sw02Main05",
+      "ua60sw02Sub01",
+      "ua60sw02Sub02",
+      "ua60sw02Sub03_billboard"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60sw02Main05"
+  },
+  "60Sw02Q02_elite": {
+    "biome": 6,
+    "max_population": 300,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60sw02Main06_elite",
+      "ua60sw02Sub01",
+      "ua60sw02Sub02",
+      "ua60sw02Sub03_billboard"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60sw02Main06_elite"
+  },
+  "15Tr_event": {
+    "biome": 1,
+    "max_population": 200,
+    "level": 20,
+    "required_unstable_factor": {
+      "max": 10,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri15trMain01_summerclub"
+    ],
+    "active": false,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ri15trMain01_summerclub"
+  },
+  "60VoS01": {
+    "biome": 7,
+    "max_population": 100,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 1,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60vol_01_01",
+      "ua60vol_01_02",
+      "ua60vol_01_03"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60vol_01_01"
+  },
+  "60VoS02": {
+    "biome": 7,
+    "max_population": 100,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 2,
+      "min": 2
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60vol_02_01",
+      "ua60vol_02_02",
+      "ua60vol_02_03",
+      "ua60vol_02_04"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60vol_02_01"
+  },
+  "60VoS03": {
+    "biome": 7,
+    "max_population": 100,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 3,
+      "min": 3
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60vol_03_01",
+      "ua60vol_03_02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60vol_03_01"
+  },
+  "60VoS04": {
+    "biome": 7,
+    "max_population": 100,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 4,
+      "min": 4
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60vol_04_01",
+      "ua60vol_04_02",
+      "ua60vol_04_03"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60vol_04_01"
+  },
+  "60VoS05": {
+    "biome": 7,
+    "max_population": 100,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 5
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60vol_05_01",
+      "ua60vol_05_02",
+      "ua60vol_05_03"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60vol_05_01"
+  },
+  "60VoS06": {
+    "biome": 7,
+    "max_population": 100,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 6,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60vol_06_01",
+      "ua60vol_06_02",
+      "ua60vol_06_03"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60vol_06_01"
+  },
+  "60VoS07": {
+    "biome": 7,
+    "max_population": 100,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 7,
+      "min": 7
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60vol_07_01",
+      "ua60vol_07_02",
+      "ua60vol_07_03"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60vol_07_01"
+  },
+  "60VoS08": {
+    "biome": 7,
+    "max_population": 100,
+    "level": 60,
+    "required_unstable_factor": {
+      "max": 8,
+      "min": 8
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ua60vol_08_01",
+      "ua60vol_08_02"
+    ],
+    "active": true,
+    "prerequisite_quests": {},
+    "start_region_template_id": "ua60vol_08_01"
+  },
+  "18Tr_epic_01": {
+    "biome": 1,
+    "max_population": 40,
+    "level": 18,
+    "required_unstable_factor": {
+      "max": 1,
+      "min": 1
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri18tr_01_01"
+    ],
+    "active": true,
+    "prerequisite_quests": {
+      "1": "mainstory_chapter1_1"
+    },
+    "start_region_template_id": "ri18tr_01_01"
+  },
+  "18Tr_epic_02": {
+    "biome": 1,
+    "max_population": 50,
+    "level": 18,
+    "required_unstable_factor": {
+      "max": 2,
+      "min": 2
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri18tr_02_01"
+    ],
+    "active": true,
+    "prerequisite_quests": {
+      "2": "mainstory_chapter3_1"
+    },
+    "start_region_template_id": "ri18tr_02_01"
+  },
+  "18Tr_epic_03": {
+    "biome": 1,
+    "max_population": 50,
+    "level": 18,
+    "required_unstable_factor": {
+      "max": 3,
+      "min": 3
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri18tr_03_01"
+    ],
+    "active": true,
+    "prerequisite_quests": {
+      "3": "mainstory_chapter3_11"
+    },
+    "start_region_template_id": "ri18tr_03_01"
+  },
+  "18Tr_epic_04": {
+    "biome": 1,
+    "max_population": 50,
+    "level": 18,
+    "required_unstable_factor": {
+      "max": 4,
+      "min": 4
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri18tr_04_01"
+    ],
+    "active": true,
+    "prerequisite_quests": {
+      "4": "mainstory_chapter4_2"
+    },
+    "start_region_template_id": "ri18tr_04_01"
+  },
+  "18Tr_epic_05": {
+    "biome": 1,
+    "max_population": 50,
+    "level": 18,
+    "required_unstable_factor": {
+      "max": 5,
+      "min": 5
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri18tr_05_01",
+      "ri18tr_05_02",
+      "ri18tr_05_03"
+    ],
+    "active": true,
+    "prerequisite_quests": {
+      "5": "mainstory_chapter5_1"
+    },
+    "start_region_template_id": "ri18tr_05_01"
+  },
+  "18Tr_epic_06": {
+    "biome": 1,
+    "max_population": 50,
+    "level": 18,
+    "required_unstable_factor": {
+      "max": 6,
+      "min": 6
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri18tr_06_01",
+      "ri18tr_06_02"
+    ],
+    "active": true,
+    "prerequisite_quests": {
+      "6": "mainstory_chapter6_2"
+    },
+    "start_region_template_id": "ri18tr_06_01"
+  },
+  "18Tr_epic_07": {
+    "biome": 1,
+    "max_population": 50,
+    "level": 18,
+    "required_unstable_factor": {
+      "max": 7,
+      "min": 7
+    },
+    "role": 4,
+    "region_template_ids": [
+      "ri18tr_07_01"
+    ],
+    "active": false,
+    "prerequisite_quests": {
+      "7": "mainstory_chapter7_1"
+    },
+    "start_region_template_id": "ri18tr_07_01"
+  }
+}

@@ -22,6 +22,16 @@ public class MediaPlayer2UITexture : MonoBehaviour
 		_texture.mainTexture = null;
 	}
 
+	/// <summary>[4 ก.ย. 2026] มือถือ: ใส่ภาพนิ่งแทนเฟรมวิดีโอ (ดู TitleMenuGroup.ShowMobileStillBackground)</summary>
+	public void SetStill(Texture still)
+	{
+		if (_texture != null)
+		{
+			_texture.mainTexture = still;
+			_texture.transform.localRotation = Quaternion.identity;
+		}
+	}
+
 	private void MediaPlayer_VideoTextureUpdated(Texture videoTexture)
 	{
 		_texture.mainTexture = videoTexture;

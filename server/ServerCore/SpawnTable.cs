@@ -133,4 +133,67 @@ public static class SpawnTable
         AnimalConfig a = ServerConfig.Current.Animals;
         return a.DamageBase + level * a.DamagePerLevel;
     }
+
+    // ── [3 ก.ย. 2026] พลังรายชนิดตามข้อมูลเกมจริง ────────────────────────────
+    //
+    // เดิมสองสูตรข้างบนใช้กับทุกชนิด ⇒ ไทรเซอราท็อปส์เลือดเท่ากิ้งก่า
+    // ข้อมูลเกม (AnimalStatData สกัดจาก animal.json) มีสูตรรายชนิดครบ 214 ตัว
+    //
+    // ใช้เป็น *อัตราส่วนเทียบสัตว์อ้างอิง* คูณสูตรกลาง ไม่ใช่ตัวเลขดิบ — เหตุผลอยู่ใน
+    // ServerConfig.AnimalConfig.SpeciesStats (สรุป: ตัวเลขดิบต่างจากที่จูนไว้ 7 เท่า)
+    // ปิดได้ด้วย config → Animals.SpeciesStats = false แล้วจะได้พฤติกรรมเดิมเป๊ะ
+
+    /// <summary>อัตราส่วนเลือดของชนิดนี้เทียบสัตว์อ้างอิงที่เลเวลเดียวกัน (1.0 = ไม่มีข้อมูล/ปิดใช้)</summary>
+    public static float LifeRatio(ushort entityType, int level)
+    {
+        AnimalConfig a = ServerConfig.Current.Animals;
+        if (!a.SpeciesStats
+            || !AnimalStatData.TryGet(entityType, out AnimalStatData.Stats mine)
+            || !AnimalStatData.TryGet(a.SpeciesReference, out AnimalStatData.Stats reference))
+        {
+            return 1f;
+        }
+        float baseline = reference.LifeAt(level);
+        return baseline > 0f ? mine.LifeAt(level) / baseline : 1f;
+    }
+
+    /// <summary>อัตราส่วนดาเมจของชนิดนี้เทียบสัตว์อ้างอิงที่เลเวลเดียวกัน</summary>
+    public static float DamageRatio(ushort entityType, int level)
+    {
+        AnimalConfig a = ServerConfig.Current.Animals;
+        if (!a.SpeciesStats
+            || !AnimalStatData.TryGet(entityType, out AnimalStatData.Stats mine)
+            || !AnimalStatData.TryGet(a.SpeciesReference, out AnimalStatData.Stats reference))
+        {
+            return 1f;
+        }
+        float baseline = reference.AttackAt(level);
+        return baseline > 0f ? mine.AttackAt(level) / baseline : 1f;
+    }
+
+    /// <summary>เลือดของสัตว์ชนิดนี้ที่เลเวลนี้ = สูตรกลาง × อัตราส่วนของชนิด</summary>
+    public static float LifeFor(ushort entityType, int level)
+    {
+        return LifeFor(level) * LifeRatio(entityType, level);
+    }
+
+    /// <summary>ดาเมจของสัตว์ชนิดนี้ที่เลเวลนี้ = สูตรกลาง × อัตราส่วนของชนิด</summary>
+    public static float DamageFor(ushort entityType, int level)
+    {
+        return DamageFor(level) * DamageRatio(entityType, level);
+    }
+
+    /// <summary>
+    /// [TodoList/05] เกราะของสัตว์ชนิดนี้ที่เลเวลนี้ — ค่าดิบของเกม × Animals.Defense.Scale
+    /// (ไม่ทำเป็นอัตราส่วนเพราะสูตรกลางของเราไม่มี defense อยู่แล้ว) · 0 = ปิด/ไม่มีข้อมูล
+    /// </summary>
+    public static float DefenseFor(ushort entityType, int level)
+    {
+        AnimalDefenseConfig d = ServerConfig.Current.Animals.Defense;
+        if (d == null || !d.Enabled || !AnimalStatData.TryGet(entityType, out AnimalStatData.Stats mine))
+        {
+            return 0f;
+        }
+        return Math.Max(0f, mine.DefenseAt(level) * d.Scale);
+    }
 }

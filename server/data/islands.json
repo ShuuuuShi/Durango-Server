@@ -14,11 +14,11 @@
     },
     {
       "Id": "isle02",
-      "Name": "เกาะป่าลึก",
-      "Terrain": "ri40tr",
+      "Name": "เกาะหิมะ",
+      "Terrain": "sn20snow",
       "MinLevel": 10,
       "MaxLevel": 20,
-      "RequiredLevel": 8,
+      "RequiredLevel": 1,
       "Host": "127.0.0.1",
       "GatewayPort": 8290,
       "GamePort": 8291,
@@ -26,8 +26,8 @@
     },
     {
       "Id": "isle03",
-      "Name": "เกาะทะเลทราย",
-      "Terrain": "ri35de",
+      "Name": "เกาะป่าร้อนชื้น",
+      "Terrain": "tr40tropic",
       "MinLevel": 20,
       "MaxLevel": 30,
       "RequiredLevel": 18,
@@ -35,6 +35,30 @@
       "GatewayPort": 8490,
       "GamePort": 8491,
       "Address": "127.0.0.1:8490"
+    },
+    {
+      "Id": "isle04",
+      "Name": "เกาะทะเลทราย",
+      "Terrain": "de50desert",
+      "MinLevel": 30,
+      "MaxLevel": 40,
+      "RequiredLevel": 28,
+      "Host": "127.0.0.1",
+      "GatewayPort": 8590,
+      "GamePort": 8591,
+      "Address": "127.0.0.1:8590"
+    },
+    {
+      "Id": "isle05",
+      "Name": "เกาะภูเขาไฟ",
+      "Terrain": "vo60volcan",
+      "MinLevel": 50,
+      "MaxLevel": 60,
+      "RequiredLevel": 48,
+      "Host": "127.0.0.1",
+      "GatewayPort": 8690,
+      "GamePort": 8691,
+      "Address": "127.0.0.1:8690"
     }
   ]
 }

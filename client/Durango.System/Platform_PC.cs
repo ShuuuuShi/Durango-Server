@@ -40,12 +40,31 @@ public class Platform_PC : Platform
 
 	public override bool IsAvailableOfferwall => false;
 
-	// [แก้เอง] 23 ส.ค. 2026 — เจ้าของสั่งใช้ UI มือถือเป็นหลัก (ทดลองแล้วโหลดสมบูรณ์ ไม่มี error ใหม่
-	// ดู docs/project/CAPABILITY-REPORT.md หัวข้อ 3) เดิมต้องตั้ง env DURANGO_MOBILEUI=1 ถึงจะเห็น UI มือถือ
-	// ⇒ สลับ default: ตอนนี้ UI มือถือเป็นค่าเริ่มต้นเสมอ ถ้าอยากย้อนกลับไป UI PC ชั่วคราว (เช่นเทียบผล)
-	// ตั้ง env DURANGO_FORCE_PCUI=1
-	// Always use the mobile prefab/layout set, even when the game runs on Windows.
-	public override bool UsePCUI => false;
+	// [แก้เอง] ค่าเริ่มต้น = UI มือถือ · สลับได้ที่ตั้งค่าในเกม (option:ui_mode)
+	// env DURANGO_FORCE_PCUI=1 ยังบังคับ PC ได้ถ้าต้องการเทียบ
+	public override bool UsePCUI
+	{
+		get
+		{
+			string env = global::System.Environment.GetEnvironmentVariable("DURANGO_FORCE_PCUI");
+			if (env == "1" || string.Equals(env, "true", StringComparison.OrdinalIgnoreCase))
+			{
+				return true;
+			}
+			string mode = PlayerPrefs.GetString("option:ui_mode", string.Empty);
+			if (string.Equals(mode, "pc", StringComparison.OrdinalIgnoreCase)
+			    || string.Equals(mode, "PC", StringComparison.Ordinal))
+			{
+				return true;
+			}
+			if (string.Equals(mode, "mobile", StringComparison.OrdinalIgnoreCase)
+			    || mode == "มือถือ")
+			{
+				return false;
+			}
+			return false;
+		}
+	}
 
 	public override int DefaultUISize => 1280;
 

@@ -1,0 +1,5221 @@
+{
+  "board_message_01": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "board_message_01"
+    ]
+  },
+  "board_message_02": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "board_message_02"
+    ]
+  },
+  "board_animation_01": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "board_animation_01"
+    ]
+  },
+  "board_animation_02": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "board_animation_02"
+    ]
+  },
+  "whiteboard_message_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "whiteboard_message_01_w"
+    ]
+  },
+  "whiteboard_message_02": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "whiteboard_message_02_w"
+    ]
+  },
+  "blackboard_message_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "blackboard_message_01_w"
+    ]
+  },
+  "blackboard_message_02": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "blackboard_message_02_w"
+    ]
+  },
+  "bridge_01_stepping_stone": {
+    "path": "Prop/road",
+    "file_names": [
+      "bridge_01_stepping_stone_1",
+      "bridge_01_stepping_stone_2",
+      "bridge_01_stepping_stone_3",
+      "bridge_01_stepping_stone_4",
+      "bridge_01_stepping_stone_5"
+    ]
+  },
+  "bridge_test": {
+    "path": "Prop/road",
+    "file_names": [
+      "bridge_test"
+    ]
+  },
+  "fence_wood": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_01_wood"
+    ]
+  },
+  "fence_01_straw": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_01_straw"
+    ]
+  },
+  "fence_02_bone": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_02_bone"
+    ]
+  },
+  "fence_02_stone": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_02_stone"
+    ]
+  },
+  "fence_02_wood": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_02_wood"
+    ]
+  },
+  "gate_small_wood": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_01_wood_small"
+    ]
+  },
+  "gate_small_stem": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_01_straw_small"
+    ]
+  },
+  "preview_gate_small": {
+    "path": "Prop/fence/preview",
+    "file_names": [
+      "preview_gate_01_wood_small"
+    ]
+  },
+  "gate_01_straw": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_01_straw"
+    ]
+  },
+  "gate_02_bone": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_02_bone"
+    ]
+  },
+  "gate_02_stone": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_02_stone"
+    ]
+  },
+  "gate_02_wood": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_02_wood"
+    ]
+  },
+  "preview_fence_02": {
+    "path": "Prop/fence/preview",
+    "file_names": [
+      "preview_fence_02_wood"
+    ]
+  },
+  "preview_gate_02": {
+    "path": "Prop/fence/preview",
+    "file_names": [
+      "preview_gate_02_wood"
+    ]
+  },
+  "road_01_dirt": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_dirt"
+    ]
+  },
+  "road_02_stone": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_02_stone"
+    ]
+  },
+  "direction_sign_01": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "direction_sign_01"
+    ]
+  },
+  "torch_stand_01": {
+    "path": "Prop/furniture/light",
+    "file_names": [
+      "torch_01_stand_wood"
+    ]
+  },
+  "torch_stand_02": {
+    "path": "Prop/furniture/light",
+    "file_names": [
+      "torch_02_stand_wood"
+    ]
+  },
+  "flowerpot_01": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "pot_01"
+    ]
+  },
+  "benchpress_01": {
+    "path": "Prop/training",
+    "file_names": [
+      "benchpress_01"
+    ]
+  },
+  "cat_tower_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "cattower_01_w"
+    ]
+  },
+  "cat_tower_02": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "cattower_02_w"
+    ]
+  },
+  "fan_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "fan_01_w"
+    ]
+  },
+  "copymachine_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "copymachine_01_w"
+    ]
+  },
+  "curtain_01_steel_hospital": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "curtain_01_w_hospital"
+    ]
+  },
+  "goalnet_basketball_01": {
+    "path": "Prop/furniture_warp/sport",
+    "file_names": [
+      "basketballpost_01_w"
+    ]
+  },
+  "vlautingbox_01": {
+    "path": "Prop/furniture_warp/sport",
+    "file_names": [
+      "vaultingbox_01_w"
+    ]
+  },
+  "goalnet_soccer_01": {
+    "path": "Prop/furniture_warp/sport",
+    "file_names": [
+      "footballpost_01_w"
+    ]
+  },
+  "hurdle_01": {
+    "path": "Prop/furniture_warp/sport",
+    "file_names": [
+      "hurdle_01_w"
+    ]
+  },
+  "table_01_w_a": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "table_01_w_a"
+    ]
+  },
+  "table_01_w_b": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "table_01_w_b"
+    ]
+  },
+  "table_02_w_a": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "table_02_w_a"
+    ]
+  },
+  "table_02_w_b": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "table_02_w_b"
+    ]
+  },
+  "road_cherryblossom": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_cherry"
+    ]
+  },
+  "road_leaf": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_leaf"
+    ]
+  },
+  "camp_radio_station": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_communication_station_01"
+    ]
+  },
+  "camp_warphole": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_warphole_01"
+    ]
+  },
+  "camp_board": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_board_01"
+    ]
+  },
+  "camp_warehouse": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_warehouse_01"
+    ]
+  },
+  "camp_square_fire": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_square_01_fire"
+    ]
+  },
+  "camp_square_fire_burning": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_square_01_fire"
+    ]
+  },
+  "camp_fur_table_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_01_wood"
+    ]
+  },
+  "camp_furnace_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "furnace_01"
+    ]
+  },
+  "camp_furnace_01_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "furnace_01_burning"
+    ]
+  },
+  "camp_kitchen_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_01"
+    ]
+  },
+  "camp_kitchen_01_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_01_burning"
+    ]
+  },
+  "camp_loom_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "loom_01"
+    ]
+  },
+  "camp_loom_02": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "loom_02"
+    ]
+  },
+  "camp_dryingrack_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_01"
+    ]
+  },
+  "camp_dryingrack_02": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_02"
+    ]
+  },
+  "camp_kiln_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_01"
+    ]
+  },
+  "camp_kiln_01_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_01_burning"
+    ]
+  },
+  "camp_kiln_02": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_02"
+    ]
+  },
+  "camp_kiln_02_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_02_burning"
+    ]
+  },
+  "camp_punch_machine": {
+    "path": "Prop/furniture_warp/playground",
+    "file_names": [
+      "punchmachine_01_w"
+    ]
+  },
+  "camp_hot_air_balloon": {
+    "path": "Prop/vehicle/hot_airballoon",
+    "file_names": [
+      "hot_airballoon_01"
+    ]
+  },
+  "camp_bike": {
+    "path": "Prop/vehicle/bike",
+    "file_names": [
+      "bike_k_01_stand"
+    ]
+  },
+  "camp_training_target": {
+    "path": "Prop/training",
+    "file_names": [
+      "target_01"
+    ]
+  },
+  "camp_training_dummy": {
+    "path": "Prop/training",
+    "file_names": [
+      "dummy_01"
+    ]
+  },
+  "camp_training_set": {
+    "path": "Prop/training",
+    "file_names": [
+      "target_dummy_01"
+    ]
+  },
+  "camp_boxingbag": {
+    "path": "Prop/training",
+    "file_names": [
+      "boxingbag_01"
+    ]
+  },
+  "camp_radio_station_be_building": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_communication_station_01_b"
+    ]
+  },
+  "camp_warehouse_be_building": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_warehouse_01_b"
+    ]
+  },
+  "camp_board_be_building": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_board_01_b"
+    ]
+  },
+  "camp_radio_station_seol": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "seol_camp_communication_station_01"
+    ]
+  },
+  "camp_warehouse_seol": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "seol_camp_warehouse_01"
+    ]
+  },
+  "camp_board_seol": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "seol_camp_board_01"
+    ]
+  },
+  "clan_collect_lab": {
+    "path": "Prop/facility/clan_lab",
+    "file_names": [
+      "clan_lab_gathering_base"
+    ]
+  },
+  "clan_craft_lab": {
+    "path": "Prop/facility/clan_lab",
+    "file_names": [
+      "clan_lab_crafting_base"
+    ]
+  },
+  "clan_adventure_lab": {
+    "path": "Prop/facility/clan_lab",
+    "file_names": [
+      "clan_lab_adventure_base"
+    ]
+  },
+  "clan_battle_lab": {
+    "path": "Prop/facility/clan_lab",
+    "file_names": [
+      "clan_lab_combat_base"
+    ]
+  },
+  "clan_board": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "clan_board_message_01"
+    ]
+  },
+  "clan_warphole_tuner": {
+    "path": "Prop/facility/clan_warphole",
+    "file_names": [
+      "clan_warphole_tuner_01"
+    ]
+  },
+  "clan_advanced_lab": {
+    "path": "Prop/facility/clan_lab",
+    "file_names": [
+      "clan_lab_gathering_base_02"
+    ]
+  },
+  "clan_hall_01_floor": {
+    "path": "Prop/facility/clan_house",
+    "file_names": [
+      "clan_house_01_floor"
+    ]
+  },
+  "clan_hall_01_front": {
+    "path": "Prop/facility/clan_house",
+    "file_names": [
+      "clan_house_01_front"
+    ]
+  },
+  "clan_hall_01_back": {
+    "path": "Prop/facility/clan_house",
+    "file_names": [
+      "clan_house_01_back"
+    ]
+  },
+  "clan_hall_01_indoor_mask": {
+    "path": "Prop/facility/clan_house",
+    "file_names": [
+      "clan_house_01_indoor_mask"
+    ]
+  },
+  "clan_hall_01_night_light": {
+    "path": "Prop/facility/clan_house",
+    "file_names": [
+      "clan_house_01_night_light"
+    ]
+  },
+  "preview_clan_hall_01": {
+    "path": "Prop/facility/clan_house/preview",
+    "file_names": [
+      "preview_clan_house_01_front"
+    ]
+  },
+  "clan_thurible": {
+    "path": "Prop/facility/clan_buff",
+    "file_names": [
+      "clan_buff_01"
+    ]
+  },
+  "clan_thurible_incense": {
+    "path": "Prop/facility/clan_buff",
+    "file_names": [
+      "clan_buff_01_incense"
+    ]
+  },
+  "clan_thurible_cap": {
+    "path": "Prop/facility/clan_buff",
+    "file_names": [
+      "clan_buff_01_cap"
+    ]
+  },
+  "clan_flag": {
+    "path": "Prop/estate",
+    "file_names": [
+      "estate_clan_01_flag"
+    ]
+  },
+  "private_flag": {
+    "path": "Prop/estate",
+    "file_names": [
+      "estate_private_01_flag"
+    ]
+  },
+  "statue_01_explorer": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "statue_01_explorer"
+    ]
+  },
+  "statue_01_hunter": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "statue_01_hunter"
+    ]
+  },
+  "statue_01_settler": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "statue_01_settler"
+    ]
+  },
+  "estate_flag": {
+    "path": "Prop/estate",
+    "file_names": [
+      "estate_flag"
+    ]
+  },
+  "crack_01": {
+    "path": "Prop/nature",
+    "file_names": [
+      "crack/crack_01"
+    ]
+  },
+  "crack_01_season2": {
+    "path": "Prop/nature",
+    "file_names": [
+      "crack/crack_01_season2"
+    ]
+  },
+  "warphole_01": {
+    "path": "Prop/nature",
+    "file_names": [
+      "warphole/warphole_01"
+    ]
+  },
+  "crater_01": {
+    "path": "Prop/nature",
+    "file_names": [
+      "crater/crater_01"
+    ]
+  },
+  "food_bowl": {
+    "path": "Prop/tool",
+    "file_names": [
+      "basket_feed_01"
+    ]
+  },
+  "aqua_crack_01": {
+    "path": "Prop/nature",
+    "file_names": [
+      "crack/aqua_crack_01"
+    ]
+  },
+  "aqua_crater_01": {
+    "path": "Prop/nature",
+    "file_names": [
+      "crater/aqua_crater_01"
+    ]
+  },
+  "bed_01_leaf": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_01_leaf"
+    ]
+  },
+  "bed_01_leather": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_01_leather"
+    ]
+  },
+  "bed_01_straw": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_01_straw"
+    ]
+  },
+  "bed_01_fabric": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_01_fabric"
+    ]
+  },
+  "bed_01_feather": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_01_feather"
+    ]
+  },
+  "bed_02_leaf": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_02_leaf"
+    ]
+  },
+  "bed_02_leather": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_02_leather"
+    ]
+  },
+  "bed_02_straw": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_02_straw"
+    ]
+  },
+  "bed_02_fabric": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_02_fabric"
+    ]
+  },
+  "bed_02_feather": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_02_feather"
+    ]
+  },
+  "hut_01_pillar_wood": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_01_pillar_wood"
+    ]
+  },
+  "hut_01_roof_bone": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_01_roof_bone"
+    ]
+  },
+  "hut_01_roof_leather": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_01_roof_leather"
+    ]
+  },
+  "hut_01_wall_bone": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_01_wall_bone"
+    ]
+  },
+  "hut_01_wall_dirt": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_01_wall_dirt"
+    ]
+  },
+  "hut_01_wall_stone": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_01_wall_stone"
+    ]
+  },
+  "hut_01_wall_straw": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_01_wall_straw"
+    ]
+  },
+  "hut_01_wall_wood": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_01_wall_wood"
+    ]
+  },
+  "hut_roof_straw": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_roof_straw"
+    ]
+  },
+  "hut_roof_wood": {
+    "path": "Prop/base",
+    "file_names": [
+      "hut_roof_wood"
+    ]
+  },
+  "modular_door_01_basic": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "door_01_basic"
+    ]
+  },
+  "modular_door_01_steel": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "door_01_steel"
+    ]
+  },
+  "modular_door_02_bone": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "door_01_bone"
+    ]
+  },
+  "modular_door_02_wood": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "door_01_wood"
+    ]
+  },
+  "modular_door_03_leather": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "door_01_leather"
+    ]
+  },
+  "modular_door_03_wood": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "door_02_wood"
+    ]
+  },
+  "modular_door_03_bone": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "door_02_bone"
+    ]
+  },
+  "modular_door_02_leather": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "door_02_leather"
+    ]
+  },
+  "modular_door_02_steel": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "door_02_steel"
+    ]
+  },
+  "modular_floor_dirt_01": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_dirt",
+    "file_names": [
+      "floor_01_dirt"
+    ]
+  },
+  "modular_floor_wood_01": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_wood",
+    "file_names": [
+      "floor_01_wood"
+    ]
+  },
+  "modular_floor_wood_02": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_wood",
+    "file_names": [
+      "floor_02_wood"
+    ]
+  },
+  "modular_floor_leaf_01": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_leaf",
+    "file_names": [
+      "floor_01_leaf"
+    ]
+  },
+  "modular_floor_stone_01": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_stone",
+    "file_names": [
+      "floor_01_stone"
+    ]
+  },
+  "modular_floor_stone_02": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_stone",
+    "file_names": [
+      "floor_01_marble"
+    ]
+  },
+  "modular_floor_stem_01": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_stem",
+    "file_names": [
+      "floor_01_straw"
+    ]
+  },
+  "modular_pillar_bone_01": {
+    "path": "Prop/module/pillar",
+    "prototype_id": "bone_leg_thick",
+    "file_names": [
+      "pillar_01_bone"
+    ]
+  },
+  "modular_pillar_wood_01": {
+    "path": "Prop/module/pillar",
+    "prototype_id": "wood_log",
+    "file_names": [
+      "pillar_01_wood"
+    ]
+  },
+  "modular_pillar_steel_01": {
+    "path": "Prop/module/pillar",
+    "prototype_id": "pillar_metal",
+    "file_names": [
+      "pillar_01_steel"
+    ]
+  },
+  "modular_roof_leaf_01": {
+    "path": "Prop/module/roof",
+    "prototype_id": "modular_roof_leaf",
+    "file_names": [
+      "roof_01_leaf"
+    ]
+  },
+  "modular_roof_leather_01": {
+    "path": "Prop/module/roof",
+    "prototype_id": "modular_roof_leather",
+    "file_names": [
+      "roof_01_leather"
+    ]
+  },
+  "modular_roof_straw_01": {
+    "path": "Prop/module/roof",
+    "prototype_id": "modular_roof_stem",
+    "file_names": [
+      "roof_01_straw"
+    ]
+  },
+  "modular_roof_wood_01": {
+    "path": "Prop/module/roof",
+    "prototype_id": "modular_roof_wood",
+    "file_names": [
+      "roof_01_wood"
+    ]
+  },
+  "modular_roof_fur_01": {
+    "path": "Prop/module/roof",
+    "prototype_id": "modular_roof_fur",
+    "file_names": [
+      "roof_01_fur"
+    ]
+  },
+  "modular_roof_tile_01": {
+    "path": "Prop/module/roof",
+    "prototype_id": "modular_roof_tile",
+    "file_names": [
+      "roof_01_tile"
+    ]
+  },
+  "roof_02_wood": {
+    "path": "Prop/module/roof",
+    "prototype_id": "modular_ground_board_wood",
+    "file_names": [
+      "roof_02_wood"
+    ]
+  },
+  "roof_01_steel": {
+    "path": "Prop/module/roof",
+    "file_names": [
+      "roof_01_steel"
+    ]
+  },
+  "modular_wall_dirt_01": {
+    "path": "Prop/module/wall",
+    "prototype_id": "modular_wall_dirt",
+    "file_names": [
+      "wall_01_dirt"
+    ]
+  },
+  "modular_wall_stone_01": {
+    "path": "Prop/module/wall",
+    "prototype_id": "modular_wall_stone",
+    "file_names": [
+      "wall_01_stone"
+    ]
+  },
+  "modular_wall_straw_01": {
+    "path": "Prop/module/wall",
+    "prototype_id": "modular_wall_stem",
+    "file_names": [
+      "wall_01_straw"
+    ]
+  },
+  "modular_wall_wood_01": {
+    "path": "Prop/module/wall",
+    "prototype_id": "modular_wall_wood",
+    "file_names": [
+      "wall_01_wood"
+    ]
+  },
+  "modular_wall_steel_01": {
+    "path": "Prop/module/wall",
+    "file_names": [
+      "wall_01_steel"
+    ]
+  },
+  "modular_wall_wood_02": {
+    "path": "Prop/module/wall",
+    "prototype_id": "modular_ground_board_wood",
+    "file_names": [
+      "wall_02_wood"
+    ]
+  },
+  "modular_window_01_bone": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "window_01_bone"
+    ]
+  },
+  "modular_window_01_wood": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "window_01_wood"
+    ]
+  },
+  "modular_window_01_steel": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "window_01_steel"
+    ]
+  },
+  "modular_window_02_wood_leather": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "window_01_leather"
+    ]
+  },
+  "modular_window_02_wood": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "window_02_wood"
+    ]
+  },
+  "modular_window_02_bone": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "window_02_bone"
+    ]
+  },
+  "modular_window_02_leather": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "window_02_leather"
+    ]
+  },
+  "modular_window_02_steel": {
+    "path": "Prop/module/opening",
+    "file_names": [
+      "window_02_steel"
+    ]
+  },
+  "preview_bed_01": {
+    "path": "Prop/furniture/housing/preview",
+    "file_names": [
+      "preview_bed_01_leaf"
+    ]
+  },
+  "preview_bed_02": {
+    "path": "Prop/furniture/housing/preview",
+    "file_names": [
+      "preview_bed_02_fabric"
+    ]
+  },
+  "preview_temptent": {
+    "path": "Prop/base/preview",
+    "file_names": [
+      "preview_temptent"
+    ]
+  },
+  "preview_tent": {
+    "path": "Prop/base/preview",
+    "file_names": [
+      "preview_tent"
+    ]
+  },
+  "temptent_pillar_bone": {
+    "path": "Prop/base",
+    "file_names": [
+      "temptent_pillar_bone"
+    ]
+  },
+  "temptent_pillar_wood": {
+    "path": "Prop/base",
+    "file_names": [
+      "temptent_pillar_wood"
+    ]
+  },
+  "temptent_roof_leaf": {
+    "path": "Prop/base",
+    "file_names": [
+      "temptent_roof_leaf"
+    ]
+  },
+  "temptent_roof_leather": {
+    "path": "Prop/base",
+    "file_names": [
+      "temptent_roof_leather"
+    ]
+  },
+  "temptent_roof_straw": {
+    "path": "Prop/base",
+    "file_names": [
+      "temptent_roof_straw"
+    ]
+  },
+  "tent_pillar_bone": {
+    "path": "Prop/base",
+    "file_names": [
+      "tent_pillar_bone"
+    ]
+  },
+  "tent_pillar_wood": {
+    "path": "Prop/base",
+    "file_names": [
+      "tent_pillar_wood"
+    ]
+  },
+  "tent_roof_fabric": {
+    "path": "Prop/base",
+    "file_names": [
+      "tent_roof_fabric"
+    ]
+  },
+  "tent_roof_leather": {
+    "path": "Prop/base",
+    "file_names": [
+      "tent_roof_leather"
+    ]
+  },
+  "tent_roof_straw": {
+    "path": "Prop/base",
+    "file_names": [
+      "tent_roof_straw"
+    ]
+  },
+  "modular_frame_01_squre_wood": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "frame_01_square_wood"
+    ]
+  },
+  "modular_frame_01_squre_bone": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "frame_01_square_bone"
+    ]
+  },
+  "modular_frame_01_wide_wood": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "frame_01_wide_wood"
+    ]
+  },
+  "modular_frame_01_wide_bone": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "frame_01_wide_bone"
+    ]
+  },
+  "modular_frame_01_vertical_wood": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "frame_01_vertical_wood"
+    ]
+  },
+  "modular_frame_01_vertical_bone": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "frame_01_vertical_bone"
+    ]
+  },
+  "bonedecoration_01_horn": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "bonedecoration_01_horn"
+    ]
+  },
+  "bonedecoration_01_ivory": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "bonedecoration_01_ivory"
+    ]
+  },
+  "bonedecoration_01_head_common": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "bonedecoration_01_head_a"
+    ]
+  },
+  "torch_01_wall_wood": {
+    "path": "Prop/furniture/light",
+    "file_names": [
+      "torch_01_wall_wood"
+    ]
+  },
+  "torch_02_wall_wood": {
+    "path": "Prop/furniture/light",
+    "file_names": [
+      "torch_02_wall_wood"
+    ]
+  },
+  "chair_01_wood_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "chair_01_wood_01"
+    ]
+  },
+  "chair_01_wood_02": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "chair_01_wood_02"
+    ]
+  },
+  "chair_01_wood_03": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "chair_01_wood_03"
+    ]
+  },
+  "chair_01_wood_04": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "chair_01_wood_04"
+    ]
+  },
+  "chair_bark_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "chair_01_bark_a"
+    ]
+  },
+  "chair_bark_02": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "chair_01_bark_b"
+    ]
+  },
+  "brazier_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "brazier_01_wood"
+    ]
+  },
+  "brazier_01_burning": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "brazier_01_wood_burning"
+    ]
+  },
+  "mat_leather_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "mat_01_leather_a"
+    ]
+  },
+  "mat_leather_02": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "mat_01_leather_b"
+    ]
+  },
+  "mat_leather_03": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "mat_01_leather_c"
+    ]
+  },
+  "parasol_wood_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "parasol_01_wood"
+    ]
+  },
+  "parasol_stem_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "parasol_01_straw"
+    ]
+  },
+  "parasol_fabric_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "parasol_01_fabric"
+    ]
+  },
+  "parasol_leather_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "parasol_01_leather"
+    ]
+  },
+  "beanbag_01_straw": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "beanbag_01_straw"
+    ]
+  },
+  "beanbag_01_fabric": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "beanbag_01_fabric"
+    ]
+  },
+  "beanbag_01_leather": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "beanbag_01_leather"
+    ]
+  },
+  "bed_01_airmat": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "airmat_01_w"
+    ]
+  },
+  "bed_01_steel": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "bed_01_w"
+    ]
+  },
+  "bed_02_steel_hospital": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "bed_02_w_hospital"
+    ]
+  },
+  "chair_warp_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "chair_01_w_a"
+    ]
+  },
+  "chair_warp_h_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "chair_01_w_b_high"
+    ]
+  },
+  "chair_warp_h_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "chair_01_w_c_high"
+    ]
+  },
+  "chair_warp_h_03": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "chair_01_w_d_high"
+    ]
+  },
+  "chair_warp_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "chair_02_w_a"
+    ]
+  },
+  "sofa_warp_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "sofa_01_w_a"
+    ]
+  },
+  "sofa_warp_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "sofa_01_w_b"
+    ]
+  },
+  "spring_horse_01": {
+    "path": "Prop/furniture_warp/playground",
+    "file_names": [
+      "springhorse_01_w_a"
+    ]
+  },
+  "spring_horse_02": {
+    "path": "Prop/furniture_warp/playground",
+    "file_names": [
+      "springhorse_01_w_b"
+    ]
+  },
+  "slide_01": {
+    "path": "Prop/furniture_warp/playground",
+    "file_names": [
+      "slide_01_w"
+    ]
+  },
+  "parasol_01_table": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "parasol_01_w_table"
+    ]
+  },
+  "parasol_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "parasol_01_w"
+    ]
+  },
+  "fireplace_warp_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "fireplace_01_w"
+    ]
+  },
+  "fireplace_warp_01_burning": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "fireplace_01_w_burning"
+    ]
+  },
+  "ladder_warp_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "ladder_01_w"
+    ]
+  },
+  "ladder_warp_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "ladder_02_w"
+    ]
+  },
+  "toilet_warp_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "toilet_01_w"
+    ]
+  },
+  "mat_warp_playground_01": {
+    "path": "Prop/furniture_warp/playground",
+    "file_names": [
+      "mat_01_w_playground_a"
+    ]
+  },
+  "mat_warp_playground_02": {
+    "path": "Prop/furniture_warp/playground",
+    "file_names": [
+      "mat_01_w_playground_b"
+    ]
+  },
+  "mat_warp_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "mat_01_w_a"
+    ]
+  },
+  "kotatsu_warp_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "kotatsu_01_w_a"
+    ]
+  },
+  "kotatsu_warp_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "kotatsu_01_w_b"
+    ]
+  },
+  "wheelchair_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "wheelchair_01_w"
+    ]
+  },
+  "christmas_tree_01": {
+    "path": "Prop/event/xmas/xmas_tree",
+    "file_names": [
+      "xmas_tree_01"
+    ]
+  },
+  "christmas_tree_02": {
+    "path": "Prop/event/xmas/xmas_tree",
+    "file_names": [
+      "xmas_tree_02"
+    ]
+  },
+  "christmas_snowman": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman"
+    ]
+  },
+  "cherryblossom_rest": {
+    "path": "Prop/nature/tree",
+    "file_names": [
+      "CB_BIG_01_wilt"
+    ]
+  },
+  "beanbag_02": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "beanbag_01_leather"
+    ]
+  },
+  "beanbag_compi_green": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "compsodoll_01_leather"
+    ]
+  },
+  "beanbag_compi_pink_mini": {
+    "path": "Prop/event/newyearsday/beanbag_compi",
+    "file_names": [
+      "beanbag_compi_pink_mini"
+    ]
+  },
+  "preview_beanbag_01_leather": {
+    "path": "Prop/furniture/housing/preview",
+    "file_names": [
+      "preview_beanbag_01_leather"
+    ]
+  },
+  "dock_01_wood": {
+    "path": "Prop/sailing",
+    "file_names": [
+      "dock_01_wood"
+    ]
+  },
+  "lighthouse_01": {
+    "path": "Prop/sailing",
+    "file_names": [
+      "lighthouse_01"
+    ]
+  },
+  "raft_01_deck_wood": {
+    "path": "Prop/sailing",
+    "file_names": [
+      "raft_01_deck_wood"
+    ]
+  },
+  "raft_02_sail_fabric": {
+    "path": "Prop/sailing",
+    "file_names": [
+      "raft_02_sail_fabric"
+    ]
+  },
+  "raft_02_sail_leather": {
+    "path": "Prop/sailing",
+    "file_names": [
+      "raft_02_sail_leather"
+    ]
+  },
+  "basket_01_ceramic": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "basket_01_ceramic"
+    ]
+  },
+  "basket_01_leaf": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "basket_01_leaf"
+    ]
+  },
+  "basket_01_straw": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "basket_01_straw"
+    ]
+  },
+  "box_01_bone": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_01_bone"
+    ]
+  },
+  "box_01_bone_lockcap": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_01_bone_lockcap"
+    ]
+  },
+  "box_01_wood": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_01_wood"
+    ]
+  },
+  "box_01_wood_lockcap": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_01_wood_lockcap"
+    ]
+  },
+  "box_02_bone": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_02_bone"
+    ]
+  },
+  "box_02_bone_lockcap": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_02_bone_lockcap"
+    ]
+  },
+  "box_02_wood": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_02_wood"
+    ]
+  },
+  "box_02_wood_lockcap": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_02_wood_lockcap"
+    ]
+  },
+  "box_02_red": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_02_leaf_b"
+    ]
+  },
+  "box_03_wood": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_03_wood"
+    ]
+  },
+  "box_03_bone": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_03_bone"
+    ]
+  },
+  "cage_01_2": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_01_2"
+    ]
+  },
+  "cage_01_2_feed": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_01_2_feed"
+    ]
+  },
+  "cage_01_4": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_01_4"
+    ]
+  },
+  "cage_01_4_feed": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_01_4_feed"
+    ]
+  },
+  "cage_01_6": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_01_6"
+    ]
+  },
+  "cage_01_6_feed": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_01_6_feed"
+    ]
+  },
+  "package": {
+    "path": "Prop/system/package",
+    "file_names": [
+      "package_01"
+    ]
+  },
+  "preview_basket": {
+    "path": "Prop/furniture/storage/preview",
+    "file_names": [
+      "preview_basket_01_ceramic"
+    ]
+  },
+  "preview_box_01": {
+    "path": "Prop/furniture/storage/preview",
+    "file_names": [
+      "preview_box_01_wood"
+    ]
+  },
+  "preview_box_02": {
+    "path": "Prop/furniture/storage/preview",
+    "file_names": [
+      "preview_box_02_wood"
+    ]
+  },
+  "preview_box_03": {
+    "path": "Prop/furniture/storage/preview",
+    "file_names": [
+      "preview_box_03_wood"
+    ]
+  },
+  "preview_secured_box_01": {
+    "path": "Prop/furniture/storage/preview",
+    "file_names": [
+      "preview_box_01_wood_lockcap"
+    ]
+  },
+  "preview_secured_box": {
+    "path": "Prop/furniture/storage/preview",
+    "file_names": [
+      "preview_box_02_wood_lockcap"
+    ]
+  },
+  "clan_warehouse": {
+    "path": "Prop/facility/clan_warehouse",
+    "file_names": [
+      "clan_warehouse_01"
+    ]
+  },
+  "box_weapon_01_wood": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_weapon_01_wood"
+    ]
+  },
+  "box_weapon_01_bone": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_weapon_01_bone"
+    ]
+  },
+  "preview_box_weapon_01": {
+    "path": "Prop/furniture/storage/preview",
+    "file_names": [
+      "preview_box_weapon_01_wood"
+    ]
+  },
+  "box_weapon_02": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_weapon_02_wood"
+    ]
+  },
+  "closet_01_wood": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "closet_01_wood"
+    ]
+  },
+  "closet_01_bone": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "closet_01_bone"
+    ]
+  },
+  "closet_02": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "closet_02_wood"
+    ]
+  },
+  "closet_03": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "closet_03_wood"
+    ]
+  },
+  "preview_closet_01": {
+    "path": "Prop/furniture/storage/preview",
+    "file_names": [
+      "preview_closet_01_wood"
+    ]
+  },
+  "cargo_warphole_in": {
+    "path": "Prop/facility/clan_warphole",
+    "file_names": [
+      "clan_warphole_01_in"
+    ]
+  },
+  "cargo_warphole_out": {
+    "path": "Prop/facility/clan_warphole",
+    "file_names": [
+      "warphole_01_out"
+    ]
+  },
+  "cargo_warphole_out2": {
+    "path": "Prop/facility/clan_warphole",
+    "file_names": [
+      "warphole_02_out"
+    ]
+  },
+  "cargo_warphole_out3": {
+    "path": "Prop/facility/clan_warphole",
+    "file_names": [
+      "warphole_03_out"
+    ]
+  },
+  "cargo_warphole_out4": {
+    "path": "Prop/facility/clan_warphole",
+    "file_names": [
+      "warphole_04_out"
+    ]
+  },
+  "refrigerator_01": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "refrigerator_01_w"
+    ]
+  },
+  "refrigerator_02": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "refrigerator_02_w"
+    ]
+  },
+  "refrigerator_03": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "refrigerator_03_w"
+    ]
+  },
+  "icebox_01": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "icebox_01_w"
+    ]
+  },
+  "icebox_02": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "icebox_02_w"
+    ]
+  },
+  "barrel_01": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "barrel_01_w_a"
+    ]
+  },
+  "barrel_02": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "barrel_01_w_b"
+    ]
+  },
+  "cabinet_01": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "cabinet_01_w"
+    ]
+  },
+  "cabinet_02": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "cabinet_02_w"
+    ]
+  },
+  "dumpster_01": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "dumpster_01_w"
+    ]
+  },
+  "wastebasket_01": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "wastebasket_01_w"
+    ]
+  },
+  "wastebasket_02": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "wastebasket_01_w_down"
+    ]
+  },
+  "neutral_warphole": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_warphole_01"
+    ]
+  },
+  "icepot_01": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "icepot_01"
+    ]
+  },
+  "icepot_02": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "icecaldron_01"
+    ]
+  },
+  "icepot_03": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "icekiln_01"
+    ]
+  },
+  "icepot_04": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "icekiln_02"
+    ]
+  },
+  "fur_box_medicinebox_01": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "medicinebox_01_w"
+    ]
+  },
+  "fur_box_medicinebox_02": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "medicinebox_02_w"
+    ]
+  },
+  "deadfall_trap_01": {
+    "path": "Prop/trap",
+    "file_names": [
+      "trap_damage_01"
+    ]
+  },
+  "leg_trap_01": {
+    "path": "Prop/trap",
+    "file_names": [
+      "trap_string_01"
+    ]
+  },
+  "trap_basket_01": {
+    "path": "Prop/trap",
+    "file_names": [
+      "trap_basket_01"
+    ]
+  },
+  "trap_fishing_01": {
+    "path": "Prop/trap",
+    "file_names": [
+      "trap_fishing_01"
+    ]
+  },
+  "trap_pit_01": {
+    "path": "Prop/trap",
+    "file_names": [
+      "trap_pit_01"
+    ]
+  },
+  "turret_bow_01": {
+    "path": "Prop/facility/defence",
+    "file_names": [
+      "turret_bow_01"
+    ]
+  },
+  "turret_catapult_01": {
+    "path": "Prop/facility/defence",
+    "file_names": [
+      "turret_catapult_01"
+    ]
+  },
+  "tutorial_boat": {
+    "path": "Ancora/Props",
+    "file_names": [
+      "raft_big_underconstruct"
+    ]
+  },
+  "allround": {
+    "path": "Prop/base",
+    "file_names": [
+      "bonfire_01"
+    ]
+  },
+  "bonfire_01": {
+    "path": "Prop/base",
+    "file_names": [
+      "bonfire_01"
+    ]
+  },
+  "bonfire_01_barbecue": {
+    "path": "Prop/base",
+    "file_names": [
+      "bonfire_01_barbecue"
+    ]
+  },
+  "bonfire_01_bowl": {
+    "path": "Prop/base",
+    "file_names": [
+      "bonfire_01_bowl"
+    ]
+  },
+  "bonfire_01_burning": {
+    "path": "Prop/base",
+    "file_names": [
+      "bonfire_01_burning"
+    ]
+  },
+  "bonfire_01_skewer": {
+    "path": "Prop/base",
+    "file_names": [
+      "bonfire_01_skewer"
+    ]
+  },
+  "bonfire_02": {
+    "path": "Prop/base",
+    "file_names": [
+      "bonfire_02"
+    ]
+  },
+  "bonfire_02_burning": {
+    "path": "Prop/base",
+    "file_names": [
+      "bonfire_02_burning"
+    ]
+  },
+  "dry_rack_01_entrust_bag": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_01_entrust_bag"
+    ]
+  },
+  "dry_rack_01_entrust_leather": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_01_entrust_leather"
+    ]
+  },
+  "dry_rack_02_entrust_bag": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_02_entrust_bag"
+    ]
+  },
+  "dry_rack_02_entrust_leather": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_02_entrust_leather"
+    ]
+  },
+  "dry_rack_01_entrust_rubber": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_01_entrust_rubber"
+    ]
+  },
+  "dry_rack_02_entrust_rubber": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_02_entrust_rubber"
+    ]
+  },
+  "dryingrack_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_01"
+    ]
+  },
+  "dryingrack_02": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "dry_rack_02"
+    ]
+  },
+  "farm_tile_01": {
+    "path": "Prop/farm",
+    "file_names": [
+      "farm_tile_01"
+    ]
+  },
+  "farm_tile_02": {
+    "path": "Prop/farm",
+    "file_names": [
+      "farm_tile_02"
+    ]
+  },
+  "flowerbed_tile_01_bone_01": {
+    "path": "Prop/farm",
+    "file_names": [
+      "flowerbed_tile_01_bone_01"
+    ]
+  },
+  "flowerbed_tile_01_stone_01": {
+    "path": "Prop/farm",
+    "file_names": [
+      "flowerbed_tile_01_stone_01"
+    ]
+  },
+  "flowerbed_tile_01_wood_01": {
+    "path": "Prop/farm",
+    "file_names": [
+      "flowerbed_tile_01_wood_01"
+    ]
+  },
+  "flowerbed_tile_01_wood_02": {
+    "path": "Prop/farm",
+    "file_names": [
+      "flowerbed_tile_01_wood_02"
+    ]
+  },
+  "flowerbed_tile_02_bone_01": {
+    "path": "Prop/farm",
+    "file_names": [
+      "flowerbed_tile_02_bone_01"
+    ]
+  },
+  "flowerbed_tile_02_stone_01": {
+    "path": "Prop/farm",
+    "file_names": [
+      "flowerbed_tile_02_stone_01"
+    ]
+  },
+  "flowerbed_tile_02_wood_01": {
+    "path": "Prop/farm",
+    "file_names": [
+      "flowerbed_tile_02_wood_01"
+    ]
+  },
+  "flowerbed_tile_02_wood_02": {
+    "path": "Prop/farm",
+    "file_names": [
+      "flowerbed_tile_02_wood_02"
+    ]
+  },
+  "furnace_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "furnace_01"
+    ]
+  },
+  "furnace_01_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "furnace_01_burning"
+    ]
+  },
+  "furnace_01_entrust_pot": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "furnace_01_entrust_pot"
+    ]
+  },
+  "kiln_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_01"
+    ]
+  },
+  "kiln_01_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_01_burning"
+    ]
+  },
+  "kiln_01_entrust_cap": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_01_entrust_cap"
+    ]
+  },
+  "kiln_02": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_02"
+    ]
+  },
+  "kiln_02_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_02_burning"
+    ]
+  },
+  "kiln_03": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_03"
+    ]
+  },
+  "kiln_03_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_03_burning"
+    ]
+  },
+  "kitchen_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_01"
+    ]
+  },
+  "kitchen_01_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_01_burning"
+    ]
+  },
+  "kitchen_01_entrust_pot": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_entrust_pot_01"
+    ]
+  },
+  "kitchen_02": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_02"
+    ]
+  },
+  "kitchen_02_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_02_burning"
+    ]
+  },
+  "kitchen_02_entrust_pot": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_entrust_pot_01"
+    ]
+  },
+  "kitchen_02_entrust_grill": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_entrust_grill_01"
+    ]
+  },
+  "loom_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "loom_01"
+    ]
+  },
+  "loom_01_entrust_silk": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "loom_01_silk"
+    ]
+  },
+  "loom_02": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "loom_02"
+    ]
+  },
+  "loom_02_entrust_silk": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "loom_02_silk"
+    ]
+  },
+  "preview_fur_table_01": {
+    "path": "Prop/furniture/workbench/preview",
+    "file_names": [
+      "preview_worktable_01_wood"
+    ]
+  },
+  "preview_fur_table_02": {
+    "path": "Prop/furniture/workbench/preview",
+    "file_names": [
+      "preview_worktable_02_wood"
+    ]
+  },
+  "preview_fur_table_03": {
+    "path": "Prop/furniture/workbench/preview",
+    "file_names": [
+      "preview_worktable_03_wood"
+    ]
+  },
+  "preview_fur_table_04": {
+    "path": "Prop/furniture/workbench/preview",
+    "file_names": [
+      "preview_worktable_04_wood"
+    ]
+  },
+  "well_01": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "well_01_dirt"
+    ]
+  },
+  "well_02": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "well_02_dirt"
+    ]
+  },
+  "well_03": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "well_03_dirt"
+    ]
+  },
+  "worktable_01_wood": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_01_wood"
+    ]
+  },
+  "worktable_01_bone": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_01_bone"
+    ]
+  },
+  "worktable_01_entrust": {
+    "path": "Prop/craft",
+    "file_names": [
+      "worktable_01_entrust"
+    ]
+  },
+  "worktable_02_wood": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_02_wood"
+    ]
+  },
+  "worktable_02_bone": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_02_bone"
+    ]
+  },
+  "worktable_02_entrust": {
+    "path": "Prop/craft",
+    "file_names": [
+      "worktable_01_entrust"
+    ]
+  },
+  "worktable_03_wood": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_03_wood"
+    ]
+  },
+  "worktable_03_bone": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_03_bone"
+    ]
+  },
+  "worktable_03_entrust": {
+    "path": "Prop/craft",
+    "file_names": [
+      "worktable_01_entrust"
+    ]
+  },
+  "worktable_04_wood": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_04_wood"
+    ]
+  },
+  "worktable_04_bone": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_04_bone"
+    ]
+  },
+  "worktable_04_entrust": {
+    "path": "Prop/craft",
+    "file_names": [
+      "worktable_01_entrust"
+    ]
+  },
+  "dye_01": {
+    "path": "Prop/furniture/dye",
+    "file_names": [
+      "dye_01"
+    ]
+  },
+  "dye_01_color": {
+    "path": "Prop/furniture/dye",
+    "file_names": [
+      "dye_01_color"
+    ]
+  },
+  "dye_02": {
+    "path": "Prop/furniture/dye",
+    "file_names": [
+      "dye_02"
+    ]
+  },
+  "dye_02_color": {
+    "path": "Prop/furniture/dye",
+    "file_names": [
+      "dye_02_color"
+    ]
+  },
+  "dye_rack_01": {
+    "path": "Prop/furniture/dye",
+    "file_names": [
+      "dye_rack_01"
+    ]
+  },
+  "dye_rack_01_color": {
+    "path": "Prop/furniture/dye",
+    "file_names": [
+      "dye_rack_01_color"
+    ]
+  },
+  "fertilizer_tool_01": {
+    "path": "Prop/farm",
+    "file_names": [
+      "fertilizer_tool_01"
+    ]
+  },
+  "fertilizer_tool_01_cover": {
+    "path": "Prop/farm",
+    "file_names": [
+      "fertilizer_tool_01_cover"
+    ]
+  },
+  "preview_worktable_clothes_01": {
+    "path": "Prop/furniture/workbench/preview",
+    "file_names": [
+      "preview_worktable_clothes_01_wood"
+    ]
+  },
+  "worktable_clothes_01_wood": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_clothes_01_wood"
+    ]
+  },
+  "worktable_clothes_01_bone": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_clothes_01_bone"
+    ]
+  },
+  "preview_worktable_weapon_01": {
+    "path": "Prop/furniture/workbench/preview",
+    "file_names": [
+      "preview_worktable_weapon_01_wood"
+    ]
+  },
+  "worktable_weapon_01_wood": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_weapon_01_wood"
+    ]
+  },
+  "worktable_weapon_01_bone": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_weapon_01_bone"
+    ]
+  },
+  "medicine_table_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "medicine_table_01"
+    ]
+  },
+  "medicine_table_entrust_01": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "medicine_table_entrust_01"
+    ]
+  },
+  "worktable_warp_entrust": {
+    "path": "Prop/craft",
+    "file_names": [
+      "worktable_01_entrust"
+    ]
+  },
+  "worktable_warp_01": {
+    "path": "Prop/furniture_warp/workbench",
+    "file_names": [
+      "worktable_01_w"
+    ]
+  },
+  "worktable_warp_02": {
+    "path": "Prop/furniture_warp/workbench",
+    "file_names": [
+      "worktable_02_w"
+    ]
+  },
+  "worktable_warp_03": {
+    "path": "Prop/furniture_warp/workbench",
+    "file_names": [
+      "worktable_03_w"
+    ]
+  },
+  "worktable_warp_04": {
+    "path": "Prop/furniture_warp/workbench",
+    "file_names": [
+      "worktable_04_w"
+    ]
+  },
+  "worktable_warp_05": {
+    "path": "Prop/furniture_warp/workbench",
+    "file_names": [
+      "worktable_05_w"
+    ]
+  },
+  "treadmill_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "treadmill_01_w"
+    ]
+  },
+  "treadmill_01_leather": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "treadmill_01_w_leather"
+    ]
+  },
+  "treadmill_01_rubber": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "treadmill_01_w_rubber"
+    ]
+  },
+  "treadmill_01_bag": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "treadmill_01_w_bag"
+    ]
+  },
+  "coffee_dutch_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "coffeedutch_01_w"
+    ]
+  },
+  "coffee_dutch_01_entrust": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "coffeedutch_01_w_entrust"
+    ]
+  },
+  "clotheshorse_warp_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "clotheshorse_01_w_a"
+    ]
+  },
+  "clotheshorse_warp_01_bag": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "clotheshorse_01_w_a_bag"
+    ]
+  },
+  "clotheshorse_warp_01_leather": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "clotheshorse_01_w_a_leather"
+    ]
+  },
+  "clotheshorse_warp_01_rubber": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "clotheshorse_01_w_a_rubber"
+    ]
+  },
+  "clotheshorse_warp_02": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "clotheshorse_01_w_b"
+    ]
+  },
+  "clotheshorse_warp_02_bag": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "clotheshorse_01_w_b_bag"
+    ]
+  },
+  "clotheshorse_warp_02_leather": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "clotheshorse_01_w_b_leather"
+    ]
+  },
+  "clotheshorse_warp_02_rubber": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "clotheshorse_01_w_b_rubber"
+    ]
+  },
+  "barrel_oak_01": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "barreloak_01_w"
+    ]
+  },
+  "barrel_oak_01_entrust": {
+    "path": "Prop/furniture_warp/storage",
+    "file_names": [
+      "barreloak_01_w_entrust"
+    ]
+  },
+  "cake_tower_carnation_01": {
+    "path": "Prop/event/familyday/cake",
+    "file_names": [
+      "cake_01_flower"
+    ]
+  },
+  "cake_tower_carnation_02": {
+    "path": "Prop/event/familyday/cake",
+    "file_names": [
+      "cake_02_flower"
+    ]
+  },
+  "bathtub_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bath_01_wood"
+    ]
+  },
+  "sunbed_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "sunbed_01_w"
+    ]
+  },
+  "tube_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "tube_01_w"
+    ]
+  },
+  "bed_03_leaf": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_03_leaf"
+    ]
+  },
+  "bed_03_leather": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_03_leather"
+    ]
+  },
+  "bed_03_straw": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_03_straw"
+    ]
+  },
+  "bed_03_fabric": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_03_fabric"
+    ]
+  },
+  "bed_03_feather": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_03_feather"
+    ]
+  },
+  "preview_bed_03_fabric": {
+    "path": "Prop/furniture/housing/preview",
+    "file_names": [
+      "preview_bed_03_fabric"
+    ]
+  },
+  "gate_03_wood": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_03_wood"
+    ]
+  },
+  "gate_03_stone": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_03_stone"
+    ]
+  },
+  "gate_03_bone": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_03_bone"
+    ]
+  },
+  "gate_03_leather": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_03_leather"
+    ]
+  },
+  "fence_03_wood": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_03_wood"
+    ]
+  },
+  "fence_03_stone": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_03_stone"
+    ]
+  },
+  "fence_03_bone": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_03_bone"
+    ]
+  },
+  "fence_03_leather": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_03_leather"
+    ]
+  },
+  "preview_gate_03_bone": {
+    "path": "Prop/fence/preview",
+    "file_names": [
+      "preview_gate_03_bone"
+    ]
+  },
+  "preview_gate_03_leather": {
+    "path": "Prop/fence/preview",
+    "file_names": [
+      "preview_gate_03_leather"
+    ]
+  },
+  "preview_fence_03_leather": {
+    "path": "Prop/fence/preview",
+    "file_names": [
+      "preview_fence_03_leatheer"
+    ]
+  },
+  "compi_pool": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "compi_pool_w"
+    ]
+  },
+  "tube_unicon": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "tube_unicon_w"
+    ]
+  },
+  "tube_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "tube_02_w"
+    ]
+  },
+  "tube_03": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "tube_03_w"
+    ]
+  },
+  "tube_04": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "tube_04_w"
+    ]
+  },
+  "tube_05": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "tube_05_w"
+    ]
+  },
+  "road_01_shell": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_shell"
+    ]
+  },
+  "2018_summer_pool_01_w": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "pool_01_w"
+    ]
+  },
+  "2018_summer_pool_02_w": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "pool_02_w"
+    ]
+  },
+  "2018_summer_sunbed_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "sunbed_01_w"
+    ]
+  },
+  "2018_summer_tube_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "tube_02_w"
+    ]
+  },
+  "2018_summer_tube_04": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "tube_04_w"
+    ]
+  },
+  "road_01_leaf": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_leaf_a"
+    ]
+  },
+  "fertilizer_tool_02": {
+    "path": "Prop/farm",
+    "file_names": [
+      "fertilizer_tool_02"
+    ]
+  },
+  "fertilizer_tool_02_cover": {
+    "path": "Prop/farm",
+    "file_names": [
+      "fertilizer_tool_02_cover"
+    ]
+  },
+  "s02_thurible": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bugrepellentincense_01"
+    ]
+  },
+  "s02_bed": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_01_moss"
+    ]
+  },
+  "s02_washbowl": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "basin_01"
+    ]
+  },
+  "s02_shelter_01": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_01"
+    ]
+  },
+  "s02_car": {
+    "path": "Prop/warp/vehicle",
+    "file_names": [
+      "S_car_01_e"
+    ]
+  },
+  "s02_flag_bohnanza_01": {
+    "path": "Prop/facility/faction",
+    "file_names": [
+      "faction_flag_01_bonanza"
+    ]
+  },
+  "s02_flag_chlorophyl_01": {
+    "path": "Prop/facility/faction",
+    "file_names": [
+      "faction_flag_01_chlorophylfourm"
+    ]
+  },
+  "s02_flag_pioneer_01": {
+    "path": "Prop/facility/faction",
+    "file_names": [
+      "faction_flag_01_pioneercouncil"
+    ]
+  },
+  "s02_flag_committee_01": {
+    "path": "Prop/facility/faction",
+    "file_names": [
+      "faction_flag_02_x"
+    ]
+  },
+  "s02_flag_firm_01": {
+    "path": "Prop/facility/faction",
+    "file_names": [
+      "faction_flag_02_co"
+    ]
+  },
+  "s02_flag_society_01": {
+    "path": "Prop/facility/faction",
+    "file_names": [
+      "faction_flag_02_so"
+    ]
+  },
+  "s02_flag_bohnanza_02": {
+    "path": "Prop/facility/faction",
+    "file_names": [
+      "faction_flag_02_bonanza"
+    ]
+  },
+  "s02_flag_chlorophyl_02": {
+    "path": "Prop/facility/faction",
+    "file_names": [
+      "faction_flag_02_chlorophylfourm"
+    ]
+  },
+  "s02_flag_pioneer_02": {
+    "path": "Prop/facility/faction",
+    "file_names": [
+      "faction_flag_02_pioneercouncil"
+    ]
+  },
+  "well_04": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "well_04_dirt"
+    ]
+  },
+  "halloween_candle": {
+    "path": "Prop/furniture/light",
+    "file_names": [
+      "pumpkin_candle_01"
+    ]
+  },
+  "halloween_lantern": {
+    "path": "Prop/furniture/light",
+    "file_names": [
+      "pumpkin_lantern_01"
+    ]
+  },
+  "halloween_rest": {
+    "path": "Prop/nature/tree",
+    "file_names": [
+      "HW_big_01"
+    ]
+  },
+  "s02_lizard_trap": {
+    "path": "Prop/trap",
+    "file_names": [
+      "trap_basket_01"
+    ]
+  },
+  "shelter_moss_02_front": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_02_front"
+    ]
+  },
+  "shelter_moss_02_floor": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_02_floor"
+    ]
+  },
+  "shelter_moss_02_back": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_02_back"
+    ]
+  },
+  "shelter_moss_02_indoor_mask": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_02_indoor_mask"
+    ]
+  },
+  "shelter_moss_02_night_light": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_02_night_light"
+    ]
+  },
+  "shelter_moss_03_front": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_03_front"
+    ]
+  },
+  "shelter_moss_03_floor": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_03_floor"
+    ]
+  },
+  "shelter_moss_03_back": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_03_back"
+    ]
+  },
+  "shelter_moss_03_indoor_mask": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_03_indoor_mask"
+    ]
+  },
+  "shelter_moss_03_night_light": {
+    "path": "Prop/facility/shelter",
+    "file_names": [
+      "shelter_moss_03_night_light"
+    ]
+  },
+  "preview_shelter_moss_02": {
+    "path": "Prop/facility/shelter/preview",
+    "file_names": [
+      "preview_shelter_moss_02"
+    ]
+  },
+  "preview_shelter_moss_03": {
+    "path": "Prop/facility/shelter/preview",
+    "file_names": [
+      "preview_shelter_moss_03"
+    ]
+  },
+  "s02_poster_01": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "poster_01"
+    ]
+  },
+  "s02_poster_02": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "poster_02"
+    ]
+  },
+  "s02_poster_03": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "poster_03"
+    ]
+  },
+  "s02_poster_04": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "poster_x"
+    ]
+  },
+  "s02_poster_05": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "poster_co"
+    ]
+  },
+  "s02_poster_06": {
+    "path": "Prop/furniture/decoration",
+    "file_names": [
+      "poster_so"
+    ]
+  },
+  "bed_03_halloween": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bed_03_halloween"
+    ]
+  },
+  "bed_02_halloween": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "bed_02_w_halloween"
+    ]
+  },
+  "curtain_01_w_halloween": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "curtain_01_w_halloween"
+    ]
+  },
+  "curtain_02_w_halloween": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "curtain_02_w_halloween"
+    ]
+  },
+  "xmas_giftbox_01": {
+    "path": "Prop/event/xmas/gift_box",
+    "file_names": [
+      "gift_box_02"
+    ]
+  },
+  "xmas_giftbox_02": {
+    "path": "Prop/event/xmas/gift_box",
+    "file_names": [
+      "gift_box_03"
+    ]
+  },
+  "xmas_snowman_01": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman01"
+    ]
+  },
+  "xmas_snowman_02": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman02"
+    ]
+  },
+  "xmas_snowman_03": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman03"
+    ]
+  },
+  "xmas_snowman_04": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman04"
+    ]
+  },
+  "xmas_snowman_05": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman05"
+    ]
+  },
+  "xmas_snowman_06": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman06"
+    ]
+  },
+  "xmas_snowman_07": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman07"
+    ]
+  },
+  "xmas_snowman_08": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman08"
+    ]
+  },
+  "xmas_snowman_09": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman09"
+    ]
+  },
+  "xmas_snowman_10": {
+    "path": "Prop/event/xmas/snowman",
+    "file_names": [
+      "snowman10"
+    ]
+  },
+  "christmas_tree_01_web": {
+    "path": "Prop/event/xmas/xmas_tree",
+    "file_names": [
+      "xmas_tree_01"
+    ]
+  },
+  "christmas_tree_02_web": {
+    "path": "Prop/event/xmas/xmas_tree",
+    "file_names": [
+      "xmas_tree_02"
+    ]
+  },
+  "xmas_tree_2018_small": {
+    "path": "Prop/event/xmas/xmas_tree",
+    "file_names": [
+      "xmas_tree_02_1"
+    ]
+  },
+  "xmas_tree_2018_large": {
+    "path": "Prop/event/xmas/xmas_tree",
+    "file_names": [
+      "xmas_tree_03"
+    ]
+  },
+  "cage_domestication_2": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_train_01"
+    ]
+  },
+  "cage_domestication_4": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_train_02"
+    ]
+  },
+  "cage_01_2finish": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_01_2finish"
+    ]
+  },
+  "cage_01_4finish": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_01_4finish"
+    ]
+  },
+  "cage_01_6finish": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_01_6finish"
+    ]
+  },
+  "cage_train_01finish": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_train_01finish"
+    ]
+  },
+  "cage_train_02finish": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_train_02finish"
+    ]
+  },
+  "modular_wall_woodplank_01": {
+    "path": "Prop/module/wall",
+    "prototype_id": "modular_wall_woodplank_01",
+    "file_names": [
+      "wall_01_woodplank"
+    ]
+  },
+  "modular_roof_woodplank_01": {
+    "path": "Prop/module/roof",
+    "prototype_id": "modular_roof_woodplank_01",
+    "file_names": [
+      "roof_01_woodplank"
+    ]
+  },
+  "modular_floor_woodplank_01": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_woodplank_01",
+    "file_names": [
+      "floor_01_woodplank"
+    ]
+  },
+  "modular_door_01_woodplank": {
+    "path": "Prop/module/opening",
+    "prototype_id": "door_01_woodplank",
+    "file_names": [
+      "door_01_woodplank"
+    ]
+  },
+  "modular_window_01_woodplank": {
+    "path": "Prop/module/opening",
+    "prototype_id": "window_01_woodplank",
+    "file_names": [
+      "window_01_woodplank"
+    ]
+  },
+  "modular_wall_stone_02": {
+    "path": "Prop/module/wall",
+    "prototype_id": "modular_wall_stone_02",
+    "file_names": [
+      "wall_02_stone"
+    ]
+  },
+  "modular_wall_stone_03": {
+    "path": "Prop/module/wall",
+    "prototype_id": "modular_wall_stone_03",
+    "file_names": [
+      "wall_03_stone"
+    ]
+  },
+  "modular_ground_stone_02": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_stone_02",
+    "file_names": [
+      "floor_02_stone"
+    ]
+  },
+  "modular_ground_stone_03": {
+    "path": "Prop/module/floor",
+    "prototype_id": "modular_ground_stone_03",
+    "file_names": [
+      "floor_03_stone"
+    ]
+  },
+  "curtain_01_bone": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "horrible_curtain_ceiling_01_bone"
+    ]
+  },
+  "mat_dirt_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "horrible_rug_01_dirt"
+    ]
+  },
+  "chair_02_wood_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "cute_chair_01_colorful"
+    ]
+  },
+  "table_03_w_a": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "cute_table_03_colorful"
+    ]
+  },
+  "vase_small_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_vase_small_01_a"
+    ]
+  },
+  "candlestick_small_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_candlestick_small_01_a"
+    ]
+  },
+  "candlestick_small_01#luxurious": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_candlestick_small_01_a_on"
+    ]
+  },
+  "movil_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "cute_mobil_01_toy"
+    ]
+  },
+  "mat_cotton_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "cute_carpet_01_colorful"
+    ]
+  },
+  "chandelier_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_chandelier_01"
+    ]
+  },
+  "chandelier_01#luxurious": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_chandelier_01_on"
+    ]
+  },
+  "vase_large_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_vase_large_01_a"
+    ]
+  },
+  "candlestick_large_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_candlestick_large_01_a"
+    ]
+  },
+  "candlestick_large_01#luxurious": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_candlestick_large_01_a_on"
+    ]
+  },
+  "carpet_cotton_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "horrible_carpet_01_red"
+    ]
+  },
+  "coffin_dirt_01": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "horrible_coffin_01_red"
+    ]
+  },
+  "candlestick_large_02": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "horrible_candlestick_large_02_a"
+    ]
+  },
+  "candlestick_large_02#horrible": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "horrible_candlestick_large_02_a_on"
+    ]
+  },
+  "warphole_personal": {
+    "path": "Prop/facility/clan_warphole",
+    "file_names": [
+      "warphole_boar01"
+    ]
+  },
+  "rice_drink_well_event_newyear_2019": {
+    "path": "Prop/event/newyearsday/well",
+    "file_names": [
+      "well_01_newyear"
+    ]
+  },
+  "spa_pool": {
+    "path": "Prop/event/newyearsday/spa",
+    "file_names": [
+      "spa_01"
+    ]
+  },
+  "operating_office_01": {
+    "path": "Prop/facility/operatingoffice",
+    "file_names": [
+      "operatingoffice01"
+    ]
+  },
+  "living_tech_01": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "living_tech01"
+    ]
+  },
+  "living_tech_01_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "living_tech01_on"
+    ]
+  },
+  "living_tech_02": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "living_tech02"
+    ]
+  },
+  "living_tech_02_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "living_tech02_on"
+    ]
+  },
+  "living_tech_03": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "living_tech03"
+    ]
+  },
+  "living_tech_03_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "living_tech03_on"
+    ]
+  },
+  "living_tech_04": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "living_tech04"
+    ]
+  },
+  "living_tech_04_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "living_tech04_on"
+    ]
+  },
+  "light_tech_01": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "light_tech01"
+    ]
+  },
+  "light_tech_01_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "light_tech01_on"
+    ]
+  },
+  "light_tech_02": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "light_tech02"
+    ]
+  },
+  "light_tech_02_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "light_tech02_on"
+    ]
+  },
+  "light_tech_03": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "light_tech03"
+    ]
+  },
+  "light_tech_03_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "light_tech03_on"
+    ]
+  },
+  "light_tech_04": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "light_tech04"
+    ]
+  },
+  "light_tech_04_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "light_tech04_on"
+    ]
+  },
+  "heavy_tech_01": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "heavy_tech01"
+    ]
+  },
+  "heavy_tech_01_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "heavy_tech01_on"
+    ]
+  },
+  "heavy_tech_02": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "heavy_tech02"
+    ]
+  },
+  "heavy_tech_02_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "heavy_tech02_on"
+    ]
+  },
+  "heavy_tech_03": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "heavy_tech03"
+    ]
+  },
+  "heavy_tech_03_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "heavy_tech03_on"
+    ]
+  },
+  "heavy_tech_04": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "heavy_tech04"
+    ]
+  },
+  "heavy_tech_04_on": {
+    "path": "Prop/facility/personal_lab",
+    "file_names": [
+      "heavy_tech04_on"
+    ]
+  },
+  "sprinkler_01": {
+    "path": "Prop/farm",
+    "file_names": [
+      "sprinkler_01"
+    ]
+  },
+  "sprinkler_02": {
+    "path": "Prop/farm",
+    "file_names": [
+      "sprinkler_02"
+    ]
+  },
+  "sprinkler_03": {
+    "path": "Prop/farm",
+    "file_names": [
+      "sprinkler_03"
+    ]
+  },
+  "sprinkler_03_liquid": {
+    "path": "Prop/farm",
+    "file_names": [
+      "sprinkler_03_liquid"
+    ]
+  },
+  "sprinkler_04": {
+    "path": "Prop/farm",
+    "file_names": [
+      "sprinkler_04"
+    ]
+  },
+  "sprinkler_04_liquid": {
+    "path": "Prop/farm",
+    "file_names": [
+      "sprinkler_04_liquid"
+    ]
+  },
+  "sprinkler_05": {
+    "path": "Prop/farm",
+    "file_names": [
+      "sprinkler_05"
+    ]
+  },
+  "sprinkler_05_liquid": {
+    "path": "Prop/farm",
+    "file_names": [
+      "sprinkler_05_liquid"
+    ]
+  },
+  "modular_wall_baraque_01": {
+    "path": "Prop/module/wall",
+    "file_names": [
+      "wall_02_baraque"
+    ]
+  },
+  "modular_roof_baraque_01": {
+    "path": "Prop/module/roof",
+    "file_names": [
+      "roof_01_baraque"
+    ]
+  },
+  "modular_floor_baraque_01": {
+    "path": "Prop/module/floor",
+    "file_names": [
+      "floor_01_baraque"
+    ]
+  },
+  "box_02_leaf": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_02_leaf_a"
+    ]
+  },
+  "box_02_leaf_lockcap": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_02_leaf_a_lockcap"
+    ]
+  },
+  "box_02_leaf_red": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_02_leaf_b"
+    ]
+  },
+  "box_02_leaf_red_lockcap": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_02_leaf_b_lockcap"
+    ]
+  },
+  "board_message_01_02": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "board_message_01_leather"
+    ]
+  },
+  "road_01_dirt_a": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_dirt_a"
+    ]
+  },
+  "road_02_stone_a": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_stone_a"
+    ]
+  },
+  "road_01_flower_a": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_flower_a"
+    ]
+  },
+  "artifact_feathertree": {
+    "path": "Prop/nature/tree_island",
+    "file_names": [
+      "SH07_beach"
+    ]
+  },
+  "artifact_wildberry": {
+    "path": "Prop/nature/tree_island",
+    "file_names": [
+      "FR21_01"
+    ]
+  },
+  "artifact_chinaberry": {
+    "path": "Prop/nature/tree_island",
+    "file_names": [
+      "AS11"
+    ]
+  },
+  "artifact_sandalwood": {
+    "path": "Prop/nature/tree_island",
+    "file_names": [
+      "AS18"
+    ]
+  },
+  "artifact_oak": {
+    "path": "Prop/nature/tree_island",
+    "file_names": [
+      "AL16"
+    ]
+  },
+  "road_spring": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_spring"
+    ]
+  },
+  "preview_school_01": {
+    "path": "Prop/event/newschoolterm/preview",
+    "file_names": [
+      "preview_school_01"
+    ]
+  },
+  "school_01_front": {
+    "path": "Prop/event/new_school_term",
+    "file_names": [
+      "school_01_front"
+    ]
+  },
+  "school_01_floor": {
+    "path": "Prop/event/new_school_term",
+    "file_names": [
+      "school_01_floor"
+    ]
+  },
+  "school_01_back": {
+    "path": "Prop/event/new_school_term",
+    "file_names": [
+      "school_01_back"
+    ]
+  },
+  "school_01_indoor_mask": {
+    "path": "Prop/event/new_school_term",
+    "file_names": [
+      "school_01_indoor_mask"
+    ]
+  },
+  "school_01_night_light": {
+    "path": "Prop/event/new_school_term",
+    "file_names": [
+      "school_01_night_light"
+    ]
+  },
+  "classroom_deskset": {
+    "path": "Prop/event/school/school_lecturetable",
+    "file_names": [
+      "school_desk_01_set"
+    ]
+  },
+  "classroom_desk": {
+    "path": "Prop/event/school/school_lecturetable",
+    "file_names": [
+      "school_desk_01"
+    ]
+  },
+  "classroom_chair": {
+    "path": "Prop/event/school/school_lecturetable",
+    "file_names": [
+      "school_chair_01"
+    ]
+  },
+  "classroom_locker_01": {
+    "path": "Prop/event/school/school_lecturetable",
+    "file_names": [
+      "school_locker_01"
+    ]
+  },
+  "classroom_locker_02": {
+    "path": "Prop/event/school/school_lecturetable",
+    "file_names": [
+      "school_locker_02"
+    ]
+  },
+  "classroom_lecturetable": {
+    "path": "Prop/event/school/school_lecturetable",
+    "file_names": [
+      "school_lecturetable_01"
+    ]
+  },
+  "classroom_deskset_store": {
+    "path": "Prop/event/school/school_lecturetable",
+    "file_names": [
+      "school_desk_02_set"
+    ]
+  },
+  "classroom_locker_store": {
+    "path": "Prop/event/school/school_lecturetable",
+    "file_names": [
+      "school_locker_03"
+    ]
+  },
+  "classroom_lecturetable_store": {
+    "path": "Prop/event/school/school_lecturetable",
+    "file_names": [
+      "school_lecturetable_02"
+    ]
+  },
+  "curtain_blind_01_wood": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_curtain_blind_01_wood"
+    ]
+  },
+  "chair_01_recliner": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "flashy_chair_01_recliner"
+    ]
+  },
+  "light_01_firefly": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "cute_light_01_firefly_on"
+    ]
+  },
+  "bath_02_wood": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bath_02_wood"
+    ]
+  },
+  "oil_lantern_01": {
+    "path": "Prop/furniture/light",
+    "file_names": [
+      "oil_lantern_01"
+    ]
+  },
+  "fur_table_01_marble_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "table_01_marble_01"
+    ]
+  },
+  "chair_01_marble_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "chair_01_marble_01"
+    ]
+  },
+  "shelf_01_wood": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "shelf_01_wood"
+    ]
+  },
+  "beanbag_compi_blue_mini": {
+    "path": "Prop/event/newyearsday/beanbag_compi",
+    "file_names": [
+      "beanbag_compi_blue_mini"
+    ]
+  },
+  "beanbag_compi_green_mini": {
+    "path": "Prop/event/newyearsday/beanbag_compi",
+    "file_names": [
+      "beanbag_compi_green_mini"
+    ]
+  },
+  "beanbag_compi_yellow_mini": {
+    "path": "Prop/event/newyearsday/beanbag_compi",
+    "file_names": [
+      "beanbag_compi_yellow_mini"
+    ]
+  },
+  "fools_poster_01": {
+    "path": "Prop/event/april_fools_day",
+    "file_names": [
+      "april_fools_day_frame_01"
+    ]
+  },
+  "fools_poster_02": {
+    "path": "Prop/event/april_fools_day",
+    "file_names": [
+      "april_fools_day_frame_02"
+    ]
+  },
+  "box_03_leaf": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_03_leaf_a"
+    ]
+  },
+  "box_03_leaf_lockcap": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_03_leaf_a_lockcap"
+    ]
+  },
+  "box_03_leaf_red": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_03_leaf_b"
+    ]
+  },
+  "box_03_leaf_red_lockcap": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_03_leaf_b_lockcap"
+    ]
+  },
+  "cherryblossom_rest_02": {
+    "path": "Prop/nature/tree",
+    "file_names": [
+      "CB_middle_01_b"
+    ]
+  },
+  "cherryblossom_rest_03": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "swing_01_w"
+    ]
+  },
+  "cherryblossom_rest_05": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "swing_02_w"
+    ]
+  },
+  "cherryblossom_rest_04": {
+    "path": "Prop/nature/tree",
+    "file_names": [
+      "CB_BIG_02"
+    ]
+  },
+  "cherryblossom_bed": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "bed_cherry_01_w"
+    ]
+  },
+  "cherryblossom_bedtable": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "table_cherry_01_w"
+    ]
+  },
+  "cherryblossom_vase": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "vase_cherry_01_w"
+    ]
+  },
+  "multiuse_art_asset_1x1_rest": {
+    "path": "Prop/furniture/(ignores)/multiuse",
+    "file_names": [
+      "1x1_rest"
+    ]
+  },
+  "multiuse_art_asset_2x1_rest": {
+    "path": "Prop/furniture/(ignores)/multiuse",
+    "file_names": [
+      "2x1_rest"
+    ]
+  },
+  "multiuse_art_asset_1x2_rest": {
+    "path": "Prop/furniture/(ignores)/multiuse",
+    "file_names": [
+      "1x2_rest"
+    ]
+  },
+  "multiuse_art_asset_2x2_rest": {
+    "path": "Prop/furniture/(ignores)/multiuse",
+    "file_names": [
+      "2x2_rest"
+    ]
+  },
+  "multiuse_art_asset_3x3_rest": {
+    "path": "Prop/furniture/(ignores)/multiuse",
+    "file_names": [
+      "3x3_rest"
+    ]
+  },
+  "multiuse_art_asset_4x4_rest": {
+    "path": "Prop/furniture/(ignores)/multiuse",
+    "file_names": [
+      "4x4_rest"
+    ]
+  },
+  "multiuse_art_asset_4x4_clan_hall": {
+    "path": "Prop/furniture/(ignores)/multiuse",
+    "file_names": [
+      "4x4_clan_hall"
+    ]
+  },
+  "small_flowerbed_01_deco": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "flowerbed_02_w"
+    ]
+  },
+  "small_flowerbed_02_deco": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "flowerbed_01_w"
+    ]
+  },
+  "flowerbed_03_deco": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "flowerbed_03_w"
+    ]
+  },
+  "picnic_01_table": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "outdoor_table_01_w"
+    ]
+  },
+  "picnic_02_table": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "outdoor_table_02_w"
+    ]
+  },
+  "picnic_rest": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "picnic_set_01_w"
+    ]
+  },
+  "preview_secured_box_02": {
+    "path": "Prop/furniture/storage/preview",
+    "file_names": [
+      "preview_box_04_wood_lockcap"
+    ]
+  },
+  "secured_box_02": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_04_wood_lockcap"
+    ]
+  },
+  "globe_01": {
+    "path": "Prop/event/global",
+    "file_names": [
+      "globe_01"
+    ]
+  },
+  "worldmap_01": {
+    "path": "Prop/event/global",
+    "file_names": [
+      "worldmap_01"
+    ]
+  },
+  "worldmap_02": {
+    "path": "Prop/event/global",
+    "file_names": [
+      "worldmap_02"
+    ]
+  },
+  "worldmap_03": {
+    "path": "Prop/event/global",
+    "file_names": [
+      "worldmap_03"
+    ]
+  },
+  "worldmap_04": {
+    "path": "Prop/event/global",
+    "file_names": [
+      "worldmap_04"
+    ]
+  },
+  "log_cabin_01_front": {
+    "path": "Prop/base",
+    "file_names": [
+      "log_cabin_01_front"
+    ]
+  },
+  "log_cabin_01_floor": {
+    "path": "Prop/base",
+    "file_names": [
+      "log_cabin_01_floor"
+    ]
+  },
+  "log_cabin_01_back": {
+    "path": "Prop/base",
+    "file_names": [
+      "log_cabin_01_back"
+    ]
+  },
+  "log_cabin_01_left": {
+    "path": "Prop/base",
+    "file_names": [
+      "log_cabin_01_left"
+    ]
+  },
+  "log_cabin_01_right": {
+    "path": "Prop/base",
+    "file_names": [
+      "log_cabin_01_right"
+    ]
+  },
+  "log_cabin_01_indoor_mask": {
+    "path": "Prop/base",
+    "file_names": [
+      "log_cabin_01_indoor_mask"
+    ]
+  },
+  "log_cabin_01_night_light": {
+    "path": "Prop/base",
+    "file_names": [
+      "log_cabin_01_night_light"
+    ]
+  },
+  "preview_bm_log_cabin": {
+    "path": "Prop/base/preview",
+    "file_names": [
+      "preview_log_cabin_01"
+    ]
+  },
+  "bm_log_cabin_fireplace": {
+    "path": "Prop/base",
+    "file_names": [
+      "log_cabin_01_fireplace"
+    ]
+  },
+  "rocking_horse_01": {
+    "path": "Prop/event/familyday",
+    "file_names": [
+      "rocking_horse_01"
+    ]
+  },
+  "rocking_horse_02": {
+    "path": "Prop/event/familyday",
+    "file_names": [
+      "rocking_horse_02"
+    ]
+  },
+  "rocking_horse_03": {
+    "path": "Prop/event/familyday",
+    "file_names": [
+      "rocking_horse_03"
+    ]
+  },
+  "rocking_horse_04": {
+    "path": "Prop/event/familyday",
+    "file_names": [
+      "rocking_horse_04"
+    ]
+  },
+  "trampoline_01": {
+    "path": "Prop/furniture_warp/sport",
+    "file_names": [
+      "trampoline_01_w"
+    ]
+  },
+  "trampoline_02": {
+    "path": "Prop/furniture_warp/sport",
+    "file_names": [
+      "trampoline_01_w_orange"
+    ]
+  },
+  "camping_grill": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "camping_grill_01"
+    ]
+  },
+  "camping_grill_burning": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "camping_grill_01_w_burning"
+    ]
+  },
+  "camping_grill_entrust_pot": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "camping_grill_01_w_entrust_pot"
+    ]
+  },
+  "camping_grill_entrust_grill": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "camping_grill_01_w_entrust_grill"
+    ]
+  },
+  "rose_fence": {
+    "path": "Prop/event/familyday",
+    "file_names": [
+      "fence_01_rose"
+    ]
+  },
+  "carnation_fence": {
+    "path": "Prop/event/familyday",
+    "file_names": [
+      "fence_01_carnation"
+    ]
+  },
+  "flower_street_light_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "flower_street_light_01_w"
+    ]
+  },
+  "flower_street_light_02": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "flower_street_light_02_w"
+    ]
+  },
+  "preview_camping_grill": {
+    "path": "Prop/furniture_warp/etc/preview",
+    "file_names": [
+      "preview_camping_grill_01_w"
+    ]
+  },
+  "bm_log_cabin_chair_01": {
+    "path": "Prop/base",
+    "file_names": [
+      "log_rockingchair_01"
+    ]
+  },
+  "cabin_wood_dresser": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "shelf_01"
+    ]
+  },
+  "cabin_wood_storage": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "shelf_02"
+    ]
+  },
+  "cabin_wood_table": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "table_03"
+    ]
+  },
+  "cabin_wood_chair": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "chair_03"
+    ]
+  },
+  "garden_bench_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "garden_bench_01_w"
+    ]
+  },
+  "garden_bin_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "garden_bin_01_w"
+    ]
+  },
+  "garden_light_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "garden_light_01_w"
+    ]
+  },
+  "garden_fence_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "garden_fence_01_w"
+    ]
+  },
+  "cage_02_6": {
+    "path": "Prop/facility/cage",
+    "file_names": [
+      "cage_02_6"
+    ]
+  },
+  "warehouse_01": {
+    "path": "Prop/facility/warehouse",
+    "file_names": [
+      "warehouse_01_a"
+    ]
+  },
+  "beanbag_compi_green_01": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "compsodoll_01_leather"
+    ]
+  },
+  "fur_table_05": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_05_wood"
+    ]
+  },
+  "fur_table_05_bone": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_05_bone"
+    ]
+  },
+  "worktable_05_entrust": {
+    "path": "Prop/craft",
+    "file_names": [
+      "worktable_02_entrust"
+    ]
+  },
+  "medicine_dye_03": {
+    "path": "Prop/furniture/dye",
+    "file_names": [
+      "dye_03"
+    ]
+  },
+  "dye_03_color": {
+    "path": "Prop/furniture/dye",
+    "file_names": [
+      "dye_03_color"
+    ]
+  },
+  "kitchen_03": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_03"
+    ]
+  },
+  "kitchen_03_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_03_burning"
+    ]
+  },
+  "rattan_sofa_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "sofa_02_w_a"
+    ]
+  },
+  "rattan_sofa_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "sofa_02_w_b"
+    ]
+  },
+  "rattan_sofa_03": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "sofa_02_w_c"
+    ]
+  },
+  "rattan_table_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "sofa_02_w_d"
+    ]
+  },
+  "roof_02_woodtile": {
+    "path": "Prop/module/roof",
+    "file_names": [
+      "roof_02_woodtile"
+    ]
+  },
+  "wall_02_stonetile": {
+    "path": "Prop/module/wall",
+    "file_names": [
+      "wall_02_stonetile"
+    ]
+  },
+  "s02_rubber_icebox": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "icebox_02"
+    ]
+  },
+  "bottom_message_01": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "floor_message_01_leather"
+    ]
+  },
+  "bottom_animation_01": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "floor_board_animation_01"
+    ]
+  },
+  "bottom_message_02": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "floor_message_01_wood"
+    ]
+  },
+  "bottom_message_03": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "floor_message_01_paper"
+    ]
+  },
+  "prime_sunbed_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "prime_sunbed_01_w"
+    ]
+  },
+  "prime_sunbed_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "prime_sunbed_02_w"
+    ]
+  },
+  "prime_sunbed_03": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "prime_sunbed_03_w"
+    ]
+  },
+  "summerclub_pool_01": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "pool_set_01"
+    ]
+  },
+  "summerclub_pool_02": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "pool_set_02"
+    ]
+  },
+  "summerclub_pool_03": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "pool_set_03"
+    ]
+  },
+  "summerclub_bed_01": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "bed_01"
+    ]
+  },
+  "summerclub_bed_02": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "bed_02"
+    ]
+  },
+  "summerclub_mirrorball": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "mirrorball_01"
+    ]
+  },
+  "summerclub_table_01": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "party_table_02"
+    ]
+  },
+  "summerclub_table_02": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "party_table_05"
+    ]
+  },
+  "summerclub_stage": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "photowall_01"
+    ]
+  },
+  "summerclub_balloon_01": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "balloon_01"
+    ]
+  },
+  "summerclub_balloon_02": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "balloon_02"
+    ]
+  },
+  "summerclub_balloon_03": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "balloon_03"
+    ]
+  },
+  "summerclub_balloon_04": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "balloon_04"
+    ]
+  },
+  "summerclub_personal_pool": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "dubiza_pool_01_w"
+    ]
+  },
+  "summerclub_fireplate": {
+    "path": "Prop/event/dubiza",
+    "file_names": [
+      "fire_plate_01"
+    ]
+  },
+  "crack_02": {
+    "path": "Prop/nature",
+    "file_names": [
+      "crack/crack_02"
+    ]
+  },
+  "flag_01_korea": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "flag_01_korea"
+    ]
+  },
+  "mannequin_female_01": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_female_a"
+    ]
+  },
+  "mannequin_male_01": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_male_a"
+    ]
+  },
+  "mannequin_female_02": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_female_b"
+    ]
+  },
+  "mannequin_male_02": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_male_b"
+    ]
+  },
+  "mannequin_female_03": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_female_c"
+    ]
+  },
+  "mannequin_male_03": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_male_c"
+    ]
+  },
+  "mini_stage_01": {
+    "path": "Prop/furniture_warp/etc",
+    "file_names": [
+      "mini_stage_01"
+    ]
+  },
+  "warp_accelerator": {
+    "path": "Prop/facility/warp_accelerator",
+    "file_names": [
+      "warp_accelerator_01"
+    ]
+  },
+  "crack_03": {
+    "path": "Prop/nature",
+    "file_names": [
+      "crack/crack_03"
+    ]
+  },
+  "warp_accelerator_wait": {
+    "path": "Prop/facility/warp_accelerator",
+    "file_names": [
+      "warp_accelerator_wait"
+    ]
+  },
+  "mannequin_female_04": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_female_d"
+    ]
+  },
+  "mannequin_male_04": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_male_d"
+    ]
+  },
+  "pot_rose": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "pot_02_rose"
+    ]
+  },
+  "pot_sunflower": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "pot_03_sunflower"
+    ]
+  },
+  "pot_flower": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "pot_04_fl20"
+    ]
+  },
+  "mannequin_female_05": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_female_e"
+    ]
+  },
+  "mannequin_male_05": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_male_e"
+    ]
+  },
+  "mannequin_female_06": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_female_f"
+    ]
+  },
+  "mannequin_male_06": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "mannequin_01_male_f"
+    ]
+  },
+  "road_01_rock_granite": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_rock_granite"
+    ]
+  },
+  "road_01_rock_basalt": {
+    "path": "Prop/road",
+    "file_names": [
+      "road_01_rock_basalt"
+    ]
+  },
+  "gate_03_rock_granite": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_03_rock_granite"
+    ]
+  },
+  "gate_03_rock_basalt": {
+    "path": "Prop/fence",
+    "file_names": [
+      "gate_03_rock_basalt"
+    ]
+  },
+  "fence_03_rock_granite": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_03_rock_granite"
+    ]
+  },
+  "fence_03_rock_basalt": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_03_rock_basalt"
+    ]
+  },
+  "well_05_rock_granite": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "well_03_rock_granite"
+    ]
+  },
+  "well_05_rock_basalt": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "well_03_rock_basalt"
+    ]
+  },
+  "kiln_04_volcanic": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_04_volcanic"
+    ]
+  },
+  "kiln_04_volcanic_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_04_volcanic_burning"
+    ]
+  },
+  "kiln_04_volcanic_entrust_cap": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kiln_04_volcanic_entrust_cap"
+    ]
+  },
+  "bench_01_wood_a": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "bench_01_wood_a"
+    ]
+  },
+  "kitchen_table_01_wood_a": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "table_01_wood_a"
+    ]
+  },
+  "kitchen_table_01_wood_a_entrust_pot": {
+    "path": "Prop/furniture/housing",
+    "file_names": [
+      "table_01_wood_a_entrust_pot"
+    ]
+  },
+  "rug_01_leather_andrew": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "rug_01_leather_andrew"
+    ]
+  },
+  "box_04_rock_granite": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_04_rock_granite"
+    ]
+  },
+  "box_04_rock_basalt": {
+    "path": "Prop/furniture/storage",
+    "file_names": [
+      "box_04_rock_basalt"
+    ]
+  },
+  "statue_02_a": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "statue_02_a"
+    ]
+  },
+  "statue_02_b": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "statue_02_b"
+    ]
+  },
+  "statue_02_c": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "statue_02_c"
+    ]
+  },
+  "statue_02_d": {
+    "path": "Prop/furniture/etc",
+    "file_names": [
+      "statue_02_d"
+    ]
+  },
+  "barrel_01_army_fire": {
+    "path": "Prop/warp/city_prop_set",
+    "file_names": [
+      "barrel_01_army_fire_w"
+    ]
+  },
+  "barrel_01_army_fire_burning": {
+    "path": "Prop/warp/city_prop_set",
+    "file_names": [
+      "barrel_01_army_fire_w"
+    ]
+  },
+  "barrel_01_army": {
+    "path": "Prop/warp/city_prop_set",
+    "file_names": [
+      "barrel_01_army_w"
+    ]
+  },
+  "box_army": {
+    "path": "Prop/warp/city_prop_set",
+    "file_names": [
+      "box_01_army_a_w"
+    ]
+  },
+  "box_02_army": {
+    "path": "Prop/warp/city_prop_set",
+    "file_names": [
+      "box_01_army_b_w"
+    ]
+  },
+  "box_01_army": {
+    "path": "Prop/warp/city_prop_set",
+    "file_names": [
+      "box_01_army_c_w"
+    ]
+  },
+  "medicinebox_01_army": {
+    "path": "Prop/warp/city_prop_set",
+    "file_names": [
+      "medicinebox_01_army_a_w"
+    ]
+  },
+  "medicinebox_02_army": {
+    "path": "Prop/warp/city_prop_set",
+    "file_names": [
+      "medicinebox_01_army_b_w"
+    ]
+  },
+  "chair_01_army": {
+    "path": "Prop/warp/city_prop_set",
+    "file_names": [
+      "chair_01_army_w"
+    ]
+  },
+  "farm_tile_01_mud": {
+    "path": "Prop/farm",
+    "file_names": [
+      "farm_tile_01_mud"
+    ]
+  },
+  "farm_tile_02_mud": {
+    "path": "Prop/farm",
+    "file_names": [
+      "farm_tile_02_mud"
+    ]
+  },
+  "fertilizer_tool_03": {
+    "path": "Prop/farm",
+    "file_names": [
+      "vfertilizer_tool_03"
+    ]
+  },
+  "fertilizer_tool_03_cover": {
+    "path": "Prop/farm",
+    "file_names": [
+      "vfertilizer_tool_03_cover"
+    ]
+  },
+  "pillar_03_rock_1f_a": {
+    "path": "Prop/module/wall",
+    "file_names": [
+      "pillar_03_rock_1f_a"
+    ]
+  },
+  "sauna_01_rock_front": {
+    "path": "Prop/event/volcanic/sauna_01_rock_volcanic",
+    "file_names": [
+      "sauna_01_rock_front"
+    ]
+  },
+  "sauna_01_rock_floor": {
+    "path": "Prop/event/volcanic/sauna_01_rock_volcanic",
+    "file_names": [
+      "sauna_01_rock_floor"
+    ]
+  },
+  "sauna_01_rock_back": {
+    "path": "Prop/event/volcanic/sauna_01_rock_volcanic",
+    "file_names": [
+      "sauna_01_rock_back"
+    ]
+  },
+  "sauna_01_rock_left": {
+    "path": "Prop/event/volcanic/sauna_01_rock_volcanic",
+    "file_names": [
+      "sauna_01_rock_left"
+    ]
+  },
+  "sauna_01_rock_right": {
+    "path": "Prop/event/volcanic/sauna_01_rock_volcanic",
+    "file_names": [
+      "sauna_01_rock_right"
+    ]
+  },
+  "sauna_01_rock_indoor_mask": {
+    "path": "Prop/event/volcanic/sauna_01_rock_volcanic",
+    "file_names": [
+      "sauna_01_rock_indoor_mask"
+    ]
+  },
+  "sauna_01_rock_night_light": {
+    "path": "Prop/event/volcanic/sauna_01_rock_volcanic",
+    "file_names": [
+      "sauna_01_rock_night_light"
+    ]
+  },
+  "sauna_02_rock_volcanic": {
+    "path": "Prop/event/volcanic/sauna_02_rock_volcanic",
+    "file_names": [
+      "sauna_02_rock_volcanic"
+    ]
+  },
+  "bed_04_rock_granite": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_bed_04_rock_granite"
+    ]
+  },
+  "bed_04_rock_basalt": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_bed_04_rock_basalt"
+    ]
+  },
+  "table_01_rock_granite": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_table_01_rock_granite"
+    ]
+  },
+  "table_01_rock_basalt": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_table_01_rock_basalt"
+    ]
+  },
+  "chair_01_rock_granite": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_chair_01_rock_granite"
+    ]
+  },
+  "chair_01_rock_basalt": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_chair_01_rock_basalt"
+    ]
+  },
+  "shelf_01_rock_granite": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_shelf_01_rock_granite"
+    ]
+  },
+  "shelf_01_rock_basalt": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_shelf_01_rock_basalt"
+    ]
+  },
+  "bed_04_rock_granite#fiery": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_bed_04_rock_granite_on"
+    ]
+  },
+  "bed_04_rock_basalt#fiery": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_bed_04_rock_basalt_on"
+    ]
+  },
+  "table_01_rock_granite#fiery": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_table_01_rock_granite_on"
+    ]
+  },
+  "table_01_rock_basalt#fiery": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_table_01_rock_basalt_on"
+    ]
+  },
+  "chair_01_rock_granite#fiery": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_chair_01_rock_granite_on"
+    ]
+  },
+  "chair_01_rock_basalt#fiery": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_chair_01_rock_basalt_on"
+    ]
+  },
+  "shelf_01_rock_granite#fiery": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_shelf_01_rock_granite_on"
+    ]
+  },
+  "shelf_01_rock_basalt#fiery": {
+    "path": "Prop/furniture/mood_props",
+    "file_names": [
+      "fiery_shelf_01_rock_basalt_on"
+    ]
+  },
+  "fur_table_gem_01_wood": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "worktable_gem_01_wood"
+    ]
+  },
+  "floor_03_granite": {
+    "path": "Prop/module/floor",
+    "file_names": [
+      "floor_03_granite"
+    ]
+  },
+  "floor_03_basalt": {
+    "path": "Prop/module/floor",
+    "file_names": [
+      "floor_03_basalt"
+    ]
+  },
+  "roof_03_granite": {
+    "path": "Prop/module/roof",
+    "file_names": [
+      "roof_03_granite"
+    ]
+  },
+  "roof_03_basalt": {
+    "path": "Prop/module/roof",
+    "file_names": [
+      "roof_03_basalt"
+    ]
+  },
+  "wall_03_granite": {
+    "path": "Prop/module/wall",
+    "file_names": [
+      "wall_03_granite"
+    ]
+  },
+  "wall_03_basalt": {
+    "path": "Prop/module/wall",
+    "file_names": [
+      "wall_03_basalt"
+    ]
+  },
+  "camp_radio_station_volcanic": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_communication_station_01_volcanic"
+    ]
+  },
+  "camp_board_volcanic": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_board_01_volcanic"
+    ]
+  },
+  "camp_warehouse_volcacnic": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_warehouse_01_volcanic"
+    ]
+  },
+  "statue_03_a": {
+    "path": "Prop/event/volcanic/statue",
+    "file_names": [
+      "statue_03_a"
+    ]
+  },
+  "kitchen_04": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_04_volcanic"
+    ]
+  },
+  "kitchen_04_burning": {
+    "path": "Prop/furniture/workbench",
+    "file_names": [
+      "kitchen_04_volcanic_burning"
+    ]
+  },
+  "volcanic_cabin_01_front": {
+    "path": "Prop/facility/house",
+    "file_names": [
+      "house_01_volcanic_front"
+    ]
+  },
+  "volcanic_cabin_01_floor": {
+    "path": "Prop/facility/house",
+    "file_names": [
+      "house_01_volcanic_floor"
+    ]
+  },
+  "volcanic_cabin_01_back": {
+    "path": "Prop/facility/house",
+    "file_names": [
+      "house_01_volcanic_back"
+    ]
+  },
+  "volcanic_cabin_01_left": {
+    "path": "Prop/facility/house",
+    "file_names": [
+      "house_01_volcanic_left"
+    ]
+  },
+  "volcanic_cabin_01_right": {
+    "path": "Prop/facility/house",
+    "file_names": [
+      "house_01_volcanic_right"
+    ]
+  },
+  "volcanic_cabin_01_indoor_mask": {
+    "path": "Prop/facility/house",
+    "file_names": [
+      "house_01_volcanic_indoor_mask"
+    ]
+  },
+  "volcanic_cabin_01_night_light": {
+    "path": "Prop/facility/house",
+    "file_names": [
+      "house_01_volcanic_night_light"
+    ]
+  },
+  "bm_volcanic_cabin_fireplace": {
+    "path": "Prop/facility/house",
+    "file_names": [
+      "house_01_volcanic_fireplace"
+    ]
+  },
+  "fence_green_wall_01": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_04_green"
+    ]
+  },
+  "fence_green_wall_02": {
+    "path": "Prop/fence",
+    "file_names": [
+      "fence_05_green"
+    ]
+  },
+  "table_medieval_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "art_table_01_w"
+    ]
+  },
+  "chair_stool_medieval_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "art_stool_01_w"
+    ]
+  },
+  "chair_medieval_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "art_chair_01_w"
+    ]
+  },
+  "chair_medieval_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "art_chair_02_w"
+    ]
+  },
+  "chair_medieval_03": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "art_chair_03_w"
+    ]
+  },
+  "rope_velvet_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "velvet_rope_01_w"
+    ]
+  },
+  "rope_velvet_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "velvet_rope_02_w"
+    ]
+  },
+  "rope_velvet_03": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "velvet_rope_03_w"
+    ]
+  },
+  "carpet_red_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "red_carpet_01_w"
+    ]
+  },
+  "frame_01": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "art_frame_01_w"
+    ]
+  },
+  "frame_02": {
+    "path": "Prop/furniture_warp/housing",
+    "file_names": [
+      "art_frame_02_w"
+    ]
+  },
+  "shelter_01_front": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_01_front"
+    ]
+  },
+  "shelter_01_floor": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_01_floor"
+    ]
+  },
+  "shelter_01_back": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_01_back"
+    ]
+  },
+  "shelter_01_indoor_mask": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_01_indoor_mask"
+    ]
+  },
+  "shelter_01_night_light": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_01_night_light"
+    ]
+  },
+  "warp_sailo": {
+    "path": "Prop/facility/warp_accelerator",
+    "file_names": [
+      "warp_accelerator_02"
+    ]
+  },
+  "shelter_02_front": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_02_front"
+    ]
+  },
+  "shelter_02_floor": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_02_floor"
+    ]
+  },
+  "shelter_02_back": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_02_back"
+    ]
+  },
+  "shelter_02_indoor_mask": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_02_indoor_mask"
+    ]
+  },
+  "shelter_02_night_light": {
+    "path": "Prop/event/sunset",
+    "file_names": [
+      "shelter_02_night_light"
+    ]
+  },
+  "NPC_agent_male": {
+    "path": "Prologue/NPC/Male",
+    "file_names": [
+      "NPC_agent_male"
+    ]
+  },
+  "camp_radio_station_sunset": {
+    "path": "Prop/facility/camp",
+    "file_names": [
+      "camp_communication_station_01_c"
+    ]
+  },
+  "modular_upstair": {
+    "path": "Prop/module/stair",
+    "file_names": [
+      "module_stair_02"
+    ]
+  },
+  "statue_kompi_epic": {
+    "path": "Prop/landmark",
+    "file_names": [
+      "Library_Kompi"
+    ]
+  }
+}

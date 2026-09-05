@@ -76,7 +76,10 @@ public static class QuestData
         /// <summary>ล่าสัตว์ด้วยอาวุธระยะไกลกี่ตัว</summary>
         HuntRanged,
         /// <summary>เดินไปให้ถึงจุดที่กำหนดบนแผนที่ (Param = ชื่อจุด เช่น "north_beach")</summary>
-        Reach
+        Reach,
+        Rest,
+        WarpLocal,
+        IslandTravel
     }
 
     /// <summary>รางวัลเมื่อกดรับ</summary>
@@ -293,7 +296,19 @@ public static class QuestData
 
         new Quest("urban_cook_event_06", ChecklistCategory, Goal.Eat, null, 1,
             null, new Reward(15, 0),
-            "[ตรวจ] กินอาหาร 1 ครั้ง — ดูว่าสตามินาขึ้นและความล้าลดจริง")
+            "[ตรวจ] กินอาหาร 1 ครั้ง — ดูว่าสตามินาขึ้นและความล้าลดจริง"),
+
+        new Quest("daily_survival_rest", ChecklistCategory, Goal.Rest, null, 1,
+            null, new Reward(15, 0),
+            "[ตรวจ] นั่งพักที่กองไฟหรือเต็นท์ 1 ครั้ง — ต้องติดบัพพักและฟื้นค่าเหนื่อยจริง"),
+
+        new Quest("daily_local_warp", ChecklistCategory, Goal.WarpLocal, null, 1,
+            null, new Reward(20, 0),
+            "[ตรวจ] วาปภายในเกาะ 1 ครั้ง — ต้องย้ายตำแหน่งไปยัง warphole ที่สร้างจริง"),
+
+        new Quest("daily_island_travel", ChecklistCategory, Goal.IslandTravel, null, 1,
+            null, new Reward(30, 0),
+            "[ตรวจ] ย้ายเกาะผ่านท่าเรือ 1 ครั้ง — ต้อง handoff ไปเซิร์ฟเวอร์เกาะปลายทางสำเร็จ")
     };
 
     /// <summary>สายสอนเล่น + รายการตรวจ (รายการตรวจถูกกรองออกตอนส่งถ้าปิดใน config)</summary>

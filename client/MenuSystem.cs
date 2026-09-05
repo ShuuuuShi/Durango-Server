@@ -35,6 +35,8 @@ public class MenuSystem : GameSystem<MenuSystem>
 
 	private static readonly MenuType[] ShowInSingleMode;
 
+	private static readonly MenuType[] NotImplementedYet;
+
 	public event Action EnableMenuUpdated;
 
 	private void Awake()
@@ -48,11 +50,11 @@ public class MenuSystem : GameSystem<MenuSystem>
 		_recentlyUnlocked = new bool[array.Length];
 		Singleton<GameManager>.Instance().MainSceneLoaded += GameManager_MainSceneLoaded;
 		Singleton<GameManager>.Instance().WelcomeReceived += OnWelcome;
-		_enableMenuUpdated = new DelayedFunction(delegate
+		_enableMenuUpdated = new DelayedFunction(() =>
 		{
-			if (this.EnableMenuUpdated != null)
+			if (EnableMenuUpdated != null)
 			{
-				this.EnableMenuUpdated();
+				EnableMenuUpdated();
 			}
 		});
 	}
@@ -64,38 +66,11 @@ public class MenuSystem : GameSystem<MenuSystem>
 		{
 			if (IsHiddenMenu(type))
 			{
-				EnableMenu(type, enable: false);
+				EnableMenu(type, false);
 			}
 		}
 		EnableMenu(MenuType.Offerwall, Platform.Instance.IsAvailableOfferwall);
 	}
-
-	/// <summary>
-	/// [แก้เอง] ซ่อนเมนูของระบบที่ยังไม่เปิดในรอบนี้ (beta 1.0.0)
-	///
-	/// ขอบเขตอ้างอิงจาก `1.0.0 beta.txt` — เปิดเฉพาะระบบที่ทำเสร็จจริง
-	/// เปิดเพิ่มทีละแพทช์ = **ลบชื่อออกจากรายการนี้** แล้ว build client ใหม่
-	/// (`tools/build-client.ps1`) พร้อมกับเปิดสวิตช์ฝั่ง server ที่ `Features` ใน config.json
-	///
-	/// ⚠️ ต้องแก้ให้ตรงกันทั้งสองฝั่ง — ซ่อนเมนูอย่างเดียวไม่พอ เพราะ packet ยิงตรงได้
-	/// ส่วน server ปฏิเสธอย่างเดียวก็ไม่พอ เพราะผู้เล่นจะเห็นปุ่มที่กดแล้วไม่เกิดอะไรขึ้น
-	///
-	/// เดิมเป็น IL patch ใน tools/DllPatcher — ย้ายมาไว้ในซอร์สแล้ว
-	/// ฝั่ง server สั่งซ่อนได้แค่ Party เมนูเดียว (มี binding แค่ party.ui_enabled) จึงต้องซ่อนที่ client
-	/// </summary>
-	private static readonly MenuType[] NotImplementedYet =
-	{
-		// ระบบที่ยังไม่ได้ทำ
-		MenuType.Market, MenuType.Social, MenuType.Mail, MenuType.Encyclopedia,
-		MenuType.Clan, MenuType.Faction, MenuType.Timeline, MenuType.Pet,
-		MenuType.Estate, MenuType.Shop, MenuType.Event,
-		MenuType.LearningGuide, MenuType.Party, MenuType.Notice, MenuType.PlayerSelection,
-		MenuType.OfficialCommunity, MenuType.Offerwall, MenuType.PvpIsland,
-		MenuType.Music, MenuType.CharacterOnMenu, MenuType.MusicOnMenu, MenuType.StoryOnMenu,
-
-		// [beta 1.0.0] ปิดเพิ่ม — หมวดที่เปิดไปก็เจอแต่ของว่าง เพราะระบบข้างในยังไม่มี
-		MenuType.CategorySocial     // "친구" = เพื่อน — Social/Mail/Clan ปิดหมดแล้ว หมวดนี้จึงว่างเปล่า
-	};
 
 	public static bool IsHiddenMenu(MenuType type)
 	{
@@ -104,6 +79,22 @@ public class MenuSystem : GameSystem<MenuSystem>
 			if (NotImplementedYet[i] == type)
 			{
 				return true;
+			}
+		}
+		// [แก้เอง] 31 ส.ค. 2026 — รายชื่อเมนูที่ซ่อน ให้เซิร์ฟสั่งได้ (`hidden_menus` ใน /knock)
+		// เดิมฮาร์ดโค้ดไว้ที่ NotImplementedYet ⇒ เปิด/ปิดทีต้อง build client ใหม่
+		// แล้วให้ผู้เล่นโหลด 828 MB ใหม่ทุกคน — ตอนนี้แก้ data/mods/config/DurangoClientCore.json
+		// แล้ว restart เซิร์ฟพอ (ดู ClientModPolicy.HiddenMenus)
+		string[] hiddenFromServer = Durango.Offline.Server.HiddenMenus;
+		if (hiddenFromServer != null)
+		{
+			string typeName = type.ToString();
+			for (int j = 0; j < hiddenFromServer.Length; j++)
+			{
+				if (string.Equals(hiddenFromServer[j], typeName, StringComparison.OrdinalIgnoreCase))
+				{
+					return true;
+				}
 			}
 		}
 		if (Platform.Instance.UsePCUI && type == MenuType.Event)
@@ -146,14 +137,15 @@ public class MenuSystem : GameSystem<MenuSystem>
 
 	private void OnWelcome(Welcome welcome)
 	{
-		byte[] array = welcome.Storage.Data?.Get("RecentlyUnlockedMenuList");
+		Dictionary<string, byte[]> data = welcome.Storage.Data;
+		byte[] array = ((data != null) ? data.Get("RecentlyUnlockedMenuList") : null);
 		if (KUtility.GetSize(array) == 0)
 		{
 			InitRecentlyUnlocked(GameManager.ClusterMode == Mode.Online);
 		}
 		else if (!LoadRecentlyUnlocked(array))
 		{
-			InitRecentlyUnlocked(value: true);
+			InitRecentlyUnlocked(true);
 		}
 	}
 
@@ -166,7 +158,8 @@ public class MenuSystem : GameSystem<MenuSystem>
 		}
 		foreach (KeyValuePair<string, bool> item in dictionary)
 		{
-			if (!item.Key.TryEnum<MenuType>(out var value))
+			MenuType value;
+			if (!item.Key.TryEnum<MenuType>(out value))
 			{
 				return false;
 			}
@@ -193,9 +186,11 @@ public class MenuSystem : GameSystem<MenuSystem>
 			MenuType menuType = hideInSafeHouse[i];
 			dictionary.Add(menuType.ToString(), _recentlyUnlocked[(int)menuType]);
 		}
-		SetStorageItem msg = default(SetStorageItem);
-		msg.Key = "RecentlyUnlockedMenuList";
-		msg.Value = Json.WriteToBytes(dictionary);
+		SetStorageItem msg = new SetStorageItem
+		{
+			Key = "RecentlyUnlockedMenuList",
+			Value = Json.WriteToBytes(dictionary)
+		};
 		Connections.Frontend.Send(msg);
 	}
 
@@ -243,6 +238,15 @@ public class MenuSystem : GameSystem<MenuSystem>
 
 	static MenuSystem()
 	{
+		// [แก้เอง] 31 ส.ค. 2026 — เจ้าของสั่ง "เปิดมาทุกเมนูเลย ไม่ต้องซ่อน"
+		//
+		// เดิมรายการนี้ปิด 23 เมนูของระบบที่ยังทำไม่เสร็จ (ตลาด/แคลน/เมล/สารานุกรม/สัตว์เลี้ยง ฯลฯ)
+		// ตอนนี้ว่างเปล่า = ไม่ซ่อนอะไรจากฝั่งเรา ปล่อยให้ตัวกรองของเกมเอง
+		// (HiddenInOnline / ShowInOffline ตาม ClusterMode) ทำงานตามปกติ
+		//
+		// ⚠️ เมนูที่เซิร์ฟยังไม่รองรับจะเปิดมาเป็นหน้าว่างหรือค้าง — เป็นพฤติกรรมที่ตั้งใจตอนนี้
+		//    ถ้าจะปิดกลับ ใส่ MenuType ที่ต้องการซ่อนกลับเข้า array นี้
+		NotImplementedYet = new MenuType[0];
 		HideInTutorial = new MenuType[14]
 		{
 			MenuType.Mail,

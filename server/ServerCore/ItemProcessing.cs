@@ -86,6 +86,77 @@ public static class ItemProcessing
         return ItemNameData.IconOf(basePrototype, string.Empty);
     }
 
+    // ── สูตรแปรรูปที่ "เปลี่ยนรูปทรง" ────────────────────────────────────────
+    //
+    // 🐛 [4 ก.ย. 2026] บั๊กที่เจอตอนไล่เคส FLOKi: คราฟต์ธนูไม่ได้ทั้งเซิร์ฟ
+    //    `bow_wooden_assembled` ต้องใช้ของ tag `string_long` 2 ชิ้น
+    //    ทั้งเกมมีของติด string_long แค่ 5 ชนิด ที่หาได้จริงมีตัวเดียวคือ `rope_long`
+    //    ซึ่งได้จากสูตร `extend_rope` ("줄 잇기" — ต่อเชือกให้ยาว)
+    //    แต่ BuildProcessedOutput เดิมเขียนไว้สำหรับ "ทำอาหาร" อย่างเดียว
+    //    (ตัด raw_food เติม taste_good) ⇒ ต่อเชือกแล้วยังได้ `rope` tag เดิม
+    //    ⇒ string_long หาไม่ได้เลย ⇒ ธนู/สูตรที่ใช้เชือกยาว คราฟต์ไม่ได้ทั้งเซิร์ฟ
+    //
+    // สูตรพวกนี้ในข้อมูลเกม **ไม่ได้ระบุ prototype ผลลัพธ์** (type=1 ทั้ง 73 อันไม่มี prototype_id)
+    // เกมใช้วิธีเปลี่ยน tag รูปทรง (tags.json group `shape`) เราจึงทำแบบเดียวกัน
+    // แล้ว "หา prototype ที่ tag ตรงกับผลลัพธ์" จากตารางจริง — ไม่ได้ hardcode ชื่อของ
+    //   rope {burnable,rope,string_normal} → {burnable,rope,string_long} = rope_long ✔
+
+    /// <summary>สูตร → (tag รูปทรงเดิมที่ต้องถอด, tag รูปทรงใหม่)</summary>
+    private static readonly Dictionary<string, (string[] Remove, string Add)> ShapeChanges =
+        new Dictionary<string, (string[], string)>(StringComparer.Ordinal)
+        {
+            // ชื่อ/คำอธิบายในข้อมูลเกมบอกตรง ๆ ว่าทำให้ "ยาวขึ้น/กว้างขึ้น"
+            // และช่องวัตถุดิบรับเฉพาะทรงสั้น/ปกติ (ไม่รับทรงเป้าหมาย) จึงไม่กำกวม
+            { "extend_rope",      (new[] { "string_short", "string_normal" }, "string_long") },
+            { "extend_stick",     (new[] { "stick_short",  "stick_normal"  }, "stick_long")  },
+            { "s02_extend_stick", (new[] { "stick_short",  "stick_normal"  }, "stick_long")  },
+            { "extend_sheet",     (new[] { "sheet_narrow", "sheet_normal"  }, "sheet_wide")  },
+        };
+
+    /// <summary>สูตรนี้เปลี่ยนรูปทรงไหม</summary>
+    public static bool IsShapeChange(string recipeId)
+        => !string.IsNullOrEmpty(recipeId) && ShapeChanges.ContainsKey(recipeId);
+
+    /// <summary>tag ของของหลังเปลี่ยนรูปทรง (null = สูตรนี้ไม่ใช่สูตรเปลี่ยนรูปทรง)</summary>
+    public static Tag[] ShapeChangedTags(string recipeId, string basePrototype)
+    {
+        if (!ShapeChanges.TryGetValue(recipeId ?? string.Empty, out var change)) { return null; }
+        Tag[] tags = ItemTagData.For(basePrototype) ?? Array.Empty<Tag>();
+        var result = new List<Tag>(tags.Length + 1);
+        bool hasNew = false;
+        for (int i = 0; i < tags.Length; i++)
+        {
+            if (Array.IndexOf(change.Remove, tags[i].Id) >= 0) { continue; }
+            if (tags[i].Id == change.Add) { hasNew = true; }
+            result.Add(tags[i]);
+        }
+        if (!hasNew) { result.Add(new Tag { Id = change.Add, Level = 1 }); }
+        return result.ToArray();
+    }
+
+    /// <summary>
+    /// หา prototype จริงที่มี tag ตรงกับผลลัพธ์เป๊ะ ๆ (เช่น rope → rope_long)
+    /// ไม่เจอ = null ⇒ ผู้เรียกใช้ prototype เดิมแล้วแก้แค่ tag
+    /// </summary>
+    public static string ResolveShapeChangedPrototype(string recipeId, string basePrototype)
+    {
+        Tag[] want = ShapeChangedTags(recipeId, basePrototype);
+        if (want == null || want.Length == 0) { return null; }
+        var wantSet = new HashSet<string>(StringComparer.Ordinal);
+        for (int i = 0; i < want.Length; i++) { wantSet.Add(want[i].Id); }
+        foreach (KeyValuePair<string, Tag[]> kv in ItemTagData.Map)
+        {
+            if (kv.Key == basePrototype || kv.Value == null || kv.Value.Length != wantSet.Count) { continue; }
+            bool same = true;
+            for (int i = 0; i < kv.Value.Length && same; i++)
+            {
+                same = wantSet.Contains(kv.Value[i].Id);
+            }
+            if (same) { return kv.Key; }
+        }
+        return null;
+    }
+
     /// <summary>ชื่อของที่แปรรูปแล้ว — "ชื่อสูตร ชื่อของ" เช่น "꼬치구이 고기"</summary>
     public static string ProcessedName(string recipeId, string basePrototype, string baseName)
     {

@@ -123,6 +123,8 @@ public class Platform
 
 	static Platform()
 	{
+		// [4 ก.ย. 2026] มือถือ (APK build เอง): โหลด shader ของแท้ก่อนสร้าง UI ใด ๆ (ดู MobileShaderBootstrap)
+		MobileShaderBootstrap.Boot();
 		Instance = new Platform_PC();
 	}
 

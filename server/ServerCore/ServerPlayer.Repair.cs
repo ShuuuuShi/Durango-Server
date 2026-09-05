@@ -8,19 +8,21 @@ namespace DurangoServer.Core;
 
 public partial class ServerPlayer
 {
+    /// <summary>เกราะสึกช้ากว่าอาวุธ — ใช้เฉพาะตอน Tools.Deltas ปิด (ดู ToolDurability.WearFor)</summary>
     private const float CombatArmorWearRatio = 0.25f;
+    private static readonly System.Random _repairRng = new System.Random();
 
     private void HandleRepairItem(RepairItem msg, PacketHeader header)
     {
         if (!ServerConfig.Current.Features.ToolDurability || !ServerConfig.Current.Tools.Enabled || Dead)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (string.IsNullOrEmpty(msg.ItemId) || msg.KitItemIds == null || msg.KitItemIds.Length == 0
             || msg.KitItemIds.Length > 20)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -31,14 +33,15 @@ public partial class ServerPlayer
             int targetIndex = _inventory.FindIndex(x => x.Id == msg.ItemId);
             if (targetIndex < 0)
             {
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             target = _inventory[targetIndex];
-            float max = ToolDurability.MaxFor(target.Prototype);
+            // [TodoList/03] เทียบกับ max จริงของชิ้น (ลดลงหลังซ่อม) ไม่ใช่ MaxFor ของ prototype ไม่งั้นซ่อมซ้ำได้ทั้งที่เต็ม
+            float max = ToolDurability.MaxOf(target) > 0f ? ToolDurability.MaxOf(target) : ToolDurability.MaxFor(target.Prototype);
             if (max <= 0f || ToolDurability.RemainingOf(target) >= max - 0.001f)
             {
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
 
@@ -48,20 +51,20 @@ public partial class ServerPlayer
                 string kitId = msg.KitItemIds[i];
                 if (string.IsNullOrEmpty(kitId) || kitId == msg.ItemId || !seen.Add(kitId))
                 {
-                    Send(default(Abort), header.Seq);
+                    Send(Aborts.Reason(), header.Seq);
                     return;
                 }
                 int index = _inventory.FindIndex(x => x.Id == kitId);
                 if (index < 0 || IsItemLocked(kitId) || !ToolDurability.IsRepairKitFor(target.Prototype, _inventory[index].Prototype))
                 {
-                    Send(default(Abort), header.Seq);
+                    Send(Aborts.Reason(), header.Seq);
                     return;
                 }
                 repairPerformance += ToolDurability.RepairKitPerformance(_inventory[index].Prototype);
             }
             if (repairPerformance < ToolDurability.RepairPerformanceNeeded(target.Prototype))
             {
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
         }
@@ -100,7 +103,9 @@ public partial class ServerPlayer
                     if (liveKitIndices[i] < targetIndex) targetIndex--;
                 }
                 repaired = _inventory[targetIndex];
-                float max = ToolDurability.MaxFor(repaired.Prototype);
+                // [TodoList/03] ซ่อมแล้ว max ลด 5-13% ทุกครั้ง (เกม repair_damage_range) — ของที่ซ่อมบ่อยจะพังเร็วขึ้นเรื่อย ๆ
+                float before = ToolDurability.MaxOf(repaired) > 0f ? ToolDurability.MaxOf(repaired) : ToolDurability.MaxFor(repaired.Prototype);
+                float max = ToolDurability.MaxAfterRepair(before, _repairRng);
                 repaired.Durability = ToolDurability.MakeGauge(max, max);
                 repaired.RepairRequirement = ToolDurability.RepairRequirementFor(repaired.Prototype);
                 _inventory[targetIndex] = repaired;
@@ -123,17 +128,20 @@ public partial class ServerPlayer
     private void WearCombatEquipment(bool wearWeapon, bool wearArmor)
     {
         if (!ServerConfig.Current.Features.ToolDurability || !ServerConfig.Current.Tools.Enabled) return;
-        float baseWear = ServerConfig.Current.Tools.WearPerUse;
-        if (baseWear <= 0f) return;
+        // [TodoList/03] อาวุธหัก delta attack (0.0768) เกราะหัก delta defense (0.064) ตามเกม — Deltas ปิด = WearPerUse เดิม
+        ToolConfig toolCfg = ServerConfig.Current.Tools;
+        bool deltas = toolCfg.Deltas != null && toolCfg.Deltas.Enabled;
+        if (!deltas && toolCfg.WearPerUse <= 0f) return;
 
         var ids = new List<(string id, float amount)>();
-        if (wearWeapon && TryGetWeaponItem(out Item weapon, out _)) ids.Add((weapon.Id, baseWear));
+        if (wearWeapon && TryGetWeaponItem(out Item weapon, out _))
+            ids.Add((weapon.Id, ToolDurability.WearFor(WearKind.Attack, weapon.Prototype)));
         if (wearArmor)
         {
             foreach (KeyValuePair<string, string> pair in _equippedItems)
             {
                 if (TryGetEquipped(pair.Key, out Item armor) && EquipData.TryGetArmor(armor.Prototype, out _))
-                    ids.Add((armor.Id, baseWear * CombatArmorWearRatio));
+                    ids.Add((armor.Id, ToolDurability.WearFor(WearKind.Defense, armor.Prototype)));
             }
         }
         bool changed = false;
@@ -188,7 +196,10 @@ public partial class ServerPlayer
                 int index = _inventory.FindIndex(x => x.Id == itemId);
                 item = index >= 0 ? _inventory[index] : default;
             }
-            if (!string.IsNullOrEmpty(item.Id)) changed |= WearDurableItem(itemId, ToolDurability.MaxOf(item) * 0.10f);
+            // [TodoList/07] สัดส่วนอยู่ใน config Death.EquipWearRatio (0.05 เมื่อมีของหล่น · ปิด penalty = 0.10 เดิม)
+            DeathConfig deathCfg = ServerConfig.Current.Death;
+            float wearRatio = deathCfg != null && deathCfg.Enabled && deathCfg.ItemDrop ? deathCfg.EquipWearRatio : 0.10f;
+            if (!string.IsNullOrEmpty(item.Id)) changed |= WearDurableItem(itemId, ToolDurability.MaxOf(item) * wearRatio);
         }
         if (!changed) return;
         MarkDirty();

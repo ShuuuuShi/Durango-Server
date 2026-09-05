@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -38,6 +38,8 @@ public partial class ServerPlayer
     public string Name { get; set; }
     public ushort EntityType { get; set; } = 1000;
     public int Level { get; set; } = 1;
+    /// <summary>อาชีพที่เลือกตอนสร้างตัว — Invalid = เซฟเก่า</summary>
+    public Shared.Player.Job Job { get; set; } = Shared.Player.Job.Invalid;
 
     // ── Party public accessors ────────────────────────────────────────
     public string PartyId => _partyId;
@@ -306,10 +308,49 @@ public partial class ServerPlayer
             }
         }
         ProcessSkillResearch(now);
+        ProcessWetness(now);           // บั๊ก #7 — เปียกจากน้ำ/ฝน · ล้างตัวหายสกปรก
+        ProcessAnnouncement(now);      // ประกาศค้างจาก config
+        ProcessDeathBox(now);          // [TodoList/07] กล่องของตกหมดเวลา
+        // กันกรณี client ไม่ส่ง SetChunk/Move เลย (ยืนนิ่งตั้งแต่เข้า) — ปล่อยสัตว์เองหลัง 10 วิ
+        if (!SceneReady && now - _spawnedAt > 10.0) { MarkSceneReady(); }
+    }
+
+    /// <summary>
+    /// ถ้าไม่ null = กำลังรัน cheat จาก /admin/cheat อยู่ ⇒ ดูดข้อความ `Info` ที่ตอบกลับมาเก็บไว้
+    ///
+    /// 🐛 [แก้เอง 31 ส.ค. 2026] คำสั่ง cheat ตอบผลผ่าน `Info` ซึ่งเป็น **reply packet**
+    /// แต่ฝั่งเกมไม่มีตัวรับ Info แบบทั่วไปเลย (ดู BroadcastDisplay ในมอด) ⇒ ข้อความหายเงียบ
+    /// ⇒ แอดมินสั่ง `/admin/cheat` แล้วได้แค่ "ดูผลในหน้าจอเกม" ทั้งที่ในจอก็ไม่ขึ้นอะไร
+    /// เจอตอนเทสระบบปลูกผัก: สั่ง `farm` แล้วไม่รู้เลยว่าสำเร็จหรือพลาดเพราะอะไร
+    /// ⇒ ดูดข้อความไว้แล้วส่งกลับทาง HTTP ให้เห็นผลจริง
+    /// </summary>
+    private System.Text.StringBuilder _cheatReplyCapture;
+
+    /// <summary>รัน cheat แล้วคืนข้อความตอบกลับที่ปกติจะหายไป (ใช้โดย /admin/cheat)</summary>
+    public string RunAdminCheatCapturing(string rawCommand)
+    {
+        _cheatReplyCapture = new System.Text.StringBuilder();
+        try
+        {
+            HandleCheat(new Cheat { _Cheat = rawCommand ?? string.Empty }, default);
+            return _cheatReplyCapture.ToString().Trim();
+        }
+        finally { _cheatReplyCapture = null; }
+    }
+
+    private void CaptureIfCheatReply<T>(T msg) where T : struct
+    {
+        if (_cheatReplyCapture == null) { return; }
+        if (msg is Info info && !string.IsNullOrEmpty(info.Text))
+        {
+            if (_cheatReplyCapture.Length > 0) { _cheatReplyCapture.AppendLine(); }
+            _cheatReplyCapture.Append(info.Text);
+        }
     }
 
     public void Send<T>(T msg) where T : struct
     {
+        CaptureIfCheatReply(msg);
         try
         {
             _conn.Send(msg);
@@ -325,11 +366,12 @@ public partial class ServerPlayer
     {
         Console.WriteLine("[feature] ปฏิเสธ feature={0} action={1} entity={2} name={3}: ปิดอยู่", feature, action, EntityId, Name);
         Send(new Info { Text = playerMessage }, header.Seq);
-        Send(default(Abort), header.Seq);
+        Send(Aborts.Reason(), header.Seq);
     }
 
     public void Send<T>(T msg, uint replyOf) where T : struct
     {
+        CaptureIfCheatReply(msg);
         try
         {
             _conn.Send(msg, replyOf);
@@ -458,6 +500,9 @@ public partial class ServerPlayer
                 LikedBlueprintIds = null
             }, header.Seq);
         });
+        // Reply to the preview request the crafting UI sends after every slot update.
+        _conn.Recv<EstimateCraft>(HandleEstimateCraft);
+
         _conn.Recv<Craft>(HandleCraft);
         // เฟส C — สวมใส่อุปกรณ์
         _conn.Recv<Equip>(HandleEquip);
@@ -483,6 +528,40 @@ public partial class ServerPlayer
         //      → ส่ง Emigrated → client ปิด connection กลับหน้า title เพื่อเข้าเซิร์ฟใหม่
         _conn.Recv<DepartTutorial>(HandleDepartTutorial);
         _conn.Recv<DepartTutorialFor>(HandleDepartTutorialFor);
+        // [เพิ่มเอง] 31 ส.ค. 2026 — รับไว้เฉย ๆ ไม่ต้องทำอะไร **และนี่คือพฤติกรรมที่ถูกต้อง**
+        //
+        // `Depart` = client แจ้งว่าเริ่มออกเดิน (MoveMsgGenerator.UpdateCurrentLocation)
+        // `Dashed` = client แจ้งว่าเริ่มวิ่ง (PlayerController.cs:657)
+        // ทั้งคู่เป็น struct เปล่า ไม่มี field เลย และฝั่งเกม **ไม่มี On<Depart>/On<Dashed> รอรับกลับ**
+        // ⇒ เป็นการแจ้งทางเดียว ไม่ตอบก็ไม่มีอะไรพัง ตำแหน่งจริงมากับ Move อยู่แล้ว
+        //
+        // ที่ต้องลงทะเบียนเพราะถ้าไม่ลง Connection จะพิมพ์ "[conn] no handler type=..." ทุกครั้ง
+        // = 718 บรรทัด/ชั่วโมง (วัดจาก VPS จริง) กลบปัญหาจริงจนมองไม่เห็น
+        _conn.Recv<Depart>(delegate { });
+        _conn.Recv<Dashed>(delegate { });
+        // [เพิ่มเอง] 31 ส.ค. 2026 — ทำตาม reference ที่ตัวเกมเขียนไว้เอง
+        // client/Durango.Offline/Player.cs:516 → `_context.Storage[msg.Key] = msg.Value; OnContextChanged();`
+        // ไม่ต้องตอบกลับ แค่เก็บ แล้วส่งคืนตอนล็อกอินครั้งหน้าทาง Welcome.Storage
+        _conn.Recv<SetStorageItem>(delegate (SetStorageItem msg, PacketHeader header)
+        {
+            if (string.IsNullOrEmpty(msg.Key))
+            {
+                return;
+            }
+            // กันผู้เล่นยัดข้อมูลใหญ่ ๆ เข้ามาจนเซฟบวม — ของจริงที่เกมเก็บมีแค่ไม่กี่ KB
+            if (msg.Value != null && msg.Value.Length > MaxStorageValueBytes)
+            {
+                Console.WriteLine($"[storage] {Name} ส่ง key={msg.Key} ใหญ่ {msg.Value.Length} bytes — ปฏิเสธ");
+                return;
+            }
+            if (_clientStorage.Count >= MaxStorageKeys && !_clientStorage.ContainsKey(msg.Key))
+            {
+                Console.WriteLine($"[storage] {Name} มี key ครบ {MaxStorageKeys} แล้ว — ปฏิเสธ {msg.Key}");
+                return;
+            }
+            _clientStorage[msg.Key] = msg.Value ?? Array.Empty<byte>();
+            MarkDirty();
+        });
         // POI — ระบบค้นหาหลุม warp/rift + วาร์ปข้ามเกาะ (ดู ServerPlayer.POI.cs)
         _conn.Recv<SearchPOIs>(HandleSearchPOIs);
         _conn.Recv<GetPOICount>(HandleGetPOICount);
@@ -519,6 +598,7 @@ public partial class ServerPlayer
         _conn.Recv<GetReviveImmediatelyInfo>(HandleGetReviveImmediatelyInfo);
         _conn.Recv<ReviveImmediately>(HandleReviveImmediately);
         _conn.Recv<RemoveDeathPoint>(HandleRemoveDeathPoint);
+        _conn.Recv<SetReturningPoint>(HandleSetReturningPoint);
         _conn.Recv<SelectBattleTarget>(delegate(SelectBattleTarget msg, PacketHeader header)
         {
             // client บอกว่ากำลังเล็งใคร — server ไม่ต้องทำอะไร แต่ต้องไม่ปล่อยให้ไม่มี handler
@@ -597,7 +677,7 @@ public partial class ServerPlayer
                 return;
             }
             Console.WriteLine("[natural-remove] {0} tile={1},{2}", EntityId, tile.x, tile.y);
-            if (_world.Terrain.RemoveNatural(tile.x, tile.y))
+            if (_world.Terrain.RemoveNatural(tile.x, tile.y, regrowable: true))
             {
                 _world.ForgetNaturalTile(msg.EntityId);
                 _world.MarkDirty();   // GP-07
@@ -639,8 +719,11 @@ public partial class ServerPlayer
         RegisterAddOnsHandlers();     // GetAddOns / PlaceAddOns / ...
         RegisterDyeHandlers();        // Dye / Bleach / EstimateDye / EstimateBleach
         RegisterEstateHandlers();     // GetEstateLicenses / DeclareEstate / ...
+        RegisterIdleQueryHandlers();  // GetDefoggedChunks / GetMemos / GetNomadInfo / ...
         RegisterEncyclopediaHandlers();// GetEncyclopedia / ChangeFarmingEncyclopediaMastery
         RegisterEngagementHandlers(); // DeleteEngagementData (no-op)
+        // ต้องอยู่ท้ายสุด: ลง handler เบา ๆ เฉพาะที่ยังไม่มี + ตัวจับท้ายสุดตอบ Abort ให้ทุก message ที่ไม่มีใครรับ
+        RegisterFallbackHandlers();   // ดู ServerPlayer.Fallback.cs
     }
 
     /// <summary>
@@ -680,6 +763,7 @@ public partial class ServerPlayer
 
     private void HandleMove(Move msg, PacketHeader header)
     {
+        MarkSceneReady();            // Move แรก = ฉากโลกโหลดเสร็จแล้ว ปล่อยสัตว์ได้ (ดู ObserveAnimal)
         // M-1: ห้าม broadcast packet ดิบ — ของเดิมส่งต่อ EntityId ที่ client ใส่มา
         // ⇒ ส่ง Move{EntityId="<id ของคนอื่น>"} แล้วทุกคนจะเห็นเขาวิ่งไปมาตามที่เราสั่ง
         // (ปลอมเป็นสัตว์ก็ได้ ทำให้ client คนอื่น desync)
@@ -723,7 +807,8 @@ public partial class ServerPlayer
     {
         if (!ServerConfig.Current.Features.Chat) return false;
         // Body เป็น object เพราะ protocol เดิมใส่ได้ทั้งข้อความและ payload อย่างอื่น (เช่นอีโมติคอน)
-        string body = message.Body as string;
+        // ⚠️ ตัวเกมส่งมาเป็น RadioTalk ไม่ใช่ string — ต้องอ่านผ่าน ChatBody ไม่งั้นเพดานความยาวไม่ทำงาน
+        string body = ChatBody.ReadText(message.Body);
         if (body == null)
         {
             // ไม่ใช่ข้อความล้วน — ปล่อยผ่าน แต่ยังนับ cooldown
@@ -744,7 +829,7 @@ public partial class ServerPlayer
         _lastChatAt = now;
         if (body.Length > MaxChatLength)
         {
-            message.Body = body.Substring(0, MaxChatLength);
+            message.Body = ChatBody.WriteText(message.Body, body.Substring(0, MaxChatLength));
         }
         return true;
     }
@@ -856,6 +941,91 @@ public partial class ServerPlayer
     }
 
     /// <summary>กรอบ chunk ที่ส่ง garden ให้คนนี้ไปแล้วรอบก่อน (−1 = ยังไม่เคยส่ง)</summary>
+    /// <summary>
+    /// client เครื่องนี้มี <c>DurangoClientCore</c> ไหม (มอดที่ขยาย ChunkPool ตอน runtime)
+    /// มี = ถือ chunk กว้างเท่า <c>ClientModPolicy.WorldChunkRange</c> · ไม่มี = retail แท้ ระยะ 1
+    /// </summary>
+    public bool HasClientCoreMod { get; set; }
+
+    // ── [3 ก.ย. 2026] client เครื่องนี้เป็นแบบไหน (ดู ClientPlatform / GameServer.ApplyClientInfo) ──
+    /// <summary>"Android" / "WindowsPlayer" — จาก /sessions หรือ /entry · ว่าง = ไม่รู้ (test-client)</summary>
+    public string Platform { get; set; } = "";
+    public string OsVersion { get; set; } = "";
+    /// <summary>APK build ชุดเรา (query build=) · ว่าง = มือถือของแท้ล้วน หรือไม่ใช่มือถือ</summary>
+    public string ClientBuild { get; set; } = "";
+    /// <summary>Auth.ClientVersion: "5.2.1" = เกมของแท้ · "CustomClient 0.1.x" = PC ชุดเรา</summary>
+    public string ClientVersion { get; set; } = "";
+    public string DeviceModel { get; set; } = "";
+
+    public bool IsAndroid => ClientPlatform.IsAndroid(Platform);
+
+    /// <summary>client รู้จักบรอดแคสต์ "##bc|…" ไหม (เฉพาะ CustomClient ตั้งแต่ StyledBroadcastMinClientVersion)</summary>
+    public bool SupportsStyledBroadcast =>
+        ClientPlatform.SupportsStyledBroadcast(ClientVersion, ServerConfig.Current?.StyledBroadcastMinClientVersion);
+
+    /// <summary>
+    /// ต้องให้เซิร์ฟบอกจำนวนคนออนไลน์เองไหม — มือถือ (ไม่มีโค้ดเราใน APK) ใช่ ·
+    /// PC ชุดเรามีตัวเลขบนแท็บแชทจาก /knock อยู่แล้ว (ChattingTabList) ไม่ต้อง
+    /// </summary>
+    public bool WantsServerSideOnlineCount => IsAndroid;
+
+    /// <summary>สรุปสั้น ๆ ไว้ใส่ log: "Android/5.2.1/android-0.1.4" หรือ "WindowsPlayer/CustomClient 0.1.4"</summary>
+    public string ClientDescription
+    {
+        get
+        {
+            string s = (string.IsNullOrEmpty(Platform) ? "?" : Platform) + "/" + (string.IsNullOrEmpty(ClientVersion) ? "?" : ClientVersion);
+            if (!string.IsNullOrEmpty(ClientBuild)) s += "/" + ClientBuild;
+            return s;
+        }
+    }
+
+    /// <summary>
+    /// ส่งบรรทัดแชทช่อง System ให้คนนี้ — เกมต้นฉบับแสดงได้เอง (SocialSystem.OnSay รับ ChannelType.System
+    /// จาก connection เกม) ไม่ต้องแพตช์ client · ใช้แทน "ข้อความจากเซิร์ฟ" ที่ PC ชุดเราวาดเองบน UI
+    /// </summary>
+    /// <summary>
+    /// [4 ก.ย. 2026] popup ประกาศสำหรับเกมของแท้ (มือถือ): packet <c>Info</c> ของเกมต้นฉบับ **ไม่แสดงอะไรบนจอ**
+    /// (GameManager.DefaultInfoHandler ดูแค่ "##goto") — ที่แสดงได้คือ <c>RadioNotice</c> ในช่องแชทระบบ
+    /// ซึ่ง SocialSystem.OnSay เรียก UIManager.SystemMsg ให้เอง (+ ขึ้นเป็นบรรทัดในแท็บ "ระบบ" ด้วย)
+    /// </summary>
+    public void SendNotice(string text, string speaker = "ประกาศ")
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        Send(new SayInExclusiveChannel
+        {
+            ChannelType = Shared.Chat.ChannelType.System,
+            Message = new Message_
+            {
+                EntityId = "",
+                Time = Times.UnixTimeNow(),
+                Body = new RadioNotice { Text = text },
+                Speaker = new RadioId { Name = speaker, Freq = 0 }
+            }
+        });
+    }
+
+    public void SendSystemChat(string text, string speaker = "ระบบ")
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        Send(new SayInExclusiveChannel
+        {
+            ChannelType = Shared.Chat.ChannelType.System,
+            Message = new Message_
+            {
+                EntityId = "",
+                Time = Times.UnixTimeNow(),
+                Body = new RadioTalk { Text = text },
+                Speaker = new RadioId { Name = speaker, Freq = 0 }
+            }
+        });
+    }
+
+    /// <summary>ระยะที่ client เครื่องนี้ "ถือ chunk ไว้จริง" — ตัวเลขเดียวที่ HandleSetChunk เชื่อได้</summary>
+    private int ClientChunkRange => HasClientCoreMod
+        ? Math.Clamp(ClientModPolicy.Current.WorldChunkRange, 2, 4)
+        : ServerConfig.Current.World.ClientChunkRetainRange;
+
     private int _sentChunkCx = -1;
     private int _sentChunkCy = -1;
     private int _sentChunkRange = -1;
@@ -873,13 +1043,34 @@ public partial class ServerPlayer
     ///
     /// กรอบต้องกว้างเท่า `_visibleRange` ของ client (Durango.Terrain/TerrainBase.InitChunkPool)
     /// แคบกว่า = วงนอกไม่มีต้นไม้ แล้วต้องส่งตามทีหลัง = กลับไปรีเฟรชเหมือนเดิม
+    ///
+    /// ⚠️ **การข้ามการส่งซ้ำต้องคิดจาก `ClientChunkRetainRange` ไม่ใช่ `ChunkSendRange`**
+    /// client เก็บ chunk ไว้แค่ในระยะ `_visibleRange` ของมัน (retail = 1) ที่เกินจากนั้น
+    /// `ChunkPool.Load()` **ทิ้งทันทีแบบเงียบ ๆ** ถ้าเราเอาระยะที่ "ส่งไป" มาคิดว่า client ถืออยู่
+    /// ก้อนที่มันทิ้งไปแล้วจะไม่ถูกส่งซ้ำอีกเลย ⇒ เดินไปแล้วโลกไม่โหลด (แล้ว `IsLoadingChunks`
+    /// ของ client ค้าง true ถาวรเพราะ `IsEnoughChunkLoaded()` ไม่ครบ 9 ก้อน)
     /// </summary>
     private void HandleSetChunk(SetChunk msg, PacketHeader header)
     {
+        MarkSceneReady();            // client บอก chunk ที่ยืน = terrain โหลดแล้ว ปล่อยสัตว์ได้ (ดู ObserveAnimal)
         int cx = Math.Clamp(msg.Chunk.x, 0, _world.Terrain.NumChunksX - 1);
         int cy = Math.Clamp(msg.Chunk.y, 0, _world.Terrain.NumChunksY - 1);
-        int range = ServerConfig.Current.World.ChunkSendRange;
-        bool hadPrevious = _sentChunkRange == range && _sentChunkCx >= 0;
+        // ส่งกว้างเกินระยะที่ client ถือไว้ = เปล่าประโยชน์ (ChunkPool.Load ทิ้งทันที)
+        // แถมทำให้กระตุก เพราะก้อนที่ส่งซ้ำจะถูก LoadChunk รื้อสร้างใหม่ทั้งก้อน
+        int range = Math.Min(ServerConfig.Current.World.ChunkSendRange, ClientChunkRange);
+        int retain = range;
+        bool hadPrevious = _sentChunkRange == retain && _sentChunkCx >= 0;
+
+        // [4 ก.ย. 2026] 🐛 มือถือ (เกมต้นฉบับ ไม่มีมอดขยาย ChunkPool): "เดินต่อแล้วพื้นที่ใหม่ไม่เรนเดอร์
+        //   ค้างอยู่แค่โซนที่เรนเดอร์ไปแล้ว" — ต้นเหตุคือการข้ามส่งซ้ำข้างล่างนี้เอง เราเดาไม่ได้ว่า
+        //   ChunkPool ของเกมต้นฉบับถือไว้จริงกี่ก้อน (ตัวเลขที่เดาไว้ 1/2 เทสแล้วไม่ตรงทั้งคู่)
+        //   ถ้าเดาสูงไป = ก้อนที่ client ทิ้งไปแล้วจะไม่ถูกส่งซ้ำอีกเลย ⇒ รูโหว่ถาวร
+        //   ⇒ เลิกเดา: มือถือส่งเต็มกรอบทุกครั้งที่ข้ามขอบ chunk (แพงขึ้นนิดเดียว — 25 ก้อนแทน 5
+        //     เฉพาะตอนข้ามขอบ) ปิดได้ที่ Android.AlwaysResendChunks ถ้าอยากกลับพฤติกรรมเดิม
+        if (IsAndroid && (ServerConfig.Current.Android?.AlwaysResendChunks ?? true))
+        {
+            hadPrevious = false;
+        }
 
         int sent = 0;
         for (int i = cx - range; i <= cx + range; i++)
@@ -890,10 +1081,13 @@ public partial class ServerPlayer
                 {
                     continue;
                 }
-                // เคยอยู่ในกรอบเดิมแล้ว = client ยังถืออยู่ ไม่ต้องส่งซ้ำ
+                // อยู่ในระยะที่ client "เก็บไว้" จากรอบก่อน = ยังถืออยู่จริง ไม่ต้องส่งซ้ำ
+                // (ที่ไกลกว่า retain มันทิ้งไปแล้ว ต้องส่งใหม่เสมอ)
                 if (hadPrevious
-                    && Math.Abs(i - _sentChunkCx) <= range
-                    && Math.Abs(j - _sentChunkCy) <= range)
+                    && Math.Abs(i - _sentChunkCx) <= retain
+                    && Math.Abs(j - _sentChunkCy) <= retain
+                    && Math.Abs(i - cx) <= retain
+                    && Math.Abs(j - cy) <= retain)
                 {
                     continue;
                 }
@@ -907,10 +1101,27 @@ public partial class ServerPlayer
         }
         _sentChunkCx = cx;
         _sentChunkCy = cy;
-        _sentChunkRange = range;
+        _sentChunkRange = retain;
         if (sent > 0)
         {
             Console.WriteLine("[chunk] {0} ย้ายไป chunk {1},{2} — ส่ง garden ใหม่ {3} ก้อน", Name, cx, cy, sent);
+        }
+
+        var viewChunks = new System.Collections.Generic.List<Point2>();
+        for (int i = cx - range; i <= cx + range; i++)
+        {
+            for (int j = cy - range; j <= cy + range; j++)
+            {
+                if (i < 0 || i >= _world.Terrain.NumChunksX || j < 0 || j >= _world.Terrain.NumChunksY)
+                {
+                    continue;
+                }
+                viewChunks.Add(new Point2(i, j));
+            }
+        }
+        if (viewChunks.Count > 0)
+        {
+            Send(_world.Estates.BuildGrids(viewChunks));
         }
     }
 }

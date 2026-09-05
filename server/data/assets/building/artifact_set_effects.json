@@ -1,0 +1,282 @@
+{
+  "set": {
+    "kitchen": {
+      "tag_slots": {
+        "set_box_food": 1,
+        "set_table_food": 1,
+        "set_table": 1
+      },
+      "name": {
+        "주방": null
+      },
+      "effect_tags": {
+        "set_cook_entrust_deduction_rate": 35
+      },
+      "tag_names": {
+        "set_box_food": {
+          "요리 보관함": null
+        },
+        "set_table_food": {
+          "요리 조리대": null
+        },
+        "set_table": {
+          "테이블": null
+        }
+      },
+      "required_stat_factor": 20,
+      "summary_desc": {
+        "음식 조리 시간이 단축됩니다.": null
+      },
+      "desc": {
+        "• 요리 맡김 제작 시간이 단축됩니다.\n[size=8] [/size]\n• 건물 내부의 요리 조리대에서 제작한 음식만 적용됩니다.": null
+      }
+    },
+    "drawingroom": {
+      "tag_slots": {
+        "set_sofa": 1,
+        "set_brazier": 1,
+        "set_decoration": 2
+      },
+      "name": {
+        "응접실": null
+      },
+      "effects_added": [
+        {
+          "type": 1,
+          "value": "0.5",
+          "key": "energy"
+        }
+      ],
+      "tag_names": {
+        "set_sofa": {
+          "소파": null
+        },
+        "set_brazier": {
+          "실내화로": null
+        },
+        "set_decoration": {
+          "장식": null
+        }
+      },
+      "required_stat_factor": 20,
+      "status_effect_duration": null,
+      "status_effect_group": "rest_group",
+      "summary_desc": {
+        "에너지 회복 효과가 증가합니다.": null
+      },
+      "desc": {
+        "• 건물 내부에서 휴식 상태일 때 효과를 받을 수 있습니다.\n[size=8] [/size]\n• 에너지 회복 효과가 증가합니다.": null
+      }
+    },
+    "bedroom": {
+      "tag_slots": {
+        "set_table": 1,
+        "set_bed": 1,
+        "set_light": 1
+      },
+      "name": {
+        "침실": null
+      },
+      "effects_added": [
+        {
+          "type": 1,
+          "value": "-0.15",
+          "key": "fatigue"
+        },
+        {
+          "type": 1,
+          "value": "0.25",
+          "key": "life"
+        },
+        {
+          "type": 1,
+          "value": "0.5",
+          "key": "health"
+        }
+      ],
+      "tag_names": {
+        "set_table": {
+          "테이블": null
+        },
+        "set_bed": {
+          "침대": null
+        },
+        "set_light": {
+          "조명": null
+        }
+      },
+      "required_stat_factor": 20,
+      "status_effect_duration": null,
+      "status_effect_group": "rest_group",
+      "summary_desc": {
+        "피로도 회복 효과가 증가합니다.": null
+      },
+      "desc": {
+        "• 건물 내부에서 휴식 상태일 때 효과를 받을 수 있습니다.\n[size=8] [/size]\n• 피로도가 추가로 회복됩니다.\n[size=8] [/size]\n• 생명력과 건강이 추가로 회복됩니다.": null
+      }
+    }
+  },
+  "mood": {
+    "bubbly": {
+      "name": {
+        "귀여운": null
+      },
+      "effects_added": [
+        {
+          "type": 3,
+          "value": "70.0",
+          "key": "max_energy_plus"
+        },
+        {
+          "type": 3,
+          "value": "0.15",
+          "key": "energy_recovery"
+        }
+      ],
+      "indoor_color": null,
+      "status_effect_id": "mood_bubbly",
+      "tag_id": "mood_cute",
+      "cooltime": 5.0,
+      "individual_effect_id": null,
+      "required_stat_factor": 30,
+      "status_effect_duration": "1800+180*total_level",
+      "summary_desc": {
+        "최대 에너지가 증가합니다.": null
+      },
+      "total_level": 15,
+      "desc": {
+        "• 귀여운 분위기는 활기를 더욱 불어 넣어 줍니다.\n[size=8] [/size]\n• 일정 시간 동안 최대 에너지를 증가시켜줍니다.\n[size=8] [/size]\n• 둘러보기 행동을 통해 분위기 효과를 받을 수 있습니다.": null
+      }
+    },
+    "springtime": {
+      "name": {
+        "봄내음 가득한": null
+      },
+      "effects_added": [
+        {
+          "type": 3,
+          "value": "0.04",
+          "key": "great_success_plus_craft"
+        }
+      ],
+      "indoor_color": null,
+      "status_effect_id": "mood_springtime",
+      "tag_id": "mood_springtime",
+      "cooltime": 14400.0,
+      "individual_effect_id": null,
+      "required_stat_factor": 30,
+      "status_effect_duration": "1800.0",
+      "summary_desc": {
+        "제작 대성공 확률이 증가합니다. ": null
+      },
+      "total_level": 15,
+      "desc": {
+        "• 봄내음 가득한 분위기는 제작 대성공 확률을 올려 줍니다.\n[size=8] [/size]\n• <em>4시간</em>마다 한 번씩 효과를 받을 수 있습니다.\n[size=8] [/size]\n• 둘러보기 행동을 통해 분위기 효과를 받을 수 있습니다.": null
+      }
+    },
+    "luxurious": {
+      "name": {
+        "호화로운": null
+      },
+      "effects_added": [
+        {
+          "type": 3,
+          "value": "total_level * 0.005",
+          "key": "reduce_satiety_ratio"
+        }
+      ],
+      "indoor_color": null,
+      "status_effect_id": "mood_luxurious",
+      "tag_id": "mood_flashy",
+      "cooltime": 5.0,
+      "individual_effect_id": null,
+      "required_stat_factor": 30,
+      "status_effect_duration": null,
+      "summary_desc": {
+        "음식물 섭취 시 포만감 유지시간이 감소합니다.": null
+      },
+      "total_level": 15,
+      "desc": {
+        "• 호화로운 분위기에서는 배부름에 무뎌집니다.\n[size=8] [/size]\n• 요리를 섭취 했을 때 발생하는 포만감 시간을 감소시킵니다.\n[size=8] [/size]\n• 둘러보기 행동을 통해 분위기 효과를 받을 수 있습니다.": null
+      }
+    },
+    "fiery": {
+      "name": {
+        "후끈한": null
+      },
+      "effects_added": [
+        {
+          "type": 3,
+          "value": "6.0",
+          "key": "attack_plus"
+        }
+      ],
+      "indoor_color": null,
+      "status_effect_id": "mood_fiery",
+      "tag_id": "mood_fiery",
+      "cooltime": 5.0,
+      "individual_effect_id": null,
+      "required_stat_factor": 30,
+      "status_effect_duration": "1800+180*total_level",
+      "summary_desc": {
+        "공격력이 상승합니다.": null
+      },
+      "total_level": 15,
+      "desc": {
+        "• 후끈한 분위기는 일정 시간 동안 공격력을 증가시켜줍니다.\n[size=8] [/size]\n• 둘러보기 행동을 통해 분위기 효과를 받을 수 있습니다.": null
+      }
+    },
+    "horrible": {
+      "name": {
+        "음산한": null
+      },
+      "effects_added": [
+        {
+          "type": 3,
+          "value": "25.0",
+          "key": "hiding_power"
+        }
+      ],
+      "indoor_color": null,
+      "status_effect_id": "mood_horrible",
+      "tag_id": "mood_gloomy",
+      "cooltime": 5.0,
+      "individual_effect_id": null,
+      "required_stat_factor": 30,
+      "status_effect_duration": "1800+180*total_level",
+      "summary_desc": {
+        "동물의 선제 공격 범위가 줄어듭니다.": null
+      },
+      "total_level": 15,
+      "desc": {
+        "• 음산한 분위기의 어두운 아우라는 은신능력을 올려 줍니다.\n[size=8] [/size]\n• 은신능력이 올라가면 동물의 선제 공격을 덜 받습니다\n[size=8] [/size]\n• 둘러보기 행동을 통해 분위기 효과를 받을 수 있습니다.": null
+      }
+    },
+    "classroom02": {
+      "name": {
+        "학구적인": null
+      },
+      "effects_added": [
+        {
+          "type": 3,
+          "value": "0.2",
+          "key": "reduce_skill_research"
+        }
+      ],
+      "indoor_color": null,
+      "status_effect_id": "mood_classroom02",
+      "tag_id": "mood_classroom_02",
+      "cooltime": 1209600.0,
+      "individual_effect_id": null,
+      "required_stat_factor": 30,
+      "status_effect_duration": "1209600.0",
+      "summary_desc": {
+        "스킬연구시간이 감소합니다.": null
+      },
+      "total_level": 15,
+      "desc": {
+        "• 학구적인 분위기는 스킬 연구 시간을 감소해 줍니다.\n[size=8] [/size]\n• 둘러보기 행동을 통해 분위기 효과를 받을 수 있습니다.": null
+      }
+    }
+  }
+}

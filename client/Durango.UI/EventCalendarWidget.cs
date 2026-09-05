@@ -52,15 +52,36 @@ public class EventCalendarWidget : CalendarWidget, IUIInitializable
 
 	private void UpdateRestoreButtonText()
 	{
-		if (base.enabled)
+		// [แก้เอง] 31 ส.ค. 2026 — เดิมไม่มีการกัน null เลย
+		// 🐛 พังตอน UIManager.InitUIGroups() เรียก Init() ⇒ NRE ทุกครั้งที่เข้าเกม
+		//    (เมนู Event เราปิดไว้ใน MenuSystem.NotImplementedYet แต่ widget ยัง init อยู่ดี)
+		//    สาเหตุ: เซิร์ฟเราไม่ได้ส่งข้อมูลระบบเช็คชื่อ ⇒ Attendance/RestoreCost เป็น null
+		//    ระบบนี้เรายังไม่เปิด ⇒ ไม่มีข้อความให้ตั้งก็ปล่อยผ่าน ดีกว่าโยน exception
+		if (!base.enabled || _restoreButton == null)
+		{
+			return;
+		}
+		Constants constants = Yaml.Util.Singleton<Constants>.Instance;
+		if (constants == null)
+		{
+			return;
+		}
+		// ข้างในอ่านค่าจาก Nullable<T>.Value หลายชั้น (RestoreCost.Amount/Currency ฯลฯ)
+		// ถ้าเซิร์ฟไม่ได้ส่งข้อมูลระบบเช็คชื่อมาเลย จะโยน "A null value was found..."
+		// ระบบนี้ยังไม่เปิด ⇒ ปล่อยปุ่มไว้เฉย ๆ ดีกว่าทำให้ InitUIGroups พังทั้งชุด
+		try
 		{
 			if (InventorySystem.Wallet.GetVoucherCount("voucher_event_attendance") > 0)
 			{
 				_restoreButton.Text = Inventory.ToVoucherButtonText(T._("재출석"), 1, "voucher_event_attendance");
 				return;
 			}
-			RestoreCost restoreCost = Yaml.Util.Singleton<Constants>.Instance.Attendance.RestoreCost;
+			RestoreCost restoreCost = constants.Attendance.RestoreCost;
 			_restoreButton.Text = Inventory.ToCurrencyButtonText(T._("재출석"), restoreCost.Amount, restoreCost.Currency);
+		}
+		catch (Exception)
+		{
+			// ระบบเช็คชื่อยังไม่เปิด — ไม่ต้องตั้งข้อความปุ่ม
 		}
 	}
 

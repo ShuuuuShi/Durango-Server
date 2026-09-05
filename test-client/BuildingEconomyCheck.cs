@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
@@ -32,7 +32,9 @@ public static class BuildingEconomyCheck
 
     private static Connection Connect(string host, int gamePort, int gatewayPort, string id)
     {
-        string token = SessionClient.Fetch(host, gatewayPort, id, id);
+        // ต้องมีไฟล์เซฟก่อน ไม่งั้น gateway ออก token ผูก id ชั่วคราวแล้ว Auth ปฏิเสธ
+        string token = SessionClient.FetchRaw(host, gatewayPort,
+            "{\"appear_player\":{\"entity_id\":\"" + id + "\"}}");
         if (string.IsNullOrEmpty(token)) return null;
         var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         socket.Connect(host, gamePort);
@@ -68,7 +70,15 @@ public static class BuildingEconomyCheck
     public static int Run(string host, int gamePort, int gatewayPort)
     {
         _passed = _failed = 0;
-        string id = "build-econ-" + Guid.NewGuid().ToString("N")[..8];
+        string modelInfo =
+            "{\"hair\":\"hair_f_01\",\"body_color\":[\"484E36\",\"F0D9B7\",\"29130D\"]," +
+            "\"head_color\":[\"FF0000\",\"FFFFFF\",\"0000FF\"],\"skin_color\":\"F0D9B7\"," +
+            "\"hair_color\":\"471513\",\"lip_color\":\"E88295\",\"eye_color\":\"52353F\"," +
+            "\"portrait\":3,\"portrait_bg\":2,\"portrait_bg_color\":\"C5A293\",\"beard\":null," +
+            "\"voice_type\":1,\"body_size\":1.0}";
+        string id = CreateCharacterCheck.CreatePlayer(host, gatewayPort,
+            "build-econ-" + Guid.NewGuid().ToString("N")[..6], isMale: false, modelInfo);
+        if (string.IsNullOrEmpty(id)) { Console.WriteLine("สร้างตัวละครไม่ได้"); return 2; }
         Console.WriteLine($"=== building economy check: {host}:{gamePort} ===");
 
         Connection c = Connect(host, gamePort, gatewayPort, id);
@@ -170,7 +180,10 @@ public static class BuildingEconomyCheck
                 Check("GetArtifact shows deposited materials", hasDeposit);
 
                 // A nearby second player knows the entity id but must not inspect or mutate the owner's ledger.
-                string intruderId = "build-intruder-" + Guid.NewGuid().ToString("N")[..8];
+                // ต้องสร้างตัวละครจริงเหมือนคนแรก ไม่งั้น Auth ตกแล้ว packet ไม่ถูกประมวลผล
+                // (ทำให้ทุกข้อ "คนอื่นต้องถูกปฏิเสธ" ผ่านแบบหลอก ๆ เพราะไม่มี abort กลับมาเลย)
+                string intruderId = CreateCharacterCheck.CreatePlayer(host, gatewayPort,
+                    "build-intruder-" + Guid.NewGuid().ToString("N")[..6], isMale: false, modelInfo);
                 Connection intruder = Connect(host, gamePort, gatewayPort, intruderId);
                 Check("second client connects", intruder != null);
                 if (intruder != null)

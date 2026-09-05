@@ -135,6 +135,18 @@ public class QuestNodeWidget : MonoBehaviour
 			_titleLabel.color = ((!_quest.Finished) ? PresetColor.UIYellow : PresetColor.UILightSilverGray);
 			_subscriptionLabel.text = questYml.Description;
 		}
+		else if (DailyQuestText.TryGet(_quest.Id, out string title, out string description))
+		{
+			_titleLabel.text = ((!_quest.Finished) ? title : $"{title} [247332][icon=icon_autoguidegroup_complete][-]");
+			_titleLabel.color = ((!_quest.Finished) ? PresetColor.UIYellow : PresetColor.UILightSilverGray);
+			_subscriptionLabel.text = description;
+		}
+		else
+		{
+			_titleLabel.text = _quest.Finished ? $"{_quest.Id} [247332][icon=icon_autoguidegroup_complete][-]" : _quest.Id;
+			_titleLabel.color = ((!_quest.Finished) ? PresetColor.UIYellow : PresetColor.UILightSilverGray);
+			_subscriptionLabel.text = "เควสตรวจระบบจากเซิร์ฟเวอร์";
+		}
 		int progress = _quest.Progress;
 		int goalCount = _quest.GoalCount;
 		_progress.value = Mathf.Min((float)progress / (float)goalCount, 1f);
@@ -256,12 +268,18 @@ public class QuestNodeWidget : MonoBehaviour
 	private void ShowQuestDetailTooltip()
 	{
 		QuestYml questYml = SingletonDict<string, QuestYml>.Instance.Get(_quest.Id);
-		if (questYml == null)
+		string title;
+		string description;
+		if (questYml != null)
 		{
-			return;
+			title = questYml.Subject;
+			description = questYml.Description;
 		}
-		string title = questYml.Subject;
-		string description = questYml.Description;
+		else if (!DailyQuestText.TryGet(_quest.Id, out title, out description))
+		{
+			title = _quest.Id;
+			description = "เควสตรวจระบบจากเซิร์ฟเวอร์";
+		}
 		int progress = _quest.Progress;
 		int goalCount = _quest.GoalCount;
 		string progressText = $"{progress}/{goalCount}";
@@ -270,5 +288,31 @@ public class QuestNodeWidget : MonoBehaviour
 		Durango.UI.Popup.WidgetTooltipControl tooltip = UIManager.Popup.Tooltip<Durango.UI.Popup.WidgetTooltipControl>();
 		tooltip.Set(title, text, 600, 300);
 		tooltip.Show();
+	}
+}
+
+internal static class DailyQuestText
+{
+	public static bool TryGet(string id, out string title, out string description)
+	{
+		title = null;
+		description = null;
+		switch (id)
+		{
+			case "daily_survival_rest":
+				title = "พักที่จุดพัก";
+				description = "นั่งพักที่กองไฟหรือเต็นท์ให้ระบบติดบัพพักและลดความเหนื่อยจริง";
+				return true;
+			case "daily_local_warp":
+				title = "วาปในเกาะ";
+				description = "ใช้ warphole ที่สร้างจริงเพื่อย้ายตำแหน่งภายในเกาะ";
+				return true;
+			case "daily_island_travel":
+				title = "ย้ายเกาะที่ท่าเรือ";
+				description = "เดินทางผ่านท่าเรือและรอ handoff ไปเซิร์ฟเวอร์เกาะปลายทาง";
+				return true;
+			default:
+				return false;
+		}
 	}
 }

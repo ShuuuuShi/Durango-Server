@@ -49,6 +49,9 @@ public class NetworkStatusWidget : MonoBehaviour
 		if (!(time < _nextRefreshAt))
 		{
 			_nextRefreshAt = time + 2f;
+			// [3 ก.ย. 2026] อัปเดตจำนวนคนออนไลน์ระหว่างอยู่ในเกมด้วย (เดิมรีเฟรชแค่หน้าไตเติ้ล)
+			//   RefreshServerStatus มีตัวกันยิงถี่ในตัว (10 วิ/ครั้ง) ยิง /knock อ่าน online_players
+			Durango.Offline.Server.RefreshServerStatus();
 			if (_networkContainer.activeSelf)
 			{
 				RefreshPing();
@@ -121,7 +124,11 @@ public class NetworkStatusWidget : MonoBehaviour
 
 	private void RefreshTime()
 	{
-		_timeLabel.text = DateTime.Now.ToString("HH:mm");
+		// เวลา + จำนวนคนออนไลน์ (ไอคอนคน + เลข) บนแถบสถานะบนสุด — ใช้ label เดิม ไม่แตะ prefab
+		string people = (Durango.Offline.Server.OnlinePlayers >= 0)
+			? ("  [icon=icon_person:0.8] " + Durango.Offline.Server.OnlinePlayers)
+			: string.Empty;
+		_timeLabel.text = DateTime.Now.ToString("HH:mm") + people;
 	}
 
 	private void RefreshBattery()

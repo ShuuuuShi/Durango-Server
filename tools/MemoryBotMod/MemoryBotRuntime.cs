@@ -64,22 +64,37 @@ public sealed class MemoryBotRuntime : MonoBehaviour
         try
         {
             _listener = new TcpListener(IPAddress.Loopback, _port);
-            _listener.Start(1);
+            _listener.Start(4);
             while (true)
             {
-                using (TcpClient client = _listener.AcceptTcpClient())
-                using (NetworkStream stream = client.GetStream())
+                // [แก้เอง] 31 ส.ค. 2026 — เดิมทั้งก้อนอยู่ใน try เดียว
+                // 🐛 หลังตอบคำขอแรกเสร็จ จะวนไป ReadLine() รอบรรทัดถัดไป พอครบ ReadTimeout 1 วิ
+                //    จะโยน IOException หลุดออกนอก try ทั้งก้อน ⇒ **listener ตายถาวร**
+                //    (log: "MemoryBot listener stopped: Read failure") ต้องปิดเกมเปิดใหม่ทุกครั้ง
+                // ⇒ แยก try ต่อ "หนึ่งการเชื่อมต่อ" — พังก็จบแค่รายนั้น ตัวรับยังทำงานต่อ
+                try
                 {
-                    stream.ReadTimeout = 1000;
-                    StreamReader reader = new StreamReader(stream, Encoding.UTF8);
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    using (TcpClient client = _listener.AcceptTcpClient())
+                    using (NetworkStream stream = client.GetStream())
                     {
-                        string response = HandleLine(line);
-                        byte[] bytes = Encoding.UTF8.GetBytes(response + "\n");
-                        stream.Write(bytes, 0, bytes.Length);
-                        stream.Flush();
+                        // ให้เวลาพอสำหรับคำสั่งที่ต้องรอ main thread ประมวลผล
+                        stream.ReadTimeout = 15000;
+                        stream.WriteTimeout = 15000;
+                        StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            string response = HandleLine(line);
+                            byte[] bytes = Encoding.UTF8.GetBytes(response + "\n");
+                            stream.Write(bytes, 0, bytes.Length);
+                            stream.Flush();
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    // อ่านหมดเวลา / ฝั่งโน้นปิดไปเฉย ๆ = เรื่องปกติ ไม่ใช่เหตุให้เลิกรับคำสั่ง
+                    if (_api != null) _api.Log("MemoryBot: จบการเชื่อมต่อ (" + e.GetType().Name + ") — ยังรับคำสั่งต่อ");
                 }
             }
         }
@@ -88,7 +103,6 @@ public sealed class MemoryBotRuntime : MonoBehaviour
             if (_api != null) _api.Log("MemoryBot listener stopped: " + e.Message);
         }
     }
-
     private static string HandleLine(string line)
     {
         MemoryBotRequest request;
@@ -185,10 +199,31 @@ public sealed class MemoryBotRuntime : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!string.Equals(Environment.GetEnvironmentVariable("DURANGO_MEMORYBOT_OVERLAY"), "1", StringComparison.Ordinal)) return;
+        bool overlay = string.Equals(Environment.GetEnvironmentVariable("DURANGO_MEMORYBOT_OVERLAY"), "1", StringComparison.Ordinal);
+        bool ui = string.Equals(Environment.GetEnvironmentVariable("DURANGO_MEMORYBOT_UI"), "1", StringComparison.Ordinal);
+        if (!overlay && !ui) return;
         GUI.color = Color.white;
         GUI.Label(new Rect(12f, 12f, 500f, 24f), "MemoryBot " + _port + " | " + _lastCommand);
         GUI.Label(new Rect(12f, 34f, 500f, 24f), "Last: " + _lastResult);
+        if (!ui) return;
+
+        GUI.Box(new Rect(12f, 64f, 360f, 190f), "Daily Quest Bot (test only)");
+        GUI.Label(new Rect(28f, 92f, 330f, 22f), MemoryBotAutopilot.StatusJson());
+        GUI.Label(new Rect(28f, 116f, 330f, 22f), "Fixture: " + (MemoryBotDaily.TestProvisioning ? "ON" : "OFF") + " | Reward: " + (MemoryBotDaily.AutoReward ? "ON" : "OFF"));
+        if (GUI.Button(new Rect(28f, 146f, 100f, 28f), "Daily"))
+        {
+            MemoryBotAutopilot.ConfigureDaily(true, true);
+            MemoryBotAutopilot.Execute(new MemoryBotRequest { Name = "bot.start", Kind = "daily" });
+        }
+        if (GUI.Button(new Rect(138f, 146f, 100f, 28f), "Gather"))
+            MemoryBotAutopilot.Execute(new MemoryBotRequest { Name = "bot.start", Kind = "gather" });
+        if (GUI.Button(new Rect(248f, 146f, 100f, 28f), "Stop"))
+            MemoryBotAutopilot.Execute(new MemoryBotRequest { Name = "bot.stop" });
+        if (GUI.Button(new Rect(28f, 182f, 155f, 28f), "Fixture ON/OFF"))
+            MemoryBotAutopilot.ConfigureDaily(!MemoryBotDaily.TestProvisioning, MemoryBotDaily.AutoReward);
+        if (GUI.Button(new Rect(193f, 182f, 155f, 28f), "Reward ON/OFF"))
+            MemoryBotAutopilot.ConfigureDaily(MemoryBotDaily.TestProvisioning, !MemoryBotDaily.AutoReward);
+        GUI.Label(new Rect(28f, 218f, 330f, 24f), "อ่าน state: daily.quests / bot ผ่าน MemoryBot TCP");
     }
 
     private static string F(float value) { return value.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture); }

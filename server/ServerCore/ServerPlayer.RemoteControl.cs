@@ -296,11 +296,11 @@ public partial class ServerPlayer
             // ชุดทำอาหารครบเซ็ต — ไว้เทสเช็คลิสต์ทำอาหารโดยไม่ต้องออกไปล่า/ขุดดินเอง
             case "cook":
             case "cookkit":
-                GiveByPrototype("meat", 3);
-                GiveByPrototype("wood_bough", 2);
-                GiveByPrototype("water", 2);
-                GiveByPrototype("pot_01", 1);
-                GiveByPrototype("grill_stone", 1);
+                GiveByPrototype("meat", 3, out _);
+                GiveByPrototype("wood_bough", 2, out _);
+                GiveByPrototype("water", 2, out _);
+                GiveByPrototype("pot_01", 1, out _);
+                GiveByPrototype("grill_stone", 1, out _);
                 lock (_inventory)
                 {
                     _inventory.Add(MakeCapsuleItem("capsulated_bonfire", "กองไฟ", "furniture_workbench_bonfire"));
@@ -311,22 +311,45 @@ public partial class ServerPlayer
                 return $"ให้ชุดทำอาหารกับ {Name} — เนื้อ 3 · กิ่งไม้ 2 · น้ำ 2 · หม้อ · เตาย่าง · กองไฟ + กองไฟใหญ่";
             default:
                 // ชื่อ prototype ตรง ๆ ก็ให้ได้ (`control <ชื่อ> give meat`) — เทสสูตรไหนก็เสกของนั้น
-                if (GiveByPrototype(what, count))
+                if (GiveByPrototype(what, count, out int given))
                 {
-                    return $"ให้ {ItemNameData.NameOf(what, what)} x{count} กับ {Name}";
+                    string msg = $"ให้ {ItemNameData.NameOf(what, what)} x{given} กับ {Name}";
+                    if (given < count)
+                    {
+                        msg += $" (ขอ {count} แต่กระเป๋าเหลือที่แค่ {given} ช่อง)";
+                    }
+                    return msg;
                 }
                 return "ให้ได้: axe · clothes · bonfire · box · stone · knife · cook (ชุดทำอาหาร) หรือชื่อ prototype ตรง ๆ";
         }
     }
 
-    /// <summary>เสกไอเทมตามชื่อ prototype — คืน false ถ้าไม่มีของชิ้นนั้นในเกม</summary>
-    private bool GiveByPrototype(string prototype, int count)
+    /// <summary>ช่องกระเป๋าที่ยังว่างอยู่</summary>
+    public int FreeInventorySlots()
     {
+        lock (_inventory)
+        {
+            return Math.Max(0, PlayerInventoryMaxSize - _inventory.Count);
+        }
+    }
+
+    /// <summary>
+    /// เสกไอเทมตามชื่อ prototype — คืน false ถ้าไม่มีของชิ้นนั้นในเกม
+    ///
+    /// [แก้เอง] 3 ก.ย. 2026 — เดิมผู้เรียก clamp จำนวนไว้ที่ 50 ตายตัว ซึ่งเป็นเลขเดียวกับ
+    /// ขนาดกระเป๋าทั้งใบ ⇒ ถ้ามีของอยู่แล้วจะล้นเงียบ ๆ · และมาโครของเกมที่สั่ง `it ... 60`
+    /// ก็ได้ไม่ครบโดยไม่บอกสาเหตุ  ตอนนี้ตัดตามช่องที่เหลือจริงแล้ว *บอกกลับ* ว่าให้ได้เท่าไร
+    /// </summary>
+    private bool GiveByPrototype(string prototype, int count, out int given)
+    {
+        given = 0;
         if (string.IsNullOrEmpty(prototype) || !ItemNameData.Map.ContainsKey(prototype))
         {
             return false;
         }
-        for (int i = 0; i < count; i++)
+        int room = FreeInventorySlots();
+        given = Math.Clamp(count, 0, room);
+        for (int i = 0; i < given; i++)
         {
             GiveEquipTestItem(prototype, ItemNameData.NameOf(prototype, prototype), ItemNameData.IconOf(prototype, string.Empty), 0);
         }

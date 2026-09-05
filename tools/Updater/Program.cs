@@ -3,6 +3,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Windows.Forms;
 
 namespace DurangoUpdater;
@@ -19,22 +20,42 @@ namespace DurangoUpdater;
 internal static class Program
 {
     private const string DefaultManifestUrl =
-        "https://github.com/SuperCodeTH/Durango-TH-Client/releases/latest/download/manifest.json";
+        "https://github.com/ShuuuuShi/Durango-TH-Client/releases/latest/download/manifest.json";
 
     private static ProgressForm? _progress;
+    /// <summary>ถูกเรียกจากในเกม — เกมยังล็อก DLL อยู่ ต้องรอให้ปิดก่อนค่อยแพตช์</summary>
+    private static bool _fromGame;
+    private static string? _manifestUrlOverride;
 
     [STAThread]
     private static void Main(string[] args)
     {
+        ParseArgs(args);
         ApplicationConfiguration.Initialize();
-        Application.Run(new UpdaterApplicationContext(args));
+        Application.Run(new UpdaterApplicationContext());
+    }
+
+    private static void ParseArgs(string[] args)
+    {
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (string.Equals(args[i], "--from-game", StringComparison.OrdinalIgnoreCase))
+            {
+                _fromGame = true;
+            }
+            else if (string.Equals(args[i], "--manifest-url", StringComparison.OrdinalIgnoreCase)
+                     && i + 1 < args.Length)
+            {
+                _manifestUrlOverride = args[++i];
+            }
+        }
     }
 
     private sealed class UpdaterApplicationContext : ApplicationContext
     {
         private readonly string _gameDir;
 
-        public UpdaterApplicationContext(string[] args)
+        public UpdaterApplicationContext()
         {
             _gameDir = AppContext.BaseDirectory.TrimEnd('\\', '/');
             _progress = new ProgressForm();
@@ -49,6 +70,11 @@ internal static class Program
 
             try
             {
+                if (_fromGame || IsGameRunning())
+                {
+                    _progress?.SetBusy("รอเกมปิดก่อนติดตั้งแพท...");
+                    await WaitForGameExit();
+                }
                 await RunUpdateCheck(_gameDir);
             }
             catch (Exception e)
@@ -65,6 +91,19 @@ internal static class Program
         }
     }
 
+    private static async Task WaitForGameExit()
+    {
+        for (int i = 0; i < 120; i++)
+        {
+            if (!IsGameRunning())
+            {
+                return;
+            }
+            await Task.Delay(500);
+        }
+        Console.WriteLine("[อัปเดต] เกมยังไม่ปิดภายใน 60 วินาที — ลองแพตช์ต่อ (ถ้า DLL ถูกล็อกจะข้าม)");
+    }
+
     private static void SetProgressBusy(string message) => _progress?.SetBusy(message);
 
     private static async Task RunUpdateCheck(string gameDir)
@@ -72,32 +111,39 @@ internal static class Program
         SetProgressBusy("กำลังตรวจสอบแพท...");
         if (IsGameRunning())
         {
-            Console.WriteLine("[อัปเดต] เกมกำลังเปิดอยู่แล้ว ข้ามการเช็คอัปเดตรอบนี้");
-            return;
+            SetProgressBusy("รอเกมปิดก่อนติดตั้งแพท...");
+            await WaitForGameExit();
         }
 
         string localVersion = ReadLocalVersion(gameDir);
-        string manifestUrl = ReadManifestUrl(gameDir);
         Console.WriteLine($"[อัปเดต] เวอร์ชันปัจจุบัน: {localVersion}");
 
-        using HttpClient http = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
-        http.DefaultRequestHeaders.UserAgent.ParseAdd("DurangoUpdater/1.0");
+        Manifest? manifest = await FetchManifestFromKnownSources(gameDir);
+        manifest?.Normalize();
 
-        Manifest? manifest;
-        try
+        if (manifest == null || string.IsNullOrEmpty(manifest.Version))
         {
-            string json = await http.GetStringAsync(manifestUrl);
-            manifest = JsonSerializer.Deserialize<Manifest>(json, JsonOpts);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("[อัปเดต] เช็คอัปเดตไม่ได้ (" + e.Message + ") — เล่นเวอร์ชันปัจจุบันต่อ");
+            Console.WriteLine("[อัปเดต] ไม่พบรายการแพท — เปิดเกมเวอร์ชันเดิมต่อ");
+            _progress?.SetStatus("ไม่พบแพทใหม่ — กำลังเปิดเกม...");
+            await Task.Delay(500);
             return;
         }
 
-        if (manifest == null || string.IsNullOrEmpty(manifest.Version) || string.IsNullOrEmpty(manifest.ZipUrl))
+        bool hasPatches = manifest.Files != null && manifest.Files.Count > 0;
+        if (!hasPatches && string.IsNullOrEmpty(manifest.ZipUrl))
         {
-            Console.WriteLine("[อัปเดต] manifest ไม่สมบูรณ์ — ข้าม");
+            Console.WriteLine("[อัปเดต] manifest ไม่มีรายการแพตช์และไม่มี zip — ข้าม");
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(manifest.Notes))
+        {
+            Console.WriteLine("[อัปเดต] " + manifest.Notes);
+        }
+
+        if (hasPatches)
+        {
+            await ApplyDllPatches(gameDir, manifest, localVersion);
             return;
         }
 
@@ -107,20 +153,135 @@ internal static class Program
             return;
         }
 
-        Console.WriteLine($"[อัปเดต] พบเวอร์ชันใหม่: {manifest.Version} — กำลังดาวน์โหลด...");
-        if (!string.IsNullOrEmpty(manifest.Notes))
+        Console.WriteLine($"[อัปเดต] พบเวอร์ชันใหม่: {manifest.Version} — โหลดชุดเต็ม (ไม่มีรายการ DLL)");
+        await ApplyFullZip(gameDir, manifest);
+    }
+
+    /// <summary>
+    /// โหลดเฉพาะไฟล์ที่ hash ไม่ตรง (ปกติคือ Assembly-CSharp.dll ไม่กี่ MB)
+    /// ดาวน์โหลดลง temp + ตรวจ SHA256 ครบก่อน แล้วค่อยทับของจริง
+    /// </summary>
+    private static async Task ApplyDllPatches(string gameDir, Manifest manifest, string localVersion)
+    {
+        List<PatchFile> needed = new List<PatchFile>();
+        foreach (PatchFile file in manifest.Files!)
         {
-            Console.WriteLine("[อัปเดต] " + manifest.Notes);
+            if (!IsSafeRelPath(file.Path) || string.IsNullOrWhiteSpace(file.Url) || string.IsNullOrWhiteSpace(file.Sha256))
+            {
+                Console.WriteLine("[อัปเดต] ข้ามรายการแพตช์ที่ไม่ถูกต้อง: " + (file.Path ?? "?"));
+                continue;
+            }
+            if (file.Path!.EndsWith("DurangoUpdater.exe", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+            string dest = Path.Combine(gameDir, file.Path.Replace('/', Path.DirectorySeparatorChar));
+            if (File.Exists(dest))
+            {
+                string localHash = await ComputeSha256(dest);
+                if (string.Equals(localHash, file.Sha256, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+            }
+            needed.Add(file);
         }
 
+        if (needed.Count == 0 && manifest.Version == localVersion)
+        {
+            Console.WriteLine("[อัปเดต] DLL ตรงกับเซิร์ฟอยู่แล้ว");
+            return;
+        }
+
+        if (needed.Count == 0)
+        {
+            // 🐛 [แก้เอง] 1 ก.ย. 2026 — เดิมปรับเลขเวอร์ชันทันทีที่ "ไม่มีไฟล์ต้องโหลด"
+            //    แต่ manifest บางแหล่ง (เช่น /launcher/version ของเซิร์ฟ) ส่งมาแค่ version+notes
+            //    **ไม่มีรายการไฟล์เลย** ⇒ needed ว่างเพราะไม่มีอะไรให้เทียบ ไม่ใช่เพราะไฟล์ครบ
+            //    ผลคือเขียน version.txt เป็นเลขใหม่ทั้งที่ไฟล์ยังเป็นของเก่า
+            //    ⇒ พอแพตช์นั้นออกมาจริง ผู้เล่นจะไม่ได้รับ เพราะเลขตรงกันไปแล้ว
+            //    (เจอจริงตอนเทส: เซิร์ฟบอก 0.1.2 → เขียน 0.1.2 โดยไม่โหลดอะไรเลย)
+            if (manifest.Files!.Count == 0)
+            {
+                Console.WriteLine("[อัปเดต] manifest ไม่มีรายการไฟล์ — ไม่ขยับเลขเวอร์ชัน (กันเลขวิ่งไปก่อนไฟล์)");
+                return;
+            }
+            WriteLocalVersion(gameDir, manifest.Version!);
+            Console.WriteLine("[อัปเดต] ไฟล์ครบแล้ว ปรับเลขเวอร์ชันเป็น " + manifest.Version);
+            return;
+        }
+
+        Console.WriteLine($"[อัปเดต] ต้องแพตช์ {needed.Count} ไฟล์ (ไม่โหลด zip ทั้งเกม)");
+        string stageDir = Path.Combine(Path.GetTempPath(), "durango-patch-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(stageDir);
+        try
+        {
+            using HttpClient http = new HttpClient { Timeout = TimeSpan.FromMinutes(10) };
+            http.DefaultRequestHeaders.UserAgent.ParseAdd("DurangoUpdater/1.1");
+            long totalKnown = needed.Sum(f => f.Size > 0 ? f.Size : 0);
+            long receivedAll = 0;
+            foreach (PatchFile file in needed)
+            {
+                string staged = Path.Combine(stageDir, Path.GetFileName(file.Path)!);
+                SetProgressBusy("กำลังดาวน์โหลด " + Path.GetFileName(file.Path));
+                await DownloadToFile(http, file.Url!, staged, file.Size, receivedAll, totalKnown);
+                receivedAll += new FileInfo(staged).Length;
+                string actual = await ComputeSha256(staged);
+                if (!string.Equals(actual, file.Sha256, StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("[อัปเดต] hash ไม่ตรง: " + file.Path + " — ยกเลิก ไม่แตะเกมจริง");
+                    return;
+                }
+            }
+
+            SetProgressBusy("กำลังติดตั้งแพท...");
+            foreach (PatchFile file in needed)
+            {
+                string staged = Path.Combine(stageDir, Path.GetFileName(file.Path)!);
+                string dest = Path.Combine(gameDir, file.Path!.Replace('/', Path.DirectorySeparatorChar));
+                Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
+                bool copied = false;
+                for (int attempt = 0; attempt < 20; attempt++)
+                {
+                    try
+                    {
+                        File.Copy(staged, dest, overwrite: true);
+                        copied = true;
+                        break;
+                    }
+                    catch (IOException)
+                    {
+                        await Task.Delay(400);
+                    }
+                }
+                if (!copied)
+                {
+                    Console.WriteLine("[อัปเดต] วาง " + file.Path + " ไม่ได้ (ไฟล์ถูกล็อก) — ยกเลิก");
+                    return;
+                }
+                Console.WriteLine("[อัปเดต] วาง " + file.Path);
+            }
+            WriteLocalVersion(gameDir, manifest.Version!);
+            Console.WriteLine("[อัปเดต] แพตช์เป็นเวอร์ชัน " + manifest.Version + " แล้ว");
+            _progress?.SetComplete("ติดตั้งเสร็จแล้ว — กำลังเปิดเกม...");
+            await Task.Delay(500);
+        }
+        finally
+        {
+            TryDeleteDir(stageDir);
+        }
+    }
+
+    private static async Task ApplyFullZip(string gameDir, Manifest manifest)
+    {
         string tempRoot = Path.Combine(Path.GetTempPath(), "durango-update-" + Guid.NewGuid().ToString("N"));
         string zipPath = tempRoot + ".zip";
         string extractDir = tempRoot + "-extract";
-
         try
         {
-            // ── 1) โหลดไฟล์ทั้งก้อนลงเครื่องชั่วคราวก่อน (ยังไม่แตะโฟลเดอร์เกมจริงเลย) ──
-            SetProgressBusy("กำลังดาวน์โหลดแพท...");
+            SetProgressBusy("กำลังดาวน์โหลดชุดเต็ม...");
+            using HttpClient http = new HttpClient { Timeout = TimeSpan.FromHours(1) };
+            http.DefaultRequestHeaders.UserAgent.ParseAdd("DurangoUpdater/1.1");
             using HttpResponseMessage downloadResponse = await http.GetAsync(
                 manifest.ZipUrl, HttpCompletionOption.ResponseHeadersRead);
             downloadResponse.EnsureSuccessStatusCode();
@@ -139,55 +300,64 @@ internal static class Program
                 }
             }
             _progress?.SetComplete("ดาวน์โหลดเสร็จแล้ว — กำลังตรวจสอบไฟล์...");
-
-            // ── 2) ตรวจ SHA256 — ไม่ตรง = หยุดทันที ไม่แตะโฟลเดอร์เกมจริงเลย ──
             if (!string.IsNullOrEmpty(manifest.Sha256))
             {
                 string actual = await ComputeSha256(zipPath);
                 if (!string.Equals(actual, manifest.Sha256, StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.WriteLine("[อัปเดต] ไฟล์ที่โหลดมาไม่ตรง SHA256 ที่คาดไว้ — ยกเลิก (อาจโหลดขาด/เน็ตมีปัญหา)");
+                    Console.WriteLine("[อัปเดต] ไฟล์ที่โหลดมาไม่ตรง SHA256 ที่คาดไว้ — ยกเลิก");
                     return;
                 }
-                Console.WriteLine("[อัปเดต] ตรวจ SHA256 ผ่าน");
             }
-
-            // ── 3) แตกไฟล์ลงโฟลเดอร์ชั่วคราว (ยังไม่แตะโฟลเดอร์เกมจริง) ──
             SetProgressBusy("กำลังติดตั้งแพท...");
             Directory.CreateDirectory(extractDir);
             ZipFile.ExtractToDirectory(zipPath, extractDir, overwriteFiles: true);
-
-            // 🐛 พบจริงตอนเทส: zip ที่แจกจริง (package-game.ps1) มีโฟลเดอร์ห่อชั้นนอกอีกชั้น
-            // (เช่น "DurangoTH\DurangoV2.exe" ไม่ใช่ "DurangoV2.exe" ตรง root) — เช็คแบบเดิมที่ดูแค่
-            // root ตรง ๆ จะไม่เจอไฟล์เลย "ทุกครั้ง" แล้วยกเลิกอัปเดตแบบเงียบ ๆ (fallback ไปเปิดเวอร์ชันเดิม
-            // โดยไม่มี error ให้เห็น) ⇒ อัปเดตจริงไม่เคยทำงานเลยสักครั้งโดยไม่มีใครรู้ตัว
-            // แก้โดยหา DurangoV2.exe แบบไล่ลึกลงไปในโฟลเดอร์ที่แตกออกมา แล้วใช้โฟลเดอร์ที่เจอไฟล์นั้นเป็น
-            // root จริงสำหรับ mirror แทน — รองรับทั้ง zip ที่แบนราบและ zip ที่ห่อโฟลเดอร์ไว้ชั้นเดียว
-            string? foundExe = Directory.GetFiles(extractDir, "DurangoV2.exe", SearchOption.AllDirectories)
+            string? foundExe = GameExeNames
+                .SelectMany(n => Directory.GetFiles(extractDir, n, SearchOption.AllDirectories))
                 .FirstOrDefault();
             if (foundExe == null)
             {
-                Console.WriteLine("[อัปเดต] ไฟล์ที่แตกออกมาไม่สมบูรณ์ (ไม่เจอ DurangoV2.exe) — ยกเลิก");
+                Console.WriteLine("[อัปเดต] ไฟล์ที่แตกออกมาไม่สมบูรณ์ — ยกเลิก");
                 return;
             }
-            string sourceRoot = Path.GetDirectoryName(foundExe)!;
-            Console.WriteLine("[อัปเดต] แตกไฟล์เรียบร้อย กำลังติดตั้ง...");
-
-            // ── 4) สลับเข้าโฟลเดอร์เกมจริง — จุดเดียวที่แตะไฟล์จริง ทำก็ต่อเมื่อของใหม่ครบแล้วเท่านั้น
-            //    เว้น AppData/AppData2 (เซฟตัวละครในเครื่อง) + server.txt + update-manifest-url.txt
-            //    (ค่าที่ผู้เล่น/ผู้ดูแลตั้งเองในเครื่องนี้ ไม่ใช่ของที่มากับชุดแจก) ไม่ให้โดนทับ/ลบ ──
-            RunRobocopyMirror(sourceRoot, gameDir);
-
-            WriteLocalVersion(gameDir, manifest.Version);
-            Console.WriteLine("[อัปเดต] อัปเดตเป็นเวอร์ชัน " + manifest.Version + " เรียบร้อยแล้ว");
+            RunRobocopyMirror(Path.GetDirectoryName(foundExe)!, gameDir);
+            WriteLocalVersion(gameDir, manifest.Version!);
             _progress?.SetComplete("ติดตั้งเสร็จแล้ว — กำลังเปิดเกม...");
-            await Task.Delay(600);
+            await Task.Delay(500);
         }
         finally
         {
             TryDelete(zipPath);
             TryDeleteDir(extractDir);
         }
+    }
+
+    private static async Task DownloadToFile(HttpClient http, string url, string dest, long expectedSize, long receivedBefore, long totalKnown)
+    {
+        using HttpResponseMessage res = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        res.EnsureSuccessStatusCode();
+        long thisTotal = res.Content.Headers.ContentLength ?? expectedSize;
+        long thisReceived = 0;
+        byte[] buffer = new byte[256 * 1024];
+        await using FileStream fs = new FileStream(dest, FileMode.Create, FileAccess.Write);
+        using Stream dl = await res.Content.ReadAsStreamAsync();
+        int read;
+        while ((read = await dl.ReadAsync(buffer.AsMemory(0, buffer.Length))) > 0)
+        {
+            await fs.WriteAsync(buffer.AsMemory(0, read));
+            thisReceived += read;
+            long overall = receivedBefore + thisReceived;
+            long overallTotal = totalKnown > 0 ? totalKnown : thisTotal;
+            _progress?.SetProgress(overall, overallTotal);
+        }
+    }
+
+    private static bool IsSafeRelPath(string? rel)
+    {
+        if (string.IsNullOrWhiteSpace(rel)) return false;
+        if (Path.IsPathRooted(rel)) return false;
+        if (rel.Contains("..", StringComparison.Ordinal)) return false;
+        return true;
     }
 
     private static void RunRobocopyMirror(string source, string dest)
@@ -217,17 +387,28 @@ internal static class Program
         }
     }
 
+    /// <summary>
+    /// ชื่อ exe ของตัวเกมที่รองรับ — ชุดเก่าใช้ `DurangoV2.exe` ชุดใหม่ (DurangoTH-v2) ใช้ `Durango.exe`
+    /// เรียงตามลำดับที่จะลองหา ต้องรับทั้งคู่ ไม่งั้นชุดแจกคนละรุ่นจะเปิดไม่ขึ้น/อัปเดตไม่ได้แบบเงียบ ๆ
+    /// </summary>
+    private static readonly string[] GameExeNames = { "Durango.exe", "DurangoV2.exe" };
+
     private static bool IsGameRunning()
     {
-        return Process.GetProcessesByName("DurangoV2").Length > 0;
+        return GameExeNames
+            .Select(Path.GetFileNameWithoutExtension)
+            .Any(n => Process.GetProcessesByName(n).Length > 0);
     }
 
     private static void LaunchGame(string gameDir)
     {
-        string exePath = Path.Combine(gameDir, "DurangoV2.exe");
-        if (!File.Exists(exePath))
+        string? exePath = GameExeNames
+            .Select(n => Path.Combine(gameDir, n))
+            .FirstOrDefault(File.Exists);
+        if (exePath == null)
         {
-            Console.WriteLine("ไม่พบ DurangoV2.exe — ตรวจว่าแตกไฟล์ zip ครบทั้งโฟลเดอร์แล้วหรือยัง");
+            Console.WriteLine("ไม่พบ " + string.Join(" หรือ ", GameExeNames)
+                + " — ตรวจว่าแตกไฟล์ zip ครบทั้งโฟลเดอร์แล้วหรือยัง");
             Console.WriteLine("(กด Enter เพื่อปิดหน้าต่างนี้)");
             Console.ReadLine();
             return;
@@ -254,6 +435,12 @@ internal static class Program
             WorkingDirectory = gameDir,
             UseShellExecute = false
         };
+        // 🐛 [แก้เอง] 29 ส.ค. 2026 — เดิมคำนวณ `server` จาก server.txt ถูกต้อง แต่ไม่เคยส่งต่อให้ตัวเกมเลย
+        // (ขาดบรรทัดนี้) ⇒ DurangoV2.exe เปิดมาแล้วไม่มี DURANGO_AUTOCONNECT ⇒ PatchAutoConnect ใน DLL
+        // (เช็ค env ตัวนี้ใน Server.BeginServer) ไม่ทำงาน ⇒ ปุ่ม "Dinoworld Server" fallback ไปที่
+        // Preferences "last_connect_ip" (default 127.0.0.1) แทน — ผู้เล่นใหม่ที่ไม่เคยกรอก IP เอง
+        // ผ่านเมนู "เยี่ยมชมเกาะเพื่อน" เลยต่อเข้าเครื่องตัวเองเปล่า ๆ ทุกครั้ง
+        psi.EnvironmentVariables["DURANGO_AUTOCONNECT"] = server;
         Process.Start(psi);
     }
 
@@ -281,17 +468,81 @@ internal static class Program
         File.WriteAllText(Path.Combine(gameDir, "version.txt"), version);
     }
 
-    private static string ReadManifestUrl(string gameDir)
+    private static async Task<Manifest?> FetchManifestFromKnownSources(string gameDir)
+    {
+        List<string> urls = new List<string>();
+        void AddUrl(string? url)
+        {
+            if (string.IsNullOrWhiteSpace(url)) return;
+            url = url.Trim();
+            if (urls.Exists(u => string.Equals(u, url, StringComparison.OrdinalIgnoreCase))) return;
+            urls.Add(url);
+        }
+
+        AddUrl(_manifestUrlOverride);
+        string server = ReadServerTarget(gameDir);
+        if (!string.IsNullOrEmpty(server))
+        {
+            if (!server.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+                && !server.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                server = "http://" + server;
+            }
+            AddUrl(server.TrimEnd('/') + "/launcher/version");
+        }
+        AddUrl(ReadManifestUrlFile(gameDir));
+        AddUrl(DefaultManifestUrl);
+
+        foreach (string url in urls)
+        {
+            SetProgressBusy("กำลังตรวจสอบแพท...");
+            Console.WriteLine("[อัปเดต] เช็ค manifest: " + url);
+            Manifest? manifest = await FetchManifest(url);
+            manifest?.Normalize();
+            if (manifest == null || string.IsNullOrEmpty(manifest.Version))
+            {
+                continue;
+            }
+            bool hasPatches = manifest.Files != null && manifest.Files.Count > 0;
+            if (!hasPatches && string.IsNullOrEmpty(manifest.ZipUrl))
+            {
+                continue;
+            }
+            return manifest;
+        }
+        return null;
+    }
+
+    private static async Task<Manifest?> FetchManifest(string manifestUrl)
+    {
+        try
+        {
+            using HttpClient probe = new HttpClient(new HttpClientHandler { AllowAutoRedirect = true })
+            {
+                Timeout = TimeSpan.FromSeconds(30)
+            };
+            probe.DefaultRequestHeaders.UserAgent.ParseAdd("DurangoUpdater/1.2");
+            string json = await probe.GetStringAsync(manifestUrl);
+            return JsonSerializer.Deserialize<Manifest>(json, JsonOpts);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("[อัปเดต] โหลด manifest ไม่ได้จาก " + manifestUrl + " (" + e.Message + ")");
+            return null;
+        }
+    }
+
+    private static string? ReadManifestUrlFile(string gameDir)
     {
         string path = Path.Combine(gameDir, "update-manifest-url.txt");
-        if (!File.Exists(path)) return DefaultManifestUrl;
+        if (!File.Exists(path)) return null;
         foreach (string line in File.ReadAllLines(path))
         {
             string t = line.Trim();
             if (t.Length == 0 || t.StartsWith("#")) continue;
             return t;
         }
-        return DefaultManifestUrl;
+        return null;
     }
 
     private static async Task<string> ComputeSha256(string filePath)
@@ -316,11 +567,46 @@ internal static class Program
         PropertyNameCaseInsensitive = true
     };
 
+    /// <summary>
+    /// รายการแพตช์ที่เซิร์ฟ/GitHub ส่งมา
+    ///
+    /// 🐛 [แก้เอง] 1 ก.ย. 2026 — **ต้นเหตุที่ระบบอัปเดตไม่เคยทำงานเลย**
+    /// เดิมประกาศคู่กันทั้ง `Sha256`/`sha256` และ `Files`/`files` เพื่อรับ JSON ทั้งสองแบบ
+    /// แต่ตัวอ่าน JSON ตั้ง `PropertyNameCaseInsensitive = true` ไว้ ⇒ สองชื่อนั้นชนกัน
+    /// System.Text.Json โยน "The JSON property name for '...sha256' collides with another property"
+    /// **ตั้งแต่ก่อนอ่านค่าแรก** ⇒ manifest พังทุกแหล่ง ⇒ เข้าทาง fallback "ไม่พบรายการแพตช์
+    /// เปิดเกมเวอร์ชันเดิมต่อ" แบบเงียบ ๆ ไม่มีใครรู้ว่าอัปเดตไม่เคยติด
+    ///
+    /// ⇒ ไม่ต้องประกาศซ้ำ: PropertyNameCaseInsensitive จับ `sha256` → `Sha256` ให้เองอยู่แล้ว
+    ///   เหลือแค่ `zip_url` ที่เป็นคนละชื่อจริง ๆ (มี _) ต้องใช้ JsonPropertyName กำกับ
+    /// </summary>
     private sealed class Manifest
     {
         public string? Version { get; set; }
         public string? ZipUrl { get; set; }
+
+        /// <summary>ชื่อแบบ snake_case ที่ /launcher/version ของเซิร์ฟใช้</summary>
+        [JsonPropertyName("zip_url")]
+        public string? ZipUrlSnake { get; set; }
+
         public string? Sha256 { get; set; }
         public string? Notes { get; set; }
+        public List<PatchFile>? Files { get; set; }
+
+        public void Normalize()
+        {
+            if (string.IsNullOrEmpty(ZipUrl))
+            {
+                ZipUrl = ZipUrlSnake;
+            }
+        }
+    }
+
+    private sealed class PatchFile
+    {
+        public string? Path { get; set; }
+        public string? Url { get; set; }
+        public string? Sha256 { get; set; }
+        public long Size { get; set; }
     }
 }

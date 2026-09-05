@@ -147,6 +147,11 @@ if (-not $SkipLaunch) {
     # a path with spaces.  Keep this one command line so Unity writes client.log
     # inside the game directory, rather than a stray file named "Desktop\\Durango".
     $clientLog = Join-Path $gameDir 'client.log'
+    # [4 ก.ย. 2026] เกมบังคับเปิดผ่าน launcher (LauncherGate) — harness ทำเหมือน launcher เป๊ะ:
+    # เขียน launcher.session (token สุ่ม) + ตั้ง env DINOWORLD_LAUNCH ให้ตรง (ไม่มี bypass พิเศษ)
+    $launchToken = [Guid]::NewGuid().ToString('N')
+    Set-Content -Path (Join-Path $gameDir 'launcher.session') -Value $launchToken -Encoding ascii -NoNewline
+    $env:DINOWORLD_LAUNCH = $launchToken
     $launchArgs = '-force-d3d11 -screen-fullscreen 0 -screen-width 800 -screen-height 458 -logFile "' + $clientLog + '"'
     Start-Process -FilePath (Join-Path $gameDir "DurangoV2.exe") `
       -ArgumentList $launchArgs `

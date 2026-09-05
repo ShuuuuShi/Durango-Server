@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Durango.Network;
 using DurangoServer.Modding;
@@ -41,19 +41,19 @@ public partial class ServerPlayer
     {
         if (Dead)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (msg.ItemIds == null || msg.ItemIds.Length == 0 || msg.ItemIds.Length > MaxDumpPerRequest)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         for (int i = 0; i < msg.ItemIds.Length; i++)
         {
             if (IsItemLocked(msg.ItemIds[i]))
             {
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
         }
@@ -70,7 +70,7 @@ public partial class ServerPlayer
             List<Item> dumped = _world.TakeFromBox(boxId, msg.ItemIds, msg.ItemIds.Length);
             if (dumped.Count == 0)
             {
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             var dumpedIds = new string[dumped.Count];
@@ -99,7 +99,7 @@ public partial class ServerPlayer
         }
         if (removed.Count == 0)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -119,17 +119,17 @@ public partial class ServerPlayer
     {
         if (Dead)
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (string.IsNullOrEmpty(msg.ItemId))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (IsItemLocked(msg.ItemId))
         {
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -139,7 +139,7 @@ public partial class ServerPlayer
             // ในเกมจริงอาหารมี "เวลาย่อย" — ไม่มีตัวนี้ก็รัวกินทั้งกระเป๋ารวดเดียวจนสตามินาเต็มตลอด
             Console.WriteLine("[item] ปฏิเสธ {0}: ยังอิ่มอยู่ (อีก {1:F0} วิ)", Name, _canEatAt - now);
             Send(new Info { Text = "เพิ่งกินไป รออีกสักครู่" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -150,14 +150,14 @@ public partial class ServerPlayer
             if (idx < 0)
             {
                 Console.WriteLine("[item] ปฏิเสธ {0}: ไม่มีไอเทม {1} ในกระเป๋า", Name, msg.ItemId);
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             item = _inventory[idx];
             if (!IsEdible(item))
             {
                 Console.WriteLine("[item] ปฏิเสธ {0}: {1} ({2}) กินไม่ได้", Name, item.Name, item.Prototype);
-                Send(default(Abort), header.Seq);
+                Send(Aborts.Reason(), header.Seq);
                 return;
             }
             ForgetInventoryItem(item.Id);
@@ -217,6 +217,11 @@ public partial class ServerPlayer
 
         RestoreStamina(stamina, fatigueRelief);
         RestoreSatiety(food.Satiety);
+        // ข้อมูลอาหารจริงมีคอลัมน์ Water (0/1) — ของที่ดับกระหายได้จะติดบัพ drink_water แทน thirsty
+        if (food.Water > 0f)
+        {
+            ApplyDrinkWater();
+        }
         ApplyFoodStatusEffect(food, level);
         if (life > 0f)
         {
@@ -225,6 +230,10 @@ public partial class ServerPlayer
         if (raw && cfg.RawFoodFatigue > 0f)
         {
             AddFatigue(cfg.RawFoodFatigue);
+        }
+        if (raw)
+        {
+            ApplyRawFoodStomachache();
         }
 
         Console.WriteLine("[item] {0} กิน {1}{2} (+{3:F0} สตามินา{4}{5})",

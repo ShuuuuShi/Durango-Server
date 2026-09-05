@@ -1,0 +1,224 @@
+{
+  "3001": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3002": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3003": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3004": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3016": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3060": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3023": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3046": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3054": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3057": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3058": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3064": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3014": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3053": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3015": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3043": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3071": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3028": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3072": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3030": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3075": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3047": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3000": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3019": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3029": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3031": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3067": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3018": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3042": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3077": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3073": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3076": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3009": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3017": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3021": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3074": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3024": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3052": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3006": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3007": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3005": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3068": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3008": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3044": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3066": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3027": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3069": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3013": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3011": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3012": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3010": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3025": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3026": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3020": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3022": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3049": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3070": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3033": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3032": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3034": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3035": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3036": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3037": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3039": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3038": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3040": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4500000000)"
+  },
+  "3041": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3045": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3048": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4000000000)"
+  },
+  "3050": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3051": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3055": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3056": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  },
+  "3059": {
+    "required_exp": "100+Max(0, (level-20)*(level*2)) -0.0007 *( level * level * level) + 0.1412 * (level * level) + 6.8978 * level - 3.3 +Max(0, (level-50)*(level*13.5))+Max(0, -0.4805*(level*level)+40.381*level-601.8)+((level) *(level+1)*(level+3)*(level+4)*(level+5)*(level+7)*(level+9)*(level+10) / 4200000000)"
+  }
+}

@@ -112,11 +112,14 @@ public partial class ServerPlayer
         // WarpToPort does not expose the chosen dock entity id to the client.
         // When the request carries no id, accept it only if the authoritative
         // server position is actually next to one of this island's docks.
-        foreach (var poi in AllPOIs())
+        // Read the blueprint by artifact id here as well; this avoids relying on
+        // any derived POI projection while validating the travel gate.
+        foreach (AppearArtifact artifact in _world.SnapshotArtifacts())
         {
-            if (poi.Type == Shared.System.PointOfInterest.Port && IsWithinReach(poi.Tile))
+            if (_world.TryGetArtifactBlueprint(artifact.EntityId, out string blueprintId)
+                && string.Equals(blueprintId, "dock", StringComparison.Ordinal))
             {
-                return true;
+                if (IsWithinReach(artifact.Tile)) return true;
             }
         }
         return false;
@@ -132,7 +135,7 @@ public partial class ServerPlayer
         if (!IsAtPort(msg.EntityId, msg.Tile))
         {
             Console.WriteLine("[island] ปฏิเสธรายการเกาะของ {0}: ไม่ได้อยู่ที่ท่าเรือจริง", Name);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
@@ -172,37 +175,38 @@ public partial class ServerPlayer
         if (!IsAtPort(msg.EntityId, msg.Tile))
         {
             Send(new Info { Text = "ต้องอยู่ที่ท่าเรือก่อนจึงจะย้ายเกาะได้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         IslandInfo destination = IslandRegistry.Find(msg.RegionId);
         if (destination == null)
         {
             Send(new Info { Text = "ไม่พบเกาะปลายทาง" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (IslandRegistry.Current != null
             && string.Equals(destination.Id, IslandRegistry.Current.Id, StringComparison.OrdinalIgnoreCase))
         {
             Send(new Info { Text = "คุณอยู่เกาะนี้อยู่แล้ว" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (Dead)
         {
             Send(new Info { Text = "ต้องฟื้นก่อนจึงจะเดินทางได้" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
         if (Level < destination.RequiredLevel)
         {
             Send(new Info { Text = $"เกาะนี้ต้องเลเวล {destination.RequiredLevel} ขึ้นไป" }, header.Seq);
-            Send(default(Abort), header.Seq);
+            Send(Aborts.Reason(), header.Seq);
             return;
         }
 
         Send(default(OK), header.Seq);
+        QuestProgress(QuestData.Goal.IslandTravel);
         Console.WriteLine("[island] {0} เดินทางจากท่าเรือไป {1}", Name, destination.Id);
         TravelTo(destination.Id);
     }

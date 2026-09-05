@@ -1,0 +1,409 @@
+{
+  "sunset": {
+    "chapters": [
+      {
+        "chapter": 1,
+        "description": {
+          "곳곳에서 워프 이상 현상이 일어나고 있다. K는 회사와 사이가 좋지 않고, 구호 작업에 도움을 요청한다.": null
+        },
+        "title": {
+          "이상 징후": null
+        },
+        "movie": {},
+        "image": "journal_illust_1",
+        "open_on_clear": false,
+        "quests": [
+          "mainstory_start",
+          "mainstory_chapter1_1",
+          "mainstory_chapter1_2",
+          "mainstory_chapter1_3",
+          "mainstory_chapter1_4",
+          "mainstory_chapter1_5",
+          "mainstory_chapter1_6"
+        ]
+      },
+      {
+        "chapter": 1,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_01",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 2,
+        "description": {
+          "암호문이 발견된다. 숲이란 단어가 의심스럽다. K와 함께 암호문을 더 탐색해 의문을 해결하고자 한다.": null
+        },
+        "title": {
+          "숲": null
+        },
+        "movie": {},
+        "image": "journal_illust_4",
+        "open_on_clear": false,
+        "quests": [
+          "mainstory_chapter2_1",
+          "mainstory_chapter2_2",
+          "mainstory_chapter2_3",
+          "mainstory_chapter2_4",
+          "mainstory_chapter2_5",
+          "mainstory_chapter2_6",
+          "mainstory_chapter2_7",
+          "mainstory_chapter2_8",
+          "mainstory_chapter2_9",
+          "mainstory_chapter2_10",
+          "mainstory_chapter2_11",
+          "mainstory_chapter2_12",
+          "mainstory_chapter2_13",
+          "mainstory_chapter2_14",
+          "mainstory_chapter2_15",
+          "mainstory_chapter2_16",
+          "mainstory_chapter2_17",
+          "mainstory_chapter2_18"
+        ]
+      },
+      {
+        "chapter": 2,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_03",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 3,
+        "description": {
+          "위원회의 X는 K에게 어떤 메시지를 보낸다. 메시지를 따라 다른 메시지가 이어진다. 암호로 감춰 놓은 진실이 있다.": null
+        },
+        "title": {
+          "메마른 양심들": null
+        },
+        "movie": {},
+        "image": "journal_illust_5",
+        "open_on_clear": false,
+        "quests": [
+          "mainstory_chapter3_1",
+          "mainstory_chapter3_2",
+          "mainstory_chapter3_3",
+          "mainstory_chapter3_4",
+          "mainstory_chapter3_5",
+          "mainstory_chapter3_6",
+          "mainstory_chapter3_7",
+          "mainstory_chapter3_8",
+          "mainstory_chapter3_9",
+          "mainstory_chapter3_10",
+          "mainstory_chapter3_11",
+          "mainstory_chapter3_12",
+          "mainstory_chapter3_13",
+          "mainstory_chapter3_14",
+          "mainstory_chapter3_15"
+        ]
+      },
+      {
+        "chapter": 3,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_04",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 4,
+        "description": {
+          "워프와 조난, 생존 이 모든 사태에 그들은 책임이 있다. K는 이 문제에 대응책을 함께 고민하기를 원한다.": null
+        },
+        "title": {
+          "우선 순위": null
+        },
+        "movie": {},
+        "image": "journal_illust_6",
+        "open_on_clear": false,
+        "quests": [
+          "mainstory_chapter4_1",
+          "mainstory_chapter4_2",
+          "mainstory_chapter4_3",
+          "mainstory_chapter4_4",
+          "mainstory_chapter4_5",
+          "mainstory_chapter4_6",
+          "mainstory_chapter4_7",
+          "mainstory_chapter4_8",
+          "mainstory_chapter4_9",
+          "mainstory_chapter4_10",
+          "mainstory_chapter4_11",
+          "mainstory_chapter4_12",
+          "mainstory_chapter4_13",
+          "mainstory_chapter4_14",
+          "mainstory_chapter4_15",
+          "mainstory_chapter4_16",
+          "mainstory_chapter4_17"
+        ]
+      },
+      {
+        "chapter": 4,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_05",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 4,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_06",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 4,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_07",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 5,
+        "description": {
+          "알아낸 진실을 워프물질을 활용한 레이더로 듀랑고 전역에 알리고자 한다.": null
+        },
+        "title": {
+          "거대 통신소": null
+        },
+        "movie": {},
+        "image": "journal_illust_7",
+        "open_on_clear": false,
+        "quests": [
+          "mainstory_chapter5_1",
+          "mainstory_chapter5_2",
+          "mainstory_chapter5_3",
+          "mainstory_chapter5_4",
+          "mainstory_chapter5_5",
+          "mainstory_chapter5_6",
+          "mainstory_chapter5_7",
+          "mainstory_chapter5_8",
+          "mainstory_chapter5_9",
+          "mainstory_chapter5_10",
+          "mainstory_chapter5_11",
+          "mainstory_chapter5_12"
+        ]
+      },
+      {
+        "chapter": 5,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_08",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 6,
+        "description": {
+          "수상한 컨시어지를 따라 도착한 곳엔 의문의 실험기구가 있다.": null
+        },
+        "title": {
+          "워프게이트 사일로": null
+        },
+        "movie": {},
+        "image": "journal_illust_8",
+        "open_on_clear": false,
+        "quests": [
+          "mainstory_chapter6_1",
+          "mainstory_chapter6_2",
+          "mainstory_chapter6_3",
+          "mainstory_chapter6_4",
+          "mainstory_chapter6_5",
+          "mainstory_chapter6_6",
+          "mainstory_chapter6_7",
+          "mainstory_chapter6_8",
+          "mainstory_chapter6_9",
+          "mainstory_chapter6_10",
+          "mainstory_chapter6_11",
+          "mainstory_chapter6_12",
+          "mainstory_chapter6_13",
+          "mainstory_chapter6_14",
+          "mainstory_chapter6_15",
+          "mainstory_chapter6_16",
+          "mainstory_chapter6_17",
+          "mainstory_chapter6_18",
+          "mainstory_chapter6_19"
+        ]
+      },
+      {
+        "chapter": 6,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_09",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 6,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_10",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 7,
+        "description": {
+          "스파이들을 격파하고 듀랑고 단체들의 힘을 모아 위원회의 실험을 막아야 한다.": null
+        },
+        "title": {
+          "마지막 전투": null
+        },
+        "movie": {},
+        "image": "journal_illust_9",
+        "open_on_clear": false,
+        "quests": [
+          "mainstory_chapter7_1",
+          "mainstory_chapter7_2",
+          "mainstory_chapter7_3",
+          "mainstory_chapter7_4",
+          "mainstory_chapter7_5",
+          "mainstory_chapter7_6",
+          "mainstory_chapter7_7",
+          "mainstory_chapter7_8",
+          "mainstory_chapter7_9",
+          "mainstory_chapter7_10"
+        ]
+      },
+      {
+        "chapter": 7,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_11",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 7,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_12",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 7,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {},
+        "image": "epic_story_13",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 7,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {
+          "ru_RU": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4",
+          "zh_TW": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4",
+          "fr_FR": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4",
+          "pt_BR": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4",
+          "ko_KR": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4",
+          "id_ID": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4",
+          "en_US": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4",
+          "de_DE": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4",
+          "es_MX": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4",
+          "th_TH": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/warpgate.mp4"
+        },
+        "image": "epic_story_14",
+        "open_on_clear": true
+      },
+      {
+        "chapter": 8,
+        "description": {
+          "사일로의 여파를 피하기 위해 사람들은 개인섬으로 대피한다.": null
+        },
+        "title": {
+          "종점과 기차의 아이": null
+        },
+        "movie": {},
+        "image": "journal_illust_10",
+        "open_on_clear": false,
+        "quests": [
+          "mainstory_chapter8_1",
+          "mainstory_chapter8_2",
+          "mainstory_chapter8_3"
+        ]
+      },
+      {
+        "chapter": 8,
+        "description": {
+          "": null
+        },
+        "title": {
+          "": null
+        },
+        "movie": {
+          "ru_RU": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_ru_RU.mp4",
+          "zh_TW": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_zh_TW.mp4",
+          "fr_FR": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_fr_FR.mp4",
+          "pt_BR": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_pt_BR.mp4",
+          "ko_KR": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_ko_KR.mp4",
+          "id_ID": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_id_ID.mp4",
+          "en_US": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_en_US.mp4",
+          "de_DE": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_de_DE.mp4",
+          "es_MX": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_es_MX.mp4",
+          "th_TH": "https://s3-ap-northeast-1.amazonaws.com/videos.k.nexon.com/sunset/sunset_th_TH.mp4"
+        },
+        "image": "epic_story_15",
+        "open_on_clear": true
+      }
+    ]
+  }
+}

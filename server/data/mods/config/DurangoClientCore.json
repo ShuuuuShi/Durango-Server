@@ -1,0 +1,41 @@
+{
+  "Enabled": true,
+  "RequiredVersion": "1.0.0",
+  "SkipRegionSelection": true,
+  "WorldChunkRange": 4,
+  "ManagedMenus": [
+    "Skill",
+    "Craft",
+    "Quest",
+    "Estate"
+  ],
+  "EnabledMenus": [
+    "Skill",
+    "Craft",
+    "Quest",
+    "Estate"
+  ],
+  "HiddenMenus": [
+    "Market",
+    "Mail",
+    "Clan",
+    "Shop",
+    "Party",
+    "PvpIsland",
+    "OfficialCommunity",
+    "Offerwall",
+    "Social",
+    "Pet",
+    "Faction",
+    "Timeline",
+    "Event",
+    "LearningGuide",
+    "Notice",
+    "WarpShop",
+    "PlayerSelection",
+    "CategorySocial",
+    "Music"
+  ],
+  "RequiredVersionOfClient": "",
+  "DownloadUrl": "https://github.com/ShuuuuShi/Durango-TH-Client/releases/tag/DurangoTH"
+}

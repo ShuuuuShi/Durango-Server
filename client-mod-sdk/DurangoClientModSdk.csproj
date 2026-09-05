@@ -19,8 +19,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- [แก้เอง] 30 ส.ค. 2026 — ย้าย HintPath: โฟลเดอร์ game/ ถูกลบแล้ว (เริ่มใหม่จากต้นฉบับ)
+         ตอนนี้ชี้ไปที่เกมต้นฉบับแท้ ซึ่งเป็น reference ที่ถูกต้องกว่าเดิมด้วย -->
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\game\DurangoV2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\Original_Game\Durango_Ver_PC_Final\Durango_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
 

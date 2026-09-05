@@ -86,8 +86,76 @@ public partial class ServerPlayer
     }
 
     /// <summary>เริ่มเห็นสัตว์ตัวนี้</summary>
+    /// <summary>
+    /// [3 ก.ย. 2026] client ส่ง Ready ก่อนที่ฉากโลก (level2) จะโหลดเสร็จ — ถ้าเรายิง AppearAnimal ทั้งฝูงใส่ตอนนั้น
+    /// Unity 2017 ล้มแบบ native (0xc0000005 ใน UnityPlayer.dll ระหว่างโหลด level2 — เจอ 2 ครั้งตอนเทสฝูง)
+    /// จึงรอจน client ส่ง Move แรก (= ยืนบนเกาะแล้วจริง) ค่อยปล่อยสัตว์ผ่าน TickVisibility ตามปกติ
+    /// สิ่งปลูกสร้าง/ผู้เล่นยังส่งทันทีเหมือนเดิม (ไม่เคยมีปัญหา)
+    /// </summary>
+    private bool _sceneReady;
+    private readonly double _spawnedAt = Durango.Utils.Times.UnixTimeNow();
+    public bool SceneReady => _sceneReady;
+
+    /// <summary>ประกาศค้างถูกส่งให้คนนี้ไปแล้วหรือยัง (ต่อการเข้าเกม 1 ครั้ง)</summary>
+    private bool _announcementSent;
+
+    /// <summary>เวลาที่จะโชว์ประกาศซ้ำรอบถัดไป (0 = ไม่โชว์ซ้ำ)</summary>
+    private double _nextAnnouncementAt;
+
+    public void MarkSceneReady()
+    {
+        _sceneReady = true;
+        SendAnnouncement();          // ฉากโหลดเสร็จแล้วค่อยส่ง ไม่งั้นข้อความหายไปกับหน้าโหลด
+    }
+
+    /// <summary>
+    /// ประกาศค้างจาก config → Announcement.Text (4 ก.ย. 2026)
+    /// /admin/broadcast เห็นเฉพาะคนออนไลน์ตอนนั้นและอยู่ได้ 120 วิ — อันนี้ค้างจนกว่าจะลบข้อความ
+    /// </summary>
+    private void SendAnnouncement()
+    {
+        AnnouncementConfig cfg = ServerConfig.Current.Announcement;
+        string text = cfg?.Text;
+        if (string.IsNullOrWhiteSpace(text) || _announcementSent)
+        {
+            return;
+        }
+        _announcementSent = true;
+        double now = Durango.Utils.Times.UnixTimeNow();
+        _nextAnnouncementAt = cfg.RepeatSeconds > 0f ? now + cfg.RepeatSeconds : 0.0;
+        Send(new Info { Text = text });
+        Console.WriteLine("[announce] ส่งประกาศให้ {0}: {1}", Name, text);
+    }
+
+    /// <summary>โชว์ประกาศซ้ำตามรอบ (เรียกจาก Process)</summary>
+    private void ProcessAnnouncement(double now)
+    {
+        AnnouncementConfig cfg = ServerConfig.Current.Announcement;
+        if (cfg == null || string.IsNullOrWhiteSpace(cfg.Text))
+        {
+            _announcementSent = false;      // ลบข้อความใน config แล้ว = พร้อมประกาศอันใหม่
+            _nextAnnouncementAt = 0.0;
+            return;
+        }
+        if (!_announcementSent)
+        {
+            SendAnnouncement();
+            return;
+        }
+        if (cfg.RepeatSeconds <= 0f || _nextAnnouncementAt <= 0.0 || now < _nextAnnouncementAt)
+        {
+            return;
+        }
+        _nextAnnouncementAt = now + cfg.RepeatSeconds;
+        Send(new Info { Text = cfg.Text });
+    }
+
     public void ObserveAnimal(ServerAnimal a)
     {
+        if (!_sceneReady)
+        {
+            return;                      // TickVisibility จะส่งให้เองหลัง Move แรก
+        }
         if (a == null || string.IsNullOrEmpty(a.EntityId))
         {
             return;

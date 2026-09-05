@@ -32,6 +32,27 @@ public static class ServerConfig
         get { lock (_lock) { return _current; } }
     }
 
+    /// <summary>
+    /// เลเวลของของธรรมชาติบนเกาะนี้ (ไม้ ผลไม้ หอย หิน) — แยกจากเลเวลสัตว์
+    /// 0 ใน config = ใช้ MinLevel ของเกาะ ถ้าไม่มีเกาะใช้ 1
+    /// </summary>
+    public static int ResourceLevel
+    {
+        get
+        {
+            int v = Current?.World?.ResourceLevel ?? 0;
+            if (v > 0)
+            {
+                return v;
+            }
+            if (IslandRegistry.Current != null)
+            {
+                return Math.Max(1, IslandRegistry.Current.MinLevel);
+            }
+            return 1;
+        }
+    }
+
     /// <summary>โหลดครั้งแรกตอนเปิดเซิร์ฟ — ไม่มีไฟล์ก็เขียนไฟล์ค่าเริ่มต้นให้เลย</summary>
     public static void Load(string path)
     {
@@ -213,7 +234,33 @@ public sealed class ConfigRoot
     public ExpConfig Exp { get; set; }
     public SkillConfig Skills { get; set; }
     public StatusEffectConfig StatusEffects { get; set; }
+
+    /// <summary>ระบบป่วย — ป่วยแล้วคราฟต์ช้า/เปลืองแรง/ล้าไว/เดินช้า</summary>
+    public SicknessConfig Sickness { get; set; }
+
+    /// <summary>การเซฟอัตโนมัติ + แบ็กอัพตามรอบเวลา</summary>
+    public SaveConfig Save { get; set; }
+
+    /// <summary>ประกาศค้าง — โชว์ให้ทุกคนตอนเข้าเกม จนกว่าจะลบข้อความออก</summary>
+    public AnnouncementConfig Announcement { get; set; }
+
+    /// <summary>
+    /// ที่อยู่ฐานสำหรับโหลด asset bundle (ว่าง = เสิร์ฟจากตัวเซิร์ฟเองเหมือนเดิม)
+    ///
+    /// 🐛 [4 ก.ย. 2026] เซิร์ฟอ่าน bundle ด้วย File.ReadAllBytes บนเธรดเดียวกับลูปเกม
+    ///    ⇒ มือถือโหลดชุด bundle (908 MB / 2,117 ไฟล์) ที tps ตกจาก 120 เหลือ 0-9 ทั้งเกาะ
+    ///    (พิสูจน์แล้ว: เกาะที่ไม่มีคนโหลด bundle = 120 tps เต็มด้วยบิลด์เดียวกัน)
+    ///    ตั้งค่านี้ชี้ไป nginx/CDN แล้ว client จะไปโหลดที่นั่นแทน — เกมไม่ต้องแบกงานไฟล์
+    ///    เช่น "http://187.53.129.69:8790"  (ไม่ต้องมี / ปิดท้าย)
+    /// </summary>
+    public string AssetBundleUrlBase { get; set; } = "";
     public CraftMenuConfig CraftMenu { get; set; }
+
+    /// <summary>[TodoList/02,04,06] กติกาคราฟต์ให้เหมือนต้นฉบับ (เลเวลผลลัพธ์ · เวลาทำงาน · สำเร็จมาก)</summary>
+    public CraftingConfig Crafting { get; set; }
+
+    /// <summary>[TodoList/07] ตายแล้วเสียอะไร (constants.death_penalty)</summary>
+    public DeathConfig Death { get; set; }
     /// <summary>⚠️ ต้องเป็น Replace ไม่งั้น PopulateObject จะ**ต่อท้าย**ของเดิมจนสัตว์ซ้ำเป็นสองเท่า</summary>
     [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
     public List<SpawnEntryConfig> Spawn { get; set; }
@@ -257,6 +304,22 @@ public sealed class ConfigRoot
     public WarpAcceleratorConfig WarpAccelerator { get; set; }
 
     /// <summary>
+    /// [3 ก.ย. 2026] สิ่งที่เซิร์ฟทำ "แทน" แพตช์ client ให้เกมมือถือของแท้ (APK แพตช์แค่ URL ไม่มีโค้ดเรา)
+    /// เพื่อให้มือถือได้ระบบใกล้เคียง client PC ชุดเรา — ดู AndroidConfig · hot-reload ได้
+    /// </summary>
+    public AndroidConfig Android { get; set; }
+
+    /// <summary>ระบบสมัครไอดีของเราเอง (หน้า /id) — ดู <see cref="PlayerIdConfig"/></summary>
+    public PlayerIdConfig PlayerIds { get; set; }
+
+    /// <summary>
+    /// [3 ก.ย. 2026] client ชุดเราตั้งแต่รุ่นไหนที่รู้จักบรอดแคสต์แบบกำหนดเวลา/ขนาด/สี ("##bc|…")
+    /// client ที่เก่ากว่านี้ (และมือถือของแท้ที่ส่ง "5.2.1") จะได้รับเป็นข้อความธรรมดาแทน
+    /// ไม่งั้นผู้เล่นเห็นรหัส "##bc|d=5|z=2|…" ดิบ ๆ บนจอ — GameManager.ShowAdminBroadcast เพิ่มใน 0.1.4
+    /// </summary>
+    public string StyledBroadcastMinClientVersion { get; set; }
+
+    /// <summary>
     /// [แก้เอง] 24 ส.ค. 2026 — ข้ามฉากรถไฟ/หนังเปิดตอนสร้างตัวละครใหม่ไหม (true = ข้าม)
     /// ค่านี้ถูกส่งไปให้ client ผ่าน /entry (ดู Gateway.cs) แล้ว client ตั้ง
     /// PrologueManager.ToBeSkipped ตามนี้เอง ⇒ **สลับได้จาก data/config.json โดยไม่ต้อง build/แจก
@@ -265,6 +328,24 @@ public sealed class ConfigRoot
     /// ที่แจกอยู่ ⇒ ทำให้เกม "ปิดตัวเองกะทันหัน" ตอนผู้เล่นใหม่สร้างตัวละครครั้งแรก (เจอจากเทสแจกจริง)
     /// </summary>
     public bool SkipPrologueVideo { get; set; }
+
+    /// <summary>
+    /// [4 ก.ย. 2026] template ของภูมิภาคที่ส่งให้ client (Region.TemplateId) — client เอาไปแสดง "เลเวลเกาะ"
+    /// (RegionTemplateData[TemplateId].Level) และไอคอนง่าย/ยากของสัตว์ · ว่าง = ใช้ region_template ของ terrain
+    /// เช่น terrain ri35te → ri35teSub01 = Lv35 · ตั้ง "ru10gr170511" = เกาะโชว์ Lv10, "ri15sa171228" = Lv15
+    /// (ควรตั้ง Survival.RegionLevel ให้ตรงกับเลเวลนี้ด้วย เพื่อสูตรความล้า)
+    /// </summary>
+    public string RegionTemplateId { get; set; }
+
+    /// <summary>
+    /// [3 ก.ย. 2026] เพดานจำนวนผู้เล่นออนไลน์พร้อมกัน (hot-reload ได้ แก้ไฟล์รอ 5 วิ มีผลทันที ไม่ต้องรีสตาร์ต)
+    /// เดิมตั้งได้แค่ตอนเปิดเซิร์ฟด้วย --max-connections ⇒ อยากเพิ่มต้องรีสตาร์ต (ผู้เล่นหลุด)
+    /// ค่านี้ชนะ --max-connections · ตั้ง &lt;= 0 = ใช้ค่าจาก flag เดิม (หรือ default โค้ด)
+    /// </summary>
+    public int MaxOnlinePlayers { get; set; }
+
+    /// <summary>เพดานผู้เล่นจาก IP เดียวกัน (hot-reload) · &lt;= 0 = ใช้ค่าจาก flag เดิม</summary>
+    public int MaxPlayersPerIp { get; set; }
 
     public int TotalQuota
     {
@@ -287,7 +368,12 @@ public sealed class ConfigRoot
             Exp = ExpConfig.Defaults(),
             Skills = SkillConfig.Defaults(),
             StatusEffects = StatusEffectConfig.Defaults(),
+            Sickness = SicknessConfig.Defaults(),
+            Save = SaveConfig.Defaults(),
+            Announcement = AnnouncementConfig.Defaults(),
             CraftMenu = CraftMenuConfig.Defaults(),
+            Crafting = CraftingConfig.Defaults(),
+            Death = DeathConfig.Defaults(),
             Spawn = SpawnEntryConfig.Defaults(),
             Zones = ZoneConfig.Defaults(),
             World = WorldConfig.Defaults(),
@@ -301,7 +387,13 @@ public sealed class ConfigRoot
             Combat = CombatConfig.Defaults(),
             Farming = FarmingConfig.Defaults(),
             WarpAccelerator = WarpAcceleratorConfig.Defaults(),
-            SkipPrologueVideo = true
+            Android = AndroidConfig.Defaults(),
+            PlayerIds = PlayerIdConfig.Defaults(),
+            StyledBroadcastMinClientVersion = "0.1.4",
+            SkipPrologueVideo = true,
+            RegionTemplateId = "",
+            MaxOnlinePlayers = 50,
+            MaxPlayersPerIp = 8
         };
     }
 
@@ -324,6 +416,7 @@ public sealed class ConfigRoot
             e.MinLevel = Remap(e.MinLevel, srcLo, srcHi, dstLo, dstHi);
             e.MaxLevel = Math.Max(e.MinLevel, Remap(e.MaxLevel, srcLo, srcHi, dstLo, dstHi));
         }
+        cfg.World.ResourceLevel = dstLo;
         return cfg;
     }
 
@@ -346,13 +439,21 @@ public sealed class ConfigRoot
     {
         bool filled = false;
         if (Animals == null) { Animals = AnimalConfig.Defaults(); filled = true; }
+        if (Animals.Herds == null) { Animals.Herds = HerdConfig.Defaults(); filled = true; }
+        if (Animals.Defense == null) { Animals.Defense = AnimalDefenseConfig.Defaults(); filled = true; }
         if (Exp == null) { Exp = ExpConfig.Defaults(); filled = true; }
         if (Skills == null) { Skills = SkillConfig.Defaults(); filled = true; }
         if (StatusEffects == null) { StatusEffects = StatusEffectConfig.Defaults(); filled = true; }
+        if (Sickness == null) { Sickness = SicknessConfig.Defaults(); filled = true; }
+        if (Save == null) { Save = SaveConfig.Defaults(); filled = true; }
+        if (Announcement == null) { Announcement = AnnouncementConfig.Defaults(); filled = true; }
         if (CraftMenu == null || CraftMenu.HiddenCategories == null) { CraftMenu = CraftMenuConfig.Defaults(); filled = true; }
+        if (Crafting == null) { Crafting = CraftingConfig.Defaults(); filled = true; }
+        if (Death == null) { Death = DeathConfig.Defaults(); filled = true; }
         if (Zones == null) { Zones = ZoneConfig.Defaults(); filled = true; }
         if (World == null) { World = WorldConfig.Defaults(); filled = true; }
         if (Tools == null) { Tools = ToolConfig.Defaults(); filled = true; }
+        if (Tools.Deltas == null) { Tools.Deltas = WearDeltaConfig.Defaults(); filled = true; }
         if (Features == null) { Features = FeatureConfig.Defaults(); filled = true; }
         if (Weather == null) { Weather = WeatherConfig.Defaults(); filled = true; }
         if (Survival == null) { Survival = SurvivalConfig.Defaults(); filled = true; }
@@ -362,7 +463,12 @@ public sealed class ConfigRoot
         if (Combat == null) { Combat = CombatConfig.Defaults(); filled = true; }
         if (Farming == null) { Farming = FarmingConfig.Defaults(); filled = true; }
         if (WarpAccelerator == null) { WarpAccelerator = WarpAcceleratorConfig.Defaults(); filled = true; }
+        if (Android == null) { Android = AndroidConfig.Defaults(); filled = true; }
+        if (PlayerIds == null) { PlayerIds = PlayerIdConfig.Defaults(); filled = true; }
+        if (string.IsNullOrWhiteSpace(StyledBroadcastMinClientVersion)) { StyledBroadcastMinClientVersion = "0.1.4"; filled = true; }
         if (Spawn == null || Spawn.Count == 0) { Spawn = SpawnEntryConfig.Defaults(); filled = true; }
+        if (MaxOnlinePlayers <= 0) { MaxOnlinePlayers = 50; filled = true; }
+        if (MaxPlayersPerIp <= 0) { MaxPlayersPerIp = 8; filled = true; }
         filled |= RepairMangledNames();
         return filled;
     }
@@ -450,6 +556,34 @@ public sealed class ConfigRoot
         {
             return "เวลาเกิดใหม่/เวลาซากต้องมากกว่า 0";
         }
+        if (Animals.LifetimeSeconds <= 0)
+        {
+            return "อายุสัตว์ (LifetimeSeconds) ต้องมากกว่า 0";
+        }
+        if (Animals.Defense != null && Animals.Defense.Enabled && Animals.Defense.Scale < 0f)
+        {
+            return "Animals.Defense.Scale ติดลบไม่ได้";
+        }
+        if (Animals.Herds != null && Animals.Herds.Enabled)
+        {
+            HerdConfig h = Animals.Herds;
+            if (h.CountScale <= 0f || h.SizeScale <= 0f || h.CountScale > 3f || h.SizeScale > 3f)
+            {
+                return "Animals.Herds.CountScale/SizeScale ต้องอยู่ระหว่าง 0-3 (1 = ตามเกม)";
+            }
+            if (h.RadiusTiles <= 0f || h.WanderTiles <= 0f || h.SeparationTiles < 0f || h.DriftTiles < 0f)
+            {
+                return "Animals.Herds.RadiusTiles/WanderTiles ต้องมากกว่า 0 · SeparationTiles/DriftTiles ติดลบไม่ได้";
+            }
+            if (h.DriftMinSeconds <= 0 || h.DriftMaxSeconds < h.DriftMinSeconds)
+            {
+                return "Animals.Herds.DriftMinSeconds ต้องมากกว่า 0 และไม่เกิน DriftMaxSeconds";
+            }
+            if (h.LevelMin < 0 || h.LevelMax < h.LevelMin)
+            {
+                return "Animals.Herds.LevelMin/LevelMax ไม่ถูกต้อง (0,0 = ใช้ level ของ template)";
+            }
+        }
         if (Animals.ChaseSpeed <= 0 || Animals.FleeSpeed <= 0 || Animals.WalkSpeed <= 0)
         {
             return "ความเร็วสัตว์ต้องมากกว่า 0";
@@ -502,6 +636,10 @@ public sealed class ConfigRoot
         {
             return $"World.ChunkSendRange ต้องอยู่ระหว่าง 1-4 (ใส่มา {World.ChunkSendRange})";
         }
+        if (World.ClientChunkRetainRange < 1 || World.ClientChunkRetainRange > 4)
+        {
+            return $"World.ClientChunkRetainRange ต้องอยู่ระหว่าง 1-4 (ใส่มา {World.ClientChunkRetainRange})";
+        }
         if (World.ViewRangeTiles < 4f || World.ViewRangeTiles > 200f)
         {
             return $"World.ViewRangeTiles ต้องอยู่ระหว่าง 4-200 tile (ใส่มา {World.ViewRangeTiles})";
@@ -515,6 +653,10 @@ public sealed class ConfigRoot
         {
             return $"World.ViewCheckSeconds ต้องอยู่ระหว่าง 0.05-5 วินาที (ใส่มา {World.ViewCheckSeconds})";
         }
+        if (World.ResourceLevel < 0 || World.ResourceLevel > LevelData.MaxLevel)
+        {
+            return $"World.ResourceLevel ต้องอยู่ระหว่าง 0-{LevelData.MaxLevel} (0 = ตามเลเวลเกาะ, ใส่มา {World.ResourceLevel})";
+        }
         if (Tools.Enabled && (Tools.DurabilityBase < 0f || Tools.DurabilityPerTier < 0f
                               || Tools.DurabilityBase + Tools.DurabilityPerTier <= 0f))
         {
@@ -523,6 +665,18 @@ public sealed class ConfigRoot
         if (Tools.WearPerUse < 0f)
         {
             return "Tools.WearPerUse ติดลบไม่ได้";
+        }
+        if (Tools.Deltas != null && Tools.Deltas.Enabled)
+        {
+            WearDeltaConfig d = Tools.Deltas;
+            if (d.Craft < 0f || d.Collect < 0f || d.Build < 0f || d.Attack < 0f || d.Defense < 0f || d.Taming < 0f)
+            {
+                return "Tools.Deltas.* ติดลบไม่ได้";
+            }
+            if (d.RepairDamageMin < 0f || d.RepairDamageMax > 0.9f || d.RepairDamageMax < d.RepairDamageMin)
+            {
+                return "Tools.Deltas.RepairDamageMin/Max ต้องอยู่ระหว่าง 0-0.9 และ Min ≤ Max";
+            }
         }
         if (Farming.GrowthScale <= 0f || Farming.GrowthScale > 10f)
         {
@@ -621,8 +775,11 @@ public sealed class ToolConfig
     public float DurabilityBase { get; set; }
     public float DurabilityPerTier { get; set; }
 
-    /// <summary>ใช้ 1 ครั้ง (เก็บของ/แล่ซาก 1 ชิ้น) เสียความทนทานเท่าไร</summary>
+    /// <summary>ใช้ 1 ครั้ง (เก็บของ/แล่ซาก 1 ชิ้น) เสียความทนทานเท่าไร — ใช้เมื่อ Deltas ปิด</summary>
     public float WearPerUse { get; set; }
+
+    /// <summary>[TodoList/03] หักตามชนิดงานตาม constants.durability.deltas ของเกม — ดู WearDeltaConfig</summary>
+    public WearDeltaConfig Deltas { get; set; }
 
     public static ToolConfig Defaults()
     {
@@ -634,7 +791,8 @@ public sealed class ToolConfig
             Enabled = true,
             DurabilityBase = 20f,
             DurabilityPerTier = 20f,
-            WearPerUse = 1f
+            WearPerUse = 1f,
+            Deltas = WearDeltaConfig.Defaults()
         };
     }
 }
@@ -743,8 +901,12 @@ public sealed class FeatureConfig
     public bool PrivateConversation { get; set; }
 
     /// <summary>
-    /// เพดานเลเวลของรอบนี้ — LBT1 ปล่อยคอนเทนต์แค่ Lv.1-20
-    /// ตารางเลเวลจริงมีถึง 81 · ตั้ง 0 = ไม่จำกัด (ใช้เพดานเต็มของตาราง)
+    /// เพดานเลเวลผู้เล่น — 0 = ไม่จำกัด (ใช้เพดานเต็มของเกม = 60, <c>constants.max_levels.player</c>)
+    ///
+    /// beta 1.0.0 เคยล็อกไว้ที่ 20 ตาม LBT1 ของเกมต้นฉบับ ("ปล่อยคอนเทนต์แค่ Lv.1-20")
+    /// ปลดเมื่อ 3 ก.ย. 2026 (TodoList/01) — ตารางสูตร/blueprint/สัตว์มีครบถึง 60 อยู่แล้ว
+    /// เลเวลสัตว์ไม่ผูกกับค่านี้ (remap ตาม MinLevel/MaxLevel ของแต่ละเกาะ)
+    /// ใส่ตัวเลข 1-60 ถ้าอยากล็อกรอบเทสเป็นพิเศษ
     /// </summary>
     public int MaxPlayerLevel { get; set; }
 
@@ -767,7 +929,7 @@ public sealed class FeatureConfig
 
             // ยังไม่ได้ทำ / ยังไม่ได้เทส — เปิดทีละแพทช์
             IslandTravel = false,
-            Jobs = false,
+            Jobs = true,
             Cooking = true,             // เปิดแล้ว — สูตร cook 152 อัน ต้องยืนที่กองไฟ/เตาถึงจะทำได้
             Farming = true,
             Livestock = false,
@@ -777,7 +939,7 @@ public sealed class FeatureConfig
             Quests = true,
             QuestChecklist = true,             // เปิดแล้ว — สายสอนเล่น 8 ขั้นจบที่ต่อแพ (ดู QuestData)
             Pvp = false,
-            LandPermission = false,
+            LandPermission = true,
             PartyAndClan = false,
             Emotes = false,
 
@@ -795,7 +957,7 @@ public sealed class FeatureConfig
             DyeAndBleach = false,
             PrivateConversation = false,
 
-            MaxPlayerLevel = 20
+            MaxPlayerLevel = 0          // ไม่จำกัด = 60 (เดิม 20 ตาม LBT1 — ดู TodoList/01-level-cap.md)
         };
     }
 
@@ -934,10 +1096,79 @@ public sealed class SurvivalConfig
     public float LifeDrainWhenExhausted { get; set; }
 
     // ── พักผ่อน ──────────────────────────────────────────────────
-    /// <summary>พักที่กองไฟแล้วความล้าลดวินาทีละเท่าไร (0 = พักไม่ได้)</summary>
+    /// <summary>
+    /// [เลิกใช้ 3 ก.ย. 2026] พักที่กองไฟแล้วความล้าลดวินาทีละเท่าไร — ตอนนี้ใช้สูตรของเกมจริงแทน
+    /// (<see cref="RestFatigueBase"/> + <see cref="RestFatiguePerLevel"/>) เหลือไว้แค่เป็นสวิตช์ปิด/เปิด
+    /// </summary>
     public float RestFatiguePerSec { get; set; }
     /// <summary>ต้องอยู่ห่างกองไฟไม่เกินกี่ tile ถึงจะพักได้</summary>
     public float RestRangeTiles { get; set; }
+
+    // ── ค่าที่ถอดจากข้อมูลเกมจริง (3 ก.ย. 2026) ──────────────────────────────────
+    // ที่มา: server/data/assets/constants.json และ server/data/assets/survival/status_effects.json
+    // (ไฟล์ที่ AssetRipper ถอดจากตัวเกม ไม่ใช่ค่าที่เดาเอง)
+
+    /// <summary>
+    /// อัตราความล้าพื้นฐาน — สูตรจริงจาก constants.json → <c>fatigue_velocity</c>:
+    /// <c>(0.04 + 0.001 × เลเวลตัวละคร) × max(0.5, 1 − 0.05 × (เลเวลตัวละคร − เลเวลเกาะ))</c>
+    /// สองค่านี้คือ 0.04 กับ 0.001
+    /// </summary>
+    public float FatigueVelocityBase { get; set; }
+    public float FatigueVelocityPerLevel { get; set; }
+
+    /// <summary>เลเวลของเกาะ (rl ในสูตร) — เกาะเริ่มต้น = 1 · ยิ่งเลเวลผู้เล่นสูงกว่าเกาะ ยิ่งล้าช้าลง</summary>
+    public int RegionLevel { get; set; }
+
+    /// <summary>
+    /// ความล้าต่อการกระทำ — สูตรจริงจาก constants.json → <c>fatigue_cost</c>
+    /// (e = สตามินาที่การกระทำนั้นใช้): เก็บของ <c>0.4·√e</c> · คราฟต์ <c>2·√e</c> ·
+    /// ก่อสร้าง <c>4·√e</c> · ต่อสู้ <c>4·e</c> · อย่างอื่น <c>e</c>
+    /// </summary>
+    public float FatigueCostCollect { get; set; }
+    public float FatigueCostCraft { get; set; }
+    public float FatigueCostBuild { get; set; }
+    public float FatigueCostCombat { get; set; }
+
+    /// <summary>
+    /// พักผ่อน — สูตรจริงจาก status_effects.json → <c>rest</c>:
+    /// ความล้า <c>−(0.15 + 0.0015 × level)</c> · เลือด <c>0.45 + 0.05 × level</c>
+    /// (level = เลเวลของบัพ ซึ่งอิงคุณภาพที่นอน/กองไฟ — ตอนนี้เราใช้ 1 ทุกจุด)
+    /// </summary>
+    public float RestFatigueBase { get; set; }
+    public float RestFatiguePerLevel { get; set; }
+    public float RestLifeBase { get; set; }
+    public float RestLifePerLevel { get; set; }
+
+    /// <summary>
+    /// กระหายน้ำ (<c>thirsty</c>) — จาก status_effects.json: อยู่ได้ 180 วินาที
+    /// เพิ่มความล้า 0.2 ในหมวด <c>default</c> และ <c>arid</c>
+    /// ⚠️ ต้นฉบับ **ไม่มีหลอดความหิวของผู้เล่น** — มีแต่ <c>satiety_high</c> (อิ่มเกินกินไม่ลง)
+    /// ส่วน <c>Derived.HungryMax/HungryVelocity</c> เป็นของสัตว์เลี้ยง (ดู constants.json → pet/battle)
+    /// </summary>
+    public float ThirstSeconds { get; set; }
+    public float ThirstFatigue { get; set; }
+
+    /// <summary>ดื่มน้ำแล้วได้บัพ <c>drink_water</c> — 180 วินาที ลดความล้าหมวดร้อน 0.3</summary>
+    public float DrinkWaterSeconds { get; set; }
+    public float DrinkWaterFatigue { get; set; }
+
+    /// <summary>
+    /// สตามินาต่อการกระทำ — **สูตรจริงจาก constants.json** (ไม่ใช่ค่าที่เราตั้งเอง)
+    ///   จองที่สร้าง <c>1 + (พื้นที่ช่อง × 2)</c> · ลงมือสร้าง <c>1</c> · ทุบ <c>10 + ความทนทาน/2</c>
+    /// ค่าเก่าของเราคือ 8 เท่ากันหมดทุกอย่าง ซึ่งแพงกว่าต้นฉบับหลายเท่า
+    /// </summary>
+    public float BuildSiteEnergyBase { get; set; }
+    public float BuildSiteEnergyPerArea { get; set; }
+    public float BuildEnergy { get; set; }
+    public float DestructEnergyBase { get; set; }
+    public float DestructEnergyPerDurability { get; set; }
+
+    /// <summary>
+    /// อิ่มจนกินต่อไม่ได้ (<c>satiety_high</c>) — ความอิ่มเต็ม 100 · ลดลงเองวินาทีละเท่านี้
+    /// ไม่ใช่หลอดโชว์ผู้เล่น ใช้กันกินรัวอย่างเดียวเหมือนต้นฉบับ
+    /// </summary>
+    public float SatietyMax { get; set; }
+    public float SatietyDecayPerSec { get; set; }
 
     public static SurvivalConfig Defaults()
     {
@@ -949,9 +1180,15 @@ public sealed class SurvivalConfig
             StaminaRegenPerSec = 1.2f,
             StaminaRegenWhileResting = 10f,    // นั่งพักที่กองไฟ = 10 วินาทีเต็ม
             StaminaRegenDelaySeconds = 4f,     // นานกว่าเวลาเก็บของ 1 ครั้ง (~2-3 วิ)
-            StaminaCostCollect = 6f,
-            StaminaCostCraft = 4f,
-            StaminaCostBuild = 8f,
+            // ⚠️ ต้นฉบับไม่มีค่า "เก็บของ" ตรง ๆ ในข้อมูลที่ถอดมาได้
+            //    แต่การกระทำเล็ก ๆ ทุกตัวใน constants.json อยู่ในช่วง 1-5
+            //    (watering 1 · fertilizing 1 · put_water_in_container 2 · sprinkle_water 5)
+            //    จึงลดจาก 6 มาที่ 2 ให้อยู่ในวงเดียวกัน
+            StaminaCostCollect = 2f,
+            // สองตัวล่างเป็นแค่ค่าสำรอง — ของจริงมาจากข้อมูลเกม
+            // (คราฟต์ใช้ RecipeMeta.Energy ต่อสูตร · ก่อสร้างใช้สูตร BuildSiteEnergy/BuildEnergy)
+            StaminaCostCraft = 5f,
+            StaminaCostBuild = 3f,
 
             FatigueMax = 100f,
             FatiguePerSec = 100f / 3600f,      // เต็มใน 1 ชั่วโมงถ้าอยู่เฉย ๆ
@@ -970,8 +1207,44 @@ public sealed class SurvivalConfig
             StaminaPerLevel = 1f,
             StaminaPerWill = 0.5f,
 
-            RestFatiguePerSec = 4f,            // พัก 25 วินาทีที่กองไฟ = หายล้าทั้งหมด
-            RestRangeTiles = 3f
+            RestFatiguePerSec = 4f,            // เหลือไว้เป็นสวิตช์เท่านั้น (>0 = พักได้)
+            RestRangeTiles = 3f,
+
+            // ── ค่าจากข้อมูลเกมจริง ──
+            FatigueVelocityBase = 0.04f,
+            FatigueVelocityPerLevel = 0.001f,
+            RegionLevel = 1,
+
+            FatigueCostCollect = 0.4f,
+            FatigueCostCraft = 2f,
+            // [4 ก.ย. 2026] บั๊ก #20 "สร้าง/ทำลายสิ่งปลูกสร้าง ค่าเหนื่อยเพิ่มเยอะเกินไป"
+            // สูตร 4·√energy ⇒ ของ energy 100 กินเหนื่อย 40 จาก 100 (40% ของหลอด!) ลดเหลือ 1.2 ⇒ 12
+            FatigueCostBuild = 1.2f,
+            // 🐛 [แก้ 3 ก.ย. 2026] เดิม 4f ตามสูตรต้นฉบับตรง ๆ แต่สูตรนั้นอยู่บนสเกลความล้าของเกมเดิม
+            //    (ใหญ่กว่าหลอด 100 ของเราราว 10 เท่า — ดู FoodConfig.FatigueScale = 0.1)
+            //    ท่าโจมตีใช้สตามินา 6-50 ⇒ ล้า +24..200 ต่อครั้ง = **ตีไดโนทีเดียวหลอดแดง** (ผู้เล่นรายงาน)
+            //    ลดลง 10 เท่าให้อยู่สเกลเดียวกับอาหาร: ตีธรรมดา (6) ล้า +2.4 · ท่าหนัก (35) +14
+            FatigueCostCombat = 0.4f,
+
+            // [3 ก.ย. 2026] เจ้าของสั่งให้พักฟื้นเร็วขึ้น 2 เท่า (เดิม 0.15 / 0.0015 ตามต้นฉบับ = หลอดเต็มใช้ ~11 นาที)
+            RestFatigueBase = 0.3f,
+            RestFatiguePerLevel = 0.003f,
+            RestLifeBase = 0.45f,
+            RestLifePerLevel = 0.05f,
+
+            ThirstSeconds = 180f,
+            ThirstFatigue = 0.2f,
+            DrinkWaterSeconds = 180f,
+            DrinkWaterFatigue = -0.3f,
+
+            SatietyMax = 100f,
+            SatietyDecayPerSec = 100f / 6000f,  // เต็มถึงหมดใน 100 นาที
+
+            BuildSiteEnergyBase = 1f,
+            BuildSiteEnergyPerArea = 2f,
+            BuildEnergy = 1f,
+            DestructEnergyBase = 10f,
+            DestructEnergyPerDurability = 0.5f
         };
     }
 }
@@ -1079,8 +1352,32 @@ public sealed class WorldConfig
     /// **ต้องเท่ากับ `_visibleRange` ของ client** (Durango.Terrain/TerrainBase.InitChunkPool)
     /// น้อยกว่า = chunk วงนอกไม่มีของ แล้วต้องสร้างใหม่ตอนเดินเข้าไปใกล้ = เห็นแมพรีเฟรช
     /// มากกว่า = เปลืองแบนด์วิดท์เปล่า ๆ เพราะ client ทิ้ง chunk ที่อยู่นอกระยะทันที
+    ///
+    /// client ต้นฉบับ (retail) ใช้ `range = 1` ตายตัว ⇒ ค่าปกติของเราคือ 1
     /// </summary>
     public int ChunkSendRange { get; set; }
+
+    /// <summary>
+    /// [regrow] ต้นไม้/หิน/บ่อโคลนที่ถูกเก็บจนหมดหรือทำลาย งอกกลับหลังกี่วินาที (0 = ไม่งอก หายถาวรเหมือนเดิม)
+    /// เกมต้นฉบับใช้ eco simulation รายวัน — ของเราตั้ง 20 นาที ให้เกาะเทสไม่โล่ง
+    /// </summary>
+    public double NaturalRegrowSeconds { get; set; }
+
+    /// <summary>
+    /// client **เก็บ** chunk ไว้กี่วงรอบตัว (= `_visibleRange` ของ client จริง ๆ)
+    ///
+    /// 🐛 ต้นตออาการ "เดินไปแล้วโลกไม่โหลด": ตัวนี้เคยถูกอนุมานจาก `ChunkSendRange`
+    /// พอตั้ง ChunkSendRange กว้างกว่าที่ client รับไหว (retail = 1) `ChunkPool.Load()`
+    /// จะ **ทิ้ง chunk วงนอกเงียบ ๆ** (ไม่เข้า `_failedChunks` ด้วยซ้ำ) แต่เซิร์ฟจำว่า
+    /// "ส่งไปแล้ว" ⇒ พอเดินข้ามขอบ chunk เซิร์ฟข้ามการส่งซ้ำ client จึงไม่เคยได้ก้อนนั้น
+    /// และ `IsEnoughChunkLoaded()` (ต้องครบ 9) ไม่ผ่าน ⇒ `IsLoadingChunks` ค้าง true ถาวร
+    /// terrain หยุดอัปเดตทั้งระบบ
+    ///
+    /// จึงแยกออกมาเป็นค่าของตัวเอง — และตั้งแต่ 30 ส.ค. 2026 เซิร์ฟ **ตรวจเองรายคน** จาก ModHello:
+    /// client ที่มี `DurangoClientCore` ใช้ `ClientModPolicy.WorldChunkRange` (มอดขยาย pool ให้)
+    /// ค่านี้จึงเหลือหน้าที่เดียว = **ระยะของ client เปล่า ๆ ที่ไม่มีมอด** (retail = 1 อย่าแก้)
+    /// </summary>
+    public int ClientChunkRetainRange { get; set; }
 
     // ───── ระยะการมองเห็น (interest management) ─────
     //
@@ -1111,6 +1408,12 @@ public sealed class WorldConfig
     /// <summary>ปิดการกรองระยะ = กลับไปส่งให้ทุกคนเหมือนเดิม (ไว้เทียบเวลาสงสัยว่าบั๊กมาจากตรงนี้ไหม)</summary>
     public bool ViewCulling { get; set; }
 
+    /// <summary>
+    /// เลเวลของไม้/ผลไม้/หอย/หิน ที่เก็บได้บนเกาะนี้
+    /// 0 = ใช้ MinLevel ของเกาะ (หรือ 1 ถ้าเปิดแบบเกาะเดียว)
+    /// </summary>
+    public int ResourceLevel { get; set; }
+
     /// <summary>ระยะที่เริ่มเห็น (หน่วยโลก) — คิดจาก ViewRangeTiles ไม่ใช่ค่าที่ตั้งเองได้</summary>
     [JsonIgnore]
     public float ViewEnterUnits => ViewRangeTiles * 200f;
@@ -1126,13 +1429,16 @@ public sealed class WorldConfig
     {
         return new WorldConfig
         {
-            ChunkSendRange = 2,
+            ChunkSendRange = 1,          // client ต้นฉบับ (retail) ใช้ range 1 ตายตัว
+            ClientChunkRetainRange = 1,  // TerrainBase.InitChunkPool ของ retail: range = 1, pool 9 ช่อง
             // 24 tile ≈ 1.5 chunk — กว้างกว่าที่จอเห็นพอสมควร แต่ยังอยู่ในพื้นที่ที่ client โหลด terrain ไว้แล้ว
             // (ChunkSendRange 2 = 5×5 chunk ⇒ มี terrain ถึง ~40 tile รอบตัว)
-            ViewRangeTiles = 24f,
-            ViewMarginTiles = 8f,        // หายที่ 32 tile — ห่างจากขอบ terrain ที่โหลดไว้ (40) อยู่พอควร
+            ViewRangeTiles = 16f,        // ใกล้ระยะกล้องจริง — กว้างกว่านี้ส่งสัตว์เกิน terrain = เรดาร์
+            ViewMarginTiles = 4f,
             ViewCheckSeconds = 0.4,
-            ViewCulling = true
+            ViewCulling = true,
+            ResourceLevel = 0,
+            NaturalRegrowSeconds = 1200.0
         };
     }
 }
@@ -1146,10 +1452,30 @@ public sealed class AnimalConfig
     public float DamageBase { get; set; }
     public float DamagePerLevel { get; set; }
 
+    /// <summary>
+    /// [3 ก.ย. 2026] ให้แต่ละชนิดแข็ง/แรงต่างกันตามข้อมูลเกมจริง (`AnimalStatData`)
+    ///
+    /// เดิมสูตรกลางข้างบนใช้กับทั้ง 213 ชนิด ⇒ ไทรเซอราท็อปส์เลือดเท่ากิ้งก่า ทั้งที่ข้อมูลเกม
+    /// (`animal.json`) มีสูตรรายชนิด: เลือดต่างกัน 96 แบบ ดาเมจ 86 แบบ
+    ///
+    /// วิธีใช้: **ไม่เอาตัวเลขดิบของเกม** (เลือดแร็ปเตอร์ lv1 ตามเกม = 264 แต่ config ให้ 38 —
+    /// ต่างกัน 7 เท่า เอามาตรง ๆ จะกลับไปเป็นอาการ "ตี 25 ครั้ง" ที่เคยแก้ไปแล้ว)
+    /// แต่ใช้เป็น *อัตราส่วนเทียบกับสัตว์อ้างอิง* คูณสูตรกลาง:
+    ///     เลือด = (LifeBase + lv×LifePerLevel) × life_ชนิดนี้(lv) / life_อ้างอิง(lv)
+    /// สมดุลของตัวอ้างอิงเท่าเดิมเป๊ะ ตัวอื่นแข็ง/อ่อนกว่าตามสัดส่วนของเกม
+    /// </summary>
+    public bool SpeciesStats { get; set; }
+
+    /// <summary>สัตว์อ้างอิงที่อัตราส่วน = 1.0 (ค่าเริ่มต้น 2001 แร็ปเตอร์ — อยู่ในตารางเกิดของเกาะเริ่มต้น)</summary>
+    public ushort SpeciesReference { get; set; }
+
     /// <summary>ซากอยู่ในโลกกี่วินาทีก่อนหาย (ต้องนานพอให้แล่จนครบ)</summary>
     public double CorpseSeconds { get; set; }
     /// <summary>ตายแล้วกี่วินาทีถึงเกิดตัวใหม่แทน</summary>
     public double RespawnSeconds { get; set; }
+
+    /// <summary>สัตว์แต่ละตัวอยู่ในโลกได้กี่วินาที แล้ว despawn + เกิดใหม่ที่จุดว่าง (ไม่ทับหิน)</summary>
+    public double LifetimeSeconds { get; set; }
 
     public float ChaseSpeed { get; set; }
     public float FleeSpeed { get; set; }
@@ -1199,16 +1525,63 @@ public sealed class AnimalConfig
     /// </summary>
     public float MinSeparationTiles { get; set; }
 
+    /// <summary>
+    /// จุดหมายการเดินต้องห่างจากขอบสิ่งปลูกสร้างกี่ tile
+    ///
+    /// 🐛 [2 ก.ย. 2026] เดิม hardcode ไว้ 6 tile — สิ่งปลูกสร้าง 1 ชิ้นกินพื้นที่ห้ามเดิน ~13×13 tile
+    /// รอบจุดเกิดมี 31 ชิ้น ⇒ **56% ของจุดหมายที่สุ่มได้ถูกปฏิเสธเพราะข้อนี้ข้อเดียว**
+    /// รวมกับข้ออื่นแล้วสัตว์เดินได้จริงแค่ ~2-5 ครั้งต่อ 30 วินาทีทั้งเกาะ = ยืนแข็งกันหมด
+    /// </summary>
+    public float ArtifactAvoidTiles { get; set; }
+
+    /// <summary>
+    /// จุดหมายการเดินต้องไม่มีของธรรมชาติ (ต้นไม้/พุ่ม/หิน) ในรัศมีกี่ tile
+    /// 0 = ห้ามแค่ช่องที่จะไปยืนเอง · 1 = 3×3 · 2 = 5×5
+    ///
+    /// 🐛 เดิม hardcode 2 (5×5 ต้องโล่งสนิท) — บนแมพป่าทึบแทบไม่มีจุดไหนผ่าน (33% ของที่ตก)
+    /// </summary>
+    public int NaturalAvoidRadius { get; set; }
+
+    /// <summary>
+    /// เว้นระยะรอบก้อนหิน/หน้าผาอีกกี่ tile (0 = ห้ามเฉพาะ tile ที่เป็นเนื้อหิน)
+    ///
+    /// 🐛 [2 ก.ย. 2026] อาการ "สัตว์เกิดในหิน" — ก้อนหินใหญ่ไม่ได้อยู่ใน `whole.garden`
+    /// (นั่นคือต้นไม้/หินเล็กที่เก็บได้) แต่อยู่ใน `cliffs.dm` + ธง 0xC0 ของ `whole.biomes`
+    /// ซึ่งเซิร์ฟ **ไม่เคยอ่านทั้งคู่** ⇒ ด่านกรองจุดเกิดมองไม่เห็นหินเลย
+    /// เกาะจริงมีหิน 5.8% (ri35te) ถึง 7.8% (ri40tr) ของพื้นที่
+    ///
+    /// ตั้ง 0 พอสำหรับกันเกิดทับ · ตั้ง 1 ถ้าอยากให้เว้นขอบหินด้วย (ตัวใหญ่จะได้ไม่จมขอบ)
+    /// </summary>
+    public int CliffAvoidTiles { get; set; }
+
+    /// <summary>
+    /// สุ่มจุดหมายกี่จุดต่อ 1 tick ก่อนยอมแพ้แล้วรอ 1 วินาที
+    /// เดิมสุ่มจุดเดียว — พลาดทีก็ยืนรอวินาทีเต็ม ๆ ทั้งที่จุดถัดไปอาจผ่าน
+    /// </summary>
+    public int WanderTriesPerTick { get; set; }
+
+    /// <summary>
+    /// [3 ก.ย. 2026 · TodoList/08] ระบบฝูงตาม region template ของเกม — ดู HerdConfig
+    /// เป็น object แยกเพื่อให้ config เก่าที่ไม่มีหัวข้อนี้ถูก FillMissing เติมค่าเริ่มต้นให้เอง
+    /// </summary>
+    public HerdConfig Herds { get; set; }
+
+    /// <summary>[TodoList/05] ใช้ค่า defense รายชนิดของสัตว์ (AnimalStatData) ลดดาเมจที่ผู้เล่นตี — ดู AnimalDefenseConfig</summary>
+    public AnimalDefenseConfig Defense { get; set; }
+
     public static AnimalConfig Defaults()
     {
         return new AnimalConfig
         {
+            Herds = HerdConfig.Defaults(),
+            Defense = AnimalDefenseConfig.Defaults(),
             LifeBase = 30f,
             LifePerLevel = 8f,
             DamageBase = 2f,
             DamagePerLevel = 0.4f,
             CorpseSeconds = 150.0,
             RespawnSeconds = 60.0,
+            LifetimeSeconds = 300.0,
             ChaseSpeed = 300f,
             FleeSpeed = 280f,
             SightTiles = 6f,
@@ -1223,7 +1596,141 @@ public sealed class AnimalConfig
             InlandTilesPerSize = 3,
             SpawnRadiusTiles = 30f,
             WanderRadiusTiles = 12.5f,
-            MinSeparationTiles = 4f
+            MinSeparationTiles = 4f,
+            ArtifactAvoidTiles = 1.5f,
+            NaturalAvoidRadius = 0,
+            CliffAvoidTiles = 0,
+            SpeciesStats = true,
+            SpeciesReference = 2001,
+            WanderTriesPerTick = 8
+        };
+    }
+}
+
+/// <summary>
+/// [TodoList/08] ฝูงสัตว์ตาม "ใบสั่ง" ของเกมต้นฉบับ (`RegionTemplateData` สกัดจาก region_templates.json)
+///
+/// ต้นฉบับ: เกาะ ri35te = 54 ฝูง ~990 ตัว 7 ชนิด · ฝูงเกิดที่จุดจาก herds.yml เดินด้วยกัน อยู่ถาวร
+/// ของเราเดิม: 34 ตัว 10 ชนิด เกิดทีละตัวห่างกัน หายเองทุก 5 นาที
+///
+/// ปิด (`Enabled=false`) หรือเกาะไม่มี template (แมพจาก map_generator) = ใช้ตาราง `Spawn` แบบเดิมทั้งหมด
+/// </summary>
+/// <summary>
+/// [TodoList/05] เกราะของสัตว์ตามข้อมูลเกม (animal.json → defense รายชนิด สกัดไว้ใน AnimalStatData)
+///   153 ชนิด = level×5 · 44 ชนิด = 150 + level×5 (กลุ่มเกราะหนา) · 12 = 75 + level×5 · 4 = level×2.5 · 1 = 187.5 + level×7
+/// ใช้สูตรลดดาเมจเดียวกับเกราะผู้เล่น: 1 − def/(def + Combat.ArmorDefenseK) ตัดที่ ArmorMaxReduce
+/// (K=120: แร็ปเตอร์ Lv.1 def 5 → ลด 4% · Lv.10 def 50 → 29% · กลุ่มหนา Lv.1 def 155 → 56%)
+/// critical ของสัตว์ = 0.0 ทั้ง 214 ชนิดในข้อมูลเกม — ไม่มีอะไรให้ทำ
+/// </summary>
+public sealed class AnimalDefenseConfig
+{
+    public bool Enabled { get; set; }
+    /// <summary>คูณค่า defense ของเกมก่อนเข้าสูตร (1 = ตามเกม)</summary>
+    public float Scale { get; set; }
+
+    public static AnimalDefenseConfig Defaults()
+    {
+        return new AnimalDefenseConfig { Enabled = true, Scale = 1f };
+    }
+}
+
+public sealed class HerdConfig
+{
+    public bool Enabled { get; set; }
+
+    /// <summary>ชื่อ template ใน region_templates.json · ว่าง = หาเองจากชื่อ terrain (เวอร์ชันวันที่ล่าสุด)</summary>
+    public string Template { get; set; }
+
+    /// <summary>คูณจำนวนฝูง (1.0 = ตามเกม) — ri35te ตามเกม 54 ฝูง</summary>
+    public float CountScale { get; set; }
+    /// <summary>คูณจำนวนตัวต่อฝูง (1.0 = ตามเกม 20 ตัว)</summary>
+    public float SizeScale { get; set; }
+    /// <summary>เพดานจำนวนฝูงทั้งเกาะ (0 = ไม่จำกัด) — วางแบบ round-robin ทุกชนิดได้อย่างน้อย 1 ฝูงก่อน</summary>
+    public int MaxHerds { get; set; }
+    /// <summary>[Android] เกิดเฉพาะชนิดที่มีโมเดลใน bundle ชุด Android (มีผลเมื่อรัน --assetbundles-android) — เปิดเมื่อมีผู้เล่นมือถือ</summary>
+    public bool AndroidSafeOnly { get; set; }
+
+    /// <summary>สมาชิกเกิดกระจุกรอบบ้านฝูงในรัศมีกี่ tile</summary>
+    public float RadiusTiles { get; set; }
+    /// <summary>บ้านฝูงต้องห่างกันอย่างน้อยกี่ tile</summary>
+    public float SeparationTiles { get; set; }
+
+    /// <summary>สมาชิกเดินสุ่มรอบบ้านฝูงในรัศมีกี่ tile (สั้นกว่า WanderRadiusTiles ของตัวเดี่ยว ฝูงจะได้ไม่กระจาย)</summary>
+    public float WanderTiles { get; set; }
+
+    /// <summary>บ้านฝูงขยับไปไม่เกินกี่ tile จากจุดตั้งเดิม (สมาชิกเดินตามเอง)</summary>
+    public float DriftTiles { get; set; }
+    public double DriftMinSeconds { get; set; }
+    public double DriftMaxSeconds { get; set; }
+
+    /// <summary>
+    /// เลเวลสัตว์ในฝูง (สุ่มในช่วง แล้ว clamp ด้วย combat_level_ranges ของชนิดนั้น)
+    /// ต้นฉบับ ri35te = เกาะ Lv.35 · เกาะเทสตั้ง 1-4 ไว้ก่อนจนกว่าจะมีของตามเลเวล (TodoList/02-05)
+    /// 0 ทั้งคู่ = ใช้ level ของ template ตรง ๆ
+    /// </summary>
+    public int LevelMin { get; set; }
+    public int LevelMax { get; set; }
+
+    /// <summary>บ้านฝูงต้องห่างจุดเข้าเกาะอย่างน้อยกี่ tile · ตัวดุ (Carnivore) ใช้ค่าหลัง</summary>
+    public float MinTilesFromEntry { get; set; }
+    public float CarnivoreMinTilesFromEntry { get; set; }
+
+    public static HerdConfig Defaults()
+    {
+        return new HerdConfig
+        {
+            Enabled = true,
+            Template = "",
+            CountScale = 0.25f,      // เจ้าของสั่ง 3 ก.ย.: ฝูงละไม่เกิน 8 · ทั้งเกาะ ~100 ตัว (ตามเกม 54 ฝูง ~990)
+            SizeScale = 0.4f,
+            MaxHerds = 8,            // เจ้าของสั่ง 3 ก.ย.: 8 ฝูงพอ
+            RadiusTiles = 3f,
+            SeparationTiles = 8f,
+            WanderTiles = 5f,
+            DriftTiles = 10f,
+            DriftMinSeconds = 60.0,
+            DriftMaxSeconds = 180.0,
+            LevelMin = 1,
+            LevelMax = 4,
+            MinTilesFromEntry = 6f,
+            CarnivoreMinTilesFromEntry = 15f
+        };
+    }
+}
+
+/// <summary>
+/// [TodoList/03] ความทนทานหักตามชนิดงาน — ค่าจริงจาก data/assets/constants.json → durability.deltas
+///   craft 3.2 · collect 1.6 · build 3.2 · attack 0.0768 · defense 0.064 · taming 10
+/// สัดส่วนสำคัญ: ตีมอน 1 ที = 1/40 ของคราฟต์ 1 ครั้ง (เดิมของเราหักเท่ากันทุกงาน)
+///
+/// ข้อมูลเกมไม่บอก max พื้นฐานต่อ prototype (อนุมาน ~100 จาก tag durable_incr = +10/เลเวล)
+/// ของเรา max = 40/60/80 ตาม tier ⇒ ScaleToMax=true คูณ delta ด้วย max/100 ให้สัดส่วนเท่าเกมโดยไม่เปลี่ยนสมดุลที่จูนไว้
+/// </summary>
+public sealed class WearDeltaConfig
+{
+    public bool Enabled { get; set; }
+    public float Craft { get; set; }
+    public float Collect { get; set; }
+    public float Build { get; set; }
+    public float Attack { get; set; }
+    public float Defense { get; set; }
+    public float Taming { get; set; }
+    /// <summary>คูณ delta ด้วย (max ของชิ้นนั้น / ReferenceMax) — เกมคิดที่ max ~100 ของเราต่ำกว่า</summary>
+    public bool ScaleToMax { get; set; }
+    public float ReferenceMax { get; set; }
+    /// <summary>ซ่อมแต่ละครั้ง max ลดลงสุ่มในช่วงนี้ (เกม repair_damage_range 0.05-0.13)</summary>
+    public float RepairDamageMin { get; set; }
+    public float RepairDamageMax { get; set; }
+
+    public static WearDeltaConfig Defaults()
+    {
+        return new WearDeltaConfig
+        {
+            Enabled = true,
+            Craft = 3.2f, Collect = 1.6f, Build = 3.2f,
+            Attack = 0.0768f, Defense = 0.064f, Taming = 10f,
+            ScaleToMax = true, ReferenceMax = 100f,
+            RepairDamageMin = 0.05f, RepairDamageMax = 0.13f,
         };
     }
 }
@@ -1343,6 +1850,12 @@ public sealed class StatusEffectConfig
     /// <summary>poisoning ติดอยู่ = เลือดไหลลงวินาทีละเท่าไร</summary>
     public float PoisonDamagePerSec { get; set; }
 
+    /// <summary>กินของดิบ (tag raw_food) แล้วปวดท้องกี่วินาที — 0 = ปิด</summary>
+    public float StomachacheSeconds { get; set; }
+
+    /// <summary>ปวดท้องจากของดิบ = เลือดไหลวินาทีละเท่าไร (อ่อนกว่า poisoning)</summary>
+    public float StomachacheDamagePerSec { get; set; }
+
     public static StatusEffectConfig Defaults()
     {
         return new StatusEffectConfig
@@ -1350,8 +1863,122 @@ public sealed class StatusEffectConfig
             BuffStaminaSave = 0.10f,
             DebuffStaminaPenalty = 0.08f,
             LifeUpRegenPerSec = 1.0f,
-            PoisonDamagePerSec = 1.0f
+            PoisonDamagePerSec = 1.0f,
+            // [4 ก.ย. 2026] เจ้าของแจ้ง "ปวดท้อง 4 นาที 55 วิ นานเกินไปมากกก" (บั๊ก #15)
+            // 300 วิ = 5 นาที · ลดเหลือ 60 วิ (พอให้รู้สึกว่ากินของดิบมีโทษ แต่ไม่ทรมาน)
+            StomachacheSeconds = 60f,
+            StomachacheDamagePerSec = 0.7f
         };
+    }
+}
+
+/// <summary>
+/// ระบบป่วย (4 ก.ย. 2026 — เจ้าของเซิร์ฟสั่งเพิ่ม)
+/// ป่วยแล้ว: คราฟต์ใช้เวลานานขึ้น · เปลืองสตามินามากขึ้น · ล้าไวขึ้น · เดินช้าลง
+/// สถานะโชว์ผ่าน id `poison_heat` (열독) เพราะเป็น id ที่ client มีชื่อ+ไอคอนอยู่แล้ว
+/// (ตาราง ItemNameData) — id ที่ไม่มีในตารางนั้นผู้เล่นจะไม่เห็นไอคอนอะไรเลย
+/// </summary>
+public sealed class SicknessConfig
+{
+    /// <summary>เปิดระบบป่วยไหม</summary>
+    public bool Enabled { get; set; }
+
+    /// <summary>ป่วยครั้งหนึ่งนานกี่วินาที</summary>
+    public float DurationSeconds { get; set; }
+
+    /// <summary>เวลาคราฟต์ × ค่านี้ (1.8 = ช้าลงเกือบเท่าตัว)</summary>
+    public float CraftDurationScale { get; set; }
+
+    /// <summary>สตามินาที่เสียต่อการกระทำ × ค่านี้</summary>
+    public float StaminaCostScale { get; set; }
+
+    /// <summary>ความล้าเพิ่มขึ้นต่อวินาที (บวกกับอัตราปกติ)</summary>
+    public float FatiguePerSec { get; set; }
+
+    /// <summary>ความเร็วเดิน × ค่านี้ (0.65 = เหลือ 65%)</summary>
+    public float MoveSpeedScale { get; set; }
+
+    /// <summary>ความเร็วเดินปกติของผู้เล่น (client/PlayerController.DefaultMoveSpeed)</summary>
+    public float BaseMoveSpeed { get; set; }
+
+    /// <summary>เปียกอยู่ในเขตหนาวติดต่อกันกี่วินาทีถึงจะป่วย (0 = ปิดสาเหตุนี้)</summary>
+    public float ColdWetSeconds { get; set; }
+
+    /// <summary>กินของดิบจนปวดท้องซ้ำกี่ครั้งถึงจะป่วย (0 = ปิดสาเหตุนี้)</summary>
+    public int StomachacheStacksToSick { get; set; }
+
+    public static SicknessConfig Defaults()
+    {
+        return new SicknessConfig
+        {
+            Enabled = true,
+            DurationSeconds = 300f,
+            CraftDurationScale = 1.8f,
+            StaminaCostScale = 1.5f,
+            FatiguePerSec = 0.15f,
+            MoveSpeedScale = 0.65f,
+            BaseMoveSpeed = 500f,
+            ColdWetSeconds = 90f,
+            StomachacheStacksToSick = 3
+        };
+    }
+}
+
+/// <summary>
+/// การเซฟ (4 ก.ย. 2026 — เจ้าของเซิร์ฟสั่งให้ตั้งค่าได้ + มีแบ็กอัพตามรอบ)
+/// เดิม autosave ทุก 60 วิ เป็นค่าคงที่ในโค้ด แก้ไม่ได้ และไม่มีแบ็กอัพอัตโนมัติเลย
+/// </summary>
+public sealed class SaveConfig
+{
+    /// <summary>เซฟอัตโนมัติทุกกี่วินาที (0 = ปิด เซฟเฉพาะตอนปิดเซิร์ฟ/ผู้เล่นออก)</summary>
+    public int AutoSaveSeconds { get; set; }
+
+    /// <summary>เปิดแบ็กอัพอัตโนมัติไหม</summary>
+    public bool BackupEnabled { get; set; }
+
+    /// <summary>แบ็กอัพทุกกี่ชั่วโมง</summary>
+    public float BackupIntervalHours { get; set; }
+
+    /// <summary>เก็บแบ็กอัพย้อนหลังกี่ชุด (เกินกว่านี้ลบตัวเก่าสุดทิ้ง · 0 = เก็บหมดไม่ลบ)</summary>
+    public int BackupKeep { get; set; }
+
+    /// <summary>โฟลเดอร์เก็บแบ็กอัพ (ว่าง = ใช้ &lt;saves&gt;/backups)</summary>
+    public string BackupDir { get; set; }
+
+    /// <summary>แบ็กอัพทันทีตอนเซิร์ฟเพิ่งเปิดด้วยไหม (กันเคสแก้พังแล้วไม่มีจุดย้อนกลับ)</summary>
+    public bool BackupOnStartup { get; set; }
+
+    public static SaveConfig Defaults()
+    {
+        return new SaveConfig
+        {
+            AutoSaveSeconds = 60,
+            BackupEnabled = true,
+            BackupIntervalHours = 4f,
+            BackupKeep = 12,          // 4 ชม. × 12 = ย้อนได้ 2 วัน
+            BackupDir = "",
+            BackupOnStartup = true
+        };
+    }
+}
+
+/// <summary>
+/// ประกาศค้าง (4 ก.ย. 2026 — เจ้าของเซิร์ฟสั่ง "ประกาศค้างไว้จนเซิร์ฟปิด คนจะได้ไม่งง")
+///
+/// /admin/broadcast เดิมเห็นเฉพาะคนที่ออนไลน์อยู่ตอนนั้น และอยู่ได้สูงสุด 120 วิ
+/// อันนี้เก็บไว้ใน config ⇒ ใครเข้าเกมทีหลังก็เห็น จนกว่าจะลบข้อความออก (แก้ config มีผลทันที)
+/// </summary>
+public sealed class AnnouncementConfig
+{
+    /// <summary>ข้อความที่จะโชว์ตอนเข้าเกม (ว่าง = ไม่มีประกาศ)</summary>
+    public string Text { get; set; }
+
+    /// <summary>โชว์ซ้ำทุกกี่วินาทีระหว่างเล่น (0 = โชว์แค่ตอนเข้าเกมครั้งเดียว)</summary>
+    public float RepeatSeconds { get; set; }
+
+    public static AnnouncementConfig Defaults()
+    {
+        return new AnnouncementConfig { Text = "", RepeatSeconds = 0f };
     }
 }
 
@@ -1366,6 +1993,111 @@ public sealed class StatusEffectConfig
 /// หายเอง (client โชว์แท็บเฉพาะหมวดที่มีของ Available ≥1) · **ของที่ปลดล็อกด้วยสกิลไม่โดนซ่อน** (เป็น
 /// progression จริง เช่น เตา/โต๊ะ/เตียง/กับดัก — ดู RecipeUnlockData.SkillGatedBlueprints) · admin ได้ครบ
 /// </summary>
+/// <summary>
+/// [TodoList/02,04,06] กติกาคราฟต์/เก็บของ/สร้าง ให้ตรงต้นฉบับ — ค่าจริงจาก data/assets/constants.json
+/// ทุกสวิตช์ปิดได้ = กลับพฤติกรรมเดิม (Lv.1 เสมอ / เวลาตายตัว / สำเร็จ 100%)
+/// </summary>
+public sealed class CraftingConfig
+{
+    // ── 02 เลเวลผลลัพธ์ ──────────────────────────────────────────────
+    /// <summary>ผลลัพธ์คราฟต์ได้เลเวลจากค่าเฉลี่ยถ่วงน้ำหนักของวัสดุ (recipes.json slot.weight) clamp ด้วย min/max_level</summary>
+    public bool MaterialLevel { get; set; }
+
+    // ── 04 เวลาทำงาน (constants.effort_standard · duration_formula = "e") ──
+    /// <summary>ใช้สูตร effort ตามเลเวลของ "สิ่งที่ทำ" แทนตัวเลขตายตัว</summary>
+    public bool EffortFormula { get; set; }
+    /// <summary>collect: 2.5 + (level-1)×0.25</summary>
+    public float CollectBase { get; set; }
+    public float CollectPerLevel { get; set; }
+    /// <summary>craft: 5 + (level-1)×0.5 — ใช้เมื่อสูตรไม่ระบุ duration</summary>
+    public float CraftBase { get; set; }
+    public float CraftPerLevel { get; set; }
+    /// <summary>build: 10 + (level-1)×1 — ใช้เมื่อ blueprint ไม่ระบุ effort</summary>
+    public float BuildBase { get; set; }
+    public float BuildPerLevel { get; set; }
+
+    // ── 06 ผลคราฟต์ (constants.item.default_improvement / success_probability) ──
+    /// <summary>เปิดโอกาส "สำเร็จมาก" (เลเวล/ความทนเพิ่ม)</summary>
+    public bool GreatSuccess { get; set; }
+    /// <summary>โอกาสสำเร็จมากพื้นฐาน (เกม 0.05) — คูณด้วย สกิล/ความยาก แล้ว clamp 0.01-0.3</summary>
+    public float GreatBase { get; set; }
+    /// <summary>สำเร็จมากได้เลเวลเพิ่มกี่ระดับ</summary>
+    public int GreatLevelBonus { get; set; }
+    /// <summary>สำเร็จมากได้ความทนสูงสุดเพิ่มกี่ % (0.2 = +20%)</summary>
+    public float GreatDurabilityBonus { get; set; }
+    /// <summary>เปิดโอกาสล้มเหลว (เกมเปิด: success = 1 − ((ความยาก − สกิล − correction)/100)²) — เซิร์ฟเล่นกันเองปิดไว้ก่อน</summary>
+    public bool FailureEnabled { get; set; }
+    public float SuccessCorrection { get; set; }
+    /// <summary>ล้มเหลวแล้วคืนวัสดุกี่ส่วน (0.5 = ครึ่ง)</summary>
+    public float FailureKeepRatio { get; set; }
+
+    public static CraftingConfig Defaults()
+    {
+        return new CraftingConfig
+        {
+            MaterialLevel = true,
+            EffortFormula = true,
+            CollectBase = 2.5f, CollectPerLevel = 0.25f,
+            CraftBase = 5f, CraftPerLevel = 0.5f,
+            BuildBase = 10f, BuildPerLevel = 1f,
+            GreatSuccess = true,
+            GreatBase = 0.05f,
+            GreatLevelBonus = 1,
+            GreatDurabilityBonus = 0.2f,
+            FailureEnabled = false,
+            SuccessCorrection = 0f,
+            FailureKeepRatio = 0.5f,
+        };
+    }
+
+    public float CollectSeconds(int level) => CollectBase + Math.Max(0, level - 1) * CollectPerLevel;
+    public float CraftSeconds(int level) => CraftBase + Math.Max(0, level - 1) * CraftPerLevel;
+    public float BuildSeconds(int level) => BuildBase + Math.Max(0, level - 1) * BuildPerLevel;
+}
+
+/// <summary>
+/// [TodoList/07] ตายแล้วเสียอะไร — ค่าจริงจาก data/assets/constants.json → death_penalty
+/// Enabled=false = ฟื้นเต็ม ไม่หล่นของ (พฤติกรรมเดิม) · ItemDrop=false = ลงโทษแค่เกจ
+/// </summary>
+public sealed class DeathConfig
+{
+    public bool Enabled { get; set; }
+    public bool ItemDrop { get; set; }
+    /// <summary>default_item_drop_ratio 0.5</summary>
+    public float DropRatio { get; set; }
+    /// <summary>prevent_item_drop_ratio_by_level = 1 − PreventPerLevel×level (0.0125)</summary>
+    public float PreventPerLevel { get; set; }
+    /// <summary>death_point_remaining_duration 300 — กล่องของตก + หมุดอยู่กี่วิ</summary>
+    public double DeathPointSeconds { get; set; }
+    /// <summary>gauge_ratio_by_death_count — เลือด/สตามินาตอนฟื้น ตามจำนวนครั้งที่ตายติดกัน</summary>
+    public float[] GaugeRatios { get; set; }
+    /// <summary>fatigue_recovery_ratio_by_death_count — ความล้าที่หายตอนฟื้น</summary>
+    public float[] FatigueRecoveryRatios { get; set; }
+    /// <summary>ไม่ตายนานเท่านี้ (วิ) ตัวนับตายติดกันกลับเป็น 0 (เกมไม่ระบุ — เลือก 10 นาที)</summary>
+    public double DeathCountDecaySeconds { get; set; }
+    /// <summary>ของที่ใส่อยู่สึกกี่ % ของ max ตอนตาย (ของเราเอง เดิม 0.10 · ลดเหลือ 0.05 เพราะมีของหล่นแล้ว)</summary>
+    public float EquipWearRatio { get; set; }
+    /// <summary>blueprint กล่องที่ใช้เป็น "กล่องของตก" (ต้องมี component Inventory และมี look ให้ client วาด — fur_box_01 ไม่มี)</summary>
+    public string BoxBlueprint { get; set; }
+
+    public static DeathConfig Defaults()
+    {
+        return new DeathConfig
+        {
+            Enabled = true,
+            ItemDrop = true,
+            DropRatio = 0.5f,
+            PreventPerLevel = 0.0125f,
+            DeathPointSeconds = 300.0,
+            GaugeRatios = new[] { 0.6f, 0.4f, 0.2f, 0.1f },
+            FatigueRecoveryRatios = new[] { 0.3f, 0.2f, 0.1f, 0f },
+            DeathCountDecaySeconds = 600.0,
+            EquipWearRatio = 0.05f,
+            BoxBlueprint = "fur_box_03_leaf",   // 7012 fur_box_01 ไม่มี look → client ไม่วาด · กล่องใบไม้ 6171 วาดแน่ (add_box ใช้อยู่)
+        };
+    }
+}
+
 public sealed class CraftMenuConfig
 {
     /// <summary>ชื่อหมวด blueprint ที่ซ่อนจากผู้เล่นทั่วไป (ว่าง = ไม่ซ่อนอะไร)</summary>
@@ -1484,7 +2216,7 @@ public sealed class CombatConfig
             ArmorDefenseK = 120f,
             ArmorMaxReduce = 0.75f,
             CritChance = 0.12f,
-            CritMultiplier = 1.6f
+            CritMultiplier = 1.9f     // [TodoList/05] เกม base_critical_damage_bonus 0.9 ⇒ ×1.9 (เดิม 1.6)
         };
     }
 }
@@ -1594,7 +2326,7 @@ public sealed class SpawnEntryConfig
             E(2009, "พาราซอโรโลฟัส",     5, 9,  3, "FightBack",  4,  2.0),
             E(2000, "สเตโกซอรัส",        6, 10, 2, "Flee",       6,  2.1),
             E(2003, "ทริเซราท็อปส์",     6, 10, 2, "FightBack",  6,  1.4),
-            E(2002, "โอวิแรปเตอร์",      4, 8,  2, "Aggressive", 12, 1.3),
+            E(2002, "โอวิแรปเตอร์",      4, 8,  2, "FightBack",  12, 1.3),   // [TodoList/08] ข้อมูลเกม type=Scavenger ไม่ใช่ตัวล่า
             E(2001, "แร็ปเตอร์",         7, 10, 1, "Aggressive", 20, 1.7),
         };
     }
@@ -1706,6 +2438,88 @@ public sealed class WeatherConfig
             }
         };
     }
+}
+
+/// <summary>
+/// [3 ก.ย. 2026] "ระบบเหมือน PC" สำหรับเกมมือถือของแท้ — ทำจากฝั่งเซิร์ฟล้วน ๆ (เจ้าของเลือกแนวทางนี้
+/// แทนการแพตช์ libil2cpp.so) client มือถือรู้จักแค่โปรโตคอลเกมต้นฉบับ ⇒ ทุกอย่างต้องเป็นสิ่งที่
+/// เกม 5.2.1 แสดงผลได้เองอยู่แล้ว: ข้อความ Info (popup), แชทช่อง System, ค่า cluster_mode จาก /entry
+/// มีผลเฉพาะ client ที่ /sessions หรือ /entry บอกว่า platform=Android (PC ไม่กระทบ)
+/// </summary>
+/// <summary>
+/// [4 ก.ย. 2026] DurangoID — ระบบสมัครไอดีของเราเอง (เจ้าของสั่ง "ใช้เลขสุ่มจากเราเป็นไอดี + มีหน้าสมัคร")
+///
+/// ตัวตนเดิมผูกกับ IP ล้วน ๆ ซึ่งพังกับมือถือ (เกมมือถือส่ง account_id/adid มาเป็นค่าว่าง เพราะ
+/// Platform_Android ไม่ override) ⇒ ให้ผู้เล่นสมัครเลข 8 หลักที่หน้า /id แล้ว "ผูกเครื่องนี้"
+/// เซิร์ฟจด IP ไว้ให้ไอดีนั้น พอเข้าเกมจึงรู้ว่าเป็นใคร — ดู <see cref="DurangoServer.Core.PlayerIdStore"/>
+/// </summary>
+public sealed class PlayerIdConfig
+{
+    /// <summary>เปิดหน้าสมัคร /id และ endpoint ที่เกี่ยวข้อง</summary>
+    public bool Enabled { get; set; }
+
+    /// <summary>
+    /// บังคับว่าต้องมีไอดีที่ผูก IP นี้ไว้ ถึงจะสร้าง/เห็นตัวละครได้ (เจ้าของเลือก "บังคับสมัครทุกคน")
+    ///
+    /// ⚠️ เปิดบนเซิร์ฟที่มีคนเล่นอยู่แล้ว = ทุกคนต้องไปสมัคร+กด "รับตัวละครเดิม" ที่หน้าเว็บก่อนถึงจะเล่นต่อได้
+    /// </summary>
+    public bool Required { get; set; }
+
+    /// <summary>ผูก IP ไว้กี่วัน (0 = ไม่หมดอายุ) — เน็ตมือถือ IP เปลี่ยนบ่อย ผู้เล่นกดผูกใหม่ที่หน้าเว็บได้</summary>
+    public int BindingDays { get; set; }
+
+    /// <summary>ลิงก์หน้าสมัครที่เอาไปบอกผู้เล่นในเกม เช่น "http://187.53.129.69:8190/id" (ว่าง = เดาจาก request)</summary>
+    public string PublicUrl { get; set; }
+
+    public static PlayerIdConfig Defaults() => new PlayerIdConfig
+    {
+        Enabled = true,
+        Required = true,
+        BindingDays = 30,
+        PublicUrl = ""
+    };
+}
+
+public sealed class AndroidConfig
+{
+    /// <summary>
+    /// cluster_mode ที่ตอบให้มือถือใน /knock และ /entry · ว่าง = ใช้ค่าเดียวกับเซิร์ฟ (--cluster-mode)
+    ///
+    /// ทำไมต้องแยก: เมนูในเกมถูกกรองด้วย ClusterMode ฝั่ง client (MenuSystem.IsHiddenMenu ของเกมต้นฉบับ)
+    ///   · Online     ⇒ ซ่อน MoveToTitle (กลับหน้าไตเติ้ล) / Connect / WarpShop / CharacterOnMenu … (HiddenInOnline)
+    ///   · SingleMode ⇒ โชว์ตามรายการ ShowInSingleMode ซึ่งมี Craft/Skill/Quest/Estate/Encyclopedia/**MoveToTitle** ครบ
+    /// client PC ชุดเราแก้รายการนี้ในโค้ดแล้ว แต่มือถือแก้ไม่ได้ ⇒ สลับโหมดให้มันแทน
+    /// แชทช่องรวมยังใช้ได้ทั้งสองโหมด (SingleMode ส่งผ่าน connection เกม · Online ส่งผ่านพอร์ต radiotower)
+    /// </summary>
+    public string ClusterMode { get; set; }
+
+    /// <summary>เข้าโลกแล้วเด้ง popup "ยินดีต้อนรับ … ออนไลน์ N คน" ให้มือถือ (PC ชุดเรามีจำนวนคนที่แท็บแชทอยู่แล้ว)</summary>
+    public bool WelcomeInfo { get; set; }
+
+    /// <summary>มีคนเข้า/ออก ⇒ ส่งบรรทัดแชทช่อง System "X เข้าเกม · ออนไลน์ N คน" ให้มือถือ (แทนตัวเลขบนแท็บแชทของ PC)</summary>
+    public bool OnlineCountInChat { get; set; }
+
+    /// <summary>
+    /// [4 ก.ย. 2026] ส่ง terrain chunk เต็มกรอบทุกครั้งที่มือถือข้ามขอบ chunk (ไม่ข้ามการส่งซ้ำ)
+    ///
+    /// 🐛 แก้อาการ "เดินต่อแล้วพื้นที่ใหม่ไม่เรนเดอร์ ค้างอยู่แค่โซนเดิม" — เกมต้นฉบับบนมือถือถือ chunk
+    /// ไว้ไม่เท่าที่เซิร์ฟคิด ก้อนที่มันทิ้งไปจะไม่ถูกส่งซ้ำ กลายเป็นรูโหว่ถาวร (ดู ServerPlayer.HandleSetChunk)
+    /// ปิด = กลับไปใช้พฤติกรรมเดิมแบบ PC (ประหยัดแบนด์วิดท์กว่า แต่มือถือจะมีรูโหว่)
+    ///
+    /// ⚠️ เป็น <c>bool?</c> ตั้งใจ: config.json ที่มีอยู่แล้ว (ไม่มีคีย์นี้) จะได้ null = เปิดไว้ตามค่าเริ่มต้น
+    /// ถ้าใช้ bool ธรรมดา ไฟล์เก่าจะ deserialize เป็น false แล้วแก้บั๊กไม่ทำงานแบบเงียบ ๆ
+    /// </summary>
+    public bool? AlwaysResendChunks { get; set; }
+
+    public static AndroidConfig Defaults() => new AndroidConfig
+    {
+        // [4 ก.ย. 2026] เจ้าของสั่ง: ทุก client ใช้ Online จริง (SingleMode/Offline อ่านข้อมูลเกมจากไฟล์ที่ฝังในตัวเกม
+        // แทน /assets ของเซิร์ฟ ⇒ ผู้เล่นแต่ละคนเห็นสูตรคราฟต์ไม่เท่ากัน) — แลกกับเมนู "กลับหน้าไตเติ้ล" บนมือถือ
+        ClusterMode = "Online",
+        WelcomeInfo = true,
+        OnlineCountInChat = true,
+        AlwaysResendChunks = true
+    };
 }
 
 public sealed class WarpAcceleratorConfig

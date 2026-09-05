@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -230,6 +230,12 @@ public class GameManager : Singleton<GameManager>
 
 	private void Start()
 	{
+		// [4 ก.ย. 2026] บังคับเปิดผ่าน DinoWorld Launcher เท่านั้น — ไม่ผ่าน = ปิดเกมทันที (ดู LauncherGate.cs)
+		if (!LauncherGate.Enforce())
+		{
+			return;
+		}
+
 		// [แก้เอง] ระบบ mod ฝั่งเกม — โหลดครั้งเดียวตอนเกมบูต (ดู ClientModLoader.cs)
 		ClientModLoader.LoadAll();
 
@@ -328,11 +334,80 @@ public class GameManager : Singleton<GameManager>
 
 	private static void DefaultInfoHandler(Info msg, PacketHeader header)
 	{
+		if (string.IsNullOrEmpty(msg.Text))
+		{
+			return;
+		}
 		// [แก้เอง] ระบบเกาะแยกเลเวล: server สั่งย้ายเกาะด้วย "##goto <ip:port>" แล้วตามด้วย Emigrated
-		if (!string.IsNullOrEmpty(msg.Text) && msg.Text.StartsWith("##goto "))
+		if (msg.Text.StartsWith("##goto "))
 		{
 			PendingIslandAddress = msg.Text.Substring("##goto ".Length).Trim();
+			return;   // คำสั่งภายใน ไม่ใช่ข้อความให้ผู้เล่นอ่าน
 		}
+		// [แก้เอง] 31 ส.ค. 2026 — เดิมทิ้งข้อความทุกอันที่ไม่ใช่ "##goto" **ไม่แสดงอะไรเลย**
+		//
+		// 🐛 นี่คือต้นเหตุที่ผู้เล่นแจ้งว่า "คราฟไม่ได้": เซิร์ฟส่งเหตุผลกลับมาทุกครั้งอยู่แล้ว
+		//    ("สูตรนี้ยังไม่ปลดล็อก — เรียนสกิลที่เกี่ยวข้องก่อน", "ตรงนี้มีสิ่งปลูกสร้างอยู่แล้ว",
+		//     "กระเป๋าเต็ม (50/50 ช่อง)") แต่ไม่มีใครเอาไปแสดง ⇒ กดแล้วเงียบ ไม่รู้ว่าเพราะอะไร
+		//    ตัวที่เคยแสดงคือ BroadcastDisplay ในมอด ซึ่งถอดออกไปตอน v0.1.0
+		//    (ยืนยันจาก log จริงบน VPS: คราฟต์สำเร็จ 1,455 ครั้ง/3 ชม. abort แค่ 6 ครั้ง
+		//     ⇒ ระบบไม่ได้พัง ผู้เล่นแค่ไม่เห็นคำอธิบาย)
+		//
+		// ใช้ SystemMsg = กล่องประกาศของตัวเกมเอง ตัวเดียวกับที่ DefaultAbortHandler ใช้
+		// ⇒ ระบบประกาศจากแอดมิน (POST /admin/broadcast) กลับมาใช้ได้ด้วยในตัว
+		// ⚠️ handler นี้ทำงานตอนรับแพ็กเก็ต ซึ่งอาจเกิดตั้งแต่ยังไม่อยู่ในซีน Main
+		// ถ้าแตะ UIManager ตอนนั้น Singleton จะ "สร้าง" UIManager ขึ้นนอกซีน แล้ว InitUIGroups
+		// หา prefab ไม่เจอ ⇒ ArgumentException + ตัว singleton จริงในซีน Main พังตามไปด้วย
+		if (!IsMainScene)
+		{
+			return;
+		}
+		// [3 ก.ย. 2026] บรอดแคสต์แอดมินแบบกำหนดเวลา/ขนาด/สี — เข้ารหัสไว้ในข้อความ (แนวเดียวกับ ##goto)
+		//   รูปแบบ: "##bc|d=<วินาที>|z=<ขนาด>|c=<hex สี>|<ข้อความ>"  (ทุกฟิลด์ยกเว้นข้อความไม่บังคับ)
+		//   ไม่ต้องแก้โปรโตคอล Info (มีแค่ Text) — ผู้เล่นรุ่นเก่าที่ยังไม่อัปจะเห็นข้อความดิบ ไม่พัง
+		if (msg.Text.StartsWith("##bc|"))
+		{
+			ShowAdminBroadcast(msg.Text.Substring("##bc|".Length));
+			return;
+		}
+		UIManager.SystemMsg(LimitText(msg.Text), 4f);
+	}
+
+	/// <summary>อ่าน "d=..|z=..|c=..|ข้อความ" แล้วโชว์ด้วยเวลา/ขนาด/สีที่กำหนด</summary>
+	private static void ShowAdminBroadcast(string payload)
+	{
+		float duration = 4f;
+		float scale = 1f;
+		string color = null;
+		string text = payload;
+		int bar = payload.IndexOf('|');
+		// ไล่อ่านฟิลด์ x=y จนกว่าจะเจอส่วนที่ไม่ใช่ฟิลด์ = ข้อความจริง
+		while (bar >= 0)
+		{
+			string token = text.Substring(0, bar);
+			int eq = token.IndexOf('=');
+			if (eq != 1) { break; }   // ไม่ใช่รูปแบบ x=y แล้ว = เริ่มข้อความจริง
+			char kind = token[0];
+			string val = token.Substring(2);
+			switch (kind)
+			{
+			case 'd': float.TryParse(val, out duration); break;
+			case 'z': float.TryParse(val, out scale); break;
+			case 'c': color = val; break;
+			}
+			text = text.Substring(bar + 1);
+			bar = text.IndexOf('|');
+		}
+		if (duration <= 0f) { duration = 4f; }
+		duration = Mathf.Clamp(duration, 1f, 120f);
+		scale = Mathf.Clamp((scale <= 0f) ? 1f : scale, 0.5f, 4f);
+		text = LimitText(text);
+		if (!string.IsNullOrEmpty(color))
+		{
+			// NGUI BBCode: [c][RRGGBB]...[-][/c]
+			text = "[c][" + color.TrimStart('#') + "]" + text + "[-][/c]";
+		}
+		UIManager.SystemMsg(null, text, duration, scale);
 	}
 
 	private static void EmigratedReceived(Emigrated msg, PacketHeader header)

@@ -61,3 +61,9 @@ Full guide: **[docs/install/INSTALL.en.md](docs/install/INSTALL.en.md)**
 > **ไทย:** โปรเจกต์นี้เป็นงานของแฟนเกม ทำขึ้นเพื่อการศึกษาและใช้งานส่วนตัว *Durango: Wild Lands* เป็นทรัพย์สินทางปัญญาของ NEXON — โปรเจกต์นี้ไม่มีส่วนเกี่ยวข้องกับ NEXON และไม่มีการแจกจ่ายไฟล์ของเกมต้นฉบับ (ผู้ใช้ต้องเตรียมข้อมูลเทอร์เรนจากเกมของตัวเอง ดูในคู่มือติดตั้ง)
 >
 > **English:** This is a fan-made project for educational and personal use. *Durango: Wild Lands* is the intellectual property of NEXON. This project is not affiliated with NEXON and does not distribute original game files (you must prepare terrain data from your own copy of the game — see the installation guide).
+
+---
+
+## License
+
+Newly-written code is licensed under **[GPL-3.0](LICENSE)**. Game-derived content is **not** covered by this license — see [NOTICE.md](NOTICE.md) for details. · โค้ดที่เขียนขึ้นใหม่อยู่ภายใต้ [GPL-3.0](LICENSE) ส่วนที่มาจากตัวเกมอยู่นอก license — รายละเอียดที่ [NOTICE.md](NOTICE.md)

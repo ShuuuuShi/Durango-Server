@@ -1,0 +1,135 @@
+{
+  "sword_onehand": {
+    "default_actions": [
+      "onehand_default_a",
+      "onehand_default_b",
+      "onehand_default_c"
+    ],
+    "skill_actions": [
+      "onehand_dodge",
+      "onehand_smash",
+      "onehand_flurry",
+      "onehand_stab",
+      "melee_tackle"
+    ]
+  },
+  "axe_onehand": {
+    "default_actions": [
+      "onehand_default_axe_a",
+      "onehand_default_axe_b",
+      "onehand_default_axe_c"
+    ],
+    "skill_actions": [
+      "onehand_dodge",
+      "onehand_smash_axe",
+      "onehand_flurry_axe",
+      "onehand_stab_axe",
+      "melee_tackle"
+    ]
+  },
+  "blunt_onehand": {
+    "default_actions": [
+      "onehand_default_blunt_a",
+      "onehand_default_blunt_b",
+      "onehand_default_blunt_c"
+    ],
+    "skill_actions": [
+      "onehand_dodge",
+      "onehand_smash_blunt",
+      "onehand_flurry_blunt",
+      "onehand_stab_blunt",
+      "melee_tackle"
+    ]
+  },
+  "sword_twohand": {
+    "default_actions": [
+      "twohand_default_a",
+      "twohand_default_b",
+      "twohand_default_c"
+    ],
+    "skill_actions": [
+      "twohand_dodge",
+      "twohand_smash",
+      "twohand_sweeping",
+      "twohand_strike",
+      "melee_tackle"
+    ]
+  },
+  "axe_twohand": {
+    "default_actions": [
+      "twohand_default_axe_a",
+      "twohand_default_axe_b",
+      "twohand_default_axe_c"
+    ],
+    "skill_actions": [
+      "twohand_dodge",
+      "twohand_smash_axe",
+      "twohand_sweeping_axe",
+      "twohand_strike_axe",
+      "melee_tackle"
+    ]
+  },
+  "blunt_twohand": {
+    "default_actions": [
+      "twohand_default_blunt_a",
+      "twohand_default_blunt_b",
+      "twohand_default_blunt_c"
+    ],
+    "skill_actions": [
+      "twohand_dodge",
+      "twohand_smash_blunt",
+      "twohand_sweeping_blunt",
+      "twohand_strike_blunt",
+      "melee_tackle"
+    ]
+  },
+  "bare_hands": {
+    "default_actions": [
+      "barehand_default_a",
+      "barehand_default_b"
+    ],
+    "skill_actions": [
+      "barehand_dodge",
+      "barehand_kick_a",
+      "barehand_kick_b",
+      "barehand_smash",
+      "barehand_combination",
+      "melee_tackle"
+    ]
+  },
+  "lance_twohand": {
+    "default_actions": [
+      "twohand_lance_default_a",
+      "twohand_lance_default_b",
+      "twohand_lance_default_c"
+    ],
+    "skill_actions": [
+      "twohand_dodge",
+      "twohand_lance_strike",
+      "twohand_lance_dash",
+      "melee_tackle"
+    ]
+  },
+  "bow": {
+    "default_actions": [
+      "ranged_bow_default_a",
+      "ranged_bow_default_b",
+      "ranged_bow_default_c"
+    ],
+    "skill_actions": [
+      "ranged_bow_quickshot",
+      "ranged_bow_aimedshot",
+      "melee_tackle"
+    ]
+  },
+  "crossbow": {
+    "default_actions": [
+      "ranged_crossbow_default"
+    ],
+    "skill_actions": [
+      "ranged_crossbow_quickshot",
+      "ranged_crossbow_aimedshot",
+      "melee_tackle"
+    ]
+  }
+}

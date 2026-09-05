@@ -1,0 +1,10 @@
+{
+  "entrust_finished": {
+    "path": "Particle/Prefabs/Durango_01/02_Common",
+    "file_name": "FX_Entrust_Prop_Finish_01"
+  },
+  "cherryblossom_middle": {
+    "path": "Particle/Prefabs/Durango_01/14_Trees",
+    "file_name": "FX_Trees_Cherry_02_middle"
+  }
+}

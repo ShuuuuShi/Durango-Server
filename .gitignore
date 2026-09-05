@@ -1,0 +1,110 @@
+# Build outputs
+**/bin/
+**/obj/
+**/publish/
+artifacts/
+dist*/
+
+# Installed game files and extracted packages (not source)
+game/
+game-backup/
+game-broken-*/
+version_control/
+Original_Game/
+android-apk/
+
+# Runtime state
+server/saves/
+saves/
+saves-backup-*/
+saves-*/
+server/saves-backup-*/
+server/logs/
+server/data/whitelist.txt
+server/admin-token.txt
+server/data/reports/
+*.log
+*.log.err
+*.pid
+
+# Local credentials
+discord-bot/config.json
+.env
+.env.*
+*.pem
+*.pfx
+*.key
+
+# Local/editor files
+**/__pycache__/
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+Thumbs.db
+Desktop.ini
+
+# Local screenshots and scratch files
+shots/
+scratch_patch_work/
+server/saves-*test*/
+New Text Document.txt
+scratch_*.json
+scratch_*.txt
+scratch_*.py
+stuckLoading.md
+
+# Large local rebuilds and asset dumps (not source)
+game-rebuilt-original/
+tools/asset-browser/output/
+
+# Local agent session files
+.zcode/
+
+
+# ซอร์สเกมต้นฉบับที่ถอดจาก DLL ของ NEXON — ใช้เทียบในเครื่องเท่านั้น ห้ามอัปขึ้น GitHub
+# (เป็นงานมีลิขสิทธิ์ ถ้าโดน DMCA จะโดนลบทั้ง repo พร้อมงานเซิร์ฟที่ทำมา)
+nexonSRC/
+
+# === ขอบเขต repo สาธารณะ (เฉพาะ server + test-client + mods) ===
+# ไฟล์เกม/ข้อมูลเกมจากตัว client จริง — ลิขสิทธิ์ NEXON ห้ามแจก
+server/data/gamefiles/
+server/data/terrains/
+extracted/
+client-dist/
+keep-assets/
+game-bot/
+server-nx/
+node_modules/
+.superpowers/
+TodoList/
+dist*/
+publish/
+*.backup-*
+*.bak-*
+docs/operations/
+docs/parity/
+docs/reports/
+docs/superpowers/
+HANDOFF*.md
+PATCH-LIST.md
+/agent-brief/
+/discord-bot/
+/data/
+/json_manager.py
+/map_*.py
+/open_island.py
+/terrain_themes.py
+/เปิดเซิร์ฟ*.bat
+/package.json
+/package-lock.json
+/run_manager.bat
+/tools/*
+!/tools/MemoryBotMod/
+/client/
+/1.0.0 beta.txt
+
+# compiled game/patch/mod binaries — ผู้ใช้ build จากซอร์สเอง
+server/data/patches/*.dll
+server/mods/*.dll

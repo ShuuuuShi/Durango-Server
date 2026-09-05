@@ -1,0 +1,20 @@
+{
+  "Version": "0.1.6",
+  "ZipUrl": "https://github.com/ShuuuuShi/Durango-TH-Client/releases/download/DurangoTH/DurangoTH-Clean.zip",
+  "Sha256": "2e04cee56bff7bb88e72b6b66d503c99cc9d8be1ba2cf7bf402167742c088b56",
+  "Notes": "0.1.6 — รันเชอร์ทำหน้าที่อัปเดตแทน DurangoUpdater (โหลดเฉพาะไฟล์ที่เปลี่ยน + ตรวจ/ซ่อมไฟล์ 4,457 ไฟล์อัตโนมัติ) · บังคับเปิดผ่าน DinoWorldLauncher.exe เท่านั้น (เอา เล่นเกม.bat กับ DurangoUpdater.exe ออก) · เลขเวอร์ชันตรงกันทุกจุด (Client/Server โชว์ 0.1.6) · แก้หมุนสิ่งปลูกสร้างแล้วโมเดลหาย · แก้ปุ่มหน้าไตเติลทับกัน",
+  "Files": [
+    {
+      "Path": "Durango_Data/Managed/Assembly-CSharp.dll",
+      "Url": "https://github.com/ShuuuuShi/Durango-TH-Client/releases/download/DurangoTH/Assembly-CSharp.dll",
+      "Sha256": "e18c007c93e44a5aac33e09490d24f74e115facc29fb5999e99469804297955c",
+      "Size": 6173184
+    },
+    {
+      "Path": "Durango_Data/Managed/DurangoClientModSdk.dll",
+      "Url": "https://github.com/ShuuuuShi/Durango-TH-Client/releases/download/DurangoTH/DurangoClientModSdk.dll",
+      "Sha256": "1ddc150c8358f9ebce2c9e17a43e0b0a11636b49c573440589c890617ed4426d",
+      "Size": 8192
+    }
+  ]
+}

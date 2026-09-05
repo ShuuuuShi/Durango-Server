@@ -1,0 +1,289 @@
+{
+  "level_thresholds": [
+    30958,
+    140728,
+    408500,
+    968964,
+    2047646,
+    4016401,
+    7480457,
+    13414311,
+    23372897,
+    39818314,
+    66623441,
+    96638763,
+    129945627,
+    166620941,
+    206737717,
+    250365521,
+    297570846,
+    348417413,
+    402966448,
+    461276896,
+    523405625,
+    589407591,
+    659335988,
+    733242379,
+    811176816
+  ],
+  "level_rewards": {
+    "1": {
+      "capacity": 10,
+      "description": {
+        "부족원 최대 10명, 동맹 슬롯 2개 개방": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 0
+    },
+    "2": {
+      "capacity": 0,
+      "description": {
+        "경험치 획득 5% 증가": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": {
+        "clan_growth_buff": 1
+      },
+      "max_estate_number": 0
+    },
+    "3": {
+      "capacity": 15,
+      "description": {
+        "부족원 최대 15명": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 0
+    },
+    "4": {
+      "capacity": 0,
+      "description": {
+        "항해/워프 비용 10% 감소": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": {
+        "clan_growth_buff": 2
+      },
+      "max_estate_number": 0
+    },
+    "5": {
+      "capacity": 20,
+      "description": {
+        "부족 영토 선언 및 거점 점령 가능, 부족원 최대 20명, 영토 개수 최대 12개, 동맹 슬롯 1개 추가 개방": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 12
+    },
+    "6": {
+      "capacity": 0,
+      "description": {
+        "향로 건설법 획득, 사망 시 잃어버리는 소지품 20% 감소, 영토 개수 최대 15개": null
+      },
+      "blueprint_id": "clan_thurible",
+      "territory_effect": null,
+      "status_effect": {
+        "clan_growth_buff": 3
+      },
+      "max_estate_number": 15
+    },
+    "7": {
+      "capacity": 0,
+      "description": {
+        "방어탑 건설법 획득, 영토 개수 최대 18개": null
+      },
+      "blueprint_id": "test_defensive",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 18
+    },
+    "8": {
+      "capacity": 0,
+      "description": {
+        "티스톤 획득량 10% 증가, 영토 개수 최대 21개": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": {
+        "clan_growth_buff": 4
+      },
+      "max_estate_number": 21
+    },
+    "9": {
+      "capacity": 0,
+      "description": {
+        "부족 창고 건설법 획득, 영토 개수 최대 24개": null
+      },
+      "blueprint_id": "clan_warehouse",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 24
+    },
+    "10": {
+      "capacity": 30,
+      "description": {
+        "부족원 최대 30명, 워프홀 튜너 건설법 획득, 영토 개수 최대 27개, 동맹 슬롯 1개 추가 개방": null
+      },
+      "blueprint_id": "clan_warphole_tuner",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 27
+    },
+    "11": {
+      "capacity": 0,
+      "description": {
+        "채집 연구소 건설법 획득, 영토 개수 최대 30개": null
+      },
+      "blueprint_id": "clan_collect_lab",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 30
+    },
+    "12": {
+      "capacity": 0,
+      "description": {
+        "탐험 연구소 건설법 획득, 영토 개수 최대 33개": null
+      },
+      "blueprint_id": "clan_adventure_lab",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 33
+    },
+    "13": {
+      "capacity": 0,
+      "description": {
+        "전투 연구소 건설법 획득, 영토 개수 최대 36개": null
+      },
+      "blueprint_id": "clan_battle_lab",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 36
+    },
+    "14": {
+      "capacity": 0,
+      "description": {
+        "투척기 건설법 획득, 영토 개수 최대 39개": null
+      },
+      "blueprint_id": "catapult",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 39
+    },
+    "15": {
+      "capacity": 40,
+      "description": {
+        "부족원 최대 40명, 제작 연구소 건설법 획득, 영토 개수 최대 42개, 동맹 슬롯 1개 추가 개방": null
+      },
+      "blueprint_id": "clan_craft_lab",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 42
+    },
+    "16": {
+      "capacity": 0,
+      "description": {
+        "고급 연구소 건설법 획득, 영토 개수 최대 45개": null
+      },
+      "blueprint_id": "clan_advanced_lab",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 45
+    },
+    "17": {
+      "capacity": 0,
+      "description": {
+        "부족 회관 건설법 획득, 영토 개수 최대 48개": null
+      },
+      "blueprint_id": "clan_hall_01",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 48
+    },
+    "18": {
+      "capacity": 0,
+      "description": {
+        "영토 개수 최대 51개": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 51
+    },
+    "19": {
+      "capacity": 0,
+      "description": {
+        "영토 개수 최대 54개": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 54
+    },
+    "20": {
+      "capacity": 50,
+      "description": {
+        "부족원 최대 50명, 영토 개수 최대 57개, 동맹 슬롯 1개 추가 개방": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 57
+    },
+    "21": {
+      "capacity": 51,
+      "description": {
+        "부족원 최대 51명, 영토 개수 최대 60개": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 60
+    },
+    "22": {
+      "capacity": 52,
+      "description": {
+        "부족원 최대 52명, 영토 개수 최대 63개": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 63
+    },
+    "23": {
+      "capacity": 53,
+      "description": {
+        "부족원 최대 53명, 영토 개수 최대 66개": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 66
+    },
+    "24": {
+      "capacity": 54,
+      "description": {
+        "부족원 최대 54명, 영토 개수 최대 69개": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 69
+    },
+    "25": {
+      "capacity": 55,
+      "description": {
+        "부족원 최대 55명, 영토 개수 최대 72개, 동맹 슬롯 1개 추가 개방": null
+      },
+      "blueprint_id": "",
+      "territory_effect": null,
+      "status_effect": null,
+      "max_estate_number": 72
+    }
+  }
+}

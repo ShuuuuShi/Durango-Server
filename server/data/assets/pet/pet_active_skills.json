@@ -1,0 +1,2713 @@
+{
+  "ankylo_taunt": {
+    "12": {
+      "description": {
+        "상대의 공격을 자신에게로 집중시킨다.": null
+      },
+      "status_effect": {},
+      "action_set": "ankylo_active_taunt_b",
+      "cooltime": 33,
+      "context": [
+        2
+      ],
+      "duration": 7,
+      "icon": "action_taunt",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "도발 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "상대의 공격을 자신에게로 집중시킨다.": null
+      },
+      "status_effect": {},
+      "action_set": "ankylo_active_taunt_a",
+      "cooltime": 31,
+      "context": [
+        2
+      ],
+      "duration": 8,
+      "icon": "action_taunt",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "도발 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "상대의 공격을 자신에게로 집중시킨다.": null
+      },
+      "status_effect": {},
+      "action_set": "ankylo_active_taunt_s",
+      "cooltime": 30,
+      "context": [
+        2
+      ],
+      "duration": 9,
+      "icon": "action_taunt",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "도발 S": null
+      }
+    }
+  },
+  "pachy_dash": {
+    "12": {
+      "description": {
+        "단단한 머리뼈로 돌격해 적에게 박치기한다.": null
+      },
+      "status_effect": {},
+      "action_set": "pachy_active_dash_b",
+      "cooltime": 25,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_pachy_head",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "대갈박치기 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "단단한 머리뼈로 돌격해 적에게 박치기한다.": null
+      },
+      "status_effect": {},
+      "action_set": "pachy_active_dash_a",
+      "cooltime": 25,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_pachy_head",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "대갈박치기 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "단단한 머리뼈로 돌격해 적에게 박치기한다.": null
+      },
+      "status_effect": {},
+      "action_set": "pachy_active_dash_s",
+      "cooltime": 25,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_pachy_head",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "대갈박치기 S": null
+      }
+    }
+  },
+  "charming_fartigue": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "애교로 플레이어 캐릭터의 피로를 녹인다.": null
+      },
+      "status_effect": {
+        "pet_master_charming": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 11,
+      "icon": "action_charming_dog",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "멍뭉멍뭉 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "애교로 플레이어 캐릭터의 피로를 녹인다.": null
+      },
+      "status_effect": {
+        "pet_master_charming": 2
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 13,
+      "icon": "action_charming_dog",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "멍뭉멍뭉 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "애교로 플레이어 캐릭터의 피로를 녹인다.": null
+      },
+      "status_effect": {
+        "pet_master_charming": 3
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 15,
+      "icon": "action_charming_dog",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "멍뭉멍뭉 S": null
+      }
+    }
+  },
+  "speed_up_gastor": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "탑승시 일시적으로 속도가 빨라진다.": null
+      },
+      "status_effect": {
+        "pet_speed_amplifier": 1
+      },
+      "target_distance": 0,
+      "cooltime": 45,
+      "context": [
+        4
+      ],
+      "target": 0,
+      "duration": 12,
+      "icon": "action_speed_gastor",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "박차 가하기 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "탑승시 일시적으로 속도가 빨라진다.": null
+      },
+      "status_effect": {
+        "pet_speed_amplifier": 2
+      },
+      "target_distance": 0,
+      "cooltime": 45,
+      "context": [
+        4
+      ],
+      "target": 0,
+      "duration": 15,
+      "icon": "action_speed_gastor",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "박차 가하기 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "탑승시 일시적으로 속도가 빨라진다.": null
+      },
+      "status_effect": {
+        "pet_speed_amplifier": 3
+      },
+      "target_distance": 0,
+      "cooltime": 45,
+      "context": [
+        4
+      ],
+      "target": 0,
+      "duration": 18,
+      "icon": "action_speed_gastor",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "박차 가하기 S": null
+      }
+    }
+  },
+  "master_life_recovery": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 플레이어 캐릭터의 생명을 회복시킨다.": null
+      },
+      "status_effect": {
+        "life_up_pet": 1
+      },
+      "target_distance": 0,
+      "cooltime": 20,
+      "context": [
+        1,
+        2
+      ],
+      "target": 1,
+      "duration": 6,
+      "icon": "action_recovery_life",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "의무 지원 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 플레이어 캐릭터의 생명을 회복시킨다.": null
+      },
+      "status_effect": {
+        "life_up_pet": 2
+      },
+      "target_distance": 0,
+      "cooltime": 20,
+      "context": [
+        1,
+        2
+      ],
+      "target": 1,
+      "duration": 8,
+      "icon": "action_recovery_life",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "의무 지원 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 플레이어 캐릭터의 생명을 회복시킨다.": null
+      },
+      "status_effect": {
+        "life_up_pet": 3
+      },
+      "target_distance": 0,
+      "cooltime": 20,
+      "context": [
+        1,
+        2
+      ],
+      "target": 1,
+      "duration": 10,
+      "icon": "action_recovery_life",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "의무 지원 S": null
+      }
+    }
+  },
+  "master_lick_clean": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "혀로 핥아 플레이어 캐릭터를 씻긴다.": null
+      },
+      "status_effect": {
+        "clean_pet": 1
+      },
+      "target_distance": 0,
+      "cooltime": 180,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 180,
+      "icon": "action_lick",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "할짝할짝 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "혀로 핥아 플레이어 캐릭터를 씻긴다.": null
+      },
+      "status_effect": {
+        "clean_pet": 1
+      },
+      "target_distance": 0,
+      "cooltime": 180,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 240,
+      "icon": "action_lick",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "할짝할짝 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "혀로 핥아 플레이어 캐릭터를 씻긴다.": null
+      },
+      "status_effect": {
+        "clean_pet": 1
+      },
+      "target_distance": 0,
+      "cooltime": 180,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 300,
+      "icon": "action_lick",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "할짝할짝 S": null
+      }
+    }
+  },
+  "master_wash_up": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "바닷물을 뿌려 플레이어 캐릭터를 씻긴다.": null
+      },
+      "status_effect": {
+        "clean_pet_02": 1
+      },
+      "target_distance": 0,
+      "cooltime": 180,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 180,
+      "icon": "action_wash_up",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "바닷물 세수 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "바닷물을 뿌려 플레이어 캐릭터를 씻긴다.": null
+      },
+      "status_effect": {
+        "clean_pet_02": 1
+      },
+      "target_distance": 0,
+      "cooltime": 180,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 240,
+      "icon": "action_wash_up",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "바닷물 세수 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "바닷물을 뿌려 플레이어 캐릭터를 씻긴다.": null
+      },
+      "status_effect": {
+        "clean_pet_02": 1
+      },
+      "target_distance": 0,
+      "cooltime": 180,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 300,
+      "icon": "action_wash_up",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "바닷물 세수 S": null
+      }
+    }
+  },
+  "master_stamina_recovery": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 플레이어 캐릭터의 스태미나 회복 속도를 올린다.": null
+      },
+      "status_effect": {
+        "stamina_up": 1
+      },
+      "target_distance": 0,
+      "cooltime": 20,
+      "context": [
+        1,
+        2
+      ],
+      "target": 1,
+      "duration": 6,
+      "icon": "action_recovery_stamina",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "후방 응원 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 플레이어 캐릭터의 스태미나 회복 속도를 올린다.": null
+      },
+      "status_effect": {
+        "stamina_up": 2
+      },
+      "target_distance": 0,
+      "cooltime": 20,
+      "context": [
+        1,
+        2
+      ],
+      "target": 1,
+      "duration": 8,
+      "icon": "action_recovery_stamina",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "후방 응원 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 플레이어 캐릭터의 스태미나 회복 속도를 올린다.": null
+      },
+      "status_effect": {
+        "stamina_up": 3
+      },
+      "target_distance": 0,
+      "cooltime": 20,
+      "context": [
+        1,
+        2
+      ],
+      "target": 1,
+      "duration": 10,
+      "icon": "action_recovery_stamina",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "후방 응원 S": null
+      }
+    }
+  },
+  "bag_size_ratio": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 가방의 크기가 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_bag_amplifier": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 200,
+      "icon": "action_bag_size_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "짐 늘리기 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 가방의 크기가 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_bag_amplifier": 2
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 240,
+      "icon": "action_bag_size_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "짐 늘리기 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 가방의 크기가 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_bag_amplifier": 3
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 300,
+      "icon": "action_bag_size_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "짐 늘리기 S": null
+      }
+    }
+  },
+  "bag_speed_both": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 이동 속도와 가방 크기가 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_speed_amplifier": 1,
+        "pet_bag_amplifier": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1,
+        4
+      ],
+      "target": 0,
+      "duration": 180,
+      "icon": "action_bag_speed_both",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "썰매 최적화 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 이동 속도와 가방 크기가 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_speed_amplifier": 1,
+        "pet_bag_amplifier": 2
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1,
+        4
+      ],
+      "target": 0,
+      "duration": 200,
+      "icon": "action_bag_speed_both",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "썰매 최적화 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 이동 속도와 가방 크기가 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_speed_amplifier": 2,
+        "pet_bag_amplifier": 2
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1,
+        4
+      ],
+      "target": 0,
+      "duration": 240,
+      "icon": "action_bag_speed_both",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "썰매 최적화 S": null
+      }
+    }
+  },
+  "life_regen_ratio": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 생명 회복 속도가 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_life_regen_amplifier": 2
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 6,
+      "icon": "action_hp_regen_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "생기의 귀환 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 생명 회복 속도가 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_life_regen_amplifier": 3
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 8,
+      "icon": "action_hp_regen_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "생기의 귀환 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 생명 회복 속도가 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_life_regen_amplifier": 4
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 10,
+      "icon": "action_hp_regen_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "생기의 귀환 S": null
+      }
+    }
+  },
+  "life_regen_max_ratio": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 생명 최대치와 생명 회복 속도가 증폭한다.": null
+      },
+      "status_effect": {
+        "pet_life_max_amplifier": 1,
+        "pet_life_regen_amplifier": 1
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 6,
+      "icon": "action_hp_regen_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "생명의 환희 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 생명 최대치와 생명 회복 속도가 증폭한다.": null
+      },
+      "status_effect": {
+        "pet_life_max_amplifier": 2,
+        "pet_life_regen_amplifier": 1
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 8,
+      "icon": "action_hp_regen_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "생명의 환희 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 생명 최대치와 생명 회복 속도가 증폭한다.": null
+      },
+      "status_effect": {
+        "pet_life_max_amplifier": 2,
+        "pet_life_regen_amplifier": 2
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 10,
+      "icon": "action_hp_regen_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "생명의 환희 S": null
+      }
+    }
+  },
+  "attack_increase_ratio": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 공격력이 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_attack_amplifier": 1
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 6,
+      "icon": "action_attack_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "공격력 증폭 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 공격력이 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_attack_amplifier": 2
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 7,
+      "icon": "action_attack_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "공격력 증폭 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 공격력이 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_attack_amplifier": 3
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 9,
+      "icon": "action_attack_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "공격력 증폭 S": null
+      }
+    }
+  },
+  "defense_increase_ratio": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 방어력이 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_defense_amplifier": 1
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 6,
+      "icon": "action_defense_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "방어력 증폭 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 방어력이 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_defense_amplifier": 2
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 7,
+      "icon": "action_defense_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "방어력 증폭 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "전투 중 일시적으로 방어력이 증폭된다.": null
+      },
+      "status_effect": {
+        "pet_defense_amplifier": 3
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 9,
+      "icon": "action_defense_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "방어력 증폭 S": null
+      }
+    }
+  },
+  "vitality_speed_ratio": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "활력이 감소하는 속도가 완화된다.": null
+      },
+      "status_effect": {
+        "pet_vitality_ratio": 1
+      },
+      "target_distance": 0,
+      "cooltime": 600,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 300,
+      "icon": "action_vitality_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "활력관리 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "활력이 감소하는 속도가 완화된다.": null
+      },
+      "status_effect": {
+        "pet_vitality_ratio": 2
+      },
+      "target_distance": 0,
+      "cooltime": 540,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 300,
+      "icon": "action_vitality_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "활력관리 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "활력이 감소하는 속도가 완화된다.": null
+      },
+      "status_effect": {
+        "pet_vitality_ratio": 3
+      },
+      "target_distance": 0,
+      "cooltime": 450,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 300,
+      "icon": "action_vitality_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "활력관리 S": null
+      }
+    }
+  },
+  "accuracy_increase_ratio": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 정확도가 증폭한다.": null
+      },
+      "status_effect": {
+        "pet_accuracy_amplifier": 1
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 6,
+      "icon": "action_accuracy_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "전투 몰입 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 정확도가 증폭한다.": null
+      },
+      "status_effect": {
+        "pet_accuracy_amplifier": 2
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 7,
+      "icon": "action_accuracy_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "전투 몰입 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 정확도가 증폭한다.": null
+      },
+      "status_effect": {
+        "pet_accuracy_amplifier": 3
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 9,
+      "icon": "action_accuracy_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "전투 몰입 S": null
+      }
+    }
+  },
+  "attack_increase": {
+    "11": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 공격력이 증가한다.": null
+      },
+      "status_effect": {
+        "pet_attack_plus": 1
+      },
+      "target_distance": 0,
+      "cooltime": 18,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 5,
+      "icon": "action_attack",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "공격력 증가 C": null
+      }
+    },
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 공격력이 증가한다.": null
+      },
+      "status_effect": {
+        "pet_attack_plus": 2
+      },
+      "target_distance": 0,
+      "cooltime": 17,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 6,
+      "icon": "action_attack",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "공격력 증가 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 공격력이 증가한다.": null
+      },
+      "status_effect": {
+        "pet_attack_plus": 3
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 7,
+      "icon": "action_attack",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "공격력 증가 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 공격력이 증가한다.": null
+      },
+      "status_effect": {
+        "pet_attack_plus": 4
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 8,
+      "icon": "action_attack",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "공격력 증가 S": null
+      }
+    }
+  },
+  "defense_increase": {
+    "11": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 방어력이 증가한다.": null
+      },
+      "status_effect": {
+        "pet_defense_plus": 1
+      },
+      "target_distance": 0,
+      "cooltime": 18,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 5,
+      "icon": "action_defense",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "방어력 증가 C": null
+      }
+    },
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 방어력이 증가한다.": null
+      },
+      "status_effect": {
+        "pet_defense_plus": 2
+      },
+      "target_distance": 0,
+      "cooltime": 17,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 6,
+      "icon": "action_defense",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "방어력 증가 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 방어력이 증가한다.": null
+      },
+      "status_effect": {
+        "pet_defense_plus": 3
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 7,
+      "icon": "action_defense",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "방어력 증가 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "전투시 일시적으로 방어력이 증가한다.": null
+      },
+      "status_effect": {
+        "pet_defense_plus": 4
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 8,
+      "icon": "action_defense",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "방어력 증가 S": null
+      }
+    }
+  },
+  "life_regen_increase": {
+    "11": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 생명 최대치와 생명 회복 속도가 높아진다": null
+      },
+      "status_effect": {
+        "pet_life_regen_plus": 1,
+        "pet_life_max_plus": 1
+      },
+      "target_distance": 0,
+      "cooltime": 18,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 5,
+      "icon": "action_hp_velocity",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "피끓는 생명 C": null
+      }
+    },
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 생명 최대치와 생명 회복 속도가 높아진다": null
+      },
+      "status_effect": {
+        "pet_life_regen_plus": 2,
+        "pet_life_max_plus": 2
+      },
+      "target_distance": 0,
+      "cooltime": 17,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 6,
+      "icon": "action_hp_velocity",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "피끓는 생명 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 생명 최대치와 생명 회복 속도가 높아진다": null
+      },
+      "status_effect": {
+        "pet_life_regen_plus": 3,
+        "pet_life_max_plus": 3
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 7,
+      "icon": "action_hp_velocity",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "피끓는 생명 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 생명 최대치와 생명 회복 속도가 높아진다": null
+      },
+      "status_effect": {
+        "pet_life_regen_plus": 4,
+        "pet_life_max_plus": 4
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 8,
+      "icon": "action_hp_velocity",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "피끓는 생명 S": null
+      }
+    }
+  },
+  "bag_size_increase": {
+    "11": {
+      "motion": "active_default",
+      "description": {
+        "가방 사이즈가 일시적으로 증가한다.": null
+      },
+      "status_effect": {
+        "pet_bag_plus": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 180,
+      "icon": "action_bag_size",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "무거운 어깨 C": null
+      }
+    },
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "가방 사이즈가 일시적으로 증가한다.": null
+      },
+      "status_effect": {
+        "pet_bag_plus": 2
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 200,
+      "icon": "action_bag_size",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "무거운 어깨 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "가방 사이즈가 일시적으로 증가한다.": null
+      },
+      "status_effect": {
+        "pet_bag_plus": 3
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 240,
+      "icon": "action_bag_size",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "무거운 어깨 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "가방 사이즈가 일시적으로 증가한다.": null
+      },
+      "status_effect": {
+        "pet_bag_plus": 4
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 0,
+      "duration": 300,
+      "icon": "action_bag_size",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "무거운 어깨 S": null
+      }
+    }
+  },
+  "speed_up": {
+    "11": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 속도가 빨라진다": null
+      },
+      "status_effect": {
+        "pet_speed_plus": 1
+      },
+      "target_distance": 0,
+      "cooltime": 45,
+      "context": [
+        4
+      ],
+      "target": 0,
+      "duration": 10,
+      "icon": "action_speed_up",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "달려보자 C": null
+      }
+    },
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 속도가 빨라진다": null
+      },
+      "status_effect": {
+        "pet_speed_plus": 2
+      },
+      "target_distance": 0,
+      "cooltime": 45,
+      "context": [
+        4
+      ],
+      "target": 0,
+      "duration": 12,
+      "icon": "action_speed_up",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "달려보자 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 속도가 빨라진다": null
+      },
+      "status_effect": {
+        "pet_speed_plus": 3
+      },
+      "target_distance": 0,
+      "cooltime": 45,
+      "context": [
+        4
+      ],
+      "target": 0,
+      "duration": 15,
+      "icon": "action_speed_up",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "달려보자 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 속도가 빨라진다": null
+      },
+      "status_effect": {
+        "pet_speed_plus": 4
+      },
+      "target_distance": 0,
+      "cooltime": 45,
+      "context": [
+        4
+      ],
+      "target": 0,
+      "duration": 18,
+      "icon": "action_speed_up",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "달려보자 S": null
+      }
+    }
+  },
+  "attack_cooltime_ratio": {
+    "11": {
+      "motion": "active_default",
+      "description": {
+        "공격시 일시적으로 쿨타임을 줄여준다.": null
+      },
+      "status_effect": {
+        "pet_cooltime_ratio": 1
+      },
+      "target_distance": 0,
+      "cooltime": 18,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 4,
+      "icon": "action_cooltime_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "신속 공격 C": null
+      }
+    },
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "공격시 일시적으로 쿨타임을 줄여준다.": null
+      },
+      "status_effect": {
+        "pet_cooltime_ratio": 2
+      },
+      "target_distance": 0,
+      "cooltime": 17,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 4,
+      "icon": "action_cooltime_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "신속 공격 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "공격시 일시적으로 쿨타임을 줄여준다.": null
+      },
+      "status_effect": {
+        "pet_cooltime_ratio": 3
+      },
+      "target_distance": 0,
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 6,
+      "icon": "action_cooltime_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "신속 공격 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "공격시 일시적으로 쿨타임을 줄여준다.": null
+      },
+      "status_effect": {
+        "pet_cooltime_ratio": 4
+      },
+      "target_distance": 0,
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "target": 0,
+      "duration": 8,
+      "icon": "action_cooltime_ratio",
+      "type": 1,
+      "category_icon": "pet_active_buff ",
+      "name": {
+        "신속 공격 S": null
+      }
+    }
+  },
+  "master_energetic": {
+    "11": {
+      "motion": "active_default",
+      "description": {
+        "활력 상태효과를 부여해 플레이어 캐릭터의 에너지 감소를 줄여준다.": null
+      },
+      "status_effect": {
+        "energetic_pet": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 180,
+      "icon": "action_master_energetic",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "십시일반 C": null
+      }
+    },
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "활력 상태효과를 부여해 플레이어 캐릭터의 에너지 감소를 줄여준다.": null
+      },
+      "status_effect": {
+        "energetic_pet": 2
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 200,
+      "icon": "action_master_energetic",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "십시일반 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "활력 상태효과를 부여해 플레이어 캐릭터의 에너지 감소를 줄여준다.": null
+      },
+      "status_effect": {
+        "energetic_pet": 3
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 240,
+      "icon": "action_master_energetic",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "십시일반 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "활력 상태효과를 부여해 플레이어 캐릭터의 에너지 감소를 줄여준다.": null
+      },
+      "status_effect": {
+        "energetic_pet": 4
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 300,
+      "icon": "action_master_energetic",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "십시일반 S": null
+      }
+    }
+  },
+  "master_excited": {
+    "11": {
+      "motion": "active_default",
+      "description": {
+        "친근함으로 플레이어 캐릭터의 피로도 상승을 늦춘다.": null
+      },
+      "status_effect": {
+        "excited_pet": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 180,
+      "icon": "action_prevent_fatigue",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "친근함 C": null
+      }
+    },
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "친근함으로 플레이어 캐릭터의 피로도 상승을 늦춘다.": null
+      },
+      "status_effect": {
+        "excited_pet": 2
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 200,
+      "icon": "action_prevent_fatigue",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "친근함 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "친근함으로 플레이어 캐릭터의 피로도 상승을 늦춘다.": null
+      },
+      "status_effect": {
+        "excited_pet": 3
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 240,
+      "icon": "action_prevent_fatigue",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "친근함 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "친근함으로 플레이어 캐릭터의 피로도 상승을 늦춘다.": null
+      },
+      "status_effect": {
+        "excited_pet": 4
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 300,
+      "icon": "action_prevent_fatigue",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "친근함 S": null
+      }
+    }
+  },
+  "tricera_dash": {
+    "11": {
+      "description": {
+        "네 발로 힘차게 적에게 돌진한다.": null
+      },
+      "status_effect": {},
+      "action_set": "tricera_active_dash_c",
+      "cooltime": 21,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_tricera_dash",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "돌진 C": null
+      }
+    },
+    "12": {
+      "description": {
+        "네 발로 힘차게 적에게 돌진한다.": null
+      },
+      "status_effect": {},
+      "action_set": "tricera_active_dash_b",
+      "cooltime": 20,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_tricera_dash",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "돌진 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "네 발로 힘차게 적에게 돌진한다.": null
+      },
+      "status_effect": {},
+      "action_set": "tricera_active_dash_a",
+      "cooltime": 19,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_tricera_dash",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "돌진 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "네 발로 힘차게 적에게 돌진한다.": null
+      },
+      "status_effect": {},
+      "action_set": "tricera_active_dash_s",
+      "cooltime": 18,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_tricera_dash",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "돌진 S": null
+      }
+    }
+  },
+  "phenaco_gas": {
+    "11": {
+      "description": {
+        "가스를 분출하여 적에게 피해를 준다.": null
+      },
+      "status_effect": {},
+      "action_set": "phenaco_active_gas_c",
+      "cooltime": 14,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_phenaco_gas",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "화학전 C": null
+      }
+    },
+    "12": {
+      "description": {
+        "가스를 분출하여 적에게 피해를 준다.": null
+      },
+      "status_effect": {},
+      "action_set": "phenaco_active_gas_b",
+      "cooltime": 13,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_phenaco_gas",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "화학전 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "가스를 분출하여 적에게 피해를 준다.": null
+      },
+      "status_effect": {},
+      "action_set": "phenaco_active_gas_a",
+      "cooltime": 12,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_phenaco_gas",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "화학전 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "가스를 분출하여 적에게 피해를 준다.": null
+      },
+      "status_effect": {},
+      "action_set": "phenaco_active_gas_s",
+      "cooltime": 12,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_phenaco_gas",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "화학전 S": null
+      }
+    }
+  },
+  "macrau_kick": {
+    "11": {
+      "description": {
+        "뒷발로 적을 찬다.": null
+      },
+      "status_effect": {},
+      "action_set": "macrau_active_kick_front_c",
+      "cooltime": 18,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_macrau_kick",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "뒷차기 C": null
+      }
+    },
+    "12": {
+      "description": {
+        "뒷발로 적을 찬다.": null
+      },
+      "status_effect": {},
+      "action_set": "macrau_active_kick_front_b",
+      "cooltime": 17,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_macrau_kick",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "뒷차기 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "뒷발로 적을 찬다.": null
+      },
+      "status_effect": {},
+      "action_set": "macrau_active_kick_front_a",
+      "cooltime": 16,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_macrau_kick",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "뒷차기 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "뒷발로 적을 찬다.": null
+      },
+      "status_effect": {},
+      "action_set": "macrau_active_kick_front_s",
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_macrau_kick",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "뒷차기 S": null
+      }
+    }
+  },
+  "macrau_head": {
+    "11": {
+      "description": {
+        "뿔로 적을 들이 받는다.": null
+      },
+      "status_effect": {},
+      "action_set": "macrau_active_head_c",
+      "cooltime": 13,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_macrau_head",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "들이받기 C": null
+      }
+    },
+    "12": {
+      "description": {
+        "뿔로 적을 들이 받는다.": null
+      },
+      "status_effect": {},
+      "action_set": "macrau_active_head_b",
+      "cooltime": 12,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_macrau_head",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "들이받기 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "뿔로 적을 들이 받는다.": null
+      },
+      "status_effect": {},
+      "action_set": "macrau_active_head_a",
+      "cooltime": 11,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_macrau_head",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "들이받기 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "뿔로 적을 들이 받는다.": null
+      },
+      "status_effect": {},
+      "action_set": "macrau_active_head_s",
+      "cooltime": 10,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_macrau_head",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "들이받기 S": null
+      }
+    }
+  },
+  "direwolf_bite": {
+    "11": {
+      "description": {
+        "치아와 턱으로 적을 문다.": null
+      },
+      "status_effect": {},
+      "action_set": "direwolf_active_bite_c",
+      "cooltime": 15,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_direwolf_bite",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "물어뜯기 C": null
+      }
+    },
+    "12": {
+      "description": {
+        "치아와 턱으로 적을 문다.": null
+      },
+      "status_effect": {},
+      "action_set": "direwolf_active_bite_b",
+      "cooltime": 14,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_direwolf_bite",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "물어뜯기 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "치아와 턱으로 적을 문다.": null
+      },
+      "status_effect": {},
+      "action_set": "direwolf_active_bite_a",
+      "cooltime": 13,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_direwolf_bite",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "물어뜯기 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "치아와 턱으로 적을 문다.": null
+      },
+      "status_effect": {},
+      "action_set": "direwolf_active_bite_s",
+      "cooltime": 12,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_direwolf_bite",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "물어뜯기 S": null
+      }
+    }
+  },
+  "coelo_mad": {
+    "11": {
+      "description": {
+        "춤을 추듯 적을 쪼아 공격한다.": null
+      },
+      "status_effect": {},
+      "action_set": "coelo_active_mad_c",
+      "cooltime": 28,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_coelo_mad",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "콕콕이춤 C": null
+      }
+    },
+    "12": {
+      "description": {
+        "춤을 추듯 적을 쪼아 공격한다.": null
+      },
+      "status_effect": {},
+      "action_set": "coelo_active_mad_b",
+      "cooltime": 27,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_coelo_mad",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "콕콕이춤 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "춤을 추듯 적을 쪼아 공격한다.": null
+      },
+      "status_effect": {},
+      "action_set": "coelo_active_mad_a",
+      "cooltime": 26,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_coelo_mad",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "콕콕이춤 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "춤을 추듯 적을 쪼아 공격한다.": null
+      },
+      "status_effect": {},
+      "action_set": "coelo_active_mad_s",
+      "cooltime": 25,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_coelo_mad",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "콕콕이춤 S": null
+      }
+    }
+  },
+  "mammoth_turn": {
+    "12": {
+      "description": {
+        "코를 휘두르며 씩씩하게 달려간다.": null
+      },
+      "status_effect": {},
+      "action_set": "mammoth_active_turn_b",
+      "cooltime": 30,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_mammoth_turn",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "코통사고 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "코를 휘두르며 씩씩하게 달려간다.": null
+      },
+      "status_effect": {},
+      "action_set": "mammoth_active_turn_a",
+      "cooltime": 30,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_mammoth_turn",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "코통사고 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "코를 휘두르며 씩씩하게 달려간다.": null
+      },
+      "status_effect": {},
+      "action_set": "mammoth_active_turn_s",
+      "cooltime": 30,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_mammoth_turn",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "코통사고 S": null
+      }
+    }
+  },
+  "brachio_junior_attack": {
+    "12": {
+      "description": {
+        "앞발로 땅을 찍어 주변을 흔든다.": null
+      },
+      "status_effect": {},
+      "action_set": "brachio_junior_active_attack_b",
+      "cooltime": 26,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_brachio_junior_attack",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "꿍꿍이 B": null
+      }
+    },
+    "13": {
+      "description": {
+        "앞발로 땅을 찍어 주변을 흔든다.": null
+      },
+      "status_effect": {},
+      "action_set": "brachio_junior_active_attack_a",
+      "cooltime": 24,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_brachio_junior_attack",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "꿍꿍이 A": null
+      }
+    },
+    "14": {
+      "description": {
+        "앞발로 땅을 찍어 주변을 흔든다.": null
+      },
+      "status_effect": {},
+      "action_set": "brachio_junior_active_attack_s",
+      "cooltime": 20,
+      "context": [
+        2
+      ],
+      "duration": 5,
+      "icon": "action_brachio_junior_attack",
+      "type": 0,
+      "category_icon": "pet_active_attack",
+      "name": {
+        "꿍꿍이 S": null
+      }
+    }
+  },
+  "master_life_health_recovery": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "플레이어 캐릭터의 건강과 생명을 회복시킨다.": null
+      },
+      "status_effect": {
+        "life_health_up_pet": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        2,
+        1
+      ],
+      "target": 1,
+      "duration": 20,
+      "icon": "action_recovery_life_health",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "축제 개시 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "플레이어 캐릭터의 건강과 생명을 회복시킨다.": null
+      },
+      "status_effect": {
+        "life_health_up_pet": 2
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        2,
+        1
+      ],
+      "target": 1,
+      "duration": 20,
+      "icon": "action_recovery_life_health",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "축제 개시 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "플레이어 캐릭터의 건강과 생명을 회복시킨다.": null
+      },
+      "status_effect": {
+        "life_health_up_pet": 3
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        2,
+        1
+      ],
+      "target": 1,
+      "duration": 20,
+      "icon": "action_recovery_life_health",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "축제 개시 S": null
+      }
+    }
+  },
+  "master_attack_increase": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "플레이어 캐릭터의 공격력을 증가시킨다.": null
+      },
+      "status_effect": {
+        "master_attack_up_pet": 1
+      },
+      "target_distance": 0,
+      "cooltime": 600,
+      "context": [
+        2,
+        1
+      ],
+      "target": 1,
+      "duration": 120,
+      "icon": "action_attack_ratio",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "더 쎄게 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "플레이어 캐릭터의 공격력을 증가시킨다.": null
+      },
+      "status_effect": {
+        "master_attack_up_pet": 2
+      },
+      "target_distance": 0,
+      "cooltime": 600,
+      "context": [
+        2,
+        1
+      ],
+      "target": 1,
+      "duration": 120,
+      "icon": "action_attack_ratio",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "더 쎄게 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "플레이어 캐릭터의 공격력을 증가시킨다.": null
+      },
+      "status_effect": {
+        "master_attack_up_pet": 3
+      },
+      "target_distance": 0,
+      "cooltime": 600,
+      "context": [
+        2,
+        1
+      ],
+      "target": 1,
+      "duration": 120,
+      "icon": "action_attack_ratio",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "더 쎄게 S": null
+      }
+    }
+  },
+  "hadrosaurus_immune_larva": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "짧은 순간 용암 피해에 면역이 됩니다.": null
+      },
+      "status_effect": {
+        "immune_lava": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 12,
+      "icon": "action_taunt",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "용암 견디기 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "짧은 순간 용암 피해에 면역이 됩니다.": null
+      },
+      "status_effect": {
+        "immune_lava": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 16,
+      "icon": "action_taunt",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "용암 견디기 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "짧은 순간 용암 피해에 면역이 됩니다.": null
+      },
+      "status_effect": {
+        "immune_lava": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 20,
+      "icon": "action_taunt",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "용암 견디기 S": null
+      }
+    }
+  },
+  "iguana_shining_hand": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 제작 시 대성공 확률이 올라갑니다.": null
+      },
+      "status_effect": {
+        "iguana_great_success_craft": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 15,
+      "icon": "action_taunt",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "오색으로 빛나는 손 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 제작 시 대성공 확률이 올라갑니다.": null
+      },
+      "status_effect": {
+        "iguana_great_success_craft": 2
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 15,
+      "icon": "action_taunt",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "오색으로 빛나는 손 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 제작 시 대성공 확률이 올라갑니다.": null
+      },
+      "status_effect": {
+        "iguana_great_success_craft": 3
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        1
+      ],
+      "target": 1,
+      "duration": 15,
+      "icon": "action_taunt",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "오색으로 빛나는 손 S": null
+      }
+    }
+  },
+  "hadrosaurus_immune_larva_enhance": {
+    "12": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 용암 피해에 면역이 됩니다.": null
+      },
+      "status_effect": {
+        "hadro_cheer_up": 1,
+        "immune_lava": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        2,
+        1
+      ],
+      "target": 1,
+      "duration": 200,
+      "icon": "action_taunt",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "용암 돌피부 B": null
+      }
+    },
+    "13": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 용암 피해에 면역이 됩니다.": null
+      },
+      "status_effect": {
+        "hadro_cheer_up": 2,
+        "immune_lava": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        2,
+        1
+      ],
+      "target": 1,
+      "duration": 240,
+      "icon": "action_taunt",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "용암 돌피부 A": null
+      }
+    },
+    "14": {
+      "motion": "active_default",
+      "description": {
+        "일시적으로 용암 피해에 면역이 됩니다.": null
+      },
+      "status_effect": {
+        "hadro_cheer_up": 3,
+        "immune_lava": 1
+      },
+      "target_distance": 0,
+      "cooltime": 300,
+      "context": [
+        2,
+        1
+      ],
+      "target": 1,
+      "duration": 300,
+      "icon": "action_taunt",
+      "type": 1,
+      "category_icon": "pet_active_player_buff",
+      "name": {
+        "용암 돌피부 S": null
+      }
+    }
+  }
+}

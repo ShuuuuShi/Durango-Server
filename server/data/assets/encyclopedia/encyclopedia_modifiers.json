@@ -1,0 +1,127 @@
+{
+  "crop_reduce_water": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "물 요구량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "modifier_water"
+  },
+  "crop_reduce_fertilizer": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "비료 요구량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 0,
+    "type": 1,
+    "types": null,
+    "icon": "modifier_fertilizer"
+  },
+  "crop_reduce_collect_time": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "채집 시간": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "modifier_time_collect"
+  },
+  "crop_reduce_collect_energy": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "채집 에너지": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "modifier_energy"
+  },
+  "crop_reduce_growth_time": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "inverse": true,
+    "name": {
+      "성장 시간": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "modifier_time"
+  },
+  "crop_product_plus": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "수확량": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "modifier_product"
+  },
+  "crop_random_tag_rate": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "잠재 속성 획득 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "modifier_random_tag"
+  },
+  "crop_rare_tag_rate": {
+    "default_value": 0,
+    "reduce_type": "sum",
+    "name": {
+      "희귀 속성 획득 확률": null
+    },
+    "apply_type": 0,
+    "description": {
+      "": null
+    },
+    "increase_type": 1,
+    "type": 1,
+    "types": null,
+    "icon": "modifier_rare_tag"
+  }
+}

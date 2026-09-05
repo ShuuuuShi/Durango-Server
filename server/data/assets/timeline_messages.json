@@ -1,0 +1,676 @@
+{
+  "messages": {
+    "0": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]의 부지를 선정했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 부지를 선정했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]의 부지를 선정했습니다.": null
+      }
+    },
+    "1": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]{1:-을} 건설했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 건설했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]{0:-을} 건설했습니다.": null
+      }
+    },
+    "2": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]{1:-을} 수리했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 수리했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]{0:-을} 수리했습니다.": null
+      }
+    },
+    "3": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]{1:-을} 제거했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 제거했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]{0:-을} 제거했습니다.": null
+      }
+    },
+    "4": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]에 {2:을} 보관했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 <em>{1}</em>{1:-을} 보관했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]에 <em>{1}</em>{1:-을} 보관했습니다.": null
+      }
+    },
+    "5": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]에서 {2:을} 꺼냈습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]{1:-을} 꺼냈습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]에서 [fad257]{1}[-]{1:-을} 꺼냈습니다.": null
+      }
+    },
+    "6": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]의 부지에 [fad257]{2}[-]{2:-을} 넣었습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]{1:-을} 재료로 넣었습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]의 부지에 [fad257]{1}[-]{1:-을} 넣었습니다.": null
+      }
+    },
+    "7": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]{0:-이} 발동하여 [ffffff]{1}[-]에 [fad257]{2}[-]만큼 피해를 주고 경험치 [fad257]{3}[-] 획득했습니다.": null
+      }
+    },
+    "8": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]{1:-을} 건설 완료했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 건설 완료했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]{0:-을} 건설 완료했습니다.": null
+      }
+    },
+    "9": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 도움으로 [fad257]{1}[-]의 마무리 시간이 [fad257]{2}[-] 줄어들었습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님의 도움으로 마무리 시간이 [fad257]{1}[-] 줄어들었습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]의 마무리를 도와 시간을 [fad257]{1}[-] 줄였습니다.": null
+      }
+    },
+    "10": {
+      "third_person_side": {
+        "{0} 님이 <em>{1}</em>{1:-을} 마무리하고 완성했습니다.": null
+      },
+      "target_side": {
+        "{0} 님이 마무리하고 완성했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>{0:-을} 마무리하고 완성했습니다.": null
+      }
+    },
+    "11": {
+      "third_person_side": {
+        "{0} 님이 <em>{1}</em>{1:-을} 포장했습니다.": null
+      },
+      "target_side": {
+        "{0} 님이 포장했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}/<em>{0:-을} 포장했습니다.": null
+      }
+    },
+    "12": {
+      "third_person_side": {
+        "{0} 님이 <em>{1}</em>{1:-을} 배치했습니다.": null
+      },
+      "target_side": {
+        "{0} 님이 배치했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>{0:-을} 배치했습니다.": null
+      }
+    },
+    "13": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "신고가 접수되어 차단되었습니다.": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "14": {
+      "third_person_side": {
+        "<em>{0}</em> 님이 <em>{1}</em>에 글을 적었습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 글을 적었습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>에 글을 적었습니다.": null
+      }
+    },
+    "15": {
+      "third_person_side": {
+        "<em>{0}</em> 님이 <em>{1}</em>에 그림을 그렸습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 그림을 그렸습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>에 그림을 그렸습니다.": null
+      }
+    },
+    "16": {
+      "third_person_side": {
+        "<em>{0}</em> 님이 <em>{1}</em>의 이름을 변경했습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 이름을 변경했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>의 이름을 변경했습니다.": null
+      }
+    },
+    "17": {
+      "third_person_side": {
+        "<em>{0}</em>님이 <em>{1}</em>에 <em>{2}</em>{2:-을} 넣었습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em>님이 <em>{1}</em>{1:-을} 넣었습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>에 <em>{1}</em>{1:-을} 넣었습니다.": null
+      }
+    },
+    "18": {
+      "third_person_side": {
+        "<em>{0}</em>님이 <em>{1}</em>에서 <em>{2}</em>{2:-을} 꺼냈습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em>님이 <em>{1}</em>{1:-을} 꺼냈습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>에서 <em>{1}</em>{1:-을} 꺼냈습니다.": null
+      }
+    },
+    "19": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "<em>{0:lv:}</em>이 됐습니다.": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "20": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "<em>{1:lv:} {2}</em>섬인 <em>{0}</em>에 도착했습니다.": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "21": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "<em>{0}</em>에게 죽었습니다.": null
+      },
+      "simple_state": {
+        "<em>{0}</em>에게 죽었습니다.": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "22": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "<em>{0}</em>{0:-을} 죽였습니다.": null
+      },
+      "agent_side": {
+        "<em>{0}</em>{0:-을} 죽였습니다.": null
+      }
+    },
+    "24": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]에서 {2:을} 버렸습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]{1:-을} 버렸습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]에서 [fad257]{1}[-]{1:-을} 버렸습니다.": null
+      }
+    },
+    "25": {
+      "third_person_side": {
+        "<em>{0}</em> 님이 <em>{1}</em>에 <em>{2}</em>{2:-을} 채워넣었습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 <em>{1}</em>{1:-을} 채워넣었습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>에 <em>{1}</em>{1:-을} 채워넣었습니다.": null
+      }
+    },
+    "26": {
+      "third_person_side": {
+        "<em>{0}</em> 님이 <em>{1}</em>{1:-을} 사용하였습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 사용하였습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>{0:-을} 사용하였습니다.": null
+      }
+    },
+    "27": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]에 [fad257]{2}[-]{2:-을} 넣어 개조했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]{1:-을} 재료로 넣어 개조했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]에 [fad257]{1}[-]{1:-을} 넣어 개조했습니다.": null
+      }
+    },
+    "28": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 [fad257]{1}[-]{1:-을} 개조 완료했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 개조 완료했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "[fad257]{0}[-]{0:-을} 개조 완료했습니다.": null
+      }
+    },
+    "29": {
+      "third_person_side": {
+        "<em>{1}</em> 님이 <em>{0}</em>님의 섬으로 들어왔습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님의 섬으로 들어왔습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{1}</em> 님이 섬으로 들어왔습니다.": null
+      }
+    },
+    "30": {
+      "third_person_side": {
+        "<em>{1}</em> 님이 <em>{0}</em>님의 섬에서 나갔습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님의 섬에서 나갔습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{1}</em> 님이 섬에서 나갔습니다.": null
+      }
+    },
+    "31": {
+      "third_person_side": {
+        "<em>{1}</em> 님이 <em>{0}</em>님의 섬에서 추방되었습니다.": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님의 섬에서 추방되었습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{1}</em> 님을 추방했습니다.": null
+      }
+    },
+    "32": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 <em>{1}</em>에 <em>{2}</em>{2:-을} 벽에 배치했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 <em>{1}</em>{1:-을} 벽에 배치했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>에 <em>{1}</em>{1:-을} 벽에 배치했습니다.": null
+      }
+    },
+    "33": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 <em>{1}</em>에 <em>{2}</em>{2:-을} 벽에서 제거했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 <em>{1}</em>{1:-을} 벽에서 제거했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>에 <em>{1}</em>{1:-을} 벽에서 제거했습니다.": null
+      }
+    },
+    "34": {
+      "third_person_side": {
+        "[ffffff]{0}[-] 님이 <em>{1}</em>에 <em>{2}</em>의 위치를 변경했습니다.": null
+      },
+      "target_side": {
+        "[ffffff]{0}[-] 님이 <em>{1}</em>의 위치를 변경했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "<em>{0}</em>에 <em>{1}</em>의 위치를 변경했습니다.": null
+      }
+    },
+    "200": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "<em>{0}</em>{0:-으로} <{1}><em>{2}</em></{1}>개 <em>획득</em>했습니다.": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "201": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "<em>{0}</em>{0:-으로} <{1}><em>{2}</em></{1}>개 <em>사용</em>했습니다.": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "100": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "부족 레벨이 <em>{0}</em>{0:-이} 됐습니다.": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "101": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 공지사항을 수정했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "102": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 부족 소개글을 수정했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "103": {
+      "third_person_side": {
+        "<em>{1}</em> 님이 가입했습니다. (가입 수락자: <em>{0}</em>)": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "104": {
+      "third_person_side": {
+        "<em>{1}</em> 님이 <em>{2}</em> 등급이 됐습니다. (변경자: <em>{0}</em>)": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "105": {
+      "third_person_side": {
+        "<em>{1}</em> 님을 추방했습니다. (추방자: <em>{0}</em>)": null
+      },
+      "target_side": {
+        "": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "106": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 부족을 탈퇴했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "112": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 부족 자금에 <t_stone></t_stone>{2} 기부했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "113": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 부족 자금 <t_stone></t_stone>{1} 사용했습니다. (사용처: <em>{2}</em>)": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "114": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 부족을 창설했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "115": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 엠블렘을 수정했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    },
+    "118": {
+      "third_person_side": {
+        "": null
+      },
+      "target_side": {
+        "<em>{0}</em> 님이 부족 등급을 변경했습니다.": null
+      },
+      "simple_state": {
+        "": null
+      },
+      "agent_side": {
+        "": null
+      }
+    }
+  }
+}

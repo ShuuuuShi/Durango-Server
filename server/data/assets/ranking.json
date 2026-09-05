@@ -1,0 +1,226 @@
+{
+  "71": {
+    "rival": 1,
+    "score_index": 3,
+    "board": 1,
+    "revision": {
+      "all": {
+        "starts_at": "2019-01-09T00:00:00",
+        "name": {
+          "워프러시 전체 시즌": null
+        },
+        "finish_at": "2019-07-31T00:00:00",
+        "reward_acquire_limit_at": "2019-07-31T00:00:00"
+      },
+      "season03": {
+        "starts_at": "2019-07-31T00:00:00",
+        "name": {
+          "전체 시즌": null
+        },
+        "finish_at": "2019-09-10T00:00:00",
+        "reward_acquire_limit_at": "2019-09-25T00:00:00"
+      }
+    }
+  },
+  "72": {
+    "rival": 1,
+    "score_index": 3,
+    "board": 1,
+    "revision": {
+      "v4.8": {
+        "starts_at": "2019-08-28T09:00:00",
+        "name": {
+          "3차 리그": null
+        },
+        "finish_at": "2019-09-10T00:00:00",
+        "reward_acquire_limit_at": "2019-09-25T00:00:00"
+      },
+      "v4.4": {
+        "starts_at": "2019-01-10T00:00:00",
+        "name": {
+          "워프러시 예비1차 리그": null
+        },
+        "finish_at": "2019-07-15T00:00:00",
+        "reward_acquire_limit_at": "2019-07-17T00:00:00"
+      },
+      "v4.5": {
+        "starts_at": "2019-07-17T00:00:00",
+        "name": {
+          "워프러시 예비2차 리그": null
+        },
+        "finish_at": "2019-07-22T00:00:00",
+        "reward_acquire_limit_at": "2019-07-24T00:00:01"
+      },
+      "v4.6": {
+        "starts_at": "2019-07-31T09:00:00",
+        "name": {
+          "1차 리그": null
+        },
+        "finish_at": "2019-08-13T09:00:00",
+        "reward_acquire_limit_at": "2019-08-28T00:00:00"
+      },
+      "v4.7": {
+        "starts_at": "2019-08-13T09:00:00",
+        "name": {
+          "2차 리그": null
+        },
+        "finish_at": "2019-08-28T09:00:00",
+        "reward_acquire_limit_at": "2019-09-11T00:00:00"
+      }
+    }
+  },
+  "73": {
+    "rival": 2,
+    "score_index": 3,
+    "board": 1,
+    "revision": {
+      "v4.8": {
+        "starts_at": "2019-08-28T09:00:00",
+        "name": {
+          "3차 리그": null
+        },
+        "finish_at": "2019-09-09T09:00:00",
+        "reward_acquire_limit_at": "2019-09-25T00:00:00"
+      },
+      "v4.4": {
+        "starts_at": "2019-01-10T00:00:00",
+        "name": {
+          "워프러시 예비1차 리그": null
+        },
+        "finish_at": "2019-07-17T00:00:00",
+        "reward_acquire_limit_at": "2019-07-31T00:00:00"
+      },
+      "v4.5": {
+        "starts_at": "2019-07-17T00:00:00",
+        "name": {
+          "워프러시 예비2차 리그": null
+        },
+        "finish_at": "2019-07-31T00:00:00",
+        "reward_acquire_limit_at": "2019-08-14T00:00:00"
+      },
+      "v4.6": {
+        "starts_at": "2019-07-31T09:00:00",
+        "name": {
+          "1차 리그": null
+        },
+        "finish_at": "2019-08-14T09:00:00",
+        "reward_acquire_limit_at": "2019-08-28T00:00:00"
+      },
+      "v4.7": {
+        "starts_at": "2019-08-14T09:00:00",
+        "name": {
+          "2차 리그": null
+        },
+        "finish_at": "2019-08-28T09:00:00",
+        "reward_acquire_limit_at": "2019-09-11T00:00:00"
+      }
+    }
+  },
+  "74": {
+    "rival": 1,
+    "score_index": 3,
+    "board": 2,
+    "revision": {
+      "v4.8": {
+        "starts_at": "2019-08-28T09:00:00",
+        "name": {
+          "3차 리그": null
+        },
+        "finish_at": "2019-09-09T09:00:00",
+        "reward_acquire_limit_at": "2019-09-25T00:00:00"
+      },
+      "v4.4": {
+        "starts_at": "2019-01-10T00:00:00",
+        "name": {
+          "워프러시 예비1차 리그": null
+        },
+        "finish_at": "2019-07-17T00:00:00",
+        "reward_acquire_limit_at": "2019-07-31T00:00:00"
+      },
+      "v4.5": {
+        "starts_at": "2019-07-17T00:00:00",
+        "name": {
+          "워프러시 예비2차 리그": null
+        },
+        "finish_at": "2019-07-31T00:00:00",
+        "reward_acquire_limit_at": "2019-08-14T00:00:00"
+      },
+      "v4.6": {
+        "starts_at": "2019-07-31T09:00:00",
+        "name": {
+          "1차 리그": null
+        },
+        "finish_at": "2019-08-14T09:00:00",
+        "reward_acquire_limit_at": "2019-08-28T00:00:00"
+      },
+      "v4.7": {
+        "starts_at": "2019-08-14T09:00:00",
+        "name": {
+          "2차 리그": null
+        },
+        "finish_at": "2019-08-28T09:00:00",
+        "reward_acquire_limit_at": "2019-09-11T00:00:00"
+      }
+    }
+  },
+  "75": {
+    "rival": 1,
+    "score_index": 1,
+    "board": 1,
+    "revision": {
+      "v5.0": {
+        "starts_at": "2019-10-24T00:00:00",
+        "name": {
+          "난투섬 승리횟수": null
+        },
+        "finish_at": "2019-12-31T00:00:00",
+        "reward_acquire_limit_at": "2019-12-31T00:00:00"
+      }
+    }
+  },
+  "76": {
+    "rival": 1,
+    "score_index": 1,
+    "board": 1,
+    "revision": {
+      "v5.0": {
+        "starts_at": "2019-10-24T00:00:00",
+        "name": {
+          "난투섬 참여횟수": null
+        },
+        "finish_at": "2019-12-31T00:00:00",
+        "reward_acquire_limit_at": "2019-12-31T00:00:00"
+      }
+    }
+  },
+  "77": {
+    "rival": 1,
+    "score_index": 1,
+    "board": 1,
+    "revision": {
+      "v5.0": {
+        "starts_at": "2019-10-24T00:00:00",
+        "name": {
+          "난투섬 처단한 스파이": null
+        },
+        "finish_at": "2019-12-31T00:00:00",
+        "reward_acquire_limit_at": "2019-12-31T00:00:00"
+      }
+    }
+  },
+  "78": {
+    "rival": 1,
+    "score_index": 1,
+    "board": 1,
+    "revision": {
+      "v5.0": {
+        "starts_at": "2019-10-24T00:00:00",
+        "name": {
+          "난투섬 평균 킬": null
+        },
+        "finish_at": "2019-12-31T00:00:00",
+        "reward_acquire_limit_at": "2019-12-31T00:00:00"
+      }
+    }
+  }
+}

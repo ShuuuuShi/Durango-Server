@@ -1,0 +1,217 @@
+{
+  "categories": [
+    {
+      "subcategories": [
+        {
+          "id": "combat_basic",
+          "name": {
+            "전공 기초": null
+          }
+        },
+        {
+          "id": "combat_melee_onehand",
+          "name": {
+            "한손 근접 전투": null
+          }
+        },
+        {
+          "id": "combat_melee_twohand",
+          "name": {
+            "양손 근접 전투": null
+          }
+        },
+        {
+          "id": "combat_ranged",
+          "name": {
+            "원거리 전투": null
+          }
+        },
+        {
+          "id": "combat_butchery",
+          "name": {
+            "도축": null
+          }
+        }
+      ],
+      "id": "combat",
+      "icon": "skill_category_melee_combat",
+      "name": {
+        "전투": null
+      }
+    },
+    {
+      "subcategories": [
+        {
+          "id": "weaponcrafting_basic",
+          "name": {
+            "전공 기초": null
+          }
+        },
+        {
+          "id": "weaponcrafting_sword",
+          "name": {
+            "도검 제작": null
+          }
+        },
+        {
+          "id": "weaponcrafting_axe",
+          "name": {
+            "도끼 제작": null
+          }
+        },
+        {
+          "id": "weaponcrafting_hammer",
+          "name": {
+            "둔기 제작": null
+          }
+        },
+        {
+          "id": "weaponcrafting_bow",
+          "name": {
+            "활 제작": null
+          }
+        }
+      ],
+      "id": "weaponcrafting",
+      "icon": "skill_category_weaponcrafting",
+      "name": {
+        "무기 제작": null
+      }
+    },
+    {
+      "subcategories": [
+        {
+          "id": "armorcrafting_basic",
+          "name": {
+            "전공 기초": null
+          }
+        },
+        {
+          "id": "armorcrafting_settler",
+          "name": {
+            "정착복 제작": null
+          }
+        },
+        {
+          "id": "armorcrafting_explorer",
+          "name": {
+            "탐험복 제작": null
+          }
+        },
+        {
+          "id": "armorcrafting_hunter",
+          "name": {
+            "사냥복 제작": null
+          }
+        }
+      ],
+      "id": "armorcrafting",
+      "icon": "skill_category_armorcrafting",
+      "name": {
+        "옷 제작": null
+      }
+    },
+    {
+      "subcategories": [
+        {
+          "id": "cooking_basic",
+          "name": {
+            "전공 기초": null
+          }
+        },
+        {
+          "id": "cooking_cooking",
+          "name": {
+            "요리": null
+          }
+        },
+        {
+          "id": "cooking_baking",
+          "name": {
+            "제빵": null
+          }
+        },
+        {
+          "id": "cooking_pharmacy",
+          "name": {
+            "약 제조": null
+          }
+        }
+      ],
+      "id": "cooking",
+      "icon": "skill_category_cooking",
+      "name": {
+        "요리": null
+      }
+    },
+    {
+      "subcategories": [
+        {
+          "id": "constructing_basic",
+          "name": {
+            "전공 기초": null
+          }
+        },
+        {
+          "id": "constructing_furniture",
+          "name": {
+            "가구 제작": null
+          }
+        },
+        {
+          "id": "constructing_building",
+          "name": {
+            "마을 건설": null
+          }
+        }
+      ],
+      "id": "constructing",
+      "icon": "skill_category_constructing",
+      "name": {
+        "건축": null
+      }
+    },
+    {
+      "subcategories": [
+        {
+          "id": "gathering_basic",
+          "name": {
+            "전공 기초": null
+          }
+        },
+        {
+          "id": "gathering_plants",
+          "name": {
+            "식물 채집": null
+          }
+        },
+        {
+          "id": "gathering_mineral",
+          "name": {
+            "광물 채집": null
+          }
+        }
+      ],
+      "id": "gathering",
+      "icon": "skill_category_gathering",
+      "name": {
+        "채집": null
+      }
+    },
+    {
+      "subcategories": [
+        {
+          "id": "farming_basic",
+          "name": {
+            "농사": null
+          }
+        }
+      ],
+      "id": "farming",
+      "icon": "skill_category_farming",
+      "name": {
+        "농사": null
+      }
+    }
+  ]
+}

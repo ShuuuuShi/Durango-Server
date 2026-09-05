@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    ระบบ mod ฝั่งเกม (client) — เจ้าของสั่งเมื่อ 24 ส.ค. 2026 หลังทำฝั่งเซิร์ฟเสร็จแล้ว
+
+    net35 เพราะ client/Assembly-CSharp.csproj (ตัวเกมจริง) target net35 (Unity 2017.4 Mono runtime
+    รันแค่นี้) — mod ที่ compile แล้วต้องเป็น assembly ที่ Mono ตัวเดียวกันโหลดได้ ต่างเวอร์ชัน .NET
+    กับตัวเกมโหลดไม่ขึ้น (ต่างจากฝั่งเซิร์ฟที่เป็น .NET 9 ล้วน ๆ อิสระจากเกม)
+
+    อ้างอิง UnityEngine.CoreModule.dll ตัวเดียว (มี KeyCode/Vector3/GameObject พอสำหรับ API เล็ก ๆ นี้)
+    ก๊อปวิธีอ้างอิงมาจาก client/Assembly-CSharp.csproj ตรง ๆ
+  -->
+
+  <PropertyGroup>
+    <AssemblyName>DurangoClientModSdk</AssemblyName>
+    <TargetFramework>net35</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- [แก้เอง] 30 ส.ค. 2026 — ย้าย HintPath: โฟลเดอร์ game/ ถูกลบแล้ว (เริ่มใหม่จากต้นฉบับ)
+         ตอนนี้ชี้ไปที่เกมต้นฉบับแท้ ซึ่งเป็น reference ที่ถูกต้องกว่าเดิมด้วย -->
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\Original_Game\Durango_Ver_PC_Final\Durango_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

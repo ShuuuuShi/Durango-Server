@@ -1,0 +1,1013 @@
+{
+  "corn_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AG20"
+      ],
+      "grows_until": "(60 * level + 600) * 0.5",
+      "survivability": 0.9,
+      "required_water": 2,
+      "preference_land": "grassland",
+      "required_fertilizer": 20,
+      "grows_to": "corn_crop",
+      "additional_product": 5
+    }
+  },
+  "onion_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "HG01_01"
+      ],
+      "grows_until": "(60 * level + 1800) * 0.5",
+      "survivability": 0.85,
+      "required_water": 2,
+      "preference_land": "grassland",
+      "required_fertilizer": 20,
+      "grows_to": "onion_crop",
+      "additional_product": 6
+    }
+  },
+  "potato_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AG07"
+      ],
+      "grows_until": "(60 * level + 3600) * 0.5",
+      "survivability": 0.85,
+      "required_water": 2,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 30,
+      "grows_to": "potato_crop",
+      "additional_product": 6
+    }
+  },
+  "pumpkin_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "HG11"
+      ],
+      "grows_until": "(60 * level + 3600) * 0.5",
+      "survivability": 0.85,
+      "required_water": 3,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 30,
+      "grows_to": "pumpkin_crop",
+      "additional_product": 6
+    }
+  },
+  "flax_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "GC01"
+      ],
+      "grows_until": "5400",
+      "survivability": 0.83,
+      "required_water": 2,
+      "preference_land": "grassland",
+      "required_fertilizer": 50,
+      "grows_to": "flax_crop",
+      "additional_product": 6
+    }
+  },
+  "wheat_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AG09"
+      ],
+      "grows_until": "5400",
+      "survivability": 0.8,
+      "required_water": 3,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 50,
+      "grows_to": "wheat_crop",
+      "additional_product": 6
+    }
+  },
+  "bean_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "HG17"
+      ],
+      "grows_until": "5400",
+      "survivability": 0.83,
+      "required_water": 4,
+      "preference_land": "grassland",
+      "required_fertilizer": 50,
+      "grows_to": "bean_crop",
+      "additional_product": 7
+    }
+  },
+  "dogrose_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "SH19"
+      ],
+      "grows_until": "10800",
+      "survivability": 0.83,
+      "required_water": 6,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 70,
+      "grows_to": "dogrose_crop",
+      "additional_product": 6
+    }
+  },
+  "rice_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AG14_01"
+      ],
+      "grows_until": "10800",
+      "survivability": 0.83,
+      "required_water": 4,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 70,
+      "grows_to": "rice_crop",
+      "additional_product": 7
+    }
+  },
+  "sugarcane_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "TR18"
+      ],
+      "grows_until": "21600",
+      "survivability": 0.83,
+      "required_water": 8,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 80,
+      "grows_to": "sugarcane_crop",
+      "additional_product": 10
+    }
+  },
+  "mushroom_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "MR01"
+      ],
+      "grows_until": "21600",
+      "survivability": 0.8,
+      "required_water": 4,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 80,
+      "grows_to": "mushroom_crop",
+      "additional_product": 8
+    }
+  },
+  "tomato_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AG15"
+      ],
+      "grows_until": "16200",
+      "survivability": 0.8,
+      "required_water": 5,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 80,
+      "grows_to": "tomato_crop",
+      "additional_product": 10
+    }
+  },
+  "lavender_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AG11"
+      ],
+      "grows_until": "21600",
+      "survivability": 0.83,
+      "required_water": 8,
+      "preference_land": "grassland",
+      "required_fertilizer": 100,
+      "grows_to": "lavender_crop",
+      "additional_product": 11
+    }
+  },
+  "flax_tropical_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "GC02"
+      ],
+      "grows_until": "21600",
+      "survivability": 0.83,
+      "required_water": 8,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 60,
+      "grows_to": "flax_tropical_crop",
+      "additional_product": 11
+    }
+  },
+  "cotton_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AG08"
+      ],
+      "grows_until": "21600",
+      "survivability": 0.83,
+      "required_water": 3,
+      "preference_land": "tundra",
+      "required_fertilizer": 100,
+      "grows_to": "cotton_crop",
+      "additional_product": 11
+    }
+  },
+  "grape_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AG19_06"
+      ],
+      "grows_until": "32400",
+      "survivability": 0.83,
+      "required_water": 10,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 130,
+      "grows_to": "grape_crop",
+      "additional_product": 16
+    }
+  },
+  "teatree_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AGR02"
+      ],
+      "grows_until": "32400",
+      "survivability": 0.83,
+      "required_water": 10,
+      "preference_land": "tundra",
+      "required_fertilizer": 150,
+      "grows_to": "teatree_crop",
+      "additional_product": 13
+    }
+  },
+  "violettulip_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "FL43"
+      ],
+      "grows_until": "32400",
+      "survivability": 0.83,
+      "required_water": 12,
+      "preference_land": "desert",
+      "required_fertilizer": 150,
+      "grows_to": "violettulip_crop",
+      "additional_product": 12
+    }
+  },
+  "fig_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "SH07_beach"
+      ],
+      "grows_until": "36000",
+      "survivability": 0.85,
+      "required_water": 10,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 150,
+      "grows_to": "fig_crop",
+      "additional_product": 18
+    }
+  },
+  "poppy_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "GC12"
+      ],
+      "grows_until": "43200",
+      "survivability": 0.85,
+      "required_water": 16,
+      "preference_land": "grassland",
+      "required_fertilizer": 150,
+      "grows_to": "poppy_crop",
+      "additional_product": 14
+    }
+  },
+  "coffee_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "TR08"
+      ],
+      "grows_until": "86400",
+      "survivability": 0.8,
+      "required_water": 12,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 200,
+      "grows_to": "coffee_crop",
+      "additional_product": 16
+    }
+  },
+  "desertagave_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "SW02_farm"
+      ],
+      "grows_until": "43200",
+      "survivability": 0.8,
+      "required_water": 20,
+      "preference_land": "desert",
+      "required_fertilizer": 200,
+      "grows_to": "desertagave_crop",
+      "additional_product": 16
+    }
+  },
+  "banana_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "TR13"
+      ],
+      "grows_until": "75600",
+      "survivability": 0.82,
+      "required_water": 12,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 200,
+      "grows_to": "banana_crop",
+      "additional_product": 30
+    }
+  },
+  "chilipepper_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AG03_09"
+      ],
+      "grows_until": "32400",
+      "survivability": 0.82,
+      "required_water": 10,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 170,
+      "grows_to": "chilipepper_crop",
+      "additional_product": 17
+    }
+  },
+  "pepper_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "VG07_07"
+      ],
+      "grows_until": "32400",
+      "survivability": 0.82,
+      "required_water": 10,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 170,
+      "grows_to": "pepper_crop",
+      "additional_product": 17
+    }
+  },
+  "rose_misterlincoln_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "SH14_02"
+      ],
+      "grows_until": "10800",
+      "survivability": 0.8,
+      "required_water": 5,
+      "preference_land": "grassland",
+      "required_fertilizer": 50,
+      "grows_to": "rose_misterlincoln_crop",
+      "additional_product": 5
+    }
+  },
+  "rose_damask_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "SH14_01"
+      ],
+      "grows_until": "21600",
+      "survivability": 0.8,
+      "required_water": 10,
+      "preference_land": "grassland",
+      "required_fertilizer": 70,
+      "grows_to": "rose_damask_crop",
+      "additional_product": 7
+    }
+  },
+  "sunflower_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "FL09"
+      ],
+      "grows_until": "10800",
+      "survivability": 0.8,
+      "required_water": 5,
+      "preference_land": "grassland",
+      "required_fertilizer": 50,
+      "grows_to": "sunflower_crop",
+      "additional_product": 5
+    }
+  },
+  "oleander_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "BS09"
+      ],
+      "grows_until": "86400",
+      "survivability": 0.8,
+      "required_water": 40,
+      "preference_land": "grassland",
+      "required_fertilizer": 120,
+      "grows_to": "oleander_crop",
+      "additional_product": 12
+    }
+  },
+  "mapletree_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AL17"
+      ],
+      "grows_until": "86400",
+      "survivability": 0.8,
+      "required_water": 30,
+      "preference_land": "grassland",
+      "required_fertilizer": 100,
+      "grows_to": "mapletree_crop",
+      "additional_product": 10
+    }
+  },
+  "ginkgotree_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "AF19_02"
+      ],
+      "grows_until": "86400",
+      "survivability": 0.8,
+      "required_water": 30,
+      "preference_land": "grassland",
+      "required_fertilizer": 200,
+      "grows_to": "ginkgotree_crop",
+      "additional_product": 20
+    }
+  },
+  "jpapricot_01_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "BS10_01"
+      ],
+      "grows_until": "75600",
+      "survivability": 0.8,
+      "required_water": 30,
+      "preference_land": "grassland",
+      "required_fertilizer": 100,
+      "grows_to": "jpapricot_01_crop",
+      "additional_product": 12
+    }
+  },
+  "jpapricot_02_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "BS10_02"
+      ],
+      "grows_until": "75600",
+      "survivability": 0.8,
+      "required_water": 30,
+      "preference_land": "grassland",
+      "required_fertilizer": 100,
+      "grows_to": "jpapricot_02_crop",
+      "additional_product": 10
+    }
+  },
+  "jpapricot_03_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "BS10_03"
+      ],
+      "grows_until": "75600",
+      "survivability": 0.8,
+      "required_water": 30,
+      "preference_land": "grassland",
+      "required_fertilizer": 100,
+      "grows_to": "jpapricot_03_crop",
+      "additional_product": 10
+    }
+  },
+  "cherryblossom_01_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "cb_small_01",
+        "cb_small_02"
+      ],
+      "grows_until": "14400",
+      "survivability": 0.9,
+      "required_water": 10,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 20,
+      "grows_to": "cherryblossom_01_crop",
+      "additional_product": 6
+    }
+  },
+  "cherryblossom_02_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "cb_middle_01",
+        "cb_middle_02"
+      ],
+      "grows_until": "14400",
+      "survivability": 0.9,
+      "required_water": 15,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 20,
+      "grows_to": "cherryblossom_02_crop",
+      "additional_product": 7
+    }
+  },
+  "carnation_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "FL57"
+      ],
+      "grows_until": "9000",
+      "survivability": 0.8,
+      "required_water": 5,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 80,
+      "grows_to": "carnation_crop",
+      "additional_product": 10
+    }
+  },
+  "watermelon_01_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "HG08"
+      ],
+      "grows_until": "14400",
+      "survivability": 0.8,
+      "required_water": 5,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 50,
+      "grows_to": "watermelon_01_crop",
+      "additional_product": 10
+    }
+  },
+  "barley_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "Barley_02_b"
+      ],
+      "grows_until": "10800",
+      "survivability": 0.8,
+      "required_water": 3,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 50,
+      "grows_to": "barley_crop",
+      "additional_product": 7
+    }
+  },
+  "persimmontree_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "pe_02_a"
+      ],
+      "grows_until": "75600",
+      "survivability": 0.8,
+      "required_water": 10,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 150,
+      "grows_to": "persimmontree_crop",
+      "additional_product": 10
+    }
+  },
+  "cosmos_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "co_02_a"
+      ],
+      "grows_until": "21600",
+      "survivability": 0.8,
+      "required_water": 2,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 70,
+      "grows_to": "cosmos_crop",
+      "additional_product": 11
+    }
+  },
+  "halloween_pumpkin_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "pumpkin_01",
+        "pumpkin_02"
+      ],
+      "grows_until": "3600",
+      "survivability": 0.85,
+      "required_water": 5,
+      "preference_land": "tundra",
+      "required_fertilizer": 50,
+      "grows_to": "halloween_pumpkin_crop",
+      "additional_product": 10
+    }
+  },
+  "halloween_spidertree_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "halloween_tree_02",
+        "halloween_tree_03"
+      ],
+      "grows_until": "75600",
+      "survivability": 0.8,
+      "required_water": 10,
+      "preference_land": "tundra",
+      "required_fertilizer": 150,
+      "grows_to": "halloween_spidertree_crop",
+      "additional_product": 10
+    }
+  },
+  "valentine_cacaotree_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "ca01"
+      ],
+      "grows_until": "43200",
+      "survivability": 0.55,
+      "required_water": 15,
+      "preference_land": "tropical_forest_valentine",
+      "required_fertilizer": 150,
+      "grows_to": "valentine_cacaotree_crop",
+      "additional_product": 5
+    }
+  },
+  "white_rose_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "GD45"
+      ],
+      "grows_until": "9000",
+      "survivability": 0.8,
+      "required_water": 5,
+      "preference_land": "temperate_forest",
+      "required_fertilizer": 50,
+      "grows_to": "white_rose_crop",
+      "additional_product": 10
+    }
+  },
+  "jasmine_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "Jasmine_01"
+      ],
+      "grows_until": "5400",
+      "survivability": 0.8,
+      "required_water": 3,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 30,
+      "grows_to": "jasmine_crop",
+      "additional_product": 10
+    }
+  },
+  "taro_seed": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "FL59"
+      ],
+      "grows_until": "32400",
+      "survivability": 0.8,
+      "required_water": 10,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 170,
+      "grows_to": "taro_crop",
+      "additional_product": 6
+    }
+  },
+  "oxalis_seed_yellow": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "VFF_01"
+      ],
+      "grows_until": "10800",
+      "survivability": 0.75,
+      "required_water": 8,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 50,
+      "grows_to": "oxalis_yellow_crop",
+      "additional_product": 5
+    }
+  },
+  "oxalis_seed_red": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "VFF_03"
+      ],
+      "grows_until": "10800",
+      "survivability": 0.75,
+      "required_water": 8,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 50,
+      "grows_to": "oxalis_red_crop",
+      "additional_product": 5
+    }
+  },
+  "oxalis_seed_blue": {
+    "__default__": {
+      "look": {
+        "growing": "sprout_01",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "VFF_02"
+      ],
+      "grows_until": "10800",
+      "survivability": 0.75,
+      "required_water": 8,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 50,
+      "grows_to": "oxalis_blue_crop",
+      "additional_product": 5
+    }
+  },
+  "orange_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "FR05"
+      ],
+      "grows_until": "36000",
+      "survivability": 0.7,
+      "required_water": 10,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 150,
+      "grows_to": "orange_crop",
+      "additional_product": 20
+    }
+  },
+  "mango_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "TR12"
+      ],
+      "grows_until": "32400",
+      "survivability": 0.7,
+      "required_water": 10,
+      "preference_land": "tropical_forest",
+      "required_fertilizer": 130,
+      "grows_to": "mango_crop",
+      "additional_product": 15
+    }
+  },
+  "apple_seed": {
+    "__default__": {
+      "look": {
+        "growing": "ML11_02",
+        "dead": "AG03_01"
+      },
+      "particle": "",
+      "grown_looks": [
+        "appletree"
+      ],
+      "grows_until": "600",
+      "survivability": 1.0,
+      "required_water": 0,
+      "preference_land": "apple",
+      "required_fertilizer": 0,
+      "grows_to": "apple_crop",
+      "additional_product": 0
+    }
+  }
+}

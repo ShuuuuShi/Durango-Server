@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MsgPack.Cli" Version="1.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <!-- Snappy.NET P/Invokes kernel32.dll and crashes as soon as Linux accepts a client. -->
+    <PackageReference Include="Snappier" Version="1.3.1" />
+    <PackageReference Include="Lib.Harmony" Version="2.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- ระบบ mod (24 ส.ค. 2026) — อินเทอร์เฟซเล็ก ๆ ที่ mod ภายนอกอ้างอิง ดู mod-sdk/ -->
+    <ProjectReference Include="..\mod-sdk\DurangoModSdk.csproj" />
+  </ItemGroup>
+
+  <!--
+    ข้อมูล terrain (terrains/, islands.json, islands/, whitelist.txt) ต้องอยู่ใต้ data/ ที่ runtime
+    ไม่งั้น TerrainStore หา info.yml ไม่เจอ → region_template เป็น null → client แสดงแท็บสกิลว่าง
+    (เจอ 26 ส.ค. 2026: "แท็บสกิลโผล่หมวดเดียว")
+  -->
+  <ItemGroup>
+    <None Include="..\server\data\**\*" Exclude="..\server\data\config.json">
+      <Link>data\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DurangoTH — สมัครไอดี</title>
+<style>
+  :root{
+    --bg:#161310; --card:#221d18; --line:#3a312a; --ink:#f2e9dd; --dim:#a89684;
+    --gold:#e0a94a; --green:#6fbf73; --red:#e06c5a; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:16px 14px 40px; background:var(--bg); color:var(--ink);
+    font-family:"Noto Sans Thai","Segoe UI",system-ui,-apple-system,sans-serif;
+    font-size:16px; line-height:1.65; -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:460px; margin:0 auto}
+  h1{font-size:1.35rem; margin:6px 0 2px; letter-spacing:.5px}
+  .sub{color:var(--dim); font-size:.86rem; margin:0 0 18px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px; margin-bottom:14px}
+  .card h2{font-size:1rem; margin:0 0 10px; color:var(--gold); font-weight:600}
+  label{display:block; font-size:.85rem; color:var(--dim); margin:12px 0 5px}
+  input{
+    width:100%; padding:12px 13px; font-size:1.05rem; border-radius:10px;
+    border:1px solid var(--line); background:#191512; color:var(--ink);
+    font-family:inherit;
+  }
+  input:focus{outline:none; border-color:var(--gold)}
+  input[inputmode="numeric"]{letter-spacing:.16em}
+  button{
+    width:100%; margin-top:14px; padding:13px; font-size:1rem; font-weight:600;
+    border:0; border-radius:10px; background:var(--gold); color:#1c1409;
+    font-family:inherit; cursor:pointer;
+  }
+  button.ghost{background:transparent; color:var(--ink); border:1px solid var(--line)}
+  button:disabled{opacity:.5; cursor:default}
+  .tabs{display:flex; gap:8px; margin-bottom:14px}
+  .tabs button{margin:0; background:transparent; border:1px solid var(--line); color:var(--dim); font-weight:500}
+  .tabs button.on{background:var(--gold); color:#1c1409; border-color:var(--gold); font-weight:600}
+  .msg{margin-top:12px; padding:11px 13px; border-radius:10px; font-size:.9rem; display:none}
+  .msg.err{display:block; background:rgba(224,108,90,.14); border:1px solid var(--red); color:#ffbdb1}
+  .msg.ok{display:block; background:rgba(111,191,115,.13); border:1px solid var(--green); color:#bfe8c2}
+  .idbox{text-align:center; padding:18px 12px; background:#191512; border:1px dashed var(--gold); border-radius:12px; margin-top:6px}
+  .idbox .num{font-size:2.1rem; font-weight:700; letter-spacing:.1em; color:var(--gold); font-variant-numeric:tabular-nums}
+  .idbox .note{font-size:.8rem; color:var(--dim); margin-top:6px}
+  .row{display:flex; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px solid var(--line); font-size:.92rem}
+  .row:last-child{border-bottom:0}
+  .row .lv{color:var(--dim); font-size:.85rem; white-space:nowrap}
+  .kv{display:flex; justify-content:space-between; font-size:.85rem; color:var(--dim); padding:3px 0}
+  .kv b{color:var(--ink); font-weight:500}
+  .hide{display:none}
+  ol{padding-left:20px; margin:8px 0 0; color:var(--dim); font-size:.88rem}
+  ol li{margin-bottom:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>DurangoTH</h1>
+  <p class="sub">สมัครไอดีเพื่อให้ตัวละครไม่หาย แม้เปลี่ยนเน็ตหรือลงเกมใหม่</p>
+
+  <div class="card">
+    <h2>เครื่องนี้</h2>
+    <div class="kv"><span>IP ที่เซิร์ฟเห็น</span><b id="myip">…</b></div>
+    <div class="kv"><span>ไอดีที่ผูกไว้</span><b id="mybound">…</b></div>
+    <div id="needreg" class="msg err hide"></div>
+  </div>
+
+  <div class="tabs">
+    <button id="tabNew" class="on" type="button">สมัครใหม่</button>
+    <button id="tabOld" type="button">มีไอดีแล้ว</button>
+  </div>
+
+  <!-- ───────── สมัครใหม่ ───────── -->
+  <div class="card" id="paneNew">
+    <h2>สมัครไอดีใหม่</h2>
+    <p class="sub" style="margin:0">เลขไอดีเป็นตัวสุ่มจากเซิร์ฟเวอร์ ตั้ง PIN ไว้กันคนอื่นเอาไอดีไปใช้</p>
+    <label for="regName">ชื่อเล่น (ไม่บังคับ)</label>
+    <input id="regName" maxlength="24" autocomplete="off" placeholder="เอาไว้ให้แอดมินเรียก">
+    <label for="regPin">ตั้ง PIN (4–12 หลัก)</label>
+    <input id="regPin" type="password" inputmode="numeric" maxlength="12" autocomplete="new-password">
+    <label for="regPin2">ยืนยัน PIN อีกครั้ง</label>
+    <input id="regPin2" type="password" inputmode="numeric" maxlength="12" autocomplete="new-password">
+    <button id="btnReg" type="button">สมัครและผูกเครื่องนี้</button>
+    <div id="regMsg" class="msg"></div>
+    <div id="regResult" class="hide">
+      <div class="idbox">
+        <div class="num" id="newId">—</div>
+        <div class="note">จดเลขนี้ไว้ให้ดี — ใช้คู่กับ PIN ตอนย้ายเครื่องหรือเน็ตเปลี่ยน</div>
+      </div>
+      <button class="ghost" id="btnCopy" type="button">คัดลอกเลขไอดี</button>
+    </div>
+  </div>
+
+  <!-- ───────── มีไอดีแล้ว ───────── -->
+  <div class="card hide" id="paneOld">
+    <h2>เข้าสู่ระบบ</h2>
+    <label for="logId">เลขไอดี</label>
+    <input id="logId" inputmode="numeric" maxlength="11" autocomplete="username" placeholder="1234-5678">
+    <label for="logPin">PIN</label>
+    <input id="logPin" type="password" inputmode="numeric" maxlength="12" autocomplete="current-password">
+    <button id="btnLogin" type="button">เข้าสู่ระบบ</button>
+    <div id="logMsg" class="msg"></div>
+
+    <div id="account" class="hide">
+      <h2 style="margin-top:20px">ไอดี <span id="accId"></span></h2>
+      <div id="chars"></div>
+      <button id="btnBind" type="button">ผูกเครื่องนี้กับไอดี</button>
+      <button class="ghost hide" id="btnAdopt" type="button">รับตัวละครเดิมของฉัน</button>
+      <button class="ghost" id="btnUnbind" type="button">เลิกผูกเครื่องนี้</button>
+      <div id="accMsg" class="msg"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>วิธีใช้</h2>
+    <ol>
+      <li>เปิดหน้านี้ <b>จากเครื่องที่จะเล่น</b> และต่อเน็ตตัวเดียวกับตอนเล่น</li>
+      <li>สมัครไอดี แล้วกด “ผูกเครื่องนี้”</li>
+      <li>เข้าเกมได้เลย ตัวละครจะขึ้นให้เลือกเหมือนเดิม</li>
+      <li>ถ้าวันไหนเข้าไปแล้วตัวละครหาย แปลว่าเน็ตเปลี่ยน IP — กลับมาหน้านี้ เข้าสู่ระบบ แล้วกด “ผูกเครื่องนี้” อีกครั้ง</li>
+    </ol>
+  </div>
+</div>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+
+async function post(path, fields) {
+  const body = new URLSearchParams();
+  for (const k in fields) body.append(k, fields[k]);
+  const res = await fetch(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+    body: body.toString()
+  });
+  try { return await res.json(); }
+  catch (e) { return { ok: false, error: "เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (" + res.status + ")" }; }
+}
+
+function show(el, text, ok) {
+  el.textContent = text;
+  el.className = "msg " + (ok ? "ok" : "err");
+}
+function clear(el) { el.textContent = ""; el.className = "msg"; }
+
+// ───────── สถานะเครื่อง ─────────
+let adoptable = 0;
+async function refreshStatus() {
+  try {
+    const r = await fetch("/id/status").then(x => x.json());
+    $("myip").textContent = r.ip || "?";
+    adoptable = r.adoptable || 0;
+    const bound = r.bound || [];
+    $("mybound").textContent = bound.length
+      ? bound.map(b => b.id + (b.name ? " (" + b.name + ")" : "")).join(", ")
+      : "ยังไม่ได้ผูก";
+    const warn = $("needreg");
+    if (!bound.length && r.required) {
+      warn.textContent = "เซิร์ฟเวอร์นี้ต้องมีไอดีก่อนถึงจะสร้างหรือเห็นตัวละครได้ — สมัครด้านล่างได้เลย";
+      warn.className = "msg err";
+    } else {
+      warn.className = "msg err hide";
+    }
+  } catch (e) {
+    $("myip").textContent = "ติดต่อเซิร์ฟเวอร์ไม่ได้";
+  }
+}
+
+// ───────── แท็บ ─────────
+$("tabNew").onclick = () => {
+  $("tabNew").classList.add("on"); $("tabOld").classList.remove("on");
+  $("paneNew").classList.remove("hide"); $("paneOld").classList.add("hide");
+};
+$("tabOld").onclick = () => {
+  $("tabOld").classList.add("on"); $("tabNew").classList.remove("on");
+  $("paneOld").classList.remove("hide"); $("paneNew").classList.add("hide");
+};
+
+// ───────── สมัคร ─────────
+$("btnReg").onclick = async () => {
+  const pin = $("regPin").value.trim(), pin2 = $("regPin2").value.trim();
+  clear($("regMsg"));
+  if (pin.length < 4 || pin.length > 12) return show($("regMsg"), "PIN ต้องยาว 4–12 ตัว", false);
+  if (pin !== pin2) return show($("regMsg"), "PIN สองช่องไม่ตรงกัน", false);
+
+  $("btnReg").disabled = true;
+  const r = await post("/id/register", { pin: pin, name: $("regName").value.trim() });
+  $("btnReg").disabled = false;
+  if (!r.ok) return show($("regMsg"), r.error || "สมัครไม่สำเร็จ", false);
+
+  $("newId").textContent = r.id;
+  $("regResult").classList.remove("hide");
+  show($("regMsg"), "สมัครสำเร็จ และผูกเครื่องนี้ให้แล้ว เข้าเกมได้เลย", true);
+  $("regPin").value = ""; $("regPin2").value = "";
+  refreshStatus();
+};
+
+$("btnCopy").onclick = async () => {
+  const text = $("newId").textContent;
+  try { await navigator.clipboard.writeText(text); show($("regMsg"), "คัดลอกแล้ว: " + text, true); }
+  catch (e) { show($("regMsg"), "คัดลอกไม่ได้ จดเลขไว้เองนะ: " + text, false); }
+};
+
+// ───────── เข้าสู่ระบบ ─────────
+function creds() {
+  return { id: $("logId").value.trim(), pin: $("logPin").value.trim() };
+}
+
+function renderAccount(r) {
+  $("accId").textContent = r.id;
+  $("account").classList.remove("hide");
+  const box = $("chars");
+  if (!r.characters || !r.characters.length) {
+    box.innerHTML = '<div class="kv"><span>ยังไม่มีตัวละครในไอดีนี้</span></div>';
+  } else {
+    box.innerHTML = r.characters.map(c =>
+      '<div class="row"><span>' + escapeHtml(c.name) + '</span><span class="lv">Lv.' + c.level + '</span></div>'
+    ).join("");
+  }
+  $("btnBind").textContent = r.bound ? "ต่ออายุการผูกเครื่องนี้" : "ผูกเครื่องนี้กับไอดี";
+  adoptable = r.adoptable || 0;
+  const adopt = $("btnAdopt");
+  if (adoptable > 0) {
+    adopt.textContent = "รับตัวละครเดิมของฉัน (" + adoptable + " ตัว)";
+    adopt.classList.remove("hide");
+  } else {
+    adopt.classList.add("hide");
+  }
+}
+
+function escapeHtml(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+$("btnLogin").onclick = async () => {
+  clear($("logMsg"));
+  const r = await post("/id/login", creds());
+  if (!r.ok) { $("account").classList.add("hide"); return show($("logMsg"), r.error || "เข้าสู่ระบบไม่สำเร็จ", false); }
+  show($("logMsg"), "เข้าสู่ระบบแล้ว", true);
+  renderAccount(r);
+  refreshStatus();
+};
+
+$("btnBind").onclick = async () => {
+  clear($("accMsg"));
+  const r = await post("/id/bind", creds());
+  if (!r.ok) return show($("accMsg"), r.error || "ผูกไม่สำเร็จ", false);
+  renderAccount(r);
+  show($("accMsg"), "ผูกเครื่องนี้เรียบร้อย เข้าเกมได้เลย", true);
+  refreshStatus();
+};
+
+$("btnUnbind").onclick = async () => {
+  clear($("accMsg"));
+  const r = await post("/id/unbind", creds());
+  if (!r.ok) return show($("accMsg"), r.error || "เลิกผูกไม่สำเร็จ", false);
+  renderAccount(r);
+  show($("accMsg"), "เลิกผูกเครื่องนี้แล้ว", true);
+  refreshStatus();
+};
+
+$("btnAdopt").onclick = async () => {
+  clear($("accMsg"));
+  const r = await post("/id/adopt", creds());
+  if (!r.ok) return show($("accMsg"), r.error || "รับตัวละครไม่สำเร็จ", false);
+  renderAccount(r);
+  show($("accMsg"), "รับตัวละครเข้าไอดีแล้ว " + (r.adopted || 0) + " ตัว", true);
+  refreshStatus();
+};
+
+refreshStatus();
+</script>
+</body>
+</html>

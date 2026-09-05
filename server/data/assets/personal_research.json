@@ -1,0 +1,1682 @@
+{
+  "living_tech_butchering_01": {
+    "category": 5,
+    "description": {
+      "도축 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_butchering",
+      "level": 1
+    },
+    "name": {
+      "도축 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 3,
+    "id": "living_tech_butchering_01",
+    "icon": "skill_category_butchery"
+  },
+  "living_tech_butchering_02": {
+    "category": 5,
+    "description": {
+      "도축 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_butchering",
+      "level": 2
+    },
+    "name": {
+      "도축 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 8,
+    "id": "living_tech_butchering_02",
+    "icon": "skill_category_butchery"
+  },
+  "living_tech_butchering_03": {
+    "category": 5,
+    "description": {
+      "도축 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_butchering",
+      "level": 3
+    },
+    "name": {
+      "도축 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 12,
+    "id": "living_tech_butchering_03",
+    "icon": "skill_category_butchery"
+  },
+  "living_tech_butchering_04": {
+    "category": 5,
+    "description": {
+      "도축 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_butchering",
+      "level": 4
+    },
+    "name": {
+      "도축 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 17,
+    "id": "living_tech_butchering_04",
+    "icon": "skill_category_butchery"
+  },
+  "living_tech_armorcraft_01": {
+    "category": 5,
+    "description": {
+      "옷 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_armorcraft",
+      "level": 1
+    },
+    "name": {
+      "옷 제작 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 3,
+    "id": "living_tech_armorcraft_01",
+    "icon": "skill_armor_drill_1"
+  },
+  "living_tech_armorcraft_02": {
+    "category": 5,
+    "description": {
+      "옷 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_armorcraft",
+      "level": 2
+    },
+    "name": {
+      "옷 제작 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 8,
+    "id": "living_tech_armorcraft_02",
+    "icon": "skill_armor_drill_1"
+  },
+  "living_tech_armorcraft_03": {
+    "category": 5,
+    "description": {
+      "옷 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_armorcraft",
+      "level": 3
+    },
+    "name": {
+      "옷 제작 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 12,
+    "id": "living_tech_armorcraft_03",
+    "icon": "skill_armor_drill_1"
+  },
+  "living_tech_armorcraft_04": {
+    "category": 5,
+    "description": {
+      "옷 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_armorcraft",
+      "level": 4
+    },
+    "name": {
+      "옷 제작 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 17,
+    "id": "living_tech_armorcraft_04",
+    "icon": "skill_armor_drill_1"
+  },
+  "living_tech_tailor_01": {
+    "category": 5,
+    "description": {
+      "재봉 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_tailor",
+      "level": 1
+    },
+    "name": {
+      "재봉 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 3,
+    "id": "living_tech_tailor_01",
+    "icon": "skill_tailor_drill_1"
+  },
+  "living_tech_tailor_02": {
+    "category": 5,
+    "description": {
+      "재봉 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_tailor",
+      "level": 2
+    },
+    "name": {
+      "재봉 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 8,
+    "id": "living_tech_tailor_02",
+    "icon": "skill_tailor_drill_1"
+  },
+  "living_tech_tailor_03": {
+    "category": 5,
+    "description": {
+      "재봉 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_tailor",
+      "level": 3
+    },
+    "name": {
+      "재봉 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 12,
+    "id": "living_tech_tailor_03",
+    "icon": "skill_tailor_drill_1"
+  },
+  "living_tech_tailor_04": {
+    "category": 5,
+    "description": {
+      "재봉 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_tailor",
+      "level": 4
+    },
+    "name": {
+      "재봉 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 17,
+    "id": "living_tech_tailor_04",
+    "icon": "skill_tailor_drill_1"
+  },
+  "living_tech_cook_01": {
+    "category": 5,
+    "description": {
+      "요리 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_cook",
+      "level": 1
+    },
+    "name": {
+      "요리 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 3,
+    "id": "living_tech_cook_01",
+    "icon": "skill_cook_4"
+  },
+  "living_tech_cook_02": {
+    "category": 5,
+    "description": {
+      "요리 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_cook",
+      "level": 2
+    },
+    "name": {
+      "요리 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 8,
+    "id": "living_tech_cook_02",
+    "icon": "skill_cook_4"
+  },
+  "living_tech_cook_03": {
+    "category": 5,
+    "description": {
+      "요리 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_cook",
+      "level": 3
+    },
+    "name": {
+      "요리 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 12,
+    "id": "living_tech_cook_03",
+    "icon": "skill_cook_4"
+  },
+  "living_tech_cook_04": {
+    "category": 5,
+    "description": {
+      "요리 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_cook",
+      "level": 4
+    },
+    "name": {
+      "요리 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 17,
+    "id": "living_tech_cook_04",
+    "icon": "skill_cook_4"
+  },
+  "living_tech_dodge_01": {
+    "category": 5,
+    "description": {
+      "회피 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_dodge",
+      "level": 1
+    },
+    "name": {
+      "회피 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 3,
+    "id": "living_tech_dodge_01",
+    "icon": "skill_dodge_1"
+  },
+  "living_tech_dodge_02": {
+    "category": 5,
+    "description": {
+      "회피 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_dodge",
+      "level": 2
+    },
+    "name": {
+      "회피 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 8,
+    "id": "living_tech_dodge_02",
+    "icon": "skill_dodge_1"
+  },
+  "living_tech_dodge_03": {
+    "category": 5,
+    "description": {
+      "회피 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_dodge",
+      "level": 3
+    },
+    "name": {
+      "회피 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 12,
+    "id": "living_tech_dodge_03",
+    "icon": "skill_dodge_1"
+  },
+  "living_tech_dodge_04": {
+    "category": 5,
+    "description": {
+      "회피 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_dodge",
+      "level": 4
+    },
+    "name": {
+      "회피 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 17,
+    "id": "living_tech_dodge_04",
+    "icon": "skill_dodge_1"
+  },
+  "living_tech_energy_01": {
+    "category": 5,
+    "description": {
+      "최대 에너지가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_energy",
+      "level": 1
+    },
+    "name": {
+      "에너지 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 3,
+    "id": "living_tech_energy_01",
+    "icon": "skill_health_1"
+  },
+  "living_tech_energy_02": {
+    "category": 5,
+    "description": {
+      "최대 에너지가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_energy",
+      "level": 2
+    },
+    "name": {
+      "에너지 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 8,
+    "id": "living_tech_energy_02",
+    "icon": "skill_health_1"
+  },
+  "living_tech_energy_03": {
+    "category": 5,
+    "description": {
+      "최대 에너지가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_energy",
+      "level": 3
+    },
+    "name": {
+      "에너지 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 12,
+    "id": "living_tech_energy_03",
+    "icon": "skill_health_1"
+  },
+  "living_tech_energy_04": {
+    "category": 5,
+    "description": {
+      "최대 에너지가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_energy",
+      "level": 4
+    },
+    "name": {
+      "에너지 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 17,
+    "id": "living_tech_energy_04",
+    "icon": "skill_health_1"
+  },
+  "living_tech_hiding_01": {
+    "category": 5,
+    "description": {
+      "은신 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_hiding",
+      "level": 1
+    },
+    "name": {
+      "은신 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 3,
+    "id": "living_tech_hiding_01",
+    "icon": "skill_hiding_1"
+  },
+  "living_tech_hiding_02": {
+    "category": 5,
+    "description": {
+      "은신 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_hiding",
+      "level": 2
+    },
+    "name": {
+      "은신 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 8,
+    "id": "living_tech_hiding_02",
+    "icon": "skill_hiding_1"
+  },
+  "living_tech_hiding_03": {
+    "category": 5,
+    "description": {
+      "은신 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_hiding",
+      "level": 3
+    },
+    "name": {
+      "은신 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 12,
+    "id": "living_tech_hiding_03",
+    "icon": "skill_hiding_1"
+  },
+  "living_tech_hiding_04": {
+    "category": 5,
+    "description": {
+      "은신 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "living_tech_hiding",
+      "level": 4
+    },
+    "name": {
+      "은신 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 17,
+    "id": "living_tech_hiding_04",
+    "icon": "skill_hiding_1"
+  },
+  "light_tech_gathering_01": {
+    "category": 6,
+    "description": {
+      "식물 채집 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_gathering",
+      "level": 1
+    },
+    "name": {
+      "식물 채집 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 4,
+    "id": "light_tech_gathering_01",
+    "icon": "skill_category_gathering"
+  },
+  "light_tech_gathering_02": {
+    "category": 6,
+    "description": {
+      "식물 채집 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_gathering",
+      "level": 2
+    },
+    "name": {
+      "식물 채집 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 9,
+    "id": "light_tech_gathering_02",
+    "icon": "skill_category_gathering"
+  },
+  "light_tech_gathering_03": {
+    "category": 6,
+    "description": {
+      "식물 채집 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_gathering",
+      "level": 3
+    },
+    "name": {
+      "식물 채집 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 13,
+    "id": "light_tech_gathering_03",
+    "icon": "skill_category_gathering"
+  },
+  "light_tech_gathering_04": {
+    "category": 6,
+    "description": {
+      "식물 채집 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_gathering",
+      "level": 4
+    },
+    "name": {
+      "식물 채집 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 18,
+    "id": "light_tech_gathering_04",
+    "icon": "skill_category_gathering"
+  },
+  "light_tech_farming_01": {
+    "category": 6,
+    "description": {
+      "농사 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_farming",
+      "level": 1
+    },
+    "name": {
+      "농사 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 4,
+    "id": "light_tech_farming_01",
+    "icon": "skill_category_farming"
+  },
+  "light_tech_farming_02": {
+    "category": 6,
+    "description": {
+      "농사 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_farming",
+      "level": 2
+    },
+    "name": {
+      "농사 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 9,
+    "id": "light_tech_farming_02",
+    "icon": "skill_category_farming"
+  },
+  "light_tech_farming_03": {
+    "category": 6,
+    "description": {
+      "농사 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_farming",
+      "level": 3
+    },
+    "name": {
+      "농사 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 13,
+    "id": "light_tech_farming_03",
+    "icon": "skill_category_farming"
+  },
+  "light_tech_farming_04": {
+    "category": 6,
+    "description": {
+      "농사 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_farming",
+      "level": 4
+    },
+    "name": {
+      "농사 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 18,
+    "id": "light_tech_farming_04",
+    "icon": "skill_category_farming"
+  },
+  "light_tech_handicraft_01": {
+    "category": 6,
+    "description": {
+      "공예 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_handicraft",
+      "level": 1
+    },
+    "name": {
+      "공예 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 4,
+    "id": "light_tech_handicraft_01",
+    "icon": "skill_category_furnishing"
+  },
+  "light_tech_handicraft_02": {
+    "category": 6,
+    "description": {
+      "공예 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_handicraft",
+      "level": 2
+    },
+    "name": {
+      "공예 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 9,
+    "id": "light_tech_handicraft_02",
+    "icon": "skill_category_furnishing"
+  },
+  "light_tech_handicraft_03": {
+    "category": 6,
+    "description": {
+      "공예 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_handicraft",
+      "level": 3
+    },
+    "name": {
+      "공예 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 13,
+    "id": "light_tech_handicraft_03",
+    "icon": "skill_category_furnishing"
+  },
+  "light_tech_handicraft_04": {
+    "category": 6,
+    "description": {
+      "공예 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_handicraft",
+      "level": 4
+    },
+    "name": {
+      "공예 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 18,
+    "id": "light_tech_handicraft_04",
+    "icon": "skill_category_furnishing"
+  },
+  "light_tech_furnishing_01": {
+    "category": 6,
+    "description": {
+      "가구 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_furnishing",
+      "level": 1
+    },
+    "name": {
+      "가구 제작 연구 Lv.1 ": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 4,
+    "id": "light_tech_furnishing_01",
+    "icon": "skill_furnishing_1"
+  },
+  "light_tech_furnishing_02": {
+    "category": 6,
+    "description": {
+      "가구 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_furnishing",
+      "level": 2
+    },
+    "name": {
+      "가구 제작 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 9,
+    "id": "light_tech_furnishing_02",
+    "icon": "skill_furnishing_1"
+  },
+  "light_tech_furnishing_03": {
+    "category": 6,
+    "description": {
+      "가구 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_furnishing",
+      "level": 3
+    },
+    "name": {
+      "가구 제작 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 13,
+    "id": "light_tech_furnishing_03",
+    "icon": "skill_furnishing_1"
+  },
+  "light_tech_furnishing_04": {
+    "category": 6,
+    "description": {
+      "가구 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_furnishing",
+      "level": 4
+    },
+    "name": {
+      "가구 제작 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 18,
+    "id": "light_tech_furnishing_04",
+    "icon": "skill_furnishing_1"
+  },
+  "light_tech_attack_01": {
+    "category": 6,
+    "description": {
+      "공격력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_attack",
+      "level": 1
+    },
+    "name": {
+      "공격력 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 4,
+    "id": "light_tech_attack_01",
+    "icon": "action_attack_ratio"
+  },
+  "light_tech_attack_02": {
+    "category": 6,
+    "description": {
+      "공격력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_attack",
+      "level": 2
+    },
+    "name": {
+      "공격력 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 9,
+    "id": "light_tech_attack_02",
+    "icon": "action_attack_ratio"
+  },
+  "light_tech_attack_03": {
+    "category": 6,
+    "description": {
+      "공격력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_attack",
+      "level": 3
+    },
+    "name": {
+      "공격력 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 13,
+    "id": "light_tech_attack_03",
+    "icon": "action_attack_ratio"
+  },
+  "light_tech_attack_04": {
+    "category": 6,
+    "description": {
+      "공격력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_attack",
+      "level": 4
+    },
+    "name": {
+      "공격력 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 18,
+    "id": "light_tech_attack_04",
+    "icon": "action_attack_ratio"
+  },
+  "light_tech_accuracy_01": {
+    "category": 6,
+    "description": {
+      "전투 능력의 정확도가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_accuracy",
+      "level": 1
+    },
+    "name": {
+      "정확도 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 4,
+    "id": "light_tech_accuracy_01",
+    "icon": "action_accuracy_ratio"
+  },
+  "light_tech_accuracy_02": {
+    "category": 6,
+    "description": {
+      "전투 능력의 정확도가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_accuracy",
+      "level": 2
+    },
+    "name": {
+      "정확도 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 9,
+    "id": "light_tech_accuracy_02",
+    "icon": "action_accuracy_ratio"
+  },
+  "light_tech_accuracy_03": {
+    "category": 6,
+    "description": {
+      "전투 능력의 정확도가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_accuracy",
+      "level": 3
+    },
+    "name": {
+      "정확도 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 13,
+    "id": "light_tech_accuracy_03",
+    "icon": "action_accuracy_ratio"
+  },
+  "light_tech_accuracy_04": {
+    "category": 6,
+    "description": {
+      "전투 능력의 정확도가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "light_tech_accuracy",
+      "level": 4
+    },
+    "name": {
+      "정확도 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 18,
+    "id": "light_tech_accuracy_04",
+    "icon": "action_accuracy_ratio"
+  },
+  "heavy_tech_disassembling_01": {
+    "category": 7,
+    "description": {
+      "분해 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_disassembling",
+      "level": 1
+    },
+    "name": {
+      "분해 연구 Lv.1 ": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 5,
+    "id": "heavy_tech_disassembling_01",
+    "icon": "skill_disassembling_1"
+  },
+  "heavy_tech_disassembling_02": {
+    "category": 7,
+    "description": {
+      "분해 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_disassembling",
+      "level": 2
+    },
+    "name": {
+      "분해 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 10,
+    "id": "heavy_tech_disassembling_02",
+    "icon": "skill_disassembling_1"
+  },
+  "heavy_tech_disassembling_03": {
+    "category": 7,
+    "description": {
+      "분해 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_disassembling",
+      "level": 3
+    },
+    "name": {
+      "분해 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 14,
+    "id": "heavy_tech_disassembling_03",
+    "icon": "skill_disassembling_1"
+  },
+  "heavy_tech_disassembling_04": {
+    "category": 7,
+    "description": {
+      "분해 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_disassembling",
+      "level": 4
+    },
+    "name": {
+      "분해 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 19,
+    "id": "heavy_tech_disassembling_04",
+    "icon": "skill_disassembling_1"
+  },
+  "heavy_tech_mining_01": {
+    "category": 7,
+    "description": {
+      "채광 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_mining",
+      "level": 1
+    },
+    "name": {
+      "채광 연구 Lv.1 ": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 5,
+    "id": "heavy_tech_mining_01",
+    "icon": "skill_category_mining"
+  },
+  "heavy_tech_mining_02": {
+    "category": 7,
+    "description": {
+      "채광 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_mining",
+      "level": 2
+    },
+    "name": {
+      "채광 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 10,
+    "id": "heavy_tech_mining_02",
+    "icon": "skill_category_mining"
+  },
+  "heavy_tech_mining_03": {
+    "category": 7,
+    "description": {
+      "채광 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_mining",
+      "level": 3
+    },
+    "name": {
+      "채광 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 14,
+    "id": "heavy_tech_mining_03",
+    "icon": "skill_category_mining"
+  },
+  "heavy_tech_mining_04": {
+    "category": 7,
+    "description": {
+      "채광 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_mining",
+      "level": 4
+    },
+    "name": {
+      "채광 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 19,
+    "id": "heavy_tech_mining_04",
+    "icon": "skill_category_mining"
+  },
+  "heavy_tech_weaponcraft_01": {
+    "category": 7,
+    "description": {
+      "무기 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_weaponcraft",
+      "level": 1
+    },
+    "name": {
+      "무기 제작 연구 Lv.1 ": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 5,
+    "id": "heavy_tech_weaponcraft_01",
+    "icon": "skill_weapon_drill_1"
+  },
+  "heavy_tech_weaponcraft_02": {
+    "category": 7,
+    "description": {
+      "무기 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_weaponcraft",
+      "level": 2
+    },
+    "name": {
+      "무기 제작 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 10,
+    "id": "heavy_tech_weaponcraft_02",
+    "icon": "skill_weapon_drill_1"
+  },
+  "heavy_tech_weaponcraft_03": {
+    "category": 7,
+    "description": {
+      "무기 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_weaponcraft",
+      "level": 3
+    },
+    "name": {
+      "무기 제작 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 14,
+    "id": "heavy_tech_weaponcraft_03",
+    "icon": "skill_weapon_drill_1"
+  },
+  "heavy_tech_weaponcraft_04": {
+    "category": 7,
+    "description": {
+      "무기 제작 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_weaponcraft",
+      "level": 4
+    },
+    "name": {
+      "무기 제작 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 19,
+    "id": "heavy_tech_weaponcraft_04",
+    "icon": "skill_weapon_drill_1"
+  },
+  "heavy_tech_smith_01": {
+    "category": 7,
+    "description": {
+      "금속 가공 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_smith",
+      "level": 1
+    },
+    "name": {
+      "금속 가공 연구 Lv.1 ": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 5,
+    "id": "heavy_tech_smith_01",
+    "icon": "skill_smith_drill_1"
+  },
+  "heavy_tech_smith_02": {
+    "category": 7,
+    "description": {
+      "금속 가공 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_smith",
+      "level": 2
+    },
+    "name": {
+      "금속 가공 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 10,
+    "id": "heavy_tech_smith_02",
+    "icon": "skill_smith_drill_1"
+  },
+  "heavy_tech_smith_03": {
+    "category": 7,
+    "description": {
+      "금속 가공 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_smith",
+      "level": 3
+    },
+    "name": {
+      "금속 가공 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 14,
+    "id": "heavy_tech_smith_03",
+    "icon": "skill_smith_drill_1"
+  },
+  "heavy_tech_smith_04": {
+    "category": 7,
+    "description": {
+      "금속 가공 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_smith",
+      "level": 4
+    },
+    "name": {
+      "금속 가공 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 19,
+    "id": "heavy_tech_smith_04",
+    "icon": "skill_smith_drill_1"
+  },
+  "heavy_tech_construction_01": {
+    "category": 7,
+    "description": {
+      "건설 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_construction",
+      "level": 1
+    },
+    "name": {
+      "건설 연구 Lv.1 ": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 5,
+    "id": "heavy_tech_construction_01",
+    "icon": "skill_construction_1"
+  },
+  "heavy_tech_construction_02": {
+    "category": 7,
+    "description": {
+      "건설 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_construction",
+      "level": 2
+    },
+    "name": {
+      "건설 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 10,
+    "id": "heavy_tech_construction_02",
+    "icon": "skill_construction_1"
+  },
+  "heavy_tech_construction_03": {
+    "category": 7,
+    "description": {
+      "건설 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_construction",
+      "level": 3
+    },
+    "name": {
+      "건설 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 14,
+    "id": "heavy_tech_construction_03",
+    "icon": "skill_construction_1"
+  },
+  "heavy_tech_construction_04": {
+    "category": 7,
+    "description": {
+      "건설 능력이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_construction",
+      "level": 4
+    },
+    "name": {
+      "건설 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 19,
+    "id": "heavy_tech_construction_04",
+    "icon": "skill_construction_1"
+  },
+  "heavy_tech_attack_rating_01": {
+    "category": 7,
+    "description": {
+      "방어 관통이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_attack_rating",
+      "level": 1
+    },
+    "name": {
+      "방어 관통 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 5,
+    "id": "heavy_tech_attack_rating_01",
+    "icon": "skill_defense_1"
+  },
+  "heavy_tech_attack_rating_02": {
+    "category": 7,
+    "description": {
+      "방어 관통이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_attack_rating",
+      "level": 2
+    },
+    "name": {
+      "방어 관통 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 10,
+    "id": "heavy_tech_attack_rating_02",
+    "icon": "skill_defense_1"
+  },
+  "heavy_tech_attack_rating_03": {
+    "category": 7,
+    "description": {
+      "방어 관통이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_attack_rating",
+      "level": 3
+    },
+    "name": {
+      "방어 관통 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 14,
+    "id": "heavy_tech_attack_rating_03",
+    "icon": "skill_defense_1"
+  },
+  "heavy_tech_attack_rating_04": {
+    "category": 7,
+    "description": {
+      "방어 관통이 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_attack_rating",
+      "level": 4
+    },
+    "name": {
+      "방어 관통 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 19,
+    "id": "heavy_tech_attack_rating_04",
+    "icon": "skill_defense_1"
+  },
+  "heavy_tech_critical_01": {
+    "category": 7,
+    "description": {
+      "전투 능력의 치명도가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_critical",
+      "level": 1
+    },
+    "name": {
+      "치명도 연구 Lv.1": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 2000,
+    "tier": 1,
+    "limit_pioneer_grade": 5,
+    "id": "heavy_tech_critical_01",
+    "icon": "skill_smash_critical_1"
+  },
+  "heavy_tech_critical_02": {
+    "category": 7,
+    "description": {
+      "전투 능력의 치명도가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_critical",
+      "level": 2
+    },
+    "name": {
+      "치명도 연구 Lv.2": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 5000,
+    "tier": 2,
+    "limit_pioneer_grade": 10,
+    "id": "heavy_tech_critical_02",
+    "icon": "skill_smash_critical_1"
+  },
+  "heavy_tech_critical_03": {
+    "category": 7,
+    "description": {
+      "전투 능력의 치명도가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_critical",
+      "level": 3
+    },
+    "name": {
+      "치명도 연구 Lv.3": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 10000,
+    "tier": 3,
+    "limit_pioneer_grade": 14,
+    "id": "heavy_tech_critical_03",
+    "icon": "skill_smash_critical_1"
+  },
+  "heavy_tech_critical_04": {
+    "category": 7,
+    "description": {
+      "전투 능력의 치명도가 증가한다.": null
+    },
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "heavy_tech_critical",
+      "level": 4
+    },
+    "name": {
+      "치명도 연구 Lv.4": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 20000,
+    "tier": 4,
+    "limit_pioneer_grade": 19,
+    "id": "heavy_tech_critical_04",
+    "icon": "skill_smash_critical_1"
+  }
+}

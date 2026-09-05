@@ -1,0 +1,1329 @@
+{
+  "supply_rewards": {
+    "0": {
+      "1": [
+        {
+          "item": {
+            "count": 5,
+            "prototype_id": "wood_bough",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "remodeling_wall_01",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 5,
+            "prototype_id": "clay",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 5,
+            "prototype_id": "vine_thick",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 5,
+            "prototype_id": "resin",
+            "level": 60
+          }
+        }
+      ],
+      "2": [
+        {
+          "item": {
+            "count": 5,
+            "prototype_id": "wood_bough",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "remodeling_wall_01",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 5,
+            "prototype_id": "clay",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 5,
+            "prototype_id": "vine_thick",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 5,
+            "prototype_id": "resin",
+            "level": 60
+          }
+        }
+      ],
+      "3": [
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "tan_leather": 0,
+              "dried_leather": 0
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "trim_bone": 0,
+              "process_bone": 0
+            },
+            "prototype_id": "bone_leg",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "trim_bone": 0,
+              "process_bone": 0
+            },
+            "prototype_id": "bone_leg_thick",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "remodeling_roof_01",
+            "level": 60
+          }
+        }
+      ],
+      "4": [
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "tan_leather": 0,
+              "dried_leather": 0
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "trim_bone": 0,
+              "process_bone": 0
+            },
+            "prototype_id": "bone_leg",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "trim_bone": 0,
+              "process_bone": 0
+            },
+            "prototype_id": "bone_leg_thick",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "remodeling_roof_01",
+            "level": 60
+          }
+        }
+      ],
+      "5": [
+        {
+          "item": {
+            "count": 2,
+            "prototype_id": "fried_hen",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "vivid_inspiration": 1
+            },
+            "prototype_id": "flower",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "fortune_comes_with_rain": 1
+            },
+            "prototype_id": "fruit",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "moms_touch": 1
+            },
+            "prototype_id": "wheat_infertility",
+            "level": 60
+          }
+        },
+        {
+          "currency": {
+            "currency_type": 0,
+            "currency_amount": 1500
+          }
+        }
+      ],
+      "6": [
+        {
+          "item": {
+            "count": 2,
+            "prototype_id": "fried_hen",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "vivid_inspiration": 1
+            },
+            "prototype_id": "flower",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "fortune_comes_with_rain": 1
+            },
+            "prototype_id": "fruit",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "moms_touch": 1
+            },
+            "prototype_id": "wheat_infertility",
+            "level": 60
+          }
+        },
+        {
+          "currency": {
+            "currency_type": 0,
+            "currency_amount": 1500
+          }
+        }
+      ],
+      "7": [
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "breathability_good": 3
+            },
+            "random_tags": {
+              "weight_light": 4,
+              "friction_high": 4,
+              "fiber_tough": 4,
+              "surface_softness": 4,
+              "elasticity_high": 4,
+              "hardness_hard": 4,
+              "gloss_low": 4
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 4,
+              "structure_compact": 4,
+              "inside_full": 4,
+              "shape_pointed": 4,
+              "section_sharp": 4,
+              "hardness_hard": 4
+            },
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "random_tags": {
+              "surface_softness": 4,
+              "elasticity_high": 4
+            },
+            "prototype_id": "stem_fiber",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 8,
+              "structure_compact": 8,
+              "inside_full": 8,
+              "shape_pointed": 4,
+              "section_sharp": 8,
+              "hardness_hard": 8
+            },
+            "prototype_id": "bone_rib",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 4,
+              "structure_compact": 4,
+              "inside_full": 4,
+              "shape_pointed": 4,
+              "section_sharp": 4,
+              "hardness_hard": 4
+            },
+            "prototype_id": "ore_copper",
+            "level": 60
+          }
+        }
+      ],
+      "8": [
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "breathability_good": 3
+            },
+            "random_tags": {
+              "weight_light": 4,
+              "friction_high": 4,
+              "fiber_tough": 4,
+              "surface_softness": 4,
+              "elasticity_high": 4,
+              "hardness_hard": 4,
+              "gloss_low": 4
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 4,
+              "structure_compact": 4,
+              "inside_full": 4,
+              "shape_pointed": 4,
+              "section_sharp": 4,
+              "hardness_hard": 4
+            },
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "random_tags": {
+              "surface_softness": 4,
+              "elasticity_high": 4
+            },
+            "prototype_id": "stem_fiber",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 8,
+              "structure_compact": 8,
+              "inside_full": 8,
+              "shape_pointed": 4,
+              "section_sharp": 8,
+              "hardness_hard": 8
+            },
+            "prototype_id": "bone_rib",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 4,
+              "structure_compact": 4,
+              "inside_full": 4,
+              "shape_pointed": 4,
+              "section_sharp": 4,
+              "hardness_hard": 4
+            },
+            "prototype_id": "ore_copper",
+            "level": 60
+          }
+        }
+      ],
+      "9": [
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "s02_grill_stone",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 10,
+            "prototype_id": "ice",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "glass_piece",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "rose_misterlincoln_seed",
+            "level": 60
+          }
+        },
+        {
+          "currency": {
+            "currency_type": 0,
+            "currency_amount": 2000
+          }
+        }
+      ],
+      "10": [
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "weight_light": 4,
+              "breathability_good": 7
+            },
+            "random_tags": {
+              "weight_light": 5,
+              "friction_high": 5,
+              "fiber_tough": 5,
+              "surface_softness": 5,
+              "elasticity_high": 5,
+              "hardness_hard": 5,
+              "gloss_low": 5
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 5,
+              "structure_compact": 5,
+              "inside_full": 5,
+              "shape_pointed": 5,
+              "section_sharp": 5,
+              "hardness_hard": 5
+            },
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "surface_softness": 5,
+              "elasticity_high": 5
+            },
+            "prototype_id": "stem_fiber",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "structure_compact": 8
+            },
+            "random_tags": {
+              "weight_light": 5,
+              "hardness_hard": 5,
+              "inside_full": 5,
+              "shape_pointed": 5,
+              "section_sharp": 5
+            },
+            "prototype_id": "bone_rib",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 5,
+              "structure_compact": 5,
+              "inside_full": 5,
+              "shape_pointed": 5,
+              "section_sharp": 5,
+              "hardness_hard": 5
+            },
+            "prototype_id": "ore_copper",
+            "level": 60
+          }
+        }
+      ]
+    },
+    "1": {
+      "1": [
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "tan_leather": 0,
+              "dried_leather": 0
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "trim_bone": 0,
+              "process_bone": 0
+            },
+            "prototype_id": "bone_leg",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "trim_bone": 0,
+              "process_bone": 0
+            },
+            "prototype_id": "bone_leg_thick",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "remodeling_roof_01",
+            "level": 60
+          }
+        }
+      ],
+      "2": [
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "tan_leather": 0,
+              "dried_leather": 0
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "trim_bone": 0,
+              "process_bone": 0
+            },
+            "prototype_id": "bone_leg",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "default_tags": {
+              "trim_bone": 0,
+              "process_bone": 0
+            },
+            "prototype_id": "bone_leg_thick",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "remodeling_roof_01",
+            "level": 60
+          }
+        }
+      ],
+      "3": [
+        {
+          "item": {
+            "count": 2,
+            "prototype_id": "fried_hen",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "vivid_inspiration": 1
+            },
+            "prototype_id": "flower",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "fortune_comes_with_rain": 1
+            },
+            "prototype_id": "fruit",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "moms_touch": 1
+            },
+            "prototype_id": "wheat_infertility",
+            "level": 60
+          }
+        },
+        {
+          "currency": {
+            "currency_type": 0,
+            "currency_amount": 1500
+          }
+        }
+      ],
+      "4": [
+        {
+          "item": {
+            "count": 2,
+            "prototype_id": "fried_hen",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "vivid_inspiration": 1
+            },
+            "prototype_id": "flower",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "fortune_comes_with_rain": 1
+            },
+            "prototype_id": "fruit",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "moms_touch": 1
+            },
+            "prototype_id": "wheat_infertility",
+            "level": 60
+          }
+        },
+        {
+          "currency": {
+            "currency_type": 0,
+            "currency_amount": 1500
+          }
+        }
+      ],
+      "5": [
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "breathability_good": 3
+            },
+            "random_tags": {
+              "weight_light": 4,
+              "friction_high": 4,
+              "fiber_tough": 4,
+              "surface_softness": 4,
+              "elasticity_high": 4,
+              "hardness_hard": 4,
+              "gloss_low": 4
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 4,
+              "structure_compact": 4,
+              "inside_full": 4,
+              "shape_pointed": 4,
+              "section_sharp": 4,
+              "hardness_hard": 4
+            },
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "random_tags": {
+              "surface_softness": 4,
+              "elasticity_high": 4
+            },
+            "prototype_id": "stem_fiber",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 8,
+              "structure_compact": 8,
+              "inside_full": 8,
+              "shape_pointed": 4,
+              "section_sharp": 8,
+              "hardness_hard": 8
+            },
+            "prototype_id": "bone_rib",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 4,
+              "structure_compact": 4,
+              "inside_full": 4,
+              "shape_pointed": 4,
+              "section_sharp": 4,
+              "hardness_hard": 4
+            },
+            "prototype_id": "ore_copper",
+            "level": 60
+          }
+        }
+      ],
+      "6": [
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "breathability_good": 3
+            },
+            "random_tags": {
+              "weight_light": 4,
+              "friction_high": 4,
+              "fiber_tough": 4,
+              "surface_softness": 4,
+              "elasticity_high": 4,
+              "hardness_hard": 4,
+              "gloss_low": 4
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 4,
+              "structure_compact": 4,
+              "inside_full": 4,
+              "shape_pointed": 4,
+              "section_sharp": 4,
+              "hardness_hard": 4
+            },
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 3,
+            "random_tags": {
+              "surface_softness": 4,
+              "elasticity_high": 4
+            },
+            "prototype_id": "stem_fiber",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 8,
+              "structure_compact": 8,
+              "inside_full": 8,
+              "shape_pointed": 4,
+              "section_sharp": 8,
+              "hardness_hard": 8
+            },
+            "prototype_id": "bone_rib",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 4,
+              "structure_compact": 4,
+              "inside_full": 4,
+              "shape_pointed": 4,
+              "section_sharp": 4,
+              "hardness_hard": 4
+            },
+            "prototype_id": "ore_copper",
+            "level": 60
+          }
+        }
+      ],
+      "7": [
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "weight_light": 4,
+              "breathability_good": 6
+            },
+            "random_tags": {
+              "weight_light": 5,
+              "friction_high": 5,
+              "fiber_tough": 5,
+              "surface_softness": 5,
+              "elasticity_high": 5,
+              "hardness_hard": 5,
+              "gloss_low": 5
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 5,
+              "structure_compact": 5,
+              "inside_full": 5,
+              "shape_pointed": 5,
+              "section_sharp": 5,
+              "hardness_hard": 5
+            },
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "surface_softness": 5,
+              "elasticity_high": 5
+            },
+            "prototype_id": "stem_fiber",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 9,
+              "structure_compact": 9,
+              "inside_full": 9,
+              "shape_pointed": 5,
+              "section_sharp": 9,
+              "hardness_hard": 9
+            },
+            "prototype_id": "bone_rib",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 5,
+              "structure_compact": 5,
+              "inside_full": 5,
+              "shape_pointed": 5,
+              "section_sharp": 5,
+              "hardness_hard": 5
+            },
+            "prototype_id": "ore_copper",
+            "level": 60
+          }
+        }
+      ],
+      "8": [
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "s02_grill_stone",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 10,
+            "prototype_id": "ice",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "glass_piece",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "rose_misterlincoln_seed",
+            "level": 60
+          }
+        },
+        {
+          "currency": {
+            "currency_type": 0,
+            "currency_amount": 2000
+          }
+        }
+      ],
+      "9": [
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "s02_grill_stone",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 10,
+            "prototype_id": "ice",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "glass_piece",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "rose_misterlincoln_seed",
+            "level": 60
+          }
+        },
+        {
+          "currency": {
+            "currency_type": 0,
+            "currency_amount": 2000
+          }
+        }
+      ],
+      "10": [
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "weight_light": 4,
+              "breathability_good": 8
+            },
+            "random_tags": {
+              "weight_light": 6,
+              "friction_high": 6,
+              "fiber_tough": 6,
+              "surface_softness": 6,
+              "elasticity_high": 6,
+              "hardness_hard": 6,
+              "gloss_low": 6
+            },
+            "prototype_id": "leather_raw",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 6,
+              "structure_compact": 6,
+              "inside_full": 6,
+              "shape_pointed": 6,
+              "section_sharp": 6,
+              "hardness_hard": 6
+            },
+            "prototype_id": "ore_zinc",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "surface_softness": 6,
+              "elasticity_high": 6
+            },
+            "prototype_id": "stem_fiber",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "default_tags": {
+              "weight_light": 8,
+              "vibrating_small": 1
+            },
+            "random_tags": {
+              "structure_compact": 6,
+              "section_sharp": 6,
+              "hardness_hard": 6,
+              "inside_full": 6,
+              "shape_pointed": 6
+            },
+            "prototype_id": "bone_rib",
+            "level": 60
+          }
+        },
+        {
+          "item": {
+            "count": 1,
+            "random_tags": {
+              "weight_light": 6,
+              "structure_compact": 6,
+              "inside_full": 6,
+              "shape_pointed": 6,
+              "section_sharp": 6,
+              "hardness_hard": 6
+            },
+            "prototype_id": "ore_copper",
+            "level": 60
+          }
+        }
+      ]
+    }
+  },
+  "level_rewards": {
+    "0": {
+      "2": [
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "capsulated_fur_box_03",
+            "level": 60
+          }
+        }
+      ],
+      "3": [
+        {
+          "recipe_id": "s02_special_wristband"
+        }
+      ],
+      "4": [
+        {
+          "recipe_id": "s02_special_ladle"
+        }
+      ],
+      "5": [
+        {
+          "blueprint_id": "s02_washbowl"
+        }
+      ],
+      "6": [
+        {
+          "recipe_id": "s02_shoes_t3"
+        }
+      ],
+      "7": [
+        {
+          "recipe_id": "s02_gloves_t3"
+        }
+      ],
+      "9": [
+        {
+          "blueprint_id": "s02_shelter_03"
+        }
+      ],
+      "10": [
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "s02_poster_05",
+            "level": 60
+          }
+        }
+      ]
+    },
+    "1": {
+      "2": [
+        {
+          "recipe_id": "s02_special_awl"
+        }
+      ],
+      "3": [
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "s02_clothes_rope_avatar",
+            "level": 60
+          }
+        }
+      ],
+      "4": [
+        {
+          "recipe_id": "s02_clothes_rubber"
+        }
+      ],
+      "5": [
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "capsulated_fur_box_03_leaf",
+            "level": 60
+          }
+        }
+      ],
+      "6": [
+        {
+          "recipe_id": "s02_hat_rubber"
+        }
+      ],
+      "8": [
+        {
+          "blueprint_id": "s02_thurible"
+        }
+      ],
+      "9": [
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "blueprint_s02_rubber_icebox",
+            "level": 60
+          }
+        }
+      ],
+      "10": [
+        {
+          "item": {
+            "count": 1,
+            "prototype_id": "capsulated_s02_flag_society_01",
+            "level": 60
+          }
+        }
+      ]
+    }
+  },
+  "supply_level": {
+    "0": [
+      {
+        "level_up_count": 10,
+        "quantity": 3,
+        "level": 1
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 5,
+        "level": 2
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 7,
+        "level": 3
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 10,
+        "level": 4
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 15,
+        "level": 5
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 20,
+        "level": 6
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 20,
+        "level": 7
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 30,
+        "level": 8
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 30,
+        "level": 9
+      },
+      {
+        "level_up_count": null,
+        "quantity": 50,
+        "level": 10
+      }
+    ],
+    "1": [
+      {
+        "level_up_count": 10,
+        "quantity": 5,
+        "level": 1
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 5,
+        "level": 2
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 5,
+        "level": 3
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 10,
+        "level": 4
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 10,
+        "level": 5
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 10,
+        "level": 6
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 20,
+        "level": 7
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 20,
+        "level": 8
+      },
+      {
+        "level_up_count": 10,
+        "quantity": 20,
+        "level": 9
+      },
+      {
+        "level_up_count": null,
+        "quantity": 35,
+        "level": 10
+      }
+    ]
+  }
+}

@@ -1,0 +1,1823 @@
+{
+  "corn_crop": {
+    "옥수수": null
+  },
+  "potato_crop": {
+    "감자": null
+  },
+  "onion_crop": {
+    "양파 ": null
+  },
+  "pumpkin_crop": {
+    "호박": null
+  },
+  "flax_crop": {
+    "아마 ": null
+  },
+  "flax_tropical_crop": {
+    "열대 아마": null
+  },
+  "wheat_crop": {
+    "밀": null
+  },
+  "bean_crop": {
+    "콩": null
+  },
+  "dogrose_crop": {
+    "들장미": null
+  },
+  "rice_crop": {
+    "벼": null
+  },
+  "lavender_crop": {
+    "라벤더": null
+  },
+  "tomato_crop": {
+    "토마토": null
+  },
+  "cotton_crop": {
+    "목화": null
+  },
+  "sugarcane_crop": {
+    "사탕수수": null
+  },
+  "mushroom_crop": {
+    "버섯": null
+  },
+  "poppy_crop": {
+    "양귀비": null
+  },
+  "fig_crop": {
+    "무화과 나무": null
+  },
+  "coffee_crop": {
+    "커피 나무": null
+  },
+  "desertagave_crop": {
+    "사막용설란": null
+  },
+  "grape_crop": {
+    "포도나무": null
+  },
+  "teatree_crop": {
+    "차나무": null
+  },
+  "violettulip_crop": {
+    "보라튤립": null
+  },
+  "chilipepper_crop": {
+    "고추": null
+  },
+  "pepper_crop": {
+    "피망": null
+  },
+  "banana_crop": {
+    "바나나나무": null
+  },
+  "water_well": {
+    "우물": null
+  },
+  "rose_misterlincoln_crop": {
+    "미스터 링컨": null
+  },
+  "rose_damask_crop": {
+    "다마스크 장미": null
+  },
+  "sunflower_crop": {
+    "해바라기": null
+  },
+  "oleander_crop": {
+    "협죽도": null
+  },
+  "mapletree_crop": {
+    "단풍 나무": null
+  },
+  "ginkgotree_crop": {
+    "은행 나무": null
+  },
+  "jpapricot_01_crop": {
+    "매화나무": null
+  },
+  "jpapricot_02_crop": {
+    "붉은 매화나무": null
+  },
+  "jpapricot_03_crop": {
+    "하얀 매화나무": null
+  },
+  "cherryblossom_01_crop": {
+    "벚나무": null
+  },
+  "cherryblossom_02_crop": {
+    "겹벚나무": null
+  },
+  "carnation_crop": {
+    "카네이션": null
+  },
+  "cake_carnation_01": {
+    "2단 카네이션 케이크": null
+  },
+  "cake_carnation_02": {
+    "3단 카네이션 케이크": null
+  },
+  "watermelon_01_crop": {
+    "수박": null
+  },
+  "barley_crop": {
+    "보리": null
+  },
+  "persimmontree_crop": {
+    "감나무": null
+  },
+  "cosmos_crop": {
+    "코스모스": null
+  },
+  "water_well_01": {
+    "우물": null
+  },
+  "water_well_02": {
+    "우물": null
+  },
+  "halloween_pumpkin_crop": {
+    "수상한 호박": null
+  },
+  "halloween_spidertree_crop": {
+    "거미줄 나무": null
+  },
+  "valentine_cacaotree_crop": {
+    "카카오 나무": null
+  },
+  "picnic_rest": {
+    "피크닉 세트": null
+  },
+  "white_rose_crop": {
+    "하얀 장미": null
+  },
+  "jasmine_crop": {
+    "재스민": null
+  },
+  "taro_crop": {
+    "타로": null
+  },
+  "oxalis_crop": {
+    "사랑초": null
+  },
+  "oxalis_yellow_crop": {
+    "노란 사랑초": null
+  },
+  "oxalis_red_crop": {
+    "빨간 사랑초": null
+  },
+  "oxalis_blue_crop": {
+    "파란 사랑초": null
+  },
+  "water_well_03": {
+    "우물": null
+  },
+  "orange_crop": {
+    "오렌지 나무": null
+  },
+  "mango_crop": {
+    "망고 나무": null
+  },
+  "apple_crop": {
+    "사과 나무": null
+  },
+  "compso": {
+    "콤프소그나투스": null
+  },
+  "dodo": {
+    "도도피시스": null
+  },
+  "phenaco": {
+    "페나코두스": null
+  },
+  "elephantulus": {
+    "엘리펀툴루스": null
+  },
+  "rat": {
+    "쥐": null
+  },
+  "skunkodus": {
+    "스컹코두스": null
+  },
+  "deinonychus_savana": {
+    "아케니쿠스": null
+  },
+  "oviraptor": {
+    "오비랍토르": null
+  },
+  "oviraptor_snowy": {
+    "알비랍토르": null
+  },
+  "oviraptor_tropical": {
+    "픽타랍토르": null
+  },
+  "deinonychus": {
+    "데이노니쿠스": null
+  },
+  "raptor_feather": {
+    "깃털 랩터류": null
+  },
+  "raptor": {
+    "랩터": null
+  },
+  "raptor_teeth": {
+    "이빨 랩터류": null
+  },
+  "raptor_coward": {
+    "겁쟁이 랩터": null
+  },
+  "utahraptor": {
+    "유타랍토르": null
+  },
+  "proto": {
+    "프로토케라톱스": null
+  },
+  "zebra": {
+    "제브라케라톱스": null
+  },
+  "chasmo": {
+    "카스모사우루스": null
+  },
+  "bonu": {
+    "보누사우루스": null
+  },
+  "styraco": {
+    "스티라코사우루스": null
+  },
+  "tricera": {
+    "트리케라톱스": null
+  },
+  "centro": {
+    "센트로사우르스": null
+  },
+  "tricera_baby": {
+    "어린 트리케라톱스": null
+  },
+  "styraco_baby": {
+    "어린 스티라코사우르스": null
+  },
+  "lizard": {
+    "도마뱀": null
+  },
+  "dimetrodon": {
+    "디메트로돈": null
+  },
+  "lizard_poisonous": {
+    "붉은점도마뱀": null
+  },
+  "lizard_poisonous_volcanic": {
+    "독 도마뱀": null
+  },
+  "macrau": {
+    "마크라우케니아": null
+  },
+  "megalo": {
+    "수컷 메갈로케로스": null
+  },
+  "megalo_f": {
+    "암컷 메갈로케로스": null
+  },
+  "megalo_b": {
+    "어린 메갈로케로스": null
+  },
+  "wolf": {
+    "다이어울프": null
+  },
+  "wolf_baby": {
+    "어린 다이어울프": null
+  },
+  "wolf_snow": {
+    "흰털다이어울프": null
+  },
+  "coelo": {
+    "코엘로피시스": null
+  },
+  "coelo_snow": {
+    "설원 코엘로피시스": null
+  },
+  "coelo_baby": {
+    "어린 코엘로피시스": null
+  },
+  "pavomimus": {
+    "파보미무스": null
+  },
+  "gallimimus": {
+    "갈리미무스": null
+  },
+  "ornitho": {
+    "오르니토미무스": null
+  },
+  "ornitho_baby": {
+    "어린 오르니토미무스": null
+  },
+  "saurolophus": {
+    "사우롤로푸스": null
+  },
+  "iguanodon": {
+    "이구아노돈": null
+  },
+  "parasaurolophus": {
+    "파라사우롤로푸스": null
+  },
+  "stego": {
+    "스테고사우루스": null
+  },
+  "stego_baby": {
+    "어린 스테고사우루스": null
+  },
+  "kentro": {
+    "켄트로사우루스": null
+  },
+  "tuojiango": {
+    "투오지앙고사우루스": null
+  },
+  "kentro_baby": {
+    "어린 켄트로사우루스": null
+  },
+  "smilodon": {
+    "스밀로돈": null
+  },
+  "smilodon_snow_s01": {
+    "흰털스밀로돈": null
+  },
+  "allo_warp_acc": {
+    "알로사우루스": null
+  },
+  "allo": {
+    "알로사우루스": null
+  },
+  "ankylo": {
+    "안킬로사우루스": null
+  },
+  "ankylo_baby": {
+    "어린 안킬로사우루스": null
+  },
+  "mammoth": {
+    "매머드": null
+  },
+  "elephant": {
+    "코끼리": null
+  },
+  "tarbo_feather": {
+    "깃털 타르보사우루스": null
+  },
+  "tarbo": {
+    "타르보사우루스": null
+  },
+  "brachio": {
+    "브라키오사우루스": null
+  },
+  "brachio_baby": {
+    "어린 브라키오사우루스": null
+  },
+  "apato": {
+    "아파토사우루스": null
+  },
+  "recruiter_common": {
+    "징병관": null
+  },
+  "recruiter_lead": {
+    "징병대장": null
+  },
+  "megalo_snow": {
+    "수컷 흰배메갈로케로스": null
+  },
+  "megalo_snow_f": {
+    "암컷 흰배메갈로케로스": null
+  },
+  "megalo_snow_b": {
+    "어린 흰배메갈로케로스": null
+  },
+  "compso_stripe": {
+    "줄무늬 콤프소그나투스": null
+  },
+  "proto_pink": {
+    "연분홍 프로토케라톱스": null
+  },
+  "watermelon_01_monster": {
+    "수상한 수박": null
+  },
+  "pachycephalosaurus": {
+    "파키케팔로사우루스": null
+  },
+  "rat_s02": {
+    "쥐": null
+  },
+  "skunkodus_s02": {
+    "스컹코두스": null
+  },
+  "coelo_s02": {
+    "코엘로피시스": null
+  },
+  "tricera_s02": {
+    "트리케라톱스": null
+  },
+  "compso_paper": {
+    "콤프소그나투스": null
+  },
+  "compso_paper_elite": {
+    "대장 콤프소그나투스": null
+  },
+  "phenaco_paper": {
+    "페나코두스": null
+  },
+  "phenaco_paper_elite": {
+    "대장 페나코두스": null
+  },
+  "edmontosaurus": {
+    "에드몬토사우루스": null
+  },
+  "andrewsarchus": {
+    "앤드루사르쿠스": null
+  },
+  "horseshoecrab": {
+    "투구게": null
+  },
+  "iguana_volcanic": {
+    "불점박이 이구아나": null
+  },
+  "skunkodus_sulphur": {
+    "유황 스컹코두스": null
+  },
+  "utahraptor_volcanic": {
+    "검은머리 유타랍토르": null
+  },
+  "iguana_rock": {
+    "흰줄무늬 이구아나": null
+  },
+  "hadrosaurus_volcanic": {
+    "용암 하드로사우루스": null
+  },
+  "chasmosaurus_volcanic": {
+    "화산재 카스모사우루스": null
+  },
+  "amargasaurus": {
+    "아마르가사우루스": null
+  },
+  "andrewsarchus_02": {
+    "청소부 앤드루사르쿠스": null
+  },
+  "trex": {
+    "티라노사우루스": null
+  },
+  "amargasaurus_02": {
+    "통신용 아마르가사우루스": null
+  },
+  "muntant_animals": {
+    "미확인 동물": null
+  },
+  "bush_birdnestfern": {
+    "둥지고사리": null
+  },
+  "bush_birdnestfern_poison": {
+    "둥지고사리": null
+  },
+  "bush_feathertree": {
+    "깃털나무": null
+  },
+  "tree_date": {
+    "대추야자나무": null
+  },
+  "tree_date_khalasah": {
+    "칼라사 대추야자나무": null
+  },
+  "tree_date_khalasah_poison": {
+    "칼라사 대추야자나무": null
+  },
+  "grass_reed": {
+    "갈대": null
+  },
+  "grass_reed_poison": {
+    "갈대": null
+  },
+  "grass_reed_season2_week1": {
+    "갈대": null
+  },
+  "grass_reed_season2_week2": {
+    "갈대": null
+  },
+  "grass_reed_season2_week3": {
+    "갈대": null
+  },
+  "grass_reed_c_season2_week1": {
+    "갈대": null
+  },
+  "grass_reed_c_season2_week2": {
+    "갈대": null
+  },
+  "grass_reed_c_season2_week3": {
+    "갈대": null
+  },
+  "grass_reed_lake": {
+    "호수 갈대": null
+  },
+  "grass_reed_lake_poison": {
+    "호수 갈대": null
+  },
+  "grass_bracken": {
+    "고사리": null
+  },
+  "grass_bracken_poison": {
+    "고사리": null
+  },
+  "tree_coconut": {
+    "야자수": null
+  },
+  "tree_coconut_poison": {
+    "야자수": null
+  },
+  "bush_mountain_ash": {
+    "로완덤불": null
+  },
+  "grass_birdofparadise": {
+    "큰극락초": null
+  },
+  "grass_birdofparadise_medicine": {
+    "큰극락초": null
+  },
+  "bush_dogrose": {
+    "들장미": null
+  },
+  "bush_junglecycad": {
+    "정글소철": null
+  },
+  "bush_junglecycad_poison": {
+    "정글소철": null
+  },
+  "tree_myrtle": {
+    "머틀나무": null
+  },
+  "tree_myrtle_poison": {
+    "머틀나무": null
+  },
+  "grass_zebra": {
+    "아펠란드라": null
+  },
+  "grass_flamingsword": {
+    "화검초": null
+  },
+  "grass_flamingsword_poison": {
+    "화검초": null
+  },
+  "tree_umbrellathorn": {
+    "우산가시아카시아": null
+  },
+  "tree_umbrellathorn_poison": {
+    "우산가시아카시아": null
+  },
+  "tree_chinaberry": {
+    "멀구슬나무": null
+  },
+  "tree_acacia": {
+    "아카시아": null
+  },
+  "tree_acacia_poison": {
+    "아카시아": null
+  },
+  "tree_silkyoak": {
+    "비단참나무": null
+  },
+  "tree_poison": {
+    "독나무": null
+  },
+  "harpoon_fishing_point_river": {
+    "물고기 떼": null
+  },
+  "harpoon_fishing_point_river_season2_week1": {
+    "물고기 떼": null
+  },
+  "harpoon_fishing_point_river_season2_week2": {
+    "물고기 떼": null
+  },
+  "harpoon_fishing_point_river_season2_week3": {
+    "물고기 떼": null
+  },
+  "harpoon_fishing_point_ocean": {
+    "물고기 떼": null
+  },
+  "harpoon_fishing_point_ocean_season2_week1": {
+    "물고기 떼": null
+  },
+  "harpoon_fishing_point_ocean_season2_week2": {
+    "물고기 떼": null
+  },
+  "harpoon_fishing_point_ocean_season2_week3": {
+    "물고기 떼": null
+  },
+  "harpoon_fishing_point_lake": {
+    "물고기 떼": null
+  },
+  "seashell_1": {
+    "조개": null
+  },
+  "seashell_2": {
+    "조개": null
+  },
+  "seashell_3": {
+    "조개": null
+  },
+  "fishtrap_fish": {
+    "통발": null
+  },
+  "egg": {
+    "동물의 알": null
+  },
+  "bush_wildberry": {
+    "산딸기덤불": null
+  },
+  "bush_raspberry": {
+    "가시딸기덤불": null
+  },
+  "bush_wildberry_winter": {
+    "겨울산딸기덤불": null
+  },
+  "tree_deadlog": {
+    "죽은 통나무": null
+  },
+  "tree_deadlog_c_season2_week1": {
+    "죽은 통나무": null
+  },
+  "tree_deadlog_c_season2_week2": {
+    "죽은 통나무": null
+  },
+  "tree_deadlog_c_season2_week3": {
+    "죽은 통나무": null
+  },
+  "bush_fig": {
+    "무화과나무": null
+  },
+  "tree_sandalwood": {
+    "백단향": null
+  },
+  "bush_blackthorn": {
+    "가시나무": null
+  },
+  "bush_buckthorn": {
+    "갈매나무": null
+  },
+  "bush_coffee": {
+    "커피나무": null
+  },
+  "bush_cranberry": {
+    "크랜베리 덤불": null
+  },
+  "bush_blackberry": {
+    "블랙베리 덤불": null
+  },
+  "bush_curry": {
+    "커리나무": null
+  },
+  "bush_dry": {
+    "마른덤불": null
+  },
+  "bush_hazel": {
+    "개암나무": null
+  },
+  "bush_lilac": {
+    "수수꽃다리": null
+  },
+  "cactus_centuryplant": {
+    "용설란": null
+  },
+  "cactus_desertagave": {
+    "사막용설란": null
+  },
+  "cactus_desertagave_flowered": {
+    "꽃 핀 사막용설란": null
+  },
+  "cactus_ocotillo": {
+    "오코틸로": null
+  },
+  "cactus_pricklypear": {
+    "가시배선인장": null
+  },
+  "cactus_rainbow": {
+    "무지개선인장": null
+  },
+  "cactus_saguaro": {
+    "사구아로선인장": null
+  },
+  "cactus_staghorn": {
+    "사슴뿔선인장": null
+  },
+  "grass_cotton": {
+    "목화": null
+  },
+  "grass_flax": {
+    "아마": null
+  },
+  "grass_flax_tropical": {
+    "열대 아마": null
+  },
+  "grass_flax_tropical_poison": {
+    "열대 아마": null
+  },
+  "grass_guzmania": {
+    "구즈매니아": null
+  },
+  "grass_heliconia": {
+    "헬리코니아": null
+  },
+  "mushroom": {
+    "썩은 통나무": null
+  },
+  "mushroom_poison": {
+    "썩은 통나무": null
+  },
+  "grass_onion": {
+    "야생 양파 ": null
+  },
+  "grass_sugarcane": {
+    "사탕수수": null
+  },
+  "grass_sugarcane_poison": {
+    "사탕수수": null
+  },
+  "tree_bamboo": {
+    "대나무": null
+  },
+  "tree_almond": {
+    "아몬드나무": null
+  },
+  "tree_banana": {
+    "바나나나무": null
+  },
+  "tree_orange": {
+    "오렌지나무": null
+  },
+  "tree_orange_navel": {
+    "네이블 오렌지나무": null
+  },
+  "tree_orange_navel_poison": {
+    "네이블 오렌지나무": null
+  },
+  "tree_bracken": {
+    "거대고사리": null
+  },
+  "tree_cypress": {
+    "측백나무": null
+  },
+  "tree_eucalyptus": {
+    "유칼립투스": null
+  },
+  "tree_joshua": {
+    "조슈아나무": null
+  },
+  "tree_linden": {
+    "보리수나무": null
+  },
+  "tree_mahogany": {
+    "마호가니": null
+  },
+  "tree_mahogany_poison": {
+    "마호가니": null
+  },
+  "tree_mango": {
+    "망고나무": null
+  },
+  "tree_mango_apple": {
+    "애플 망고나무": null
+  },
+  "tree_mango_apple_poison": {
+    "애플 망고나무": null
+  },
+  "tree_marri": {
+    "마리나무": null
+  },
+  "tree_oak": {
+    "참나무": null
+  },
+  "tree_olive": {
+    "올리브나무": null
+  },
+  "tree_olive_poison": {
+    "올리브나무": null
+  },
+  "tree_pine": {
+    "소나무": null
+  },
+  "tree_redfir": {
+    "붉은 잣나무": null
+  },
+  "tree_rubber": {
+    "고무나무": null
+  },
+  "tree_sequoia": {
+    "향백나무": null
+  },
+  "tree_whitefir": {
+    "전나무": null
+  },
+  "tree_yellowwood": {
+    "죽백나무": null
+  },
+  "tree_vanyan": {
+    "반얀나무": null
+  },
+  "tree_vine": {
+    "넝쿨에 싸인 나무": null
+  },
+  "tree_ivy": {
+    "넝쿨에 싸인 나무": null
+  },
+  "rafflesia": {
+    "라플레시아": null
+  },
+  "stone": {
+    "돌멩이": null
+  },
+  "stone_season2_week1": {
+    "이끼 낀 돌멩이": null
+  },
+  "stone_season2_week2": {
+    "이끼 낀 돌멩이": null
+  },
+  "stone_season2_week3": {
+    "이끼 낀 돌멩이": null
+  },
+  "stone_c_season2_week1": {
+    "이끼 낀 돌멩이": null
+  },
+  "stone_c_season2_week2": {
+    "이끼 낀 돌멩이": null
+  },
+  "stone_c_season2_week3": {
+    "이끼 낀 돌멩이": null
+  },
+  "marble": {
+    "대리석": null
+  },
+  "obsidian": {
+    "흑요석": null
+  },
+  "rock": {
+    "바위": null
+  },
+  "rock_season2_week1": {
+    "바위": null
+  },
+  "rock_season2_week2": {
+    "바위": null
+  },
+  "rock_season2_week3": {
+    "바위": null
+  },
+  "jewel_emerald": {
+    "에메랄드 광석": null
+  },
+  "jewel_ruby": {
+    "루비 광석": null
+  },
+  "jewel_sapphire": {
+    "사파이어 광석": null
+  },
+  "silver": {
+    "은 광석": null
+  },
+  "gold": {
+    "금 광석": null
+  },
+  "ore_tin": {
+    "주석 광석": null
+  },
+  "ore_zinc": {
+    "아연 광석": null
+  },
+  "ore_copper": {
+    "구리 광석": null
+  },
+  "ore_iron": {
+    "철 광석": null
+  },
+  "bonepile_large": {
+    "뼈 무덤": null
+  },
+  "bonepile_large_rib": {
+    "뼈 무덤": null
+  },
+  "bonepile_large_head": {
+    "뼈 무덤": null
+  },
+  "bonepile_medium": {
+    "뼈 무덤": null
+  },
+  "bonepile_small": {
+    "뼈 더미": null
+  },
+  "mud_swamp": {
+    "진흙구덩이": null
+  },
+  "mud_swamp_season2_week1": {
+    "진흙구덩이": null
+  },
+  "mud_swamp_season2_week2": {
+    "진흙구덩이": null
+  },
+  "mud_swamp_season2_week3": {
+    "진흙구덩이": null
+  },
+  "mud_swamp_c_season2_week1": {
+    "진흙구덩이": null
+  },
+  "mud_swamp_c_season2_week2": {
+    "진흙구덩이": null
+  },
+  "mud_swamp_c_season2_week3": {
+    "진흙구덩이": null
+  },
+  "mud_ice": {
+    "얼음 진흙구덩이": null
+  },
+  "dump_s": {
+    "작은 동물의 대변": null
+  },
+  "dump_m": {
+    "동물의 대변": null
+  },
+  "dump_l": {
+    "큰 동물의 대변": null
+  },
+  "cage_milk": {
+    "축사": null
+  },
+  "cage_dump": {
+    "축사": null
+  },
+  "cage_01_6": {
+    "축사": null
+  },
+  "cage_01_4": {
+    "축사": null
+  },
+  "cage_01_2": {
+    "축사": null
+  },
+  "warphole": {
+    "워프홀": null
+  },
+  "crater": {
+    "크레이터": null
+  },
+  "faction_prop": {
+    "팩션 오브젝트": null
+  },
+  "rift": {
+    "균열": null
+  },
+  "tree_mangrove": {
+    "맹그로브": null
+  },
+  "tree_mangrove_season2_week1": {
+    "맹그로브": null
+  },
+  "tree_mangrove_season2_week2": {
+    "맹그로브": null
+  },
+  "tree_mangrove_season2_week3": {
+    "맹그로브": null
+  },
+  "bush_antler": {
+    "뿔 나무": null
+  },
+  "bush_antler_season2_week1": {
+    "뿔 나무": null
+  },
+  "bush_antler_season2_week2": {
+    "뿔 나무": null
+  },
+  "bush_antler_season2_week3": {
+    "뿔 나무": null
+  },
+  "bush_antler_c_season2_week1": {
+    "뿔 나무": null
+  },
+  "bush_antler_c_season2_week2": {
+    "뿔 나무": null
+  },
+  "bush_antler_c_season2_week3": {
+    "뿔 나무": null
+  },
+  "tree_bughouse": {
+    "벌레둥지 나무": null
+  },
+  "tree_bughouse_c_season2_week1": {
+    "벌레둥지 나무": null
+  },
+  "tree_bughouse_c_season2_week2": {
+    "벌레둥지 나무": null
+  },
+  "tree_bughouse_c_season2_week3": {
+    "벌레둥지 나무": null
+  },
+  "tree_forked": {
+    "갈래 나무": null
+  },
+  "tree_forked_season2_week1": {
+    "갈래 나무": null
+  },
+  "tree_forked_season2_week2": {
+    "갈래 나무": null
+  },
+  "tree_forked_season2_week3": {
+    "갈래 나무": null
+  },
+  "tree_forked_c_season2_week1": {
+    "갈래 나무": null
+  },
+  "tree_forked_c_season2_week2": {
+    "갈래 나무": null
+  },
+  "tree_forked_c_season2_week3": {
+    "갈래 나무": null
+  },
+  "tree_moss": {
+    "이끼지붕 나무": null
+  },
+  "tree_moss_season2_week1": {
+    "이끼지붕 나무": null
+  },
+  "tree_moss_season2_week2": {
+    "이끼지붕 나무": null
+  },
+  "tree_moss_season2_week3": {
+    "이끼지붕 나무": null
+  },
+  "tree_moss_c_season2_week1": {
+    "이끼지붕 나무": null
+  },
+  "tree_moss_c_season2_week2": {
+    "이끼지붕 나무": null
+  },
+  "tree_moss_c_season2_week3": {
+    "이끼지붕 나무": null
+  },
+  "grass_lotus": {
+    "연꽃": null
+  },
+  "grass_lotus_c_season2_week1": {
+    "연꽃": null
+  },
+  "grass_lotus_c_season2_week2": {
+    "연꽃": null
+  },
+  "grass_lotus_c_season2_week3": {
+    "연꽃": null
+  },
+  "grass_lotus_leaf": {
+    "연잎": null
+  },
+  "grass_lotus_leaf_season2_week1": {
+    "연잎": null
+  },
+  "grass_lotus_leaf_season2_week2": {
+    "연잎": null
+  },
+  "grass_lotus_leaf_season2_week3": {
+    "연잎": null
+  },
+  "grass_lotus_leaf_c_season2_week1": {
+    "연잎": null
+  },
+  "grass_lotus_leaf_c_season2_week2": {
+    "연잎": null
+  },
+  "grass_lotus_leaf_c_season2_week3": {
+    "연잎": null
+  },
+  "grass_insect_eating_lantern": {
+    "호롱풀": null
+  },
+  "grass_ring_vine": {
+    "고리 넝쿨": null
+  },
+  "grass_ring_vine_season2_week1": {
+    "고리 덩굴": null
+  },
+  "grass_ring_vine_season2_week2": {
+    "고리 덩굴": null
+  },
+  "grass_ring_vine_season2_week3": {
+    "고리 덩굴": null
+  },
+  "grass_ring_vine_c_season2_week1": {
+    "고리 덩굴": null
+  },
+  "grass_ring_vine_c_season2_week2": {
+    "고리 덩굴": null
+  },
+  "grass_ring_vine_c_season2_week3": {
+    "고리 덩굴": null
+  },
+  "grass_cattail": {
+    "부들": null
+  },
+  "grass_cattail_season2_week1": {
+    "부들": null
+  },
+  "grass_cattail_season2_week2": {
+    "부들": null
+  },
+  "grass_cattail_season2_week3": {
+    "부들": null
+  },
+  "grass_cattail_c_season2_week1": {
+    "부들": null
+  },
+  "grass_cattail_c_season2_week2": {
+    "부들": null
+  },
+  "grass_cattail_c_season2_week3": {
+    "부들": null
+  },
+  "tree_rubber_swamp": {
+    "늪지 고무나무": null
+  },
+  "tree_rubber_swamp_season2_week1": {
+    "고무나무": null
+  },
+  "tree_rubber_swamp_season2_week2": {
+    "고무나무": null
+  },
+  "tree_rubber_swamp_season2_week3": {
+    "고무나무": null
+  },
+  "tree_rubber_swamp_c_season2_week1": {
+    "고무나무": null
+  },
+  "tree_rubber_swamp_c_season2_week2": {
+    "고무나무": null
+  },
+  "tree_rubber_swamp_c_season2_week3": {
+    "고무나무": null
+  },
+  "tree_birdnest": {
+    "산발나무": null
+  },
+  "tree_birdnest_season2_week1": {
+    "산발나무": null
+  },
+  "tree_birdnest_season2_week2": {
+    "산발나무": null
+  },
+  "tree_birdnest_season2_week3": {
+    "산발나무": null
+  },
+  "tree_birdnest_c_season2_week1": {
+    "산발나무": null
+  },
+  "tree_birdnest_c_season2_week2": {
+    "산발나무": null
+  },
+  "tree_birdnest_c_season2_week3": {
+    "산발나무": null
+  },
+  "tree_birdnest_base": {
+    "고목나무 밑둥": null
+  },
+  "tree_birdnest_base_season2_week1": {
+    "고목나무 밑둥": null
+  },
+  "tree_birdnest_base_season2_week2": {
+    "고목나무 밑둥": null
+  },
+  "tree_birdnest_base_season2_week3": {
+    "고목나무 밑둥": null
+  },
+  "tree_birdnest_base_c_season2_week1": {
+    "고목나무 밑둥": null
+  },
+  "tree_birdnest_base_c_season2_week2": {
+    "고목나무 밑둥": null
+  },
+  "tree_birdnest_base_c_season2_week3": {
+    "고목나무 밑둥": null
+  },
+  "grass_elephant": {
+    "코끼리풀": null
+  },
+  "grass_wiregrass": {
+    "바랭이풀": null
+  },
+  "grass_wiregrass_flowered": {
+    "꽃 핀 바랭이풀": null
+  },
+  "bush_mopane": {
+    "모판나무": null
+  },
+  "bush_lavender": {
+    "라벤더": null
+  },
+  "tree_morichepalm": {
+    "모리체야자나무": null
+  },
+  "tree_cabbagepalm": {
+    "배추야자나무": null
+  },
+  "tree_screwpine": {
+    "나사소나무": null
+  },
+  "tree_baobab": {
+    "바오밥나무": null
+  },
+  "tree_ice": {
+    "얼어붙은 나무": null
+  },
+  "bush_ice": {
+    "얼어붙은 덤불": null
+  },
+  "algae_salicornia": {
+    "퉁퉁마디": null
+  },
+  "grass_violettulip": {
+    "보라튤립": null
+  },
+  "tree_teatree": {
+    "차나무": null
+  },
+  "bush_chilipepper": {
+    "고추나무": null
+  },
+  "bush_pepper": {
+    "피망나무": null
+  },
+  "cherryblossom_01": {
+    "벚나무": null
+  },
+  "cherryblossom_02": {
+    "겹벚나무": null
+  },
+  "recruiter_basecamp_attacked": {
+    "습격당한 징집관 기지": null
+  },
+  "recruiter_basecamp": {
+    "징집관 기지": null
+  },
+  "recruiter_exhasuted": {
+    "탈진한 사람": null
+  },
+  "human_dead": {
+    "미동없는 사람": null
+  },
+  "recruiter_dead": {
+    "미동없는 징집관": null
+  },
+  "roadsign": {
+    "도로표지판": null
+  },
+  "barrier": {
+    "바리케이트": null
+  },
+  "billboard": {
+    "대형 광고판": null
+  },
+  "busstop": {
+    "버스정류장": null
+  },
+  "hydrant": {
+    "소화전": null
+  },
+  "overpass": {
+    "층계": null
+  },
+  "signpost": {
+    "대형 도로표지판": null
+  },
+  "streetlamp": {
+    "가로등": null
+  },
+  "streetpole": {
+    "철제 기둥": null
+  },
+  "power_box_01": {
+    "배전반": null
+  },
+  "tire": {
+    "타이어": null
+  },
+  "vehicle": {
+    "자동차": null
+  },
+  "store_kart": {
+    "카트": null
+  },
+  "kiosk_01": {
+    "작은 진열대": null
+  },
+  "kiosk_02": {
+    "진열대": null
+  },
+  "kiosk_03": {
+    "큰 진열대": null
+  },
+  "refrigerator_01": {
+    "냉장고": null
+  },
+  "counter_mart_01": {
+    "계산대": null
+  },
+  "kiosk_leisure_01": {
+    "작은 진열대": null
+  },
+  "kiosk_leisure_02": {
+    "진열대": null
+  },
+  "kiosk_leisure_03": {
+    "큰 진열대": null
+  },
+  "pbooth": {
+    "공중전화부스": null
+  },
+  "faction_material_season2_week1": {
+    "알파 스톤": null
+  },
+  "faction_material_season2_week2": {
+    "브라보 스톤": null
+  },
+  "faction_material_season2_week3": {
+    "찰리 스톤": null
+  },
+  "watermelon": {
+    "수박": null
+  },
+  "persimmontree": {
+    "감나무": null
+  },
+  "cosmos": {
+    "코스모스": null
+  },
+  "harpoon_shrimp_point_ocean": {
+    "대하 떼": null
+  },
+  "mapletree": {
+    "단풍나무": null
+  },
+  "ginkgotree": {
+    "은행나무": null
+  },
+  "dead_brachio": {
+    "죽은 브라키오": null
+  },
+  "dead_triceratops": {
+    "죽은 트리케라톱스": null
+  },
+  "dead_dimetrodon": {
+    "죽은 디메트로돈": null
+  },
+  "dead_coelophysis": {
+    "죽은 코엘로피시스": null
+  },
+  "dead_Phenacodus": {
+    "죽은 쥐": null
+  },
+  "dead_skunkodus": {
+    "죽은 스컹코두스": null
+  },
+  "s02_lizard_trap": {
+    "도마뱀 덫": null
+  },
+  "s02_box": {
+    "선박 상자": null
+  },
+  "artifact_feathertree": {
+    "깃털나무": null
+  },
+  "artifact_wildberry": {
+    "산딸기덤불": null
+  },
+  "artifact_chinaberry": {
+    "멀구슬나무": null
+  },
+  "artifact_sandalwood": {
+    "백단향": null
+  },
+  "artifact_oak": {
+    "참나무": null
+  },
+  "tree_nail": {
+    "뾰족 나무": null
+  },
+  "tree_dried": {
+    "말라죽은 나무": null
+  },
+  "tree_ash": {
+    "잿나무": null
+  },
+  "bush_blacken": {
+    "그을린 덤불": null
+  },
+  "bush_dried": {
+    "마른 갈대": null
+  },
+  "flower_blacken": {
+    "그을린 꽃": null
+  },
+  "flower_blacken_small": {
+    "그을린 꽃": null
+  },
+  "grass_oxalis_red": {
+    "야생 사랑초": null
+  },
+  "grass_oxalis_blue": {
+    "야생 사랑초": null
+  },
+  "grass_oxalis_yellow": {
+    "야생 사랑초": null
+  },
+  "grass_reed_lavaside": {
+    "그을린 갈대": null
+  },
+  "clay_gray": {
+    "회색 진흙": null
+  },
+  "lava_dried": {
+    "굳은 용암": null
+  },
+  "basalt": {
+    "현무암": null
+  },
+  "granite": {
+    "화강암": null
+  },
+  "basalt_small": {
+    "현무암": null
+  },
+  "granite_small": {
+    "화강암": null
+  },
+  "ore_iron_black": {
+    "검은 철광석": null
+  },
+  "ore_iron_black_crack": {
+    "검은 철광석": null
+  },
+  "sulphur": {
+    "유황 덩어리": null
+  },
+  "bonepile_small_blacken": {
+    "그을린 뼈 더미": null
+  },
+  "bonepile_medium_blacken": {
+    "그을린 뼈 무덤": null
+  },
+  "bonepile_large_blacken": {
+    "그을린 뼈 무덤": null
+  },
+  "harpoon_fishing_point_lake_spa": {
+    "물고기 떼": null
+  },
+  "grass_lake_spa": {
+    "온천호수 풀": null
+  },
+  "moss_tree_lake_spa": {
+    "온천 이끼나무": null
+  },
+  "lava": {
+    "용암": null
+  },
+  "lake_spa_water": {
+    "온천수": null
+  },
+  "sleepingbag_01_army": {
+    "침낭": null
+  },
+  "tent_01_army": {
+    "군용 막사": null
+  },
+  "timber_01_army": {
+    "나무 자재": null
+  },
+  "S_car_07": {
+    "군용차": null
+  },
+  "S_truck_01": {
+    "군용차": null
+  },
+  "container_01_army": {
+    "보급 컨테이너": null
+  },
+  "volcanic_iguana_tunnel": {
+    "불점박이 이구아나 굴": null
+  },
+  "tree_ember": {
+    "불씨남은 나무": null
+  },
+  "jewel_amethyst": {
+    "자수정 광석": null
+  },
+  "jewel_diamond": {
+    "다이아몬드 광석": null
+  },
+  "jewel_topaz": {
+    "토파즈 광석": null
+  },
+  "grass_taro": {
+    "야생 타로 ": null
+  },
+  "rock_volcano": {
+    "바위": null
+  },
+  "rock_volcano_big": {
+    "큰 바위": null
+  },
+  "grass_reed_lavaside_todo": {
+    "그을린 갈대": null
+  },
+  "bush_dried_todo": {
+    "마른 갈대": null
+  },
+  "archipelago_forum_hq": {
+    "엽록포럼 기지": null
+  },
+  "pvp_tree_coconut": {
+    "야자수": null
+  },
+  "pvp_bush_junglecycad": {
+    "정글소철": null
+  },
+  "pvp_bush_birdnestfern": {
+    "둥지고사리": null
+  },
+  "pvp_rock": {
+    "바위": null
+  },
+  "pvp_tree_myrtle": {
+    "머틀나무": null
+  },
+  "pvp_tree_mango": {
+    "망고나무": null
+  },
+  "pvp_tree_umbrellathorn": {
+    "우산가시아카시아": null
+  },
+  "pvp_bush_feathertree": {
+    "깃털나무": null
+  },
+  "pvp_bush_mountain": {
+    "로완덤불": null
+  },
+  "pvp_grass_birdofparadise": {
+    "큰극락초": null
+  },
+  "pvp_tree_chinaberry": {
+    "멀구슬나무": null
+  },
+  "pvp_tree_acacia_poison": {
+    "아카시아": null
+  },
+  "pvp_tree_orange": {
+    "오렌지나무": null
+  },
+  "pvp_tree_banana": {
+    "바나나나무": null
+  },
+  "grass_bracken_suspicious_document": {
+    "고사리": null
+  },
+  "bush_birdnestfern_suspicious_document": {
+    "둥지고사리": null
+  },
+  "bush_mountain_ash_suspicious_document": {
+    "로완덤불": null
+  },
+  "grass_birdofparadise_suspicious_document": {
+    "큰극락초": null
+  },
+  "bush_junglecycad_suspicious_document": {
+    "정글소철": null
+  },
+  "epic_coded_document_desk": {
+    "사무실 책상": null
+  },
+  "epic_kiosk_01": {
+    "작은 진열대": null
+  },
+  "epic_refrigerator_01": {
+    "냉장고": null
+  },
+  "bush_mountain_ash_passengerlist": {
+    "로완덤불": null
+  },
+  "epic_gas_station_01": {
+    "주유소 비품상자": null
+  },
+  "epic_gas_station_02": {
+    "망가진 자동차": null
+  },
+  "epic_bank_01": {
+    "쓰레기통": null
+  },
+  "epic_bank_02": {
+    "파워박스": null
+  },
+  "epic_silo_desk": {
+    "위원회 작업용 책상": null
+  },
+  "woodenbox_beginner": {
+    "선박상자": null
+  },
+  "woodenbox_weapon": {
+    "선박상자": null
+  },
+  "paperbox_normal_mixed": {
+    "택배상자": null
+  },
+  "woodenbox_seed": {
+    "택배상자": null
+  },
+  "woodenbox_clothes": {
+    "택배상자": null
+  },
+  "icebox_01": {
+    "아이스박스": null
+  },
+  "icebox_02": {
+    "아이스박스": null
+  },
+  "barrel_01": {
+    "석유통": null
+  },
+  "barrel_02": {
+    "석유통": null
+  },
+  "cabinet_01": {
+    "사물함": null
+  },
+  "cabinet_02": {
+    "두 칸 사물함": null
+  },
+  "dumpster_01": {
+    "대형 쓰레기통": null
+  },
+  "wastebasket_01": {
+    "쓰레기통": null
+  },
+  "wastebasket_02": {
+    "쓰레기통": null
+  },
+  "airmat": {
+    "에어 매트리스": null
+  },
+  "bed_hospital_steel": {
+    "철제 침대": null
+  },
+  "bed_hospital": {
+    "병원 침대": null
+  },
+  "wheelchair_01": {
+    "휠체어": null
+  },
+  "curtain_01_steel_hospital": {
+    "병원 커튼": null
+  },
+  "parasol_01_table": {
+    "파라솔 기획상품": null
+  },
+  "parasol_01": {
+    "파라솔": null
+  },
+  "cat_tower_01": {
+    "일반 캣타워": null
+  },
+  "cat_tower_02": {
+    "비싼 캣타워": null
+  },
+  "fan_01": {
+    "선풍기": null
+  },
+  "coffee_dutch_01": {
+    "더치커피 기구": null
+  },
+  "copymachine_01": {
+    "복사기": null
+  },
+  "treadmill_01": {
+    "러닝머신": null
+  },
+  "spring_horse_01": {
+    "흔들 말": null
+  },
+  "spring_horse_02": {
+    "흔들 말": null
+  },
+  "slide_01": {
+    "미끄럼틀": null
+  },
+  "barrel_oak_01": {
+    "오크통": null
+  },
+  "trafficcon": {
+    "안전뿔": null
+  },
+  "worktable_warp_01": {
+    "커피테이블": null
+  },
+  "worktable_warp_02": {
+    "학생용책상": null
+  },
+  "worktable_warp_03": {
+    "사무용책상": null
+  },
+  "worktable_warp_04": {
+    "서랍이 달린 사무용책상": null
+  },
+  "worktable_warp_05": {
+    "중책 사무용책상": null
+  },
+  "pet_dispenser": {
+    "화물 워프홀": null
+  },
+  "2018_summer_pool_01_w": {
+    "초록수영장": null
+  },
+  "2018_summer_pool_02_w": {
+    "파랑수영장": null
+  },
+  "2018_summer_sunbed_01": {
+    "선베드": null
+  },
+  "2018_summer_tube_02": {
+    "구조대튜브": null
+  },
+  "2018_summer_tube_04": {
+    "어린이튜브": null
+  },
+  "paperbox_season2": {
+    "선박상자": null
+  },
+  "xmas_giftbox_01_2018": {
+    "선물 상자": null
+  },
+  "xmas_giftbox_02_2018": {
+    "견고한 선물 상자": null
+  },
+  "rice_drink_well_event_newyear_2019": {
+    "식혜우물": null
+  },
+  "classroom_desk": {
+    "책상": null
+  },
+  "classroom_chair": {
+    "걸상": null
+  },
+  "classroom_deskset": {
+    "책걸상": null
+  },
+  "classroom_locker_01": {
+    "1반 사물함": null
+  },
+  "classroom_locker_02": {
+    "2반 사물함": null
+  },
+  "classroom_lecturetable": {
+    "교탁": null
+  },
+  "tree_sandalwood_event_quest_2019": {
+    "백단향": null
+  },
+  "grass_reed_event_quest_2019": {
+    "갈대": null
+  },
+  "bush_wildberry_event_quest_2019": {
+    "산딸기덤불": null
+  },
+  "barrel_01_army_fire": {
+    "드럼통 모닥불": null
+  },
+  "barrel_01_army": {
+    "드럼통": null
+  },
+  "box_army": {
+    "보급품 상자": null
+  },
+  "box_02_army": {
+    "큰 군수물자함": null
+  },
+  "box_01_army": {
+    "작은 군수물자함": null
+  },
+  "medicinebox_01_army": {
+    "군용 소형 구급상자": null
+  },
+  "medicinebox_02_army": {
+    "군용 중형 구급상자": null
+  },
+  "chair_01_army": {
+    "접이식 의자": null
+  },
+  "epic_wastebasket_02": {
+    "쓰레기통": null
+  },
+  "epic_cabinet_01": {
+    "사물함": null
+  },
+  "epic_fan_01": {
+    "선풍기": null
+  },
+  "epic_copymachine_01": {
+    "복사기": null
+  },
+  "epic_box_army": {
+    "물건 보관함": null
+  }
+}

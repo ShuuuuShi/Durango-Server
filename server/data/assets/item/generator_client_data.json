@@ -1,0 +1,4754 @@
+{
+  "salt_water": {
+    "name": {
+      "물": null
+    },
+    "icon": "icon_nat_liquid"
+  },
+  "water": {
+    "name": {
+      "물": null
+    },
+    "icon": "icon_nat_liquid"
+  },
+  "water_well": {
+    "name": {
+      "물": null
+    },
+    "icon": "icon_nat_liquid"
+  },
+  "corn_crop": {
+    "name": {
+      "옥수수": null
+    },
+    "icon": "icon_nat_farm_corn"
+  },
+  "corn_seed_crop": {
+    "name": {
+      "옥수수 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "potato_crop": {
+    "name": {
+      "감자": null
+    },
+    "icon": "icon_nat_farm_potato"
+  },
+  "potato_seed_crop": {
+    "name": {
+      "감자 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "onion_seed": {
+    "name": {
+      "야생 양파 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "onion_seed_crop": {
+    "name": {
+      "양파 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "onion": {
+    "name": {
+      "야생 양파 구근": null
+    },
+    "icon": "icon_nat_farm_onion"
+  },
+  "onion_crop": {
+    "name": {
+      "양파 구근": null
+    },
+    "icon": "icon_nat_farm_onion"
+  },
+  "pumpkin_seed_crop": {
+    "name": {
+      "호박 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "pumpkin_crop": {
+    "name": {
+      "호박": null
+    },
+    "icon": "icon_nat_farm_pumpkin"
+  },
+  "flax_seed": {
+    "name": {
+      "야생 아마 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "flax_seed_crop": {
+    "name": {
+      "아마 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "flax_crop": {
+    "name": {
+      "아마 줄기": null
+    },
+    "icon": "icon_nat_fiber_flax"
+  },
+  "wheat_seed_crop": {
+    "name": {
+      "밀 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "wheat_crop": {
+    "name": {
+      "밀": null
+    },
+    "icon": "icon_nat_farm_wheat"
+  },
+  "bean_seed_crop": {
+    "name": {
+      "콩 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "bean_crop": {
+    "name": {
+      "콩": null
+    },
+    "icon": "icon_nat_farm_bean"
+  },
+  "rice_seed_crop": {
+    "name": {
+      "쌀 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "rice_crop": {
+    "name": {
+      "쌀": null
+    },
+    "icon": "icon_nat_farm_rice"
+  },
+  "tomato_seed_crop": {
+    "name": {
+      "토마토 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "tomato_crop": {
+    "name": {
+      "토마토": null
+    },
+    "icon": "icon_nat_farm_tomato"
+  },
+  "carnation_seed": {
+    "name": {
+      "카네이션 종자 ": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "carnation_flower_crop": {
+    "name": {
+      "카네이션 꽃": null
+    },
+    "icon": "icon_nat_farm_carnation"
+  },
+  "dogrose_seed": {
+    "name": {
+      "야생 들장미 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "dogrose_seed_crop": {
+    "name": {
+      "들장미 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "dogrose_flower_crop": {
+    "name": {
+      "들장미": null
+    },
+    "icon": "icon_nat_flower2"
+  },
+  "lavender_seed": {
+    "name": {
+      "야생 라벤더 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "lavender_seed_crop": {
+    "name": {
+      "라벤더 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "lavender_flower_crop": {
+    "name": {
+      "라벤더": null
+    },
+    "icon": "icon_nat_farm_lavender"
+  },
+  "cotton_seed": {
+    "name": {
+      "야생 목화 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "cotton_seed_crop": {
+    "name": {
+      "목화 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "cotton_crop": {
+    "name": {
+      "솜": null
+    },
+    "icon": "icon_nat_cotton"
+  },
+  "sugarcane_seed": {
+    "name": {
+      "야생 사탕수수 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "sugarcane_seed_crop": {
+    "name": {
+      "사탕수수 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "sugarcane_crop": {
+    "name": {
+      "사탕수수": null
+    },
+    "icon": "icon_nat_sugarcane"
+  },
+  "poppy_seed_crop": {
+    "name": {
+      "양귀비 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "poppy_flower_crop": {
+    "name": {
+      "양귀비 꽃": null
+    },
+    "icon": "icon_nat_farm_poppy"
+  },
+  "mushroom_seed": {
+    "name": {
+      "야생 버섯 포자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "mushroom_seed_crop": {
+    "name": {
+      "버섯 포자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "mushroom_crop": {
+    "name": {
+      "버섯": null
+    },
+    "icon": "icon_nat_mushroom"
+  },
+  "fig_seed": {
+    "name": {
+      "야생 무화과 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "fig_seed_crop": {
+    "name": {
+      "무화과 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "fig_fruit_crop": {
+    "name": {
+      "무화과": null
+    },
+    "icon": "icon_nat_fruit_fig"
+  },
+  "coffee_seed": {
+    "name": {
+      "야생 커피 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "coffee_seed_crop": {
+    "name": {
+      "커피 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "coffee_fruit_crop": {
+    "name": {
+      "커피 콩": null
+    },
+    "icon": "icon_nat_fruit_coffee"
+  },
+  "desertagave_seed": {
+    "name": {
+      "야생 사막용설란 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "desertagave_seed_crop": {
+    "name": {
+      "사막용설란 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "desertagave_crop": {
+    "name": {
+      "과육": null
+    },
+    "icon": "icon_nat_desertagave"
+  },
+  "banana_seed": {
+    "name": {
+      "야생 바나나 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "banana_seed_crop": {
+    "name": {
+      "바나나 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "banana_crop": {
+    "name": {
+      "바나나": null
+    },
+    "icon": "icon_nat_fruit_banana"
+  },
+  "stem_crop": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "wood_bough_crop": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "leaf_large_crop": {
+    "name": {
+      "큰 나뭇잎": null
+    },
+    "icon": "icon_nat_leaf_big"
+  },
+  "leaf_needle_crop": {
+    "name": {
+      "침엽수 잎": null
+    },
+    "icon": "icon_nat_leaf_pine"
+  },
+  "leaf_small_crop": {
+    "name": {
+      "나뭇잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "wood_log_crop": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "teatree_seed": {
+    "name": {
+      "야생 차나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "teatree_seed_crop": {
+    "name": {
+      "차나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "tea_leaf_crop": {
+    "name": {
+      "차나무 잎": null
+    },
+    "icon": "icon_nat_leaf_tea"
+  },
+  "violettulip_seed": {
+    "name": {
+      "야생 보라튤립 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "violettulip_seed_crop": {
+    "name": {
+      "보라튤립 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "violettulip_flower_crop": {
+    "name": {
+      "보라튤립 꽃": null
+    },
+    "icon": "icon_nat_flower_violoettulip"
+  },
+  "violettulip_bulb_crop": {
+    "name": {
+      "보라튤립 구근": null
+    },
+    "icon": "icon_nat_farm_tulipbulb"
+  },
+  "chilipepper_seed": {
+    "name": {
+      "야생 고추 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "chilipepper_seed_crop": {
+    "name": {
+      "고추 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "chilipepper_crop": {
+    "name": {
+      "고추": null
+    },
+    "icon": "icon_nat_farm_chilipepper"
+  },
+  "pepper_seed": {
+    "name": {
+      "야생 피망 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "pepper_seed_crop": {
+    "name": {
+      "피망 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "bellpepper_crop": {
+    "name": {
+      "피망": null
+    },
+    "icon": "icon_nat_farm_bellpepper"
+  },
+  "flax_tropical_seed": {
+    "name": {
+      "야생 열대 아마 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "flax_tropical_seed_crop": {
+    "name": {
+      "열대 아마 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "flax_tropical_crop": {
+    "name": {
+      "열대 아마 줄기": null
+    },
+    "icon": "icon_nat_fiber_flax"
+  },
+  "grape_seed_crop": {
+    "name": {
+      "포도 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "grape_crop": {
+    "name": {
+      "포도": null
+    },
+    "icon": "icon_nat_farm_grape"
+  },
+  "rose_misterlincoln_seed_crop": {
+    "name": {
+      "미스터 링컨 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "rose_misterlincoln_crop": {
+    "name": {
+      "미스터 링컨": null
+    },
+    "icon": "icon_nat_rose"
+  },
+  "rose_damask_seed_crop": {
+    "name": {
+      "다마스크 장미 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "rose_damask_crop": {
+    "name": {
+      "다마스크 장미": null
+    },
+    "icon": "icon_nat_rose"
+  },
+  "sunflower_seed_crop": {
+    "name": {
+      "해바라기 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "sunflower_crop": {
+    "name": {
+      "해바라기": null
+    },
+    "icon": "icon_nat_sunflower"
+  },
+  "oleander_seed_crop": {
+    "name": {
+      "협죽도 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "oleander_flower_crop": {
+    "name": {
+      "협죽도 꽃": null
+    },
+    "icon": "icon_nat_oleander"
+  },
+  "mapletree_seed_crop": {
+    "name": {
+      "단풍 나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "mapletree_leaf_crop": {
+    "name": {
+      "단풍잎": null
+    },
+    "icon": "icon_nat_mapletree"
+  },
+  "ginkgotree_seed_crop": {
+    "name": {
+      "은행 나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "ginkgotree_leaf_crop": {
+    "name": {
+      "은행잎": null
+    },
+    "icon": "icon_nat_ginkgotree"
+  },
+  "jpapricot_01_seed_crop": {
+    "name": {
+      "매화나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "jpapricot_02_seed_crop": {
+    "name": {
+      "붉은 매화나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "jpapricot_r_flower_crop": {
+    "name": {
+      "붉은 매화": null
+    },
+    "icon": "icon_nat_jpapricot"
+  },
+  "jpapricot_03_seed_crop": {
+    "name": {
+      "하얀 매화나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "jpapricot_w_flower_crop": {
+    "name": {
+      "하얀 매화": null
+    },
+    "icon": "icon_nat_jpapricot"
+  },
+  "cherryblossom_01_seed": {
+    "name": {
+      "버찌": null
+    },
+    "icon": "icon_nat_fruit_cranberry"
+  },
+  "cherryblossom_01_seed_crop": {
+    "name": {
+      "버찌": null
+    },
+    "icon": "icon_nat_fruit_cranberry"
+  },
+  "cherryblossom_01_flower_crop": {
+    "name": {
+      "벚꽃": null
+    },
+    "icon": "icon_nat_cherryblossom_01"
+  },
+  "cherryblossom_01_bough_crop": {
+    "name": {
+      "벚나무 가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "cherryblossom_01_root_crop": {
+    "name": {
+      "벚나무 뿌리": null
+    },
+    "icon": "icon_nat_durable_root"
+  },
+  "cherryblossom_02_seed_crop": {
+    "name": {
+      "겹벚나무 묘목": null
+    },
+    "icon": "icon_nat_seeding"
+  },
+  "cherryblossom_02_flower_crop": {
+    "name": {
+      "겹벚꽃": null
+    },
+    "icon": "icon_nat_cherryblossom_02"
+  },
+  "cherryblossom_02_bough_crop": {
+    "name": {
+      "겹벚나무 가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "cherryblossom_02_root_crop": {
+    "name": {
+      "겹벚나무 뿌리": null
+    },
+    "icon": "icon_nat_durable_root"
+  },
+  "cake_carnation_01": {
+    "name": {
+      "빨강 카네이션 케이크": null
+    },
+    "icon": "cake_carnation_slice_01"
+  },
+  "cake_carnation_02": {
+    "name": {
+      "분홍 카네이션 케이크": null
+    },
+    "icon": "cake_carnation_slice_01"
+  },
+  "watermelon_01_seed_crop": {
+    "name": {
+      "수박 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "watermelon_01_crop": {
+    "name": {
+      "수박": null
+    },
+    "icon": "icon_nat_farm_watermelon_01"
+  },
+  "wood_log_broadleaved_mapletree_crop": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_ginkgotree_crop": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "watermelon_01_seed": {
+    "name": {
+      "수박 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "watermelon_01": {
+    "name": {
+      "수박": null
+    },
+    "icon": "icon_nat_farm_watermelon_01"
+  },
+  "barley_seed_crop": {
+    "name": {
+      "보리쌀 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "barley_crop": {
+    "name": {
+      "보리쌀": null
+    },
+    "icon": "icon_nat_farm_barley"
+  },
+  "persimmontree_seed_crop": {
+    "name": {
+      "감나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "persimmon_crop": {
+    "name": {
+      "감": null
+    },
+    "icon": "icon_nat_persimmon"
+  },
+  "wood_log_persimmontree_crop": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "cosmos_seed_crop": {
+    "name": {
+      "코스모스 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "cosmos_flower_crop": {
+    "name": {
+      "코스모스 꽃": null
+    },
+    "icon": "icon_nat_cosmos"
+  },
+  "water_well_01": {
+    "name": {
+      "물": null
+    },
+    "icon": "icon_nat_liquid"
+  },
+  "halloween_pumpkin_seed_crop": {
+    "name": {
+      "수상한 호박 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "halloween_pumpkin_crop": {
+    "name": {
+      "수상한 호박": null
+    },
+    "icon": "icon_nat_halloween_pumpkin"
+  },
+  "halloween_spidertree_seed_crop": {
+    "name": {
+      "거미줄 나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "halloween_spiderweb_crop": {
+    "name": {
+      "거미줄": null
+    },
+    "icon": "icon_nat_spider_web"
+  },
+  "wood_log_halloween_spidertree_crop": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "spider_crop": {
+    "name": {
+      "거미": null
+    },
+    "icon": "icon_nat_s02_spider"
+  },
+  "rice_drink_event_newyear_2019_crop": {
+    "name": {
+      "식혜": null
+    },
+    "icon": "cook_rice_drink"
+  },
+  "valentine_cacaotree_seed_crop": {
+    "name": {
+      "카카오 나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "valentine_cacaobean_crop": {
+    "name": {
+      "카카오빈": null
+    },
+    "icon": "icon_nat_farm_cacaobean"
+  },
+  "wood_log_valentine_cacaotree_crop": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "bread_picnic": {
+    "name": {
+      "피크닉 빵": null
+    },
+    "icon": "cook_bread_01"
+  },
+  "white_rose_seed_crop": {
+    "name": {
+      "하얀 장미 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "white_rose_flower_crop": {
+    "name": {
+      "하얀 장미": null
+    },
+    "icon": "icon_nat_rose"
+  },
+  "jasmine_seed_crop": {
+    "name": {
+      "재스민 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "jasmine_flower_crop": {
+    "name": {
+      "재스민": null
+    },
+    "icon": "icon_nat_jasmine"
+  },
+  "taro_crop": {
+    "name": {
+      "타로": null
+    },
+    "icon": "icon_nat_taro"
+  },
+  "taro_seed": {
+    "name": {
+      "야생 타로 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "taro_seed_crop": {
+    "name": {
+      "타로 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "oxalis_yellow_crop": {
+    "name": {
+      "사랑초": null
+    },
+    "icon": "icon_nat_oleander"
+  },
+  "oxalis_red_crop": {
+    "name": {
+      "사랑초": null
+    },
+    "icon": "icon_nat_oleander"
+  },
+  "oxalis_blue_crop": {
+    "name": {
+      "사랑초": null
+    },
+    "icon": "icon_nat_oleander"
+  },
+  "oxalis_seed_yellow": {
+    "name": {
+      "야생 사랑초 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "oxalis_seed_red": {
+    "name": {
+      "야생 사랑초 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "oxalis_seed_blue": {
+    "name": {
+      "야생 사랑초 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "oxalis_seed_yellow_crop": {
+    "name": {
+      "사랑초 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "oxalis_seed_red_crop": {
+    "name": {
+      "사랑초 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "oxalis_seed_blue_crop": {
+    "name": {
+      "사랑초 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "orange_crop": {
+    "name": {
+      "오렌지": null
+    },
+    "icon": "icon_nat_fruit_orange"
+  },
+  "mango_crop": {
+    "name": {
+      "망고": null
+    },
+    "icon": "icon_nat_fruit_mango"
+  },
+  "orange_seed_crop": {
+    "name": {
+      "오렌지 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "mango_seed_crop": {
+    "name": {
+      "망고 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "apple_crop": {
+    "name": {
+      "사과": null
+    },
+    "icon": "icon_nat_fruit_apple"
+  },
+  "feather": {
+    "name": {
+      "깃털": null
+    },
+    "icon": "icon_nat_feather"
+  },
+  "leather_raw_hard": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_compi": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_narrow": {
+    "name": {
+      "가죽 조각": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_wide": {
+    "name": {
+      "넓은 가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_fur": {
+    "name": {
+      "털가죽": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "leather_raw_fur_narrow": {
+    "name": {
+      "털가죽 조각": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "leather_raw_fur_wide": {
+    "name": {
+      "넓은 털가죽": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "leather_raw_armored": {
+    "name": {
+      "갑주": null
+    },
+    "icon": "icon_nat_leather_armored"
+  },
+  "bone_board": {
+    "name": {
+      "골판": null
+    },
+    "icon": "icon_nat_bone_board"
+  },
+  "bone_board_narrow": {
+    "name": {
+      "작은 골판": null
+    },
+    "icon": "icon_nat_bone_board"
+  },
+  "bone_head": {
+    "name": {
+      "머리뼈": null
+    },
+    "icon": "icon_nat_bone_head"
+  },
+  "bone_head_blacken": {
+    "name": {
+      "그을린 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head"
+  },
+  "bone_head_small": {
+    "name": {
+      "작은 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_small"
+  },
+  "bone_head_small_blacken": {
+    "name": {
+      "그을린 작은 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_small"
+  },
+  "bone_head_big": {
+    "name": {
+      "큰 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_horn": {
+    "name": {
+      "뿔": null
+    },
+    "icon": "icon_nat_bone_horn_big"
+  },
+  "bone_horn_blacken": {
+    "name": {
+      "그을린 뿔": null
+    },
+    "icon": "icon_nat_bone_horn_big"
+  },
+  "bone_horn_small": {
+    "name": {
+      "작은 뿔": null
+    },
+    "icon": "icon_nat_bone_horn"
+  },
+  "bone_ivory": {
+    "name": {
+      "상아": null
+    },
+    "icon": "icon_nat_bone_ivory"
+  },
+  "bone_leg": {
+    "name": {
+      "다리뼈": null
+    },
+    "icon": "icon_nat_bone"
+  },
+  "bone_leg_blacken": {
+    "name": {
+      "그을린 다리뼈": null
+    },
+    "icon": "icon_nat_bone"
+  },
+  "bone_leg_carni": {
+    "name": {
+      "다리뼈": null
+    },
+    "icon": "icon_nat_bone"
+  },
+  "bone_leg_herv": {
+    "name": {
+      "다리뼈": null
+    },
+    "icon": "icon_nat_bone"
+  },
+  "bone_leg_thick": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_leg_thick_blacken": {
+    "name": {
+      "그을린 큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_rib": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_rib_blacken": {
+    "name": {
+      "그을린 갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "leather_raw_utah": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "bone_leg_utah": {
+    "name": {
+      "다리뼈": null
+    },
+    "icon": "icon_nat_bone"
+  },
+  "bone_leg_thick_tricera": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_rib_tricera": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_head_tricera": {
+    "name": {
+      "머리뼈": null
+    },
+    "icon": "icon_nat_bone_head"
+  },
+  "leather_raw_dimetrodon": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_fur_megalo": {
+    "name": {
+      "털가죽": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "leather_raw_fur_dire": {
+    "name": {
+      "털가죽": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "leather_raw_fur_dire_snow": {
+    "name": {
+      "털가죽": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "leather_raw_fur_narrow_dire_snow": {
+    "name": {
+      "털가죽 조각": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "bone_leg_para": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_rib_para": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_leg_thick_tuojiango": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_rib_tuojiango": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "leather_raw_fur_sabertooth": {
+    "name": {
+      "털가죽": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "bone_head_sabertooth": {
+    "name": {
+      "머리뼈": null
+    },
+    "icon": "icon_nat_bone_head"
+  },
+  "bone_leg_sabertooth": {
+    "name": {
+      "다리뼈": null
+    },
+    "icon": "icon_nat_bone"
+  },
+  "fat_sabertooth_snow_s01": {
+    "name": {
+      "지방": null
+    },
+    "icon": "icon_nat_fat"
+  },
+  "leather_raw_allo": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_allo_02": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "bone_leg_thick_allo": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_leg_thick_allo_02": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_rib_allo": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_rib_allo_02": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_head_big_allo": {
+    "name": {
+      "큰 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_head_big_allo_02": {
+    "name": {
+      "큰 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "leather_raw_ankylo": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_ankylo_02": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_fur_mammoth": {
+    "name": {
+      "털가죽": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "leather_raw_deino": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_deino_02": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_brachio": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "bone_tooth_brachio": {
+    "name": {
+      "이빨": null
+    },
+    "icon": "icon_nat_bone_brachio"
+  },
+  "leather_raw_tarbo": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_fur_tarbo": {
+    "name": {
+      "털가죽": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "bone_leg_thick_apato": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_rib_apato": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_rib_apato_02": {
+    "name": {
+      "참 갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_rib_apato_03": {
+    "name": {
+      "참 갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_head_big_apato": {
+    "name": {
+      "큰 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_leg_thick_tarbo": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_rib_tarbo": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_head_big_tarbo": {
+    "name": {
+      "큰 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_leg_thick_tarbo_02": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_rib_tarbo_02": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_head_big_tarbo_02": {
+    "name": {
+      "큰 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_rib_carni": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_rib_herv": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_rib_mammal": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_tooth": {
+    "name": {
+      "이빨": null
+    },
+    "icon": "icon_nat_bone_claw"
+  },
+  "bone_tooth_blacken": {
+    "name": {
+      "그을린 이빨": null
+    },
+    "icon": "icon_nat_bone_claw"
+  },
+  "bone_tooth_compi": {
+    "name": {
+      "이빨": null
+    },
+    "icon": "icon_nat_bone_claw"
+  },
+  "fat": {
+    "name": {
+      "지방": null
+    },
+    "icon": "icon_nat_fat"
+  },
+  "meat": {
+    "name": {
+      "고기": null
+    },
+    "icon": "icon_nat_meat"
+  },
+  "meat_stamina": {
+    "name": {
+      "고기": null
+    },
+    "icon": "icon_nat_meat_stamina"
+  },
+  "meat_tutorial": {
+    "name": {
+      "고기": null
+    },
+    "icon": "icon_nat_meat"
+  },
+  "meat_lizard": {
+    "name": {
+      "도마뱀 고기": null
+    },
+    "icon": "icon_nat_meat_lizard"
+  },
+  "meat_belly": {
+    "name": {
+      "삼겹살": null
+    },
+    "icon": "icon_nat_meat_belley"
+  },
+  "meat_breast": {
+    "name": {
+      "가슴살": null
+    },
+    "icon": "icon_nat_meat"
+  },
+  "meat_serloin": {
+    "name": {
+      "등심": null
+    },
+    "icon": "icon_nat_meat_serloin"
+  },
+  "organ": {
+    "name": {
+      "내장": null
+    },
+    "icon": "icon_nat_organ"
+  },
+  "tendon": {
+    "name": {
+      "힘줄": null
+    },
+    "icon": "icon_nat_tendon"
+  },
+  "milk": {
+    "name": {
+      "우유": null
+    },
+    "icon": "icon_nat_liquid"
+  },
+  "poison_sac_lizard": {
+    "name": {
+      "도마뱀독 주머니": null
+    },
+    "icon": "icon_nat_poison_sac"
+  },
+  "poison_sac_bleeding_neverstop": {
+    "name": {
+      "출혈독 주머니": null
+    },
+    "icon": "icon_nat_poison_sac"
+  },
+  "poison_sac_nepenthes": {
+    "name": {
+      "식충식물독 주머니": null
+    },
+    "icon": "icon_nat_poison_sac"
+  },
+  "poison_sac_skunk": {
+    "name": {
+      "독가스액 주머니": null
+    },
+    "icon": "icon_nat_poison_sac"
+  },
+  "clothes_recruiter_common": {
+    "name": {
+      "징병관의 군복": null
+    },
+    "icon": "clothes_soldier_L2"
+  },
+  "clothes_recruiter_lead": {
+    "name": {
+      "징병대장의 군복": null
+    },
+    "icon": "clothes_soldier_L2"
+  },
+  "hat_recruiter_common": {
+    "name": {
+      "징병관의 헬멧": null
+    },
+    "icon": "hat_recruiter"
+  },
+  "hat_recruiter_lead": {
+    "name": {
+      "징병대장의 헬멧": null
+    },
+    "icon": "hat_recruiter"
+  },
+  "recruiting_order": {
+    "name": {
+      "징병 명령서": null
+    },
+    "icon": "mission_recruiting_order"
+  },
+  "recruiting_plan": {
+    "name": {
+      "징병 계획서": null
+    },
+    "icon": "mission_recruiting_plan"
+  },
+  "bone_head_pachy": {
+    "name": {
+      "머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "meat_season2": {
+    "name": {
+      "고기": null
+    },
+    "icon": "icon_nat_meat"
+  },
+  "meat_season2_dead": {
+    "name": {
+      "고기": null
+    },
+    "icon": "icon_nat_meat"
+  },
+  "meat_season2_dead_brachio": {
+    "name": {
+      "고기": null
+    },
+    "icon": "icon_nat_meat"
+  },
+  "leather_raw_season2": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_season2_dead": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_season2_dead_brachio": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "bone_leg_season2": {
+    "name": {
+      "다리뼈": null
+    },
+    "icon": "icon_nat_bone"
+  },
+  "bone_leg_thick_season2": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_head_season2": {
+    "name": {
+      "머리뼈": null
+    },
+    "icon": "icon_nat_bone_head"
+  },
+  "bone_head_small_season2": {
+    "name": {
+      "작은 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_small"
+  },
+  "bone_horn_season2": {
+    "name": {
+      "뿔": null
+    },
+    "icon": "icon_nat_bone_horn_big"
+  },
+  "liver_season2": {
+    "name": {
+      "생 간": null
+    },
+    "icon": "icon_nat_liver_s02"
+  },
+  "fools_torn_paper": {
+    "name": {
+      "찢어진 종이": null
+    },
+    "icon": "fools_torn_paper"
+  },
+  "fools_compi_paper": {
+    "name": {
+      "콤프소그나투스 종이조각": null
+    },
+    "icon": "fools_compi_paper"
+  },
+  "fools_captain_compi_paper": {
+    "name": {
+      "대장 콤프소그나투스 종이조각": null
+    },
+    "icon": "fools_captain_compi_paper"
+  },
+  "fools_phenaco_paper": {
+    "name": {
+      "페나코두스 종이조각": null
+    },
+    "icon": "fools_phenaco_paper"
+  },
+  "fools_captain_phenaco_paper": {
+    "name": {
+      "대장 페나코두스 종이조각": null
+    },
+    "icon": "fools_captain_phenaco_paper"
+  },
+  "shell_horseshoecrab": {
+    "name": {
+      "껍질": null
+    },
+    "icon": "icon_nat_horseshoecrab_shell"
+  },
+  "scale_iguana_sprited": {
+    "name": {
+      "흰줄무늬 비늘": null
+    },
+    "icon": "icon_nat_bone_board_small"
+  },
+  "scale_iguana_scaled": {
+    "name": {
+      "오색무늬 비늘": null
+    },
+    "icon": "icon_nat_bone_board_small"
+  },
+  "meat_tenderloin": {
+    "name": {
+      "안심": null
+    },
+    "icon": "icon_nat_meat_serloin"
+  },
+  "leather_raw_tyrano": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "bone_rib_tyrano": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_head_big_tyrano": {
+    "name": {
+      "큰 머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_leg_thick_tyrano": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_leg_andrew": {
+    "name": {
+      "다리뼈": null
+    },
+    "icon": "icon_nat_bone"
+  },
+  "leather_raw_fur_narrow_volcanic": {
+    "name": {
+      "털가죽 조각": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "leather_raw_utah_black": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "leather_raw_fur_andrew": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather_fur"
+  },
+  "bone_rib_hadro": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_leg_thick_hadro": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "bone_rib_chasmo": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_leg_thick_chasmo": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "leather_raw_chasmo": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "bone_rib_amarga": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_leg_thick_amarga": {
+    "name": {
+      "큰 다리뼈": null
+    },
+    "icon": "bone_leg_big"
+  },
+  "leather_raw_pointed_iguana": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "bone_rib_pointed_iguana": {
+    "name": {
+      "갈비뼈": null
+    },
+    "icon": "icon_nat_bone_rib"
+  },
+  "bone_head_andrew": {
+    "name": {
+      "머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_head_hadro": {
+    "name": {
+      "머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_head_chasmo": {
+    "name": {
+      "머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_head_amarga": {
+    "name": {
+      "머리뼈": null
+    },
+    "icon": "icon_nat_bone_head_big"
+  },
+  "bone_leg_epic": {
+    "name": {
+      "다리뼈": null
+    },
+    "icon": "icon_nat_bone"
+  },
+  "leather_raw_epic": {
+    "name": {
+      "가죽": null
+    },
+    "icon": "icon_nat_leather"
+  },
+  "clay": {
+    "name": {
+      "진흙": null
+    },
+    "icon": "icon_nat_clay"
+  },
+  "clay_season2_week1": {
+    "name": {
+      "진흙": null
+    },
+    "icon": "icon_nat_clay"
+  },
+  "clay_season2_week2": {
+    "name": {
+      "진흙": null
+    },
+    "icon": "icon_nat_clay"
+  },
+  "clay_season2_week3": {
+    "name": {
+      "진흙": null
+    },
+    "icon": "icon_nat_clay"
+  },
+  "clay_c_season2_week1": {
+    "name": {
+      "진흙": null
+    },
+    "icon": "icon_nat_clay"
+  },
+  "clay_c_season2_week2": {
+    "name": {
+      "진흙": null
+    },
+    "icon": "icon_nat_clay"
+  },
+  "clay_c_season2_week3": {
+    "name": {
+      "진흙": null
+    },
+    "icon": "icon_nat_clay"
+  },
+  "clay_ice": {
+    "name": {
+      "얼음 진흙": null
+    },
+    "icon": "icon_nat_clay"
+  },
+  "dump": {
+    "name": {
+      "동물의 변": null
+    },
+    "icon": "icon_nat_poo"
+  },
+  "alum": {
+    "name": {
+      "명반": null
+    },
+    "icon": "icon_nat_mine_alum"
+  },
+  "marble": {
+    "name": {
+      "대리석": null
+    },
+    "icon": "icon_nat_mine_sharp"
+  },
+  "obsidian": {
+    "name": {
+      "흑요석": null
+    },
+    "icon": "icon_nat_mine_sharp"
+  },
+  "ore_copper": {
+    "name": {
+      "구리 광석": null
+    },
+    "icon": "icon_nat_mine_ore"
+  },
+  "ore_iron": {
+    "name": {
+      "철 광석": null
+    },
+    "icon": "icon_nat_mine_ore"
+  },
+  "ore_tin": {
+    "name": {
+      "주석 광석": null
+    },
+    "icon": "icon_nat_mine_ore"
+  },
+  "ore_zinc": {
+    "name": {
+      "아연 광석": null
+    },
+    "icon": "icon_nat_mine_ore"
+  },
+  "ore_gold": {
+    "name": {
+      "금 광석": null
+    },
+    "icon": "icon_nat_mine_ore"
+  },
+  "ore_silver": {
+    "name": {
+      "은 광석": null
+    },
+    "icon": "icon_nat_mine_ore"
+  },
+  "rock": {
+    "name": {
+      "바위": null
+    },
+    "icon": "icon_nat_mine_rock"
+  },
+  "rock_season2": {
+    "name": {
+      "바위": null
+    },
+    "icon": "icon_nat_mine_rock"
+  },
+  "stone": {
+    "name": {
+      "돌멩이": null
+    },
+    "icon": "icon_nat_mine_stone"
+  },
+  "stone_season2": {
+    "name": {
+      "돌멩이": null
+    },
+    "icon": "icon_nat_mine_stone"
+  },
+  "bamboo": {
+    "name": {
+      "대나무 대": null
+    },
+    "icon": "icon_nat_bamboo"
+  },
+  "wood_log": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_normal": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_season2_week1": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_season2_week2": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_season2_week3": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_c_season2_week1": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_c_season2_week2": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_c_season2_week3": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_poison": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_broadleaved": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_broadleaved_poison": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_conifer": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_conifer_thick": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_tropical": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_swamp": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_broadleaved_silkyoak": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_broadleaved_eucalyptus": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_broadleaved_mahogany": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_conifer_oak": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_conifer_pine": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_rubber": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_conifer_whitefir": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_baobab": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_cherryblossom_01": {
+    "name": {
+      "벚나무 통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_cherryblossom_02": {
+    "name": {
+      "겹벚나무 통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "almond": {
+    "name": {
+      "아몬드": null
+    },
+    "icon": "icon_nat_fruit_almond"
+  },
+  "banana": {
+    "name": {
+      "바나나": null
+    },
+    "icon": "icon_nat_fruit_banana"
+  },
+  "cactus": {
+    "name": {
+      "과육": null
+    },
+    "icon": "icon_nat_cactus"
+  },
+  "chinaberry_fruit": {
+    "name": {
+      "열매": null
+    },
+    "icon": "icon_nat_fruit_bead"
+  },
+  "clam": {
+    "name": {
+      "조갯살": null
+    },
+    "icon": "icon_nat_fruit_mango"
+  },
+  "clam_shell": {
+    "name": {
+      "조개 껍질": null
+    },
+    "icon": "icon_nat_clam"
+  },
+  "coconut": {
+    "name": {
+      "코코넛": null
+    },
+    "icon": "icon_nat_fruit_coconut"
+  },
+  "coconut_poison": {
+    "name": {
+      "코코넛": null
+    },
+    "icon": "icon_nat_fruit_coconut"
+  },
+  "coffee": {
+    "name": {
+      "커피 콩": null
+    },
+    "icon": "icon_nat_fruit_coffee"
+  },
+  "cotton": {
+    "name": {
+      "솜": null
+    },
+    "icon": "icon_nat_cotton"
+  },
+  "crab_coconut": {
+    "name": {
+      "코코넛 크랩": null
+    },
+    "icon": "icon_nat_fish_cococrab"
+  },
+  "cranberry": {
+    "name": {
+      "크랜베리": null
+    },
+    "icon": "icon_nat_fruit_cranberry"
+  },
+  "berry_black": {
+    "name": {
+      "블랙베리": null
+    },
+    "icon": "icon_nat_fruit_cranberry"
+  },
+  "date": {
+    "name": {
+      "대추야자": null
+    },
+    "icon": "icon_nat_fruit_date"
+  },
+  "date_khalasah": {
+    "name": {
+      "칼라사 대추야자": null
+    },
+    "icon": "icon_nat_fruit_date_khalasah"
+  },
+  "date_khalasah_poison": {
+    "name": {
+      "칼라사 대추야자": null
+    },
+    "icon": "icon_nat_fruit_date_khalasah"
+  },
+  "egg": {
+    "name": {
+      "알": null
+    },
+    "icon": "icon_nat_egg_dino"
+  },
+  "feathertree_berry": {
+    "name": {
+      "깃털열매": null
+    },
+    "icon": "icon_nat_fruit_privet"
+  },
+  "fig": {
+    "name": {
+      "무화과": null
+    },
+    "icon": "icon_nat_fruit_fig"
+  },
+  "fish": {
+    "name": {
+      "물고기": null
+    },
+    "icon": "icon_nat_fish"
+  },
+  "fish_big": {
+    "name": {
+      "큰 물고기": null
+    },
+    "icon": "icon_nat_fish_big"
+  },
+  "fish_big_harpoon": {
+    "name": {
+      "큰 물고기": null
+    },
+    "icon": "icon_nat_fish_big"
+  },
+  "fish_big_harpoon_season2_week1": {
+    "name": {
+      "큰 물고기": null
+    },
+    "icon": "icon_nat_fish_big"
+  },
+  "fish_big_harpoon_season2_week2": {
+    "name": {
+      "큰 물고기": null
+    },
+    "icon": "icon_nat_fish_big"
+  },
+  "fish_big_harpoon_season2_week3": {
+    "name": {
+      "큰 물고기": null
+    },
+    "icon": "icon_nat_fish_big"
+  },
+  "fish_big_harpoon_eel": {
+    "name": {
+      "민물 장어": null
+    },
+    "icon": "icon_nat_fish_eel"
+  },
+  "fish_big_harpoon_salmon": {
+    "name": {
+      "연어": null
+    },
+    "icon": "icon_nat_fish_big"
+  },
+  "fish_harpoon": {
+    "name": {
+      "물고기": null
+    },
+    "icon": "icon_nat_fish"
+  },
+  "fish_harpoon_season2_week1": {
+    "name": {
+      "물고기": null
+    },
+    "icon": "icon_nat_fish"
+  },
+  "fish_harpoon_season2_week2": {
+    "name": {
+      "물고기": null
+    },
+    "icon": "icon_nat_fish"
+  },
+  "fish_harpoon_season2_week3": {
+    "name": {
+      "물고기": null
+    },
+    "icon": "icon_nat_fish"
+  },
+  "fish_tropical": {
+    "name": {
+      "물고기": null
+    },
+    "icon": "icon_nat_fish"
+  },
+  "fish_tropical_big": {
+    "name": {
+      "물고기": null
+    },
+    "icon": "icon_nat_fish_big"
+  },
+  "fish_tropical_big_harpoon": {
+    "name": {
+      "큰 물고기": null
+    },
+    "icon": "icon_nat_fish_big"
+  },
+  "fish_tropical_harpoon": {
+    "name": {
+      "물고기": null
+    },
+    "icon": "icon_nat_fish"
+  },
+  "hazelnut": {
+    "name": {
+      "헤이즐넛": null
+    },
+    "icon": "icon_nat_fruit_hazelnut"
+  },
+  "flax": {
+    "name": {
+      "아마 줄기": null
+    },
+    "icon": "icon_nat_fiber_flax"
+  },
+  "flax_tropical": {
+    "name": {
+      "열대 아마 줄기": null
+    },
+    "icon": "icon_nat_fiber_flax"
+  },
+  "flax_tropical_poison": {
+    "name": {
+      "열대 아마 줄기": null
+    },
+    "icon": "icon_nat_fiber_flax"
+  },
+  "fruit_sandalwood": {
+    "name": {
+      "백단향": null
+    },
+    "icon": "icon_nat_fruit_privet"
+  },
+  "leaf_large": {
+    "name": {
+      "큰 나뭇잎": null
+    },
+    "icon": "icon_nat_leaf_big"
+  },
+  "leaf_large_season2_week1": {
+    "name": {
+      "큰 나뭇잎": null
+    },
+    "icon": "icon_nat_leaf_big"
+  },
+  "leaf_large_season2_week2": {
+    "name": {
+      "큰 나뭇잎": null
+    },
+    "icon": "icon_nat_leaf_big"
+  },
+  "leaf_large_season2_week3": {
+    "name": {
+      "큰 나뭇잎": null
+    },
+    "icon": "icon_nat_leaf_big"
+  },
+  "leaf_large_poison": {
+    "name": {
+      "큰 나뭇잎": null
+    },
+    "icon": "icon_nat_leaf_big"
+  },
+  "leaf_needle": {
+    "name": {
+      "침엽수 잎": null
+    },
+    "icon": "icon_nat_leaf_pine"
+  },
+  "leaf_small": {
+    "name": {
+      "나뭇잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "leaf_small_season2_week1": {
+    "name": {
+      "나뭇잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "leaf_small_season2_week2": {
+    "name": {
+      "나뭇잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "leaf_small_season2_week3": {
+    "name": {
+      "나뭇잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "leaf_small_c_season2_week1": {
+    "name": {
+      "나뭇잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "leaf_small_c_season2_week2": {
+    "name": {
+      "나뭇잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "leaf_small_c_season2_week3": {
+    "name": {
+      "나뭇잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "leaf_small_poison": {
+    "name": {
+      "나뭇잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "leaf_bud": {
+    "name": {
+      "새순": null
+    },
+    "icon": "icon_nat_herb1"
+  },
+  "mango": {
+    "name": {
+      "망고": null
+    },
+    "icon": "icon_nat_fruit_mango"
+  },
+  "mango_apple": {
+    "name": {
+      "애플 망고": null
+    },
+    "icon": "icon_nat_fruit_mango"
+  },
+  "mango_apple_poison": {
+    "name": {
+      "애플 망고": null
+    },
+    "icon": "icon_nat_fruit_mango"
+  },
+  "olive": {
+    "name": {
+      "올리브": null
+    },
+    "icon": "icon_nat_fruit_olive"
+  },
+  "olive_poison": {
+    "name": {
+      "올리브": null
+    },
+    "icon": "icon_nat_fruit_olive"
+  },
+  "orange": {
+    "name": {
+      "오렌지": null
+    },
+    "icon": "icon_nat_fruit_orange"
+  },
+  "orange_navel": {
+    "name": {
+      "네이블 오렌지": null
+    },
+    "icon": "icon_nat_fruit_orange_navel"
+  },
+  "orange_navel_poison": {
+    "name": {
+      "네이블 오렌지": null
+    },
+    "icon": "icon_nat_fruit_orange_navel"
+  },
+  "pinenut": {
+    "name": {
+      "잣": null
+    },
+    "icon": "icon_nat_fruit_fir"
+  },
+  "reed": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "watermelon_01_stem": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_watermelon_01_stem"
+  },
+  "watermelon_01_rind": {
+    "name": {
+      "껍질": null
+    },
+    "icon": "icon_watermelon_01_rind"
+  },
+  "reed_season2_week1": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "reed_season2_week2": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "reed_season2_week3": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "reed_c_season2_week1": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "reed_c_season2_week2": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "reed_c_season2_week3": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "reed_poison": {
+    "name": {
+      "줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "reed_lake": {
+    "name": {
+      "질긴 줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "reed_lake_poison": {
+    "name": {
+      "질긴 줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "vine": {
+    "name": {
+      "덩굴": null
+    },
+    "icon": "icon_nat_fiber_vine"
+  },
+  "resin": {
+    "name": {
+      "진액": null
+    },
+    "icon": "icon_nat_resin"
+  },
+  "sugarcane": {
+    "name": {
+      "야생 사탕수수": null
+    },
+    "icon": "icon_nat_sugarcane"
+  },
+  "sugarcane_poison": {
+    "name": {
+      "야생 사탕수수": null
+    },
+    "icon": "icon_nat_sugarcane"
+  },
+  "wildberry": {
+    "name": {
+      "산딸기": null
+    },
+    "icon": "icon_nat_fruit_wildberry"
+  },
+  "berry_rasp": {
+    "name": {
+      "가시딸기": null
+    },
+    "icon": "icon_nat_fruit_wildberry"
+  },
+  "berry_wild_winter": {
+    "name": {
+      "겨울산딸기": null
+    },
+    "icon": "icon_nat_berry_wild_winter"
+  },
+  "wood_bough": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_season2_week1": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_season2_week2": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_season2_week3": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_c_season2_week1": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_c_season2_week2": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_c_season2_week3": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_poison": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_broadleaved": {
+    "name": {
+      "활엽수 가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_broadleaved_poison": {
+    "name": {
+      "활엽수 가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_conifer": {
+    "name": {
+      "침엽수 가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_cherryblossom_01": {
+    "name": {
+      "벚나무 가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_cherryblossom_02": {
+    "name": {
+      "겹벚나무 가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bush": {
+    "name": {
+      "덤불": null
+    },
+    "icon": "icon_nat_fiber_straw"
+  },
+  "root": {
+    "name": {
+      "뿌리": null
+    },
+    "icon": "icon_nat_wood_root"
+  },
+  "root_winter": {
+    "name": {
+      "겨울뿌리": null
+    },
+    "icon": "icon_nat_root_winter"
+  },
+  "fish_can": {
+    "name": {
+      "빈 깡통": null
+    },
+    "icon": "warp_can_tuna"
+  },
+  "fish_vynil_harpoon": {
+    "name": {
+      "비닐봉지": null
+    },
+    "icon": "warp_plasticbag_cookie"
+  },
+  "test_chicken": {
+    "name": {
+      "치킨": null
+    },
+    "icon": "warp_chicken"
+  },
+  "roadsign_piece": {
+    "name": {
+      "표지판 날": null
+    },
+    "icon": "roadsign_piece"
+  },
+  "barrier_rock": {
+    "name": {
+      "콘크리트 파편": null
+    },
+    "icon": "icon_nat_mine_rock"
+  },
+  "barrier_rock_big": {
+    "name": {
+      "큰 콘크리트 파편": null
+    },
+    "icon": "icon_nat_mine_rock"
+  },
+  "wiper": {
+    "name": {
+      "와이퍼": null
+    },
+    "icon": "wiper"
+  },
+  "glass_piece": {
+    "name": {
+      "유리 조각": null
+    },
+    "icon": "glass_piece"
+  },
+  "seat_belt": {
+    "name": {
+      "안전벨트": null
+    },
+    "icon": "seat_belt"
+  },
+  "seat_leather_piece": {
+    "name": {
+      "가죽 시트": null
+    },
+    "icon": "seat_leather"
+  },
+  "handle_modern": {
+    "name": {
+      "문 손잡이": null
+    },
+    "icon": "vehicle_handle"
+  },
+  "seat_cotton": {
+    "name": {
+      "시트 솜": null
+    },
+    "icon": "icon_nat_cotton"
+  },
+  "vehicle_piece": {
+    "name": {
+      "금속조각": null
+    },
+    "icon": "vehicle_piece"
+  },
+  "vehicle_chunk": {
+    "name": {
+      "금속덩어리": null
+    },
+    "icon": "category_metal_alloy"
+  },
+  "vehicle_pillar": {
+    "name": {
+      "금속기둥": null
+    },
+    "icon": "vehicle_pillar"
+  },
+  "vehicle_board": {
+    "name": {
+      "자동차 보닛": null
+    },
+    "icon": "vehicle_board"
+  },
+  "board_metal_modern": {
+    "name": {
+      "금속판": null
+    },
+    "icon": "category_process_stick"
+  },
+  "metal_stick_modern": {
+    "name": {
+      "금속막대": null
+    },
+    "icon": "recipe_split_stick"
+  },
+  "rebar": {
+    "name": {
+      "철근": null
+    },
+    "icon": "metal_stick"
+  },
+  "nail_metal_modern": {
+    "name": {
+      "금속못": null
+    },
+    "icon": "nail_metal"
+  },
+  "metal_connection_modern": {
+    "name": {
+      "금속연결뭉치": null
+    },
+    "icon": "material_metal_cluster"
+  },
+  "metal_set_modern": {
+    "name": {
+      "금속부속품": null
+    },
+    "icon": "material_metal_set"
+  },
+  "vehicle_handle_gear": {
+    "name": {
+      "기어 변속기": null
+    },
+    "icon": "handle_vehicle_gear"
+  },
+  "wire_chunk": {
+    "name": {
+      "전선 뭉치": null
+    },
+    "icon": "wire_chunk"
+  },
+  "money_paper": {
+    "name": {
+      "현대의 지폐": null
+    },
+    "icon": "money_paper"
+  },
+  "money_coin": {
+    "name": {
+      "현대의 동전": null
+    },
+    "icon": "money_coin"
+  },
+  "fabric_tough_modern": {
+    "name": {
+      "두꺼운 천": null
+    },
+    "icon": "material_fabric_tough"
+  },
+  "duck_tepe": {
+    "name": {
+      "덕테이프": null
+    },
+    "icon": "warp_ducktape"
+  },
+  "tire": {
+    "name": {
+      "타이어": null
+    },
+    "icon": "warp_tire"
+  },
+  "fabric_plastic": {
+    "name": {
+      "비닐 천": null
+    },
+    "icon": "fabric_waterproof"
+  },
+  "knife_kitchen": {
+    "name": {
+      "꽃 부엌칼": null
+    },
+    "icon": "tool_knife_L01"
+  },
+  "pot_modern": {
+    "name": {
+      "강화 유리냄비": null
+    },
+    "icon": "tool_pot_pottery"
+  },
+  "frypan_modern": {
+    "name": {
+      "테판 프라이팬": null
+    },
+    "icon": "tool_pan"
+  },
+  "glue_set_modern": {
+    "name": {
+      "순간접착제": null
+    },
+    "icon": "warp_material_adhesive"
+  },
+  "book_playboy": {
+    "name": {
+      "맑심": null
+    },
+    "icon": "warp_book"
+  },
+  "bottle_wine": {
+    "name": {
+      "와인병": null
+    },
+    "icon": "warp_bottle_wine"
+  },
+  "cart_part": {
+    "name": {
+      "부서진 카트": null
+    },
+    "icon": "tool_grill_metal"
+  },
+  "marshmallow": {
+    "name": {
+      "마시멜로우": null
+    },
+    "icon": "warp_plasticbag_cookie"
+  },
+  "spam": {
+    "name": {
+      "프레스햄": null
+    },
+    "icon": "warp_can_spam"
+  },
+  "ramen": {
+    "name": {
+      "라면": null
+    },
+    "icon": "warp_plasticbag_ramen"
+  },
+  "coffee_lessbe": {
+    "name": {
+      "라스비": null
+    },
+    "icon": "warp_can_drink"
+  },
+  "bacchus": {
+    "name": {
+      "바커스": null
+    },
+    "icon": "warp_bottle_medicine"
+  },
+  "bluebull": {
+    "name": {
+      "블루불": null
+    },
+    "icon": "warp_can_drink"
+  },
+  "decolorizer_chlorine": {
+    "name": {
+      "락스": null
+    },
+    "icon": "medicine_decolorizer_chlorine"
+  },
+  "teddy_bear": {
+    "name": {
+      "곰인형": null
+    },
+    "icon": "warp_fun_doll"
+  },
+  "digitalwatch": {
+    "name": {
+      "스마트와치": null
+    },
+    "icon": "warp_elec_digitalwatch"
+  },
+  "lock": {
+    "name": {
+      "자물쇠": null
+    },
+    "icon": "warp_lock"
+  },
+  "hat_sunglasses": {
+    "name": {
+      "선글라스": null
+    },
+    "icon": "hat_sunglass"
+  },
+  "clothes_tube": {
+    "name": {
+      "튜브 수영복": null
+    },
+    "icon": "inner_tube"
+  },
+  "clothes_northernface": {
+    "name": {
+      "노던페이스 점퍼": null
+    },
+    "icon": "clothes_winter_collection"
+  },
+  "curtain": {
+    "name": {
+      "커튼": null
+    },
+    "icon": "material_fabric_tough_03"
+  },
+  "saw_metal_modern": {
+    "name": {
+      "현대 톱": null
+    },
+    "icon": "weapon_saw_metal"
+  },
+  "shovel_metal_modern": {
+    "name": {
+      "현대 삽": null
+    },
+    "icon": "weapon_shovel_metal"
+  },
+  "meat_modern": {
+    "name": {
+      "마트 생고기": null
+    },
+    "icon": "icon_nat_meat"
+  },
+  "salmon_modern": {
+    "name": {
+      "연어 통조림": null
+    },
+    "icon": "warp_can_tuna"
+  },
+  "skewer_modern": {
+    "name": {
+      "마트 꼬치구이": null
+    },
+    "icon": "cook_skewer"
+  },
+  "sugar_modern": {
+    "name": {
+      "마트 설탕": null
+    },
+    "icon": "icon_nat_salt"
+  },
+  "salt_modern": {
+    "name": {
+      "마트 소금": null
+    },
+    "icon": "icon_nat_salt"
+  },
+  "bread_modern": {
+    "name": {
+      "마트 빵": null
+    },
+    "icon": "cook_bread_01"
+  },
+  "oil_modern": {
+    "name": {
+      "식용유": null
+    },
+    "icon": "medicine_decolorizer_chlorine"
+  },
+  "juice_modern": {
+    "name": {
+      "마트 야채 주스": null
+    },
+    "icon": "cook_juice"
+  },
+  "sausage_modern": {
+    "name": {
+      "마트 소시지": null
+    },
+    "icon": "cook_sausage_01"
+  },
+  "cake_modern": {
+    "name": {
+      "마트 케이크": null
+    },
+    "icon": "cook_cake_slice_01"
+  },
+  "bean_modern": {
+    "name": {
+      "마트 콩": null
+    },
+    "icon": "warp_can_tuna"
+  },
+  "pizza_modern": {
+    "name": {
+      "마트 피자": null
+    },
+    "icon": "cook_pizza_slice_01"
+  },
+  "cheese_modern": {
+    "name": {
+      "마트 치즈": null
+    },
+    "icon": "cook_cheese_01"
+  },
+  "bellpepper": {
+    "name": {
+      "마트 피망": null
+    },
+    "icon": "icon_nat_farm_bellpepper"
+  },
+  "chicken_modern": {
+    "name": {
+      "마트 치킨": null
+    },
+    "icon": "cook_chicken_01"
+  },
+  "hamberger_modern": {
+    "name": {
+      "마트 햄버거": null
+    },
+    "icon": "cook_hamberger_01"
+  },
+  "medicine_albochil": {
+    "name": {
+      "알보팔": null
+    },
+    "icon": "medicine"
+  },
+  "medicine_modern_01": {
+    "name": {
+      "진통제": null
+    },
+    "icon": "medicine"
+  },
+  "stair_piece": {
+    "name": {
+      "깨어진 돌 계단": null
+    },
+    "icon": "stair_piece"
+  },
+  "stair_chunk": {
+    "name": {
+      "큼직한 돌 계단": null
+    },
+    "icon": "stair_chunk"
+  },
+  "jewel_ruby": {
+    "name": {
+      "루비": null
+    },
+    "icon": "icon_nat_mine_jewel"
+  },
+  "jewel_sapphire": {
+    "name": {
+      "사파이어": null
+    },
+    "icon": "icon_nat_mine_jewel"
+  },
+  "jewel_emerald": {
+    "name": {
+      "에메랄드": null
+    },
+    "icon": "icon_nat_mine_jewel"
+  },
+  "water_mangrove": {
+    "name": {
+      "물": null
+    },
+    "icon": "icon_nat_liquid"
+  },
+  "water_mangrove_season2": {
+    "name": {
+      "물": null
+    },
+    "icon": "icon_nat_liquid"
+  },
+  "respiratory_root": {
+    "name": {
+      "호흡뿌리": null
+    },
+    "icon": "icon_nat_respiratory_root"
+  },
+  "respiratory_root_season2_week1": {
+    "name": {
+      "호흡뿌리": null
+    },
+    "icon": "icon_nat_respiratory_root"
+  },
+  "respiratory_root_season2_week2": {
+    "name": {
+      "호흡뿌리": null
+    },
+    "icon": "icon_nat_respiratory_root"
+  },
+  "respiratory_root_season2_week3": {
+    "name": {
+      "호흡뿌리": null
+    },
+    "icon": "icon_nat_respiratory_root"
+  },
+  "lotus_leaf": {
+    "name": {
+      "연잎": null
+    },
+    "icon": "icon_nat_lotus_leaf"
+  },
+  "lotus_leaf_season2_week1": {
+    "name": {
+      "연잎": null
+    },
+    "icon": "icon_nat_lotus_leaf"
+  },
+  "lotus_leaf_season2_week2": {
+    "name": {
+      "연잎": null
+    },
+    "icon": "icon_nat_lotus_leaf"
+  },
+  "lotus_leaf_season2_week3": {
+    "name": {
+      "연잎": null
+    },
+    "icon": "icon_nat_lotus_leaf"
+  },
+  "lotus_leaf_c_season2_week1": {
+    "name": {
+      "연잎": null
+    },
+    "icon": "icon_nat_lotus_leaf"
+  },
+  "lotus_leaf_c_season2_week2": {
+    "name": {
+      "연잎": null
+    },
+    "icon": "icon_nat_lotus_leaf"
+  },
+  "lotus_leaf_c_season2_week3": {
+    "name": {
+      "연잎": null
+    },
+    "icon": "icon_nat_lotus_leaf"
+  },
+  "lotus_root": {
+    "name": {
+      "연근": null
+    },
+    "icon": "icon_nat_lotus_root"
+  },
+  "lotus_root_c_season2_week1": {
+    "name": {
+      "연근": null
+    },
+    "icon": "icon_nat_lotus_root"
+  },
+  "lotus_root_c_season2_week2": {
+    "name": {
+      "연근": null
+    },
+    "icon": "icon_nat_lotus_root"
+  },
+  "lotus_root_c_season2_week3": {
+    "name": {
+      "연근": null
+    },
+    "icon": "icon_nat_lotus_root"
+  },
+  "cattail_reed": {
+    "name": {
+      "부들 줄기": null
+    },
+    "icon": "icon_nat_cattail_reed"
+  },
+  "cattail_reed_season2_week1": {
+    "name": {
+      "부들 줄기": null
+    },
+    "icon": "icon_nat_cattail_reed"
+  },
+  "cattail_reed_season2_week2": {
+    "name": {
+      "부들 줄기": null
+    },
+    "icon": "icon_nat_cattail_reed"
+  },
+  "cattail_reed_season2_week3": {
+    "name": {
+      "부들 줄기": null
+    },
+    "icon": "icon_nat_cattail_reed"
+  },
+  "cattail_reed_c_season2_week1": {
+    "name": {
+      "부들 줄기": null
+    },
+    "icon": "icon_nat_cattail_reed"
+  },
+  "cattail_reed_c_season2_week2": {
+    "name": {
+      "부들 줄기": null
+    },
+    "icon": "icon_nat_cattail_reed"
+  },
+  "cattail_reed_c_season2_week3": {
+    "name": {
+      "부들 줄기": null
+    },
+    "icon": "icon_nat_cattail_reed"
+  },
+  "rubber_solution": {
+    "name": {
+      "고무액": null
+    },
+    "icon": "icon_nat_rubber"
+  },
+  "rubber_solution_season2_week1": {
+    "name": {
+      "고무액": null
+    },
+    "icon": "icon_nat_rubber"
+  },
+  "rubber_solution_season2_week2": {
+    "name": {
+      "고무액": null
+    },
+    "icon": "icon_nat_rubber"
+  },
+  "rubber_solution_season2_week3": {
+    "name": {
+      "고무액": null
+    },
+    "icon": "icon_nat_rubber"
+  },
+  "rubber_solution_c_season2_week1": {
+    "name": {
+      "고무액": null
+    },
+    "icon": "icon_nat_rubber"
+  },
+  "rubber_solution_c_season2_week2": {
+    "name": {
+      "고무액": null
+    },
+    "icon": "icon_nat_rubber"
+  },
+  "rubber_solution_c_season2_week3": {
+    "name": {
+      "고무액": null
+    },
+    "icon": "icon_nat_rubber"
+  },
+  "durable_root": {
+    "name": {
+      "단단한 뿌리": null
+    },
+    "icon": "icon_nat_durable_root"
+  },
+  "durable_root_season2_week1": {
+    "name": {
+      "단단한 뿌리": null
+    },
+    "icon": "icon_nat_durable_root"
+  },
+  "durable_root_season2_week2": {
+    "name": {
+      "단단한 뿌리": null
+    },
+    "icon": "icon_nat_durable_root"
+  },
+  "durable_root_season2_week3": {
+    "name": {
+      "단단한 뿌리": null
+    },
+    "icon": "icon_nat_durable_root"
+  },
+  "durable_root_c_season2_week1": {
+    "name": {
+      "단단한 뿌리": null
+    },
+    "icon": "icon_nat_durable_root"
+  },
+  "durable_root_c_season2_week2": {
+    "name": {
+      "단단한 뿌리": null
+    },
+    "icon": "icon_nat_durable_root"
+  },
+  "durable_root_c_season2_week3": {
+    "name": {
+      "단단한 뿌리": null
+    },
+    "icon": "icon_nat_durable_root"
+  },
+  "weak_bough": {
+    "name": {
+      "무른 나뭇가지": null
+    },
+    "icon": "icon_nat_weak_bough"
+  },
+  "weak_bough_c_season2_week1": {
+    "name": {
+      "무른 나뭇가지": null
+    },
+    "icon": "icon_nat_weak_bough"
+  },
+  "weak_bough_c_season2_week2": {
+    "name": {
+      "무른 나뭇가지": null
+    },
+    "icon": "icon_nat_weak_bough"
+  },
+  "weak_bough_c_season2_week3": {
+    "name": {
+      "무른 나뭇가지": null
+    },
+    "icon": "icon_nat_weak_bough"
+  },
+  "strong_bough": {
+    "name": {
+      "단단한 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "strong_bough_season2_week1": {
+    "name": {
+      "단단한 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "strong_bough_season2_week2": {
+    "name": {
+      "단단한 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "strong_bough_season2_week3": {
+    "name": {
+      "단단한 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "strong_bough_c_season2_week1": {
+    "name": {
+      "단단한 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "strong_bough_c_season2_week2": {
+    "name": {
+      "단단한 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "strong_bough_c_season2_week3": {
+    "name": {
+      "단단한 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "weak_pillar": {
+    "name": {
+      "무른 통나무": null
+    },
+    "icon": "icon_nat_weak_pillar"
+  },
+  "weak_pillar_season2_week1": {
+    "name": {
+      "무른 통나무": null
+    },
+    "icon": "icon_nat_weak_pillar"
+  },
+  "weak_pillar_season2_week2": {
+    "name": {
+      "무른 통나무": null
+    },
+    "icon": "icon_nat_weak_pillar"
+  },
+  "weak_pillar_season2_week3": {
+    "name": {
+      "무른 통나무": null
+    },
+    "icon": "icon_nat_weak_pillar"
+  },
+  "weak_pillar_c_season2_week1": {
+    "name": {
+      "무른 통나무": null
+    },
+    "icon": "icon_nat_weak_pillar"
+  },
+  "weak_pillar_c_season2_week2": {
+    "name": {
+      "무른 통나무": null
+    },
+    "icon": "icon_nat_weak_pillar"
+  },
+  "weak_pillar_c_season2_week3": {
+    "name": {
+      "무른 통나무": null
+    },
+    "icon": "icon_nat_weak_pillar"
+  },
+  "vine_thick": {
+    "name": {
+      "두꺼운 덩굴": null
+    },
+    "icon": "icon_nat_vine_thick"
+  },
+  "vine_thick_season2_week1": {
+    "name": {
+      "두꺼운 덩굴": null
+    },
+    "icon": "icon_nat_vine_thick"
+  },
+  "vine_thick_season2_week2": {
+    "name": {
+      "두꺼운 덩굴": null
+    },
+    "icon": "icon_nat_vine_thick"
+  },
+  "vine_thick_season2_week3": {
+    "name": {
+      "두꺼운 덩굴": null
+    },
+    "icon": "icon_nat_vine_thick"
+  },
+  "vine_thick_c_season2_week1": {
+    "name": {
+      "두꺼운 덩굴": null
+    },
+    "icon": "icon_nat_vine_thick"
+  },
+  "vine_thick_c_season2_week2": {
+    "name": {
+      "두꺼운 덩굴": null
+    },
+    "icon": "icon_nat_vine_thick"
+  },
+  "vine_thick_c_season2_week3": {
+    "name": {
+      "두꺼운 덩굴": null
+    },
+    "icon": "icon_nat_vine_thick"
+  },
+  "insect_eating_lantern_leaf": {
+    "name": {
+      "호롱 잎": null
+    },
+    "icon": "icon_nat_insect_leaf"
+  },
+  "insect_eating_lantern_resin": {
+    "name": {
+      "끈끈액": null
+    },
+    "icon": "icon_nat_resin"
+  },
+  "worm": {
+    "name": {
+      "애벌레": null
+    },
+    "icon": "icon_nat_larva"
+  },
+  "worm_c_season2_week1": {
+    "name": {
+      "애벌레": null
+    },
+    "icon": "icon_nat_larva"
+  },
+  "worm_c_season2_week2": {
+    "name": {
+      "애벌레": null
+    },
+    "icon": "icon_nat_larva"
+  },
+  "worm_c_season2_week3": {
+    "name": {
+      "애벌레": null
+    },
+    "icon": "icon_nat_larva"
+  },
+  "worm_silk": {
+    "name": {
+      "누에": null
+    },
+    "icon": "icon_nat_larva"
+  },
+  "snails": {
+    "name": {
+      "달팽이": null
+    },
+    "icon": "icon_nat_snails"
+  },
+  "snails_season2_week1": {
+    "name": {
+      "달팽이": null
+    },
+    "icon": "icon_nat_snails"
+  },
+  "snails_season2_week2": {
+    "name": {
+      "달팽이": null
+    },
+    "icon": "icon_nat_snails"
+  },
+  "snails_season2_week3": {
+    "name": {
+      "달팽이": null
+    },
+    "icon": "icon_nat_snails"
+  },
+  "snails_c_season2_week1": {
+    "name": {
+      "달팽이": null
+    },
+    "icon": "icon_nat_snails"
+  },
+  "snails_c_season2_week2": {
+    "name": {
+      "달팽이": null
+    },
+    "icon": "icon_nat_snails"
+  },
+  "snails_c_season2_week3": {
+    "name": {
+      "달팽이": null
+    },
+    "icon": "icon_nat_snails"
+  },
+  "slug_season2_week1": {
+    "name": {
+      "민달팽이": null
+    },
+    "icon": "icon_nat_s02_slug"
+  },
+  "slug_season2_week2": {
+    "name": {
+      "민달팽이": null
+    },
+    "icon": "icon_nat_s02_slug"
+  },
+  "slug_season2_week3": {
+    "name": {
+      "민달팽이": null
+    },
+    "icon": "icon_nat_s02_slug"
+  },
+  "slug_c_season2_week1": {
+    "name": {
+      "민달팽이": null
+    },
+    "icon": "icon_nat_s02_slug"
+  },
+  "slug_c_season2_week2": {
+    "name": {
+      "민달팽이": null
+    },
+    "icon": "icon_nat_s02_slug"
+  },
+  "slug_c_season2_week3": {
+    "name": {
+      "민달팽이": null
+    },
+    "icon": "icon_nat_s02_slug"
+  },
+  "aphids": {
+    "name": {
+      "진딧물": null
+    },
+    "icon": "icon_nat_aphids"
+  },
+  "aphids_season2_week1": {
+    "name": {
+      "진딧물": null
+    },
+    "icon": "icon_nat_aphids"
+  },
+  "aphids_season2_week2": {
+    "name": {
+      "진딧물": null
+    },
+    "icon": "icon_nat_aphids"
+  },
+  "aphids_season2_week3": {
+    "name": {
+      "진딧물": null
+    },
+    "icon": "icon_nat_aphids"
+  },
+  "aphids_c_season2_week1": {
+    "name": {
+      "진딧물": null
+    },
+    "icon": "icon_nat_aphids"
+  },
+  "aphids_c_season2_week2": {
+    "name": {
+      "진딧물": null
+    },
+    "icon": "icon_nat_aphids"
+  },
+  "aphids_c_season2_week3": {
+    "name": {
+      "진딧물": null
+    },
+    "icon": "icon_nat_aphids"
+  },
+  "spider_season2_week1": {
+    "name": {
+      "거미": null
+    },
+    "icon": "icon_nat_s02_spider"
+  },
+  "spider_season2_week2": {
+    "name": {
+      "거미": null
+    },
+    "icon": "icon_nat_s02_spider"
+  },
+  "spider_season2_week3": {
+    "name": {
+      "거미": null
+    },
+    "icon": "icon_nat_s02_spider"
+  },
+  "spider_c_season2_week1": {
+    "name": {
+      "거미": null
+    },
+    "icon": "icon_nat_s02_spider"
+  },
+  "spider_c_season2_week2": {
+    "name": {
+      "거미": null
+    },
+    "icon": "icon_nat_s02_spider"
+  },
+  "spider_c_season2_week3": {
+    "name": {
+      "거미": null
+    },
+    "icon": "icon_nat_s02_spider"
+  },
+  "termites": {
+    "name": {
+      "흰개미": null
+    },
+    "icon": "icon_nat_termites"
+  },
+  "termites_season2_week1": {
+    "name": {
+      "흰개미": null
+    },
+    "icon": "icon_nat_termites"
+  },
+  "termites_season2_week2": {
+    "name": {
+      "흰개미": null
+    },
+    "icon": "icon_nat_termites"
+  },
+  "termites_season2_week3": {
+    "name": {
+      "흰개미": null
+    },
+    "icon": "icon_nat_termites"
+  },
+  "termites_c_season2_week1": {
+    "name": {
+      "흰개미": null
+    },
+    "icon": "icon_nat_termites"
+  },
+  "termites_c_season2_week2": {
+    "name": {
+      "흰개미": null
+    },
+    "icon": "icon_nat_termites"
+  },
+  "termites_c_season2_week3": {
+    "name": {
+      "흰개미": null
+    },
+    "icon": "icon_nat_termites"
+  },
+  "centipede_season2_week1": {
+    "name": {
+      "지네": null
+    },
+    "icon": "icon_nat_s02_centipede"
+  },
+  "centipede_season2_week2": {
+    "name": {
+      "지네": null
+    },
+    "icon": "icon_nat_s02_centipede"
+  },
+  "centipede_season2_week3": {
+    "name": {
+      "지네": null
+    },
+    "icon": "icon_nat_s02_centipede"
+  },
+  "centipede_c_season2_week1": {
+    "name": {
+      "지네": null
+    },
+    "icon": "icon_nat_s02_centipede"
+  },
+  "centipede_c_season2_week2": {
+    "name": {
+      "지네": null
+    },
+    "icon": "icon_nat_s02_centipede"
+  },
+  "centipede_c_season2_week3": {
+    "name": {
+      "지네": null
+    },
+    "icon": "icon_nat_s02_centipede"
+  },
+  "wood_bough_long": {
+    "name": {
+      "긴 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_long_season2_week1": {
+    "name": {
+      "긴 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_long_season2_week2": {
+    "name": {
+      "긴 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_long_season2_week3": {
+    "name": {
+      "긴 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_long_c_season2_week1": {
+    "name": {
+      "긴 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_long_c_season2_week2": {
+    "name": {
+      "긴 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_long_c_season2_week3": {
+    "name": {
+      "긴 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "tea_leaf": {
+    "name": {
+      "차나무 잎": null
+    },
+    "icon": "icon_nat_leaf_tea"
+  },
+  "violettulip_bulb": {
+    "name": {
+      "보라튤립 구근": null
+    },
+    "icon": "icon_nat_farm_tulipbulb"
+  },
+  "ice": {
+    "name": {
+      "얼음": null
+    },
+    "icon": "icon_nat_ice"
+  },
+  "leaf_algae_salicornia": {
+    "name": {
+      "퉁퉁마디 잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "stem_algae_salicornia": {
+    "name": {
+      "퉁퉁마디 줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "stem_ocotillo": {
+    "name": {
+      "오코틸로 줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "leaf_ocotillo": {
+    "name": {
+      "오코틸로 잎": null
+    },
+    "icon": "icon_nat_leaf"
+  },
+  "pearl": {
+    "name": {
+      "진주": null
+    },
+    "icon": "icon_nat_pearl"
+  },
+  "wiregrass_flower": {
+    "name": {
+      "바랭이꽃": null
+    },
+    "icon": "icon_nat_flower2"
+  },
+  "dogrose_flower": {
+    "name": {
+      "야생 장미": null
+    },
+    "icon": "icon_nat_flower2"
+  },
+  "flower_lilac": {
+    "name": {
+      "수수꽃": null
+    },
+    "icon": "icon_nat_flower2"
+  },
+  "mushroom": {
+    "name": {
+      "버섯": null
+    },
+    "icon": "icon_nat_mushroom"
+  },
+  "mushroom_poison": {
+    "name": {
+      "버섯": null
+    },
+    "icon": "icon_nat_mushroom"
+  },
+  "lotus_flower": {
+    "name": {
+      "연꽃": null
+    },
+    "icon": "icon_nat_lotus_flower"
+  },
+  "lotus_flower_c_season2_week1": {
+    "name": {
+      "연꽃": null
+    },
+    "icon": "icon_nat_lotus_flower"
+  },
+  "lotus_flower_c_season2_week2": {
+    "name": {
+      "연꽃": null
+    },
+    "icon": "icon_nat_lotus_flower"
+  },
+  "lotus_flower_c_season2_week3": {
+    "name": {
+      "연꽃": null
+    },
+    "icon": "icon_nat_lotus_flower"
+  },
+  "birdsofparadise": {
+    "name": {
+      "극락초": null
+    },
+    "icon": "icon_nat_flower_birdofparadise"
+  },
+  "root_birdsofparadise": {
+    "name": {
+      "극락초 뿌리": null
+    },
+    "icon": "icon_nat_wood_root"
+  },
+  "flamingsword": {
+    "name": {
+      "화검초": null
+    },
+    "icon": "icon_nat_flower_flamingsword"
+  },
+  "flamingsword_poison": {
+    "name": {
+      "화검초": null
+    },
+    "icon": "icon_nat_flower_flamingsword"
+  },
+  "guzmania": {
+    "name": {
+      "구즈매니아": null
+    },
+    "icon": "icon_nat_flower_guzmania"
+  },
+  "rafflesia": {
+    "name": {
+      "라플레시아": null
+    },
+    "icon": "icon_nat_flower_rafflesia"
+  },
+  "cattail_flower": {
+    "name": {
+      "부들 꽃": null
+    },
+    "icon": "icon_nat_cattail_flower"
+  },
+  "cattail_flower_season2_week1": {
+    "name": {
+      "부들 꽃": null
+    },
+    "icon": "icon_nat_cattail_flower"
+  },
+  "cattail_flower_season2_week2": {
+    "name": {
+      "부들 꽃": null
+    },
+    "icon": "icon_nat_cattail_flower"
+  },
+  "cattail_flower_season2_week3": {
+    "name": {
+      "부들 꽃": null
+    },
+    "icon": "icon_nat_cattail_flower"
+  },
+  "cattail_flower_c_season2_week1": {
+    "name": {
+      "부들 꽃": null
+    },
+    "icon": "icon_nat_cattail_flower"
+  },
+  "cattail_flower_c_season2_week2": {
+    "name": {
+      "부들 꽃": null
+    },
+    "icon": "icon_nat_cattail_flower"
+  },
+  "cattail_flower_c_season2_week3": {
+    "name": {
+      "부들 꽃": null
+    },
+    "icon": "icon_nat_cattail_flower"
+  },
+  "moss": {
+    "name": {
+      "이끼": null
+    },
+    "icon": "icon_nat_moss"
+  },
+  "moss_season2_week1": {
+    "name": {
+      "이끼": null
+    },
+    "icon": "icon_nat_moss"
+  },
+  "moss_season2_week2": {
+    "name": {
+      "이끼": null
+    },
+    "icon": "icon_nat_moss"
+  },
+  "moss_season2_week3": {
+    "name": {
+      "이끼": null
+    },
+    "icon": "icon_nat_moss"
+  },
+  "moss_c_season2_week1": {
+    "name": {
+      "이끼": null
+    },
+    "icon": "icon_nat_moss"
+  },
+  "moss_c_season2_week2": {
+    "name": {
+      "이끼": null
+    },
+    "icon": "icon_nat_moss"
+  },
+  "moss_c_season2_week3": {
+    "name": {
+      "이끼": null
+    },
+    "icon": "icon_nat_moss"
+  },
+  "violettulip_flower": {
+    "name": {
+      "보라튤립 꽃": null
+    },
+    "icon": "icon_nat_flower_violoettulip"
+  },
+  "lavender_flower": {
+    "name": {
+      "라벤더": null
+    },
+    "icon": "icon_nat_farm_lavender"
+  },
+  "zebra": {
+    "name": {
+      "아펠란드라": null
+    },
+    "icon": "icon_nat_flower_zebra"
+  },
+  "flower_joshua": {
+    "name": {
+      "조슈아 꽃": null
+    },
+    "icon": "icon_nat_flower2"
+  },
+  "flower_desertagave": {
+    "name": {
+      "용설란 꽃": null
+    },
+    "icon": "icon_nat_flower_heliconia"
+  },
+  "heliconia": {
+    "name": {
+      "헬리코니아": null
+    },
+    "icon": "icon_nat_flower_heliconia"
+  },
+  "cherryblossom_01_flower": {
+    "name": {
+      "벚꽃": null
+    },
+    "icon": "icon_nat_cherryblossom_01"
+  },
+  "cherryblossom_02_flower": {
+    "name": {
+      "겹벚꽃": null
+    },
+    "icon": "icon_nat_cherryblossom_02"
+  },
+  "desertagave_flesh": {
+    "name": {
+      "과육": null
+    },
+    "icon": "icon_nat_desertagave"
+  },
+  "beehive": {
+    "name": {
+      "벌집": null
+    },
+    "icon": "icon_nat_hive"
+  },
+  "bee": {
+    "name": {
+      "벌": null
+    },
+    "icon": "icon_nat_bee"
+  },
+  "stem_bush": {
+    "name": {
+      "덤불 줄기": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "faction_material_season2_week1": {
+    "name": {
+      "알파 스톤": null
+    },
+    "icon": "icon_s02_alpha"
+  },
+  "faction_material_season2_week2": {
+    "name": {
+      "브라보 스톤": null
+    },
+    "icon": "icon_s02_bravo"
+  },
+  "faction_material_season2_week3": {
+    "name": {
+      "찰리 스톤": null
+    },
+    "icon": "icon_s02_charlie"
+  },
+  "lava": {
+    "name": {
+      "용암": null
+    },
+    "icon": "icon_nat_lava"
+  },
+  "sulphur": {
+    "name": {
+      "유황": null
+    },
+    "icon": "icon_nat_mine_alum"
+  },
+  "ore_iron_black": {
+    "name": {
+      "검은 철광석": null
+    },
+    "icon": "icon_nat_mine_ore"
+  },
+  "basalt": {
+    "name": {
+      "현무암": null
+    },
+    "icon": "icon_nat_basalt"
+  },
+  "granite": {
+    "name": {
+      "화강암": null
+    },
+    "icon": "icon_nat_mine_gold"
+  },
+  "clay_gray": {
+    "name": {
+      "회색 진흙": null
+    },
+    "icon": "icon_nat_clay"
+  },
+  "lava_dried": {
+    "name": {
+      "굳은 용암": null
+    },
+    "icon": "icon_nat_solidified_lava"
+  },
+  "lake_spa_water": {
+    "name": {
+      "온천수": null
+    },
+    "icon": "icon_nat_liquid"
+  },
+  "fish_harpoon_lake_spa": {
+    "name": {
+      "온천 물고기": null
+    },
+    "icon": "icon_nat_fish_big"
+  },
+  "wood_log_ash": {
+    "name": {
+      "잿나무 통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_bough_ash": {
+    "name": {
+      "잿나무 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "wood_bough_nail": {
+    "name": {
+      "뾰족한 나뭇가지": null
+    },
+    "icon": "icon_nat_wood_nail"
+  },
+  "jewel_ore_ruby": {
+    "name": {
+      "루비": null
+    },
+    "icon": "icon_nat_ore_jewel"
+  },
+  "jewel_ore_sapphire": {
+    "name": {
+      "사파이어": null
+    },
+    "icon": "icon_nat_ore_jewel"
+  },
+  "jewel_ore_emerald": {
+    "name": {
+      "에메랄드": null
+    },
+    "icon": "icon_nat_ore_jewel"
+  },
+  "jewel_ore_amethyst": {
+    "name": {
+      "자수정": null
+    },
+    "icon": "icon_nat_ore_jewel"
+  },
+  "jewel_ore_diamond": {
+    "name": {
+      "다이아몬드": null
+    },
+    "icon": "icon_nat_ore_jewel"
+  },
+  "jewel_ore_topaz": {
+    "name": {
+      "토파즈": null
+    },
+    "icon": "icon_nat_ore_jewel"
+  },
+  "flower_oxalis_yellow": {
+    "name": {
+      "사랑초": null
+    },
+    "icon": "icon_nat_oleander"
+  },
+  "flower_oxalis_red": {
+    "name": {
+      "사랑초": null
+    },
+    "icon": "icon_nat_oleander"
+  },
+  "flower_oxalis_blue": {
+    "name": {
+      "사랑초": null
+    },
+    "icon": "icon_nat_oleander"
+  },
+  "taro": {
+    "name": {
+      "타로": null
+    },
+    "icon": "icon_nat_taro"
+  },
+  "bush_blacken": {
+    "name": {
+      "그을린 덤불": null
+    },
+    "icon": "icon_nat_fiber_straw"
+  },
+  "bush_dried": {
+    "name": {
+      "마른 덤불": null
+    },
+    "icon": "icon_nat_fiber_straw"
+  },
+  "flower_blacken": {
+    "name": {
+      "그을린 꽃": null
+    },
+    "icon": "icon_nat_oleander"
+  },
+  "flower_blacken_small": {
+    "name": {
+      "그을린 작은 꽃": null
+    },
+    "icon": "icon_nat_oleander"
+  },
+  "grass_reed_lavaside": {
+    "name": {
+      "그을린 갈대": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "grass_reed_dried": {
+    "name": {
+      "마른 갈대": null
+    },
+    "icon": "icon_nat_fiber_reed"
+  },
+  "persimmontree_seed": {
+    "name": {
+      "감나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "persimmon": {
+    "name": {
+      "감": null
+    },
+    "icon": "icon_nat_persimmon"
+  },
+  "wood_log_persimmontree": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "cosmos_seed": {
+    "name": {
+      "코스모스 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "cosmos_flower": {
+    "name": {
+      "코스모스 꽃": null
+    },
+    "icon": "icon_nat_cosmos"
+  },
+  "shrimp_big": {
+    "name": {
+      "대하": null
+    },
+    "icon": "icon_nat_shrimp_big"
+  },
+  "mapletree_seed": {
+    "name": {
+      "단풍나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "mapletree_leaf": {
+    "name": {
+      "단풍잎": null
+    },
+    "icon": "icon_nat_mapletree"
+  },
+  "ginkgotree_seed": {
+    "name": {
+      "은행나무 종자": null
+    },
+    "icon": "icon_nat_farm_seed"
+  },
+  "ginkgotree_leaf": {
+    "name": {
+      "은행잎": null
+    },
+    "icon": "icon_nat_ginkgotree"
+  },
+  "wood_log_broadleaved_mapletree": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "wood_log_ginkgotree": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "rubber_solid": {
+    "name": {
+      "굳은 고무": null
+    },
+    "icon": "icon_nat_farm_potato"
+  },
+  "rubber_solid_season2_week1": {
+    "name": {
+      "굳은 고무": null
+    },
+    "icon": "icon_nat_rubber_solid_s02"
+  },
+  "rubber_solid_season2_week2": {
+    "name": {
+      "굳은 고무": null
+    },
+    "icon": "icon_nat_rubber_solid_s02"
+  },
+  "rubber_solid_season2_week3": {
+    "name": {
+      "굳은 고무": null
+    },
+    "icon": "icon_nat_rubber_solid_s02"
+  },
+  "rubber_solid_c_season2_week1": {
+    "name": {
+      "굳은 고무": null
+    },
+    "icon": "icon_nat_rubber_solid_s02"
+  },
+  "rubber_solid_c_season2_week2": {
+    "name": {
+      "굳은 고무": null
+    },
+    "icon": "icon_nat_rubber_solid_s02"
+  },
+  "rubber_solid_c_season2_week3": {
+    "name": {
+      "굳은 고무": null
+    },
+    "icon": "icon_nat_rubber_solid_s02"
+  },
+  "petbottle": {
+    "name": {
+      "페트병": null
+    },
+    "icon": "icon_petbottle"
+  },
+  "petbottle_season2_week1": {
+    "name": {
+      "페트병": null
+    },
+    "icon": "icon_petbottle"
+  },
+  "petbottle_season2_week2": {
+    "name": {
+      "페트병": null
+    },
+    "icon": "icon_petbottle"
+  },
+  "petbottle_season2_week3": {
+    "name": {
+      "페트병": null
+    },
+    "icon": "icon_petbottle"
+  },
+  "petbottle_c_season2_week1": {
+    "name": {
+      "페트병": null
+    },
+    "icon": "icon_petbottle"
+  },
+  "petbottle_c_season2_week2": {
+    "name": {
+      "페트병": null
+    },
+    "icon": "icon_petbottle"
+  },
+  "petbottle_c_season2_week3": {
+    "name": {
+      "페트병": null
+    },
+    "icon": "icon_petbottle"
+  },
+  "s02_shoes_highheel": {
+    "name": {
+      "워프된 하이힐": null
+    },
+    "icon": "warp_highheel"
+  },
+  "xmas_snow": {
+    "name": {
+      "눈": null
+    },
+    "icon": "xmas_snow"
+  },
+  "liver_season2_dead": {
+    "name": {
+      "생 간": null
+    },
+    "icon": "icon_nat_liver_s02"
+  },
+  "necklace_material_jokbo_01": {
+    "name": {
+      "힘의 족보": null
+    },
+    "icon": "necklace_material_jokbo"
+  },
+  "necklace_material_jokbo_02": {
+    "name": {
+      "맷집의 족보": null
+    },
+    "icon": "necklace_material_jokbo"
+  },
+  "necklace_material_jokbo_03": {
+    "name": {
+      "민첩의 족보": null
+    },
+    "icon": "necklace_material_jokbo"
+  },
+  "necklace_material_jokbo_04": {
+    "name": {
+      "의지의 족보": null
+    },
+    "icon": "necklace_material_jokbo"
+  },
+  "necklace_material_jokbo_05": {
+    "name": {
+      "솜씨의 족보": null
+    },
+    "icon": "necklace_material_jokbo"
+  },
+  "necklace_material_jokbo_06": {
+    "name": {
+      "눈치의 족보": null
+    },
+    "icon": "necklace_material_jokbo"
+  },
+  "necklace_material_jokbo_07": {
+    "name": {
+      "매력의 족보": null
+    },
+    "icon": "necklace_material_jokbo"
+  },
+  "critical_item_plant_01": {
+    "name": {
+      "질긴 뿌리": null
+    },
+    "icon": "icon_nat_root_winter"
+  },
+  "critical_item_stone_01": {
+    "name": {
+      "돌부리": null
+    },
+    "icon": "icon_nat_critical_stone"
+  },
+  "wood_log_oak_texture": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "cherryblossom_01_seed_crop_n": {
+    "name": {
+      "버찌": null
+    },
+    "icon": "icon_nat_fruit_cranberry"
+  },
+  "archipelago_keepsake_tool": {
+    "name": {
+      "기술자의 도구": null
+    },
+    "icon": "archipelago_keepsake_tool"
+  },
+  "archipelago_keepsake_shoe": {
+    "name": {
+      "기술자의 신발": null
+    },
+    "icon": "archipelago_keepsake_shoe"
+  },
+  "archipelago_keepsake_cloth": {
+    "name": {
+      "기술자의 옷자락": null
+    },
+    "icon": "archipelago_keepsake_cloth"
+  },
+  "archipelago_secret_paper": {
+    "name": {
+      "기밀 문서": null
+    },
+    "icon": "icon_papers"
+  },
+  "suspicious_document_01": {
+    "name": {
+      "수상한 문서 조각": null
+    },
+    "icon": "suspicious_document_01"
+  },
+  "suspicious_document_02": {
+    "name": {
+      "찢어진 서류 뭉치": null
+    },
+    "icon": "suspicious_document_02"
+  },
+  "suspicious_document_03": {
+    "name": {
+      "구겨진 서류봉투": null
+    },
+    "icon": "suspicious_document_03"
+  },
+  "suspicious_document_04": {
+    "name": {
+      "알아볼 수 없는 쪽지": null
+    },
+    "icon": "suspicious_document_04"
+  },
+  "pvp_wood_log": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "pvp_wood_bough": {
+    "name": {
+      "나뭇가지": null
+    },
+    "icon": "icon_nat_wood_branch"
+  },
+  "pvp_wood_log_broadleaved": {
+    "name": {
+      "통나무": null
+    },
+    "icon": "icon_nat_wood_log"
+  },
+  "pvp_leaf_large": {
+    "name": {
+      "큰 나뭇잎": null
+    },
+    "icon": "icon_nat_leaf_big"
+  },
+  "pvp_root": {
+    "name": {
+      "뿌리": null
+    },
+    "icon": "icon_nat_wood_root"
+  },
+  "coded_document_01_01": {
+    "name": {
+      "암호문 1-1": null
+    },
+    "icon": "coded_document_front"
+  },
+  "coded_document_01_02": {
+    "name": {
+      "암호문 1-2": null
+    },
+    "icon": "coded_document_back"
+  },
+  "coded_document_02_02": {
+    "name": {
+      "암호문 2-2": null
+    },
+    "icon": "coded_document_back"
+  },
+  "coded_document_03_02": {
+    "name": {
+      "암호문 3-2": null
+    },
+    "icon": "coded_document_back"
+  },
+  "coded_document_04_02": {
+    "name": {
+      "암호문 4-2": null
+    },
+    "icon": "coded_document_back"
+  },
+  "coded_document_05_02": {
+    "name": {
+      "암호문 5-2": null
+    },
+    "icon": "coded_document_back"
+  },
+  "passengerlist_01": {
+    "name": {
+      "탑승자 명단": null
+    },
+    "icon": "passengerlist"
+  },
+  "passengerlist_02": {
+    "name": {
+      "얼굴 스캔 기록": null
+    },
+    "icon": "passengerlist_02"
+  },
+  "gas_station_smallpipe": {
+    "name": {
+      "소형파이프": null
+    },
+    "icon": "icon_gas_station_smallpipe"
+  },
+  "gas_station_lamp_oil": {
+    "name": {
+      "등유": null
+    },
+    "icon": "icon_gas_station_lamp_oil"
+  },
+  "gas_station_aluminum": {
+    "name": {
+      "알루미늄": null
+    },
+    "icon": "icon_gas_station_aluminum"
+  },
+  "bank_wire": {
+    "name": {
+      "와이어": null
+    },
+    "icon": "icon_bank_wire"
+  },
+  "bank_alloy": {
+    "name": {
+      "합금": null
+    },
+    "icon": "icon_bank_alloy"
+  },
+  "bank_dial": {
+    "name": {
+      "다이얼": null
+    },
+    "icon": "icon_bank_dial"
+  },
+  "pharmacy_anti_infla": {
+    "name": {
+      "소염제": null
+    },
+    "icon": "icon_pharmacy_anti_infla"
+  },
+  "pharmacy_antibiotic": {
+    "name": {
+      "항생제": null
+    },
+    "icon": "icon_pharmacy_antibiotic"
+  },
+  "silo_deodorant": {
+    "name": {
+      "탈취제": null
+    },
+    "icon": "icon_silo_deodorant"
+  },
+  "committee_codetext": {
+    "name": {
+      "위원회 암호문": null
+    },
+    "icon": "icon_committee_codetext"
+  },
+  "x_dedicated_radio": {
+    "name": {
+      "X 전용 무전기": null
+    },
+    "icon": "icon_x_dedicated_radio"
+  },
+  "saltpeter": {
+    "name": {
+      "초석": null
+    },
+    "icon": "icon_nat_mine_alum"
+  }
+}

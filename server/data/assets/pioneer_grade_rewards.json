@@ -1,0 +1,169 @@
+{
+  "rewards": [
+    {
+      "grade": 1,
+      "texts": {
+        "after": {
+          "개인섬 사유지 면적 최대 <em>100칸</em>": null
+        },
+        "before": {
+          "개인섬 사유지 면적 최대 <em>100칸</em>": null
+        }
+      }
+    },
+    {
+      "grade": 2,
+      "texts": {
+        "after": {
+          "개인섬 사유지 면적 최대 <em>150칸</em>": null
+        },
+        "before": {
+          "개인섬 사유지 면적 최대 <em>150칸</em>": null
+        }
+      }
+    },
+    {
+      "grade": 3,
+      "texts": {
+        "after": {
+          "<ref>ui://Recipe/Building/living_tech_01,생활 연구실Ⅰ</ref> 설치 방법": null
+        },
+        "before": {
+          "<em>생활 연구실Ⅰ</em> 설치 방법": null
+        }
+      }
+    },
+    {
+      "grade": 4,
+      "texts": {
+        "after": {
+          "<ref>ui://Recipe/Building/light_tech_01,경기술 연구실Ⅰ</ref> 설치 방법": null
+        },
+        "before": {
+          "<em>경기술 연구실Ⅰ</em> 설치 방법": null
+        }
+      }
+    },
+    {
+      "grade": 5,
+      "texts": {
+        "after": {
+          "<ref>ui://Recipe/Building/heavy_tech_01,중기술 연구실Ⅰ</ref> 설치 방법": null
+        },
+        "before": {
+          "<em>중기술 연구실Ⅰ</em> 설치 방법": null
+        }
+      }
+    },
+    {
+      "grade": 6,
+      "texts": {
+        "after": {
+          "개인섬 사유지 면적 최대 <em>200칸</em>": null
+        },
+        "before": {
+          "개인섬 사유지 면적 최대 <em>200칸</em>": null
+        }
+      }
+    },
+    {
+      "grade": 7,
+      "texts": {
+        "after": {
+          "개인섬 사유지 면적 최대 <em>250칸</em>": null
+        },
+        "before": {
+          "개인섬 사유지 면적 최대 <em>250칸</em>": null
+        }
+      }
+    },
+    {
+      "grade": 8,
+      "texts": {
+        "after": {
+          "<ref>ui://Recipe/Building/living_tech_02,생활 연구실Ⅱ</ref> 설치 방법": null
+        },
+        "before": {
+          "<em>생활 연구실Ⅱ</em> 설치 방법": null
+        }
+      }
+    },
+    {
+      "grade": 9,
+      "texts": {
+        "after": {
+          "<ref>ui://Recipe/Building/light_tech_02,경기술 연구실Ⅱ</ref> 설치 방법": null
+        },
+        "before": {
+          "<em>경기술 연구실Ⅱ</em> 설치 방법": null
+        }
+      }
+    },
+    {
+      "grade": 10,
+      "texts": {
+        "after": {
+          "<ref>ui://Recipe/Building/heavy_tech_02,중기술 연구실Ⅱ</ref> 설치 방법": null
+        },
+        "before": {
+          "<em>중기술 연구실Ⅱ</em> 설치 방법": null
+        }
+      }
+    },
+    {
+      "grade": 11,
+      "texts": {
+        "after": {
+          "개인섬 사유지 면적 최대 <em>300칸</em>": null
+        },
+        "before": {
+          "개인섬 사유지 면적 최대 <em>300칸</em>": null
+        }
+      }
+    },
+    {
+      "grade": 12,
+      "texts": {
+        "after": {
+          "<ref>ui://Recipe/Building/living_tech_03,생활 연구실Ⅲ</ref> 설치 방법": null
+        },
+        "before": {
+          "<em>생활 연구실Ⅲ</em> 설치 방법": null
+        }
+      }
+    },
+    {
+      "grade": 13,
+      "texts": {
+        "after": {
+          "<ref>ui://Recipe/Building/light_tech_03,경기술 연구실Ⅲ</ref> 설치 방법": null
+        },
+        "before": {
+          "<em>경기술 연구실Ⅲ</em> 설치 방법": null
+        }
+      }
+    },
+    {
+      "grade": 14,
+      "texts": {
+        "after": {
+          "<ref>ui://Recipe/Building/heavy_tech_03,중기술 연구실Ⅲ</ref> 설치 방법": null
+        },
+        "before": {
+          "<em>중기술 연구실Ⅲ</em> 설치 방법": null
+        }
+      }
+    },
+    {
+      "grade": 15,
+      "texts": {
+        "after": {
+          "개인섬 사유지 면적 최대 <em>350칸</em>": null
+        },
+        "before": {
+          "개인섬 사유지 면적 최대 <em>350칸</em>": null
+        }
+      }
+    }
+  ]
+}

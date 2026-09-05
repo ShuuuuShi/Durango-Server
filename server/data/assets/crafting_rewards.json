@@ -1,0 +1,780 @@
+{
+  "max_modular_size_01": {
+    "type": 20,
+    "value": 5.0,
+    "modifier_id": "max_modular_size"
+  },
+  "max_modular_size_02": {
+    "type": 20,
+    "value": 6.0,
+    "modifier_id": "max_modular_size"
+  },
+  "recoveryrate_weaponcraft_01": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_weaponcraft"
+  },
+  "recoveryrate_weaponcraft_02": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_weaponcraft"
+  },
+  "recoveryrate_weaponcraft_03": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_weaponcraft"
+  },
+  "recoveryrate_weaponcraft_04": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_weaponcraft"
+  },
+  "recoveryrate_weaponcraft_05": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_weaponcraft"
+  },
+  "recoveryrate_weaponcraft_06": {
+    "type": 20,
+    "value": 0.15,
+    "modifier_id": "recoveryrate_weaponcraft"
+  },
+  "recoveryrate_weaponcraft_07": {
+    "type": 20,
+    "value": 0.2,
+    "modifier_id": "recoveryrate_weaponcraft"
+  },
+  "recoveryrate_weaponcraft_08": {
+    "type": 20,
+    "value": 0.3,
+    "modifier_id": "recoveryrate_weaponcraft"
+  },
+  "recoveryrate_armorcraft_01": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_armorcraft"
+  },
+  "recoveryrate_armorcraft_02": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_armorcraft"
+  },
+  "recoveryrate_armorcraft_03": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_armorcraft"
+  },
+  "recoveryrate_armorcraft_04": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_armorcraft"
+  },
+  "recoveryrate_armorcraft_05": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_armorcraft"
+  },
+  "recoveryrate_armorcraft_06": {
+    "type": 20,
+    "value": 0.15,
+    "modifier_id": "recoveryrate_armorcraft"
+  },
+  "recoveryrate_armorcraft_07": {
+    "type": 20,
+    "value": 0.2,
+    "modifier_id": "recoveryrate_armorcraft"
+  },
+  "recoveryrate_armorcraft_08": {
+    "type": 20,
+    "value": 0.3,
+    "modifier_id": "recoveryrate_armorcraft"
+  },
+  "recoveryrate_handicraft_01": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_handicraft"
+  },
+  "recoveryrate_handicraft_02": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_handicraft"
+  },
+  "recoveryrate_handicraft_03": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_handicraft"
+  },
+  "recoveryrate_handicraft_04": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_handicraft"
+  },
+  "recoveryrate_handicraft_05": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_handicraft"
+  },
+  "recoveryrate_handicraft_06": {
+    "type": 20,
+    "value": 0.15,
+    "modifier_id": "recoveryrate_handicraft"
+  },
+  "recoveryrate_handicraft_07": {
+    "type": 20,
+    "value": 0.2,
+    "modifier_id": "recoveryrate_handicraft"
+  },
+  "recoveryrate_handicraft_08": {
+    "type": 20,
+    "value": 0.3,
+    "modifier_id": "recoveryrate_handicraft"
+  },
+  "recoveryrate_smith_01": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_smith"
+  },
+  "recoveryrate_smith_02": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_smith"
+  },
+  "recoveryrate_smith_03": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_smith"
+  },
+  "recoveryrate_smith_04": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_smith"
+  },
+  "recoveryrate_smith_05": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_smith"
+  },
+  "recoveryrate_smith_06": {
+    "type": 20,
+    "value": 0.15,
+    "modifier_id": "recoveryrate_smith"
+  },
+  "recoveryrate_smith_07": {
+    "type": 20,
+    "value": 0.2,
+    "modifier_id": "recoveryrate_smith"
+  },
+  "recoveryrate_smith_08": {
+    "type": 20,
+    "value": 0.3,
+    "modifier_id": "recoveryrate_smith"
+  },
+  "recoveryrate_tailor_01": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_tailor"
+  },
+  "recoveryrate_tailor_02": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_tailor"
+  },
+  "recoveryrate_tailor_03": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_tailor"
+  },
+  "recoveryrate_tailor_04": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_tailor"
+  },
+  "recoveryrate_tailor_05": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_tailor"
+  },
+  "recoveryrate_tailor_06": {
+    "type": 20,
+    "value": 0.15,
+    "modifier_id": "recoveryrate_tailor"
+  },
+  "recoveryrate_tailor_07": {
+    "type": 20,
+    "value": 0.2,
+    "modifier_id": "recoveryrate_tailor"
+  },
+  "recoveryrate_tailor_08": {
+    "type": 20,
+    "value": 0.3,
+    "modifier_id": "recoveryrate_tailor"
+  },
+  "recoveryrate_furnishing_01": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_furnishing"
+  },
+  "recoveryrate_furnishing_02": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_furnishing"
+  },
+  "recoveryrate_furnishing_03": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_furnishing"
+  },
+  "recoveryrate_furnishing_04": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_furnishing"
+  },
+  "recoveryrate_furnishing_05": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_furnishing"
+  },
+  "recoveryrate_furnishing_06": {
+    "type": 20,
+    "value": 0.15,
+    "modifier_id": "recoveryrate_furnishing"
+  },
+  "recoveryrate_furnishing_07": {
+    "type": 20,
+    "value": 0.2,
+    "modifier_id": "recoveryrate_furnishing"
+  },
+  "recoveryrate_furnishing_08": {
+    "type": 20,
+    "value": 0.3,
+    "modifier_id": "recoveryrate_furnishing"
+  },
+  "recoveryrate_construction_01": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_construction"
+  },
+  "recoveryrate_construction_02": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_construction"
+  },
+  "recoveryrate_construction_03": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_construction"
+  },
+  "recoveryrate_construction_04": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_construction"
+  },
+  "recoveryrate_construction_05": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_construction"
+  },
+  "recoveryrate_construction_06": {
+    "type": 20,
+    "value": 0.15,
+    "modifier_id": "recoveryrate_construction"
+  },
+  "recoveryrate_construction_07": {
+    "type": 20,
+    "value": 0.2,
+    "modifier_id": "recoveryrate_construction"
+  },
+  "recoveryrate_construction_08": {
+    "type": 20,
+    "value": 0.3,
+    "modifier_id": "recoveryrate_construction"
+  },
+  "recoveryrate_cook_01": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_cook"
+  },
+  "recoveryrate_cook_02": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_cook"
+  },
+  "recoveryrate_cook_03": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_cook"
+  },
+  "recoveryrate_cook_04": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_cook"
+  },
+  "recoveryrate_cook_05": {
+    "type": 20,
+    "value": 0.1,
+    "modifier_id": "recoveryrate_cook"
+  },
+  "recoveryrate_cook_06": {
+    "type": 20,
+    "value": 0.15,
+    "modifier_id": "recoveryrate_cook"
+  },
+  "recoveryrate_cook_07": {
+    "type": 20,
+    "value": 0.2,
+    "modifier_id": "recoveryrate_cook"
+  },
+  "recoveryrate_cook_08": {
+    "type": 20,
+    "value": 0.3,
+    "modifier_id": "recoveryrate_cook"
+  },
+  "recipe_weapon_connection_t2": {
+    "recipe_id": "weapon_connection_t2",
+    "type": 19
+  },
+  "recipe_sword_armorcrafting": {
+    "recipe_id": "sword_armorcrafting",
+    "type": 19
+  },
+  "recipe_axe_process": {
+    "recipe_id": "axe_process",
+    "type": 19
+  },
+  "recipe_hammer_constructing": {
+    "recipe_id": "hammer_constructing",
+    "type": 19
+  },
+  "recipe_blade_big_hammer_metal_02_t2": {
+    "recipe_id": "blade_big_hammer_metal_02_t2",
+    "type": 19
+  },
+  "recipe_blade_hammer_metal_02_t2": {
+    "recipe_id": "blade_hammer_metal_02_t2",
+    "type": 19
+  },
+  "recipe_crossstick_bone_02_t2": {
+    "recipe_id": "crossstick_bone_02_t2",
+    "type": 19
+  },
+  "recipe_blade_big_axe_metal_02_t2": {
+    "recipe_id": "blade_big_axe_metal_02_t2",
+    "type": 19
+  },
+  "recipe_blade_axe_metal_02_t2": {
+    "recipe_id": "blade_axe_metal_02_t2",
+    "type": 19
+  },
+  "recipe_blade_hammer_metal_03": {
+    "recipe_id": "blade_hammer_metal_03",
+    "type": 19
+  },
+  "recipe_blade_big_hammer_metal_03": {
+    "recipe_id": "blade_big_hammer_metal_03",
+    "type": 19
+  },
+  "recipe_bowstick_bone_04": {
+    "recipe_id": "bowstick_bone_04",
+    "type": 19
+  },
+  "recipe_crossstick_bone_04": {
+    "recipe_id": "crossstick_bone_04",
+    "type": 19
+  },
+  "recipe_reform_nail_02": {
+    "recipe_id": "reform_nail_02",
+    "type": 19
+  },
+  "recipe_reform_armorcrafting": {
+    "recipe_id": "reform_armorcrafting",
+    "type": 19
+  },
+  "recipe_reform_cooking_farming": {
+    "recipe_id": "reform_cooking_farming",
+    "type": 19
+  },
+  "recipe_reform_gathering": {
+    "recipe_id": "reform_gathering",
+    "type": 19
+  },
+  "recipe_reform_process": {
+    "recipe_id": "reform_process",
+    "type": 19
+  },
+  "recipe_reform_constructing": {
+    "recipe_id": "reform_constructing",
+    "type": 19
+  },
+  "recipe_reform_weaponcrafting": {
+    "recipe_id": "reform_weaponcrafting",
+    "type": 19
+  },
+  "recipe_hat_explorer_04": {
+    "recipe_id": "hat_explorer_04",
+    "type": 19
+  },
+  "recipe_clothes_explorer_04": {
+    "recipe_id": "clothes_explorer_04",
+    "type": 19
+  },
+  "recipe_hat_settler_02_sociable_t2": {
+    "recipe_id": "hat_settler_02_sociable_t2",
+    "type": 19
+  },
+  "recipe_clothes_settler_02_sociable_t2": {
+    "recipe_id": "clothes_settler_02_sociable_t2",
+    "type": 19
+  },
+  "recipe_hat_builder_02": {
+    "recipe_id": "hat_builder_02",
+    "type": 19
+  },
+  "recipe_clothes_builder_02": {
+    "recipe_id": "clothes_builder_02",
+    "type": 19
+  },
+  "recipe_hat_explorer_02_scout_t2": {
+    "recipe_id": "hat_explorer_02_scout_t2",
+    "type": 19
+  },
+  "recipe_clothes_explorer_02_scout_t2": {
+    "recipe_id": "clothes_explorer_02_scout_t2",
+    "type": 19
+  },
+  "recipe_hat_hunter_03_skill_t2": {
+    "recipe_id": "hat_hunter_03_skill_t2",
+    "type": 19
+  },
+  "recipe_clothes_hunter_03_skill_t2": {
+    "recipe_id": "clothes_hunter_03_skill_t2",
+    "type": 19
+  },
+  "recipe_hat_hunter_04": {
+    "recipe_id": "hat_hunter_04",
+    "type": 19
+  },
+  "recipe_clothes_hunter_04": {
+    "recipe_id": "clothes_hunter_04",
+    "type": 19
+  },
+  "recipe_shoes_lavaproof": {
+    "recipe_id": "shoes_lavaproof",
+    "type": 19
+  },
+  "recipe_reform_scales_02": {
+    "recipe_id": "reform_scales_02",
+    "type": 19
+  },
+  "recipe_charcoal_t2": {
+    "recipe_id": "charcoal_t2",
+    "type": 19
+  },
+  "recipe_jewel_grinding_02": {
+    "recipe_id": "jewel_grinding_02",
+    "type": 19
+  },
+  "recipe_twist_rope_02_t2": {
+    "recipe_id": "twist_rope_02_t2",
+    "type": 19
+  },
+  "recipe_glue_set_t2": {
+    "recipe_id": "glue_set_t2",
+    "type": 19
+  },
+  "recipe_necklace_electrum": {
+    "recipe_id": "necklace_electrum",
+    "type": 19
+  },
+  "recipe_tan_02_t2": {
+    "recipe_id": "tan_02_t2",
+    "type": 19
+  },
+  "recipe_tan_04": {
+    "recipe_id": "tan_04",
+    "type": 19
+  },
+  "recipe_necklace_brachiotooth": {
+    "recipe_id": "necklace_brachiotooth",
+    "type": 19
+  },
+  "recipe_process_05": {
+    "recipe_id": "process_05",
+    "type": 19
+  },
+  "recipe_nail_metal_t2": {
+    "recipe_id": "nail_metal_t2",
+    "type": 19
+  },
+  "recipe_metal_stick_t2": {
+    "recipe_id": "metal_stick_t2",
+    "type": 19
+  },
+  "recipe_metal_set_t2": {
+    "recipe_id": "metal_set_t2",
+    "type": 19
+  },
+  "recipe_refine_04": {
+    "recipe_id": "refine_04",
+    "type": 19
+  },
+  "recipe_leadedbronze": {
+    "recipe_id": "leadedbronze_alloy",
+    "type": 19
+  },
+  "recipe_refine_03_t2": {
+    "recipe_id": "refine_03_t2",
+    "type": 19
+  },
+  "recipe_iron_alloy": {
+    "recipe_id": "iron_alloy",
+    "type": 19
+  },
+  "recipe_freecuttingbrass": {
+    "recipe_id": "freecuttingbrass_alloy",
+    "type": 19
+  },
+  "recipe_thread_02_breathability_good": {
+    "recipe_id": "thread_02_breathability_good",
+    "type": 19
+  },
+  "recipe_thread_02_oily": {
+    "recipe_id": "thread_02_oily",
+    "type": 19
+  },
+  "recipe_gloves_armorcrafting": {
+    "recipe_id": "gloves_armorcrafting",
+    "type": 19
+  },
+  "recipe_gloves_weaponcrafting": {
+    "recipe_id": "gloves_weaponcrafting",
+    "type": 19
+  },
+  "recipe_reform_pocket_t2": {
+    "recipe_id": "reform_pocket_t2",
+    "type": 19
+  },
+  "recipe_reform_lightening_t2": {
+    "recipe_id": "reform_lightening_t2",
+    "type": 19
+  },
+  "recipe_reform_clothover_t2": {
+    "recipe_id": "reform_clothover_t2",
+    "type": 19
+  },
+  "recipe_reform_suncover_t2": {
+    "recipe_id": "reform_suncover_t2",
+    "type": 19
+  },
+  "recipe_reform_breathability_t2": {
+    "recipe_id": "reform_breathability_t2",
+    "type": 19
+  },
+  "recipe_reform_windbreak_t2": {
+    "recipe_id": "reform_windbreak_t2",
+    "type": 19
+  },
+  "recipe_gloves_stabproof": {
+    "recipe_id": "gloves_stabproof",
+    "type": 19
+  },
+  "recipe_boots_stabproof": {
+    "recipe_id": "boots_stabproof",
+    "type": 19
+  },
+  "recipe_bench_02": {
+    "type": 21,
+    "blueprint_id": "bench_02"
+  },
+  "recipe_dryingrack_02_t2": {
+    "type": 21,
+    "blueprint_id": "dryingrack_02_t2"
+  },
+  "recipe_medicine_table_01_t2": {
+    "type": 21,
+    "blueprint_id": "medicine_table_01_t2"
+  },
+  "recipe_chair_03": {
+    "type": 21,
+    "blueprint_id": "chair_03"
+  },
+  "recipe_table_04": {
+    "type": 21,
+    "blueprint_id": "table_04"
+  },
+  "recipe_fur_box_02_leaf": {
+    "type": 21,
+    "blueprint_id": "fur_box_02_leaf"
+  },
+  "recipe_oil_lantern_01": {
+    "type": 21,
+    "blueprint_id": "oil_lantern_01"
+  },
+  "recipe_bed_04": {
+    "type": 21,
+    "blueprint_id": "bed_04"
+  },
+  "recipe_shelf_02": {
+    "type": 21,
+    "blueprint_id": "shelf_02"
+  },
+  "recipe_shelf_01_wood": {
+    "type": 21,
+    "blueprint_id": "shelf_01_wood"
+  },
+  "recipe_chair_01_marble_01": {
+    "type": 21,
+    "blueprint_id": "chair_01_marble_01"
+  },
+  "recipe_fur_table_01_marble_01": {
+    "type": 21,
+    "blueprint_id": "fur_table_01_marble_01"
+  },
+  "recipe_fur_box_03_leaf": {
+    "type": 21,
+    "blueprint_id": "fur_box_03_leaf"
+  },
+  "recipe_kitchen_table_05": {
+    "type": 21,
+    "blueprint_id": "kitchen_table_05"
+  },
+  "recipe_curtain_blind_01_wood": {
+    "type": 21,
+    "blueprint_id": "curtain_blind_01_wood"
+  },
+  "recipe_beanbag_02": {
+    "type": 21,
+    "blueprint_id": "beanbag_02"
+  },
+  "recipe_light_01_firefly": {
+    "type": 21,
+    "blueprint_id": "light_01_firefly"
+  },
+  "recipe_box_04": {
+    "type": 21,
+    "blueprint_id": "box_04"
+  },
+  "recipe_bath_02_wood": {
+    "type": 21,
+    "blueprint_id": "bath_02_wood"
+  },
+  "recipe_chair_01_recliner": {
+    "type": 21,
+    "blueprint_id": "chair_01_recliner"
+  },
+  "recipe_modular_ground_granite": {
+    "recipe_id": "modular_ground_granite",
+    "type": 19
+  },
+  "recipe_modular_ground_basalt": {
+    "recipe_id": "modular_ground_basalt",
+    "type": 19
+  },
+  "recipe_modular_wall_granite": {
+    "recipe_id": "modular_wall_granite",
+    "type": 19
+  },
+  "recipe_modular_wall_basalt": {
+    "recipe_id": "modular_wall_basalt",
+    "type": 19
+  },
+  "recipe_modular_roof_granite": {
+    "recipe_id": "modular_roof_granite",
+    "type": 19
+  },
+  "recipe_modular_roof_basalt": {
+    "recipe_id": "modular_roof_basalt",
+    "type": 19
+  },
+  "recipe_road_leaf": {
+    "type": 21,
+    "blueprint_id": "road_leaf"
+  },
+  "recipe_road_01_leaf": {
+    "type": 21,
+    "blueprint_id": "road_01_leaf"
+  },
+  "recipe_road_01_shell": {
+    "type": 21,
+    "blueprint_id": "road_01_shell"
+  },
+  "recipe_window_02_steel": {
+    "recipe_id": "window_02_steel",
+    "type": 19
+  },
+  "recipe_door_02_steel": {
+    "recipe_id": "door_02_steel",
+    "type": 19
+  },
+  "recipe_rose_fence": {
+    "type": 21,
+    "blueprint_id": "rose_fence"
+  },
+  "recipe_modular_wall_metal": {
+    "recipe_id": "modular_wall_metal",
+    "type": 19
+  },
+  "recipe_kitchen_04": {
+    "type": 21,
+    "blueprint_id": "kitchen_04"
+  },
+  "recipe_kiln_04": {
+    "type": 21,
+    "blueprint_id": "kiln_04"
+  },
+  "recipe_defensive_t2": {
+    "type": 21,
+    "blueprint_id": "defensive_t2"
+  },
+  "recipe_board_message_01_02": {
+    "type": 21,
+    "blueprint_id": "board_message_01_02"
+  },
+  "recipe_modular_ground_marble": {
+    "recipe_id": "modular_ground_marble",
+    "type": 19
+  },
+  "recipe_ration_survival": {
+    "recipe_id": "ration_survival",
+    "type": 19
+  },
+  "recipe_hemostat": {
+    "recipe_id": "hemostat",
+    "type": 19
+  },
+  "recipe_dried_persimmon": {
+    "recipe_id": "recipe_dried_persimmon",
+    "type": 19
+  },
+  "recipe_painkiller_root": {
+    "recipe_id": "painkiller_root",
+    "type": 19
+  },
+  "recipe_beer": {
+    "recipe_id": "recipe_beer",
+    "type": 19
+  },
+  "recipe_steak_set_meal": {
+    "recipe_id": "steak_set_meal",
+    "type": 19
+  },
+  "recipe_taro_milktea": {
+    "recipe_id": "taro_milktea",
+    "type": 19
+  },
+  "recipe_medicine_03": {
+    "recipe_id": "medicine_03",
+    "type": 19
+  },
+  "recipe_farm_tile_03": {
+    "type": 21,
+    "blueprint_id": "farm_tile_03"
+  },
+  "recipe_farm_tile_04": {
+    "type": 21,
+    "blueprint_id": "farm_tile_04"
+  },
+  "recipe_fertilizer_maker_03": {
+    "type": 21,
+    "blueprint_id": "fertilizer_maker_03"
+  }
+}

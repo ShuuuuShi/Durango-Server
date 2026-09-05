@@ -1,0 +1,5303 @@
+{
+  "onehand_default_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 2.9,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.53,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.53,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 6,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.01,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 1.01,
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_sword",
+      "motion": "Onehand_Attack_A",
+      "prohibited_time": {
+        "0": 1.01,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_default_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 2.9,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.54,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.54,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 2
+      },
+      "stamina": 6,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.01,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.01,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "onehand_default_a",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_sword",
+      "motion": "Onehand_Attack_B",
+      "prohibited_time": {
+        "0": 1.01,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_default_c": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 2.9,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.45,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.45,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 3
+      },
+      "stamina": 6,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.01,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.01,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "onehand_default_b",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_sword",
+      "motion": "Onehand_Attack_C",
+      "prohibited_time": {
+        "0": 1.01,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_dodge": {
+    "attack_info": null,
+    "meta": {
+      "slot": {
+        "id": 0
+      },
+      "stamina": 35,
+      "exp_factor": 2.0,
+      "skill_category": 4,
+      "description": {
+        "집중력을 높여, 적의 공격에 반응합니다. 집중하는 동안 들어오는 모든 공격을 구르면서 [FFD85B]회피[-]합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "구르기": null
+      },
+      "hide_when_deactive": false,
+      "cooltime": 7.0,
+      "action_length": 1.4,
+      "prohibit_type": 2,
+      "battle_action_type": 3,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_evade",
+      "motion": "Onehand_Dodge",
+      "prohibited_time": {
+        "0": 1.4,
+        "1": 1.4,
+        "2": 1.4
+      }
+    },
+    "defense_info": {
+      "active_time": 1.2,
+      "dodge_force": 1.0,
+      "stand_by_time": 0.0
+    }
+  },
+  "onehand_smash": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 350,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 7.0,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.2,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.7666666,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.7666666,
+        "damage_angle": 0.0,
+        "blow_power": 150.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 25,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "[FFD85B]다음 공격 시[-] 적을 강하게 내리쳐 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "강타": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": false,
+      "cooltime": 8.38,
+      "action_length": 1.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_onehand_smash",
+      "motion": "Onehand_AttackStrong",
+      "prohibited_time": {
+        "0": 1.7,
+        "1": 1.7,
+        "2": 1.7
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_flurry": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 0.9,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.5666667,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -80.0,
+          80.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 0.5666667,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.5
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.9333333,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -80.0,
+          80.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 0.9333333,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          250,
+          80
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.33,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.95,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          150.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.95,
+        "damage_angle": 0.0,
+        "blow_power": 150.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2
+      },
+      "stamina": 31,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 3연타로 공격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "난타": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": false,
+      "cooltime": 23.53,
+      "action_length": 2.8,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_onehand_combination",
+      "motion": "Onehand_Attack_TripleSwing",
+      "prohibited_time": {
+        "0": 2.8,
+        "1": 2.8,
+        "2": 2.8
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_stab": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.5,
+        "rect_half_size": [
+          300,
+          80
+        ],
+        "radius": 300,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.8,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.8,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.95,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          200.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.95,
+        "damage_angle": 0.0,
+        "blow_power": 180.0,
+        "weak_ratio": 0.2
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 4
+      },
+      "stamina": 30,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 적의 급소를 찔러 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "급소찌르기": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": false,
+      "cooltime": 11.83,
+      "action_length": 1.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_onehand_stab",
+      "motion": "Onehand_Attack_Stab",
+      "prohibited_time": {
+        "0": 1.7,
+        "1": 1.7,
+        "2": 1.7
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_default_axe_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 2.9,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.53,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.53,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 5,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.11,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 1.11,
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_axe",
+      "motion": "Onehand_Attack_A",
+      "prohibited_time": {
+        "0": 1.11,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_default_axe_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 2.9,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.54,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.54,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 2
+      },
+      "stamina": 5,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.11,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.11,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "onehand_default_axe_a",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_axe",
+      "motion": "Onehand_Attack_B",
+      "prohibited_time": {
+        "0": 1.11,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_default_axe_c": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 2.9,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.45,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.45,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 3
+      },
+      "stamina": 5,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.11,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.11,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "onehand_default_axe_b",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_axe",
+      "motion": "Onehand_Attack_C",
+      "prohibited_time": {
+        "0": 1.11,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_smash_axe": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 350,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 7.0,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.2,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.7666666,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.7666666,
+        "damage_angle": 0.0,
+        "blow_power": 150.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 27,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "[FFD85B]다음 공격 시[-] 적을 강하게 내리쳐 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "강타": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": false,
+      "cooltime": 9.17,
+      "action_length": 1.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_onehand_smash",
+      "motion": "Onehand_AttackStrong",
+      "prohibited_time": {
+        "0": 1.7,
+        "1": 1.7,
+        "2": 1.7
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_flurry_axe": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 0.9,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.5666667,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -80.0,
+          80.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 0.5666667,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.5
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.9333333,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -80.0,
+          80.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 0.9333333,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          250,
+          80
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.33,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.95,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          150.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.95,
+        "damage_angle": 0.0,
+        "blow_power": 150.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2
+      },
+      "stamina": 33,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 3연타로 공격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "난타": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": false,
+      "cooltime": 25.74,
+      "action_length": 2.8,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_onehand_combination",
+      "motion": "Onehand_Attack_TripleSwing",
+      "prohibited_time": {
+        "0": 2.8,
+        "1": 2.8,
+        "2": 2.8
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_stab_axe": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.5,
+        "rect_half_size": [
+          300,
+          80
+        ],
+        "radius": 300,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.8,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.8,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.95,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          200.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.95,
+        "damage_angle": 0.0,
+        "blow_power": 180.0,
+        "weak_ratio": 0.2
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 4
+      },
+      "stamina": 32,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 적의 급소를 찔러 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "급소찌르기": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": false,
+      "cooltime": 12.93,
+      "action_length": 1.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_onehand_stab",
+      "motion": "Onehand_Attack_Stab",
+      "prohibited_time": {
+        "0": 1.7,
+        "1": 1.7,
+        "2": 1.7
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_default_blunt_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 2.9,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.53,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.53,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 6,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.06,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 1.06,
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_blunt",
+      "motion": "Onehand_Attack_A",
+      "prohibited_time": {
+        "0": 1.06,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_default_blunt_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 2.9,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.54,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.54,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 2
+      },
+      "stamina": 6,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.06,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.06,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "onehand_default_blunt_a",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_blunt",
+      "motion": "Onehand_Attack_B",
+      "prohibited_time": {
+        "0": 1.06,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_default_blunt_c": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 2.9,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.45,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.45,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 3
+      },
+      "stamina": 6,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.06,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.06,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "onehand_default_blunt_b",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_blunt",
+      "motion": "Onehand_Attack_C",
+      "prohibited_time": {
+        "0": 1.06,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_smash_blunt": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 350,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 7.0,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.2,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.7666666,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.7666666,
+        "damage_angle": 0.0,
+        "blow_power": 150.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 26,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "[FFD85B]다음 공격 시[-] 적을 강하게 내리쳐 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "강타": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": false,
+      "cooltime": 8.78,
+      "action_length": 1.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_onehand_smash",
+      "motion": "Onehand_AttackStrong",
+      "prohibited_time": {
+        "0": 1.7,
+        "1": 1.7,
+        "2": 1.7
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_flurry_blunt": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 0.9,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.5666667,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -80.0,
+          80.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 0.5666667,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.5
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.9333333,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -80.0,
+          80.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 0.9333333,
+        "damage_angle": 0.0,
+        "blow_power": 90.0,
+        "weak_ratio": 0.0
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          250,
+          80
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.33,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.95,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          150.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.95,
+        "damage_angle": 0.0,
+        "blow_power": 150.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2
+      },
+      "stamina": 32,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 3연타로 공격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "난타": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": false,
+      "cooltime": 24.65,
+      "action_length": 2.8,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_onehand_combination",
+      "motion": "Onehand_Attack_TripleSwing",
+      "prohibited_time": {
+        "0": 2.8,
+        "1": 2.8,
+        "2": 2.8
+      }
+    },
+    "defense_info": null
+  },
+  "onehand_stab_blunt": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.5,
+        "rect_half_size": [
+          300,
+          80
+        ],
+        "radius": 300,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.8,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.8,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.95,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          200.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.95,
+        "damage_angle": 0.0,
+        "blow_power": 180.0,
+        "weak_ratio": 0.2
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 4
+      },
+      "stamina": 31,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 적의 급소를 찔러 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "급소찌르기": null
+      },
+      "use_range": 175,
+      "hide_when_deactive": false,
+      "cooltime": 12.39,
+      "action_length": 1.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_onehand_stab",
+      "motion": "Onehand_Attack_Stab",
+      "prohibited_time": {
+        "0": 1.7,
+        "1": 1.7,
+        "2": 1.7
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_default_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.77,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.77,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 8,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 0.97,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 1.94,
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_sword",
+      "motion": "Twohand_Attack_A",
+      "prohibited_time": {
+        "0": 1.94,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_default_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.95,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.95,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 2
+      },
+      "stamina": 8,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 0.97,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.94,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "twohand_default_a",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_sword",
+      "motion": "Twohand_Attack_B",
+      "prohibited_time": {
+        "0": 1.94,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_default_c": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.75,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.75,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 3
+      },
+      "stamina": 8,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 0.97,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.94,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "twohand_default_b",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_sword",
+      "motion": "Twohand_Attack_C",
+      "prohibited_time": {
+        "0": 1.94,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_dodge": {
+    "attack_info": null,
+    "meta": {
+      "slot": {
+        "id": 0
+      },
+      "stamina": 35,
+      "exp_factor": 2.0,
+      "skill_category": 4,
+      "description": {
+        "집중력을 높여, 적의 공격에 반응합니다. 집중하는 동안 들어오는 모든 공격을 구르면서 [FFD85B]회피[-]합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "구르기": null
+      },
+      "hide_when_deactive": false,
+      "cooltime": 7.0,
+      "action_length": 1.4,
+      "prohibit_type": 2,
+      "battle_action_type": 3,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_evade",
+      "motion": "Twohand_Dodge",
+      "prohibited_time": {
+        "0": 1.4,
+        "1": 1.4,
+        "2": 1.4
+      }
+    },
+    "defense_info": {
+      "active_time": 1.2,
+      "dodge_force": 1.0,
+      "stand_by_time": 0.0
+    }
+  },
+  "twohand_smash": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.0,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 400,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.6,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.2,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.25,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -60.0,
+          75.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.25,
+        "damage_angle": 0.0,
+        "blow_power": 150.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 4
+      },
+      "stamina": 32,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "[FFD85B]다음 공격 시[-] 무기를 강하게 휘둘러 공격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "가르기": null
+      },
+      "use_range": 350,
+      "hide_when_deactive": false,
+      "cooltime": 12.55,
+      "action_length": 2.6,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_twohand_dash",
+      "motion": "Twohand_AttackDash",
+      "prohibited_time": {
+        "0": 2.6,
+        "1": 2.6,
+        "2": 2.6
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_sweeping": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.2,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -60.0,
+          60.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.2,
+        "damage_angle": 0.0,
+        "blow_power": 140.0,
+        "weak_ratio": 0.8
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 450,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.6,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 2.666667,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -65.0,
+          65.0
+        ],
+        "offset": [
+          0.0,
+          -50.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 2.666667,
+        "damage_angle": 0.0,
+        "blow_power": 240.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2
+      },
+      "stamina": 50,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 무기를 크게 두 번 휘둘러 주변의 모든 적에게 피해를 입습니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "휩쓸기": null
+      },
+      "use_range": 250,
+      "hide_when_deactive": false,
+      "cooltime": 32.2,
+      "action_length": 4.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_twohand_smash",
+      "motion": "Twohand_AttackStrong",
+      "prohibited_time": {
+        "0": 4.7,
+        "1": 4.7,
+        "2": 4.7
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_strike": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.6,
+        "rect_half_size": [
+          350,
+          100
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.8,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.5,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.55,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          250.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 1.55,
+        "damage_angle": 0.0,
+        "blow_power": 240.0,
+        "weak_ratio": 0.8
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 37,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 무기의 무게를 더하여 적을 수직으로 내리칩니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "대지강타": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": false,
+      "cooltime": 16.42,
+      "action_length": 4.0,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_twohand_strike",
+      "motion": "Twohand_AttackSwing_Lower",
+      "prohibited_time": {
+        "0": 4.0,
+        "1": 4.0,
+        "2": 4.0
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_default_axe_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.77,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.77,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 9,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.08,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 2.16,
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_axe",
+      "motion": "Twohand_Attack_A",
+      "prohibited_time": {
+        "0": 2.16,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_default_axe_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.95,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.95,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 2
+      },
+      "stamina": 9,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.08,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 2.16,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "twohand_default_axe_a",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_axe",
+      "motion": "Twohand_Attack_B",
+      "prohibited_time": {
+        "0": 2.16,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_default_axe_c": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.75,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.75,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 3
+      },
+      "stamina": 9,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.08,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 2.16,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "twohand_default_axe_b",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_axe",
+      "motion": "Twohand_Attack_C",
+      "prohibited_time": {
+        "0": 2.16,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_smash_axe": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.0,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 400,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.6,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.2,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.25,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -60.0,
+          75.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.25,
+        "damage_angle": 0.0,
+        "blow_power": 150.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 4
+      },
+      "stamina": 35,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "[FFD85B]다음 공격 시[-] 무기를 강하게 휘둘러 공격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "가르기": null
+      },
+      "use_range": 350,
+      "hide_when_deactive": false,
+      "cooltime": 13.53,
+      "action_length": 2.6,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_twohand_dash",
+      "motion": "Twohand_AttackDash",
+      "prohibited_time": {
+        "0": 2.6,
+        "1": 2.6,
+        "2": 2.6
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_sweeping_axe": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.2,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -60.0,
+          60.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.2,
+        "damage_angle": 0.0,
+        "blow_power": 140.0,
+        "weak_ratio": 0.8
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 450,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.6,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 2.666667,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -65.0,
+          65.0
+        ],
+        "offset": [
+          0.0,
+          -50.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 2.666667,
+        "damage_angle": 0.0,
+        "blow_power": 240.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2
+      },
+      "stamina": 59,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 무기를 크게 두 번 휘둘러 주변의 모든 적에게 피해를 입습니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "휩쓸기": null
+      },
+      "use_range": 250,
+      "hide_when_deactive": false,
+      "cooltime": 35.78,
+      "action_length": 4.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_twohand_smash",
+      "motion": "Twohand_AttackStrong",
+      "prohibited_time": {
+        "0": 4.7,
+        "1": 4.7,
+        "2": 4.7
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_strike_axe": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.6,
+        "rect_half_size": [
+          350,
+          100
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.8,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.5,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.55,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          250.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 1.55,
+        "damage_angle": 0.0,
+        "blow_power": 240.0,
+        "weak_ratio": 0.8
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 39,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 무기의 무게를 더하여 적을 수직으로 내리칩니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "대지강타": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": false,
+      "cooltime": 18.25,
+      "action_length": 4.0,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_twohand_strike",
+      "motion": "Twohand_AttackSwing_Lower",
+      "prohibited_time": {
+        "0": 4.0,
+        "1": 4.0,
+        "2": 4.0
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_default_blunt_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.77,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.77,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 9,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.025,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 2.05,
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_blunt",
+      "motion": "Twohand_Attack_A",
+      "prohibited_time": {
+        "0": 2.05,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_default_blunt_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.95,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.95,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 2
+      },
+      "stamina": 9,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.025,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 2.05,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "twohand_default_blunt_a",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_blunt",
+      "motion": "Twohand_Attack_B",
+      "prohibited_time": {
+        "0": 2.05,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_default_blunt_c": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.75,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.75,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 3
+      },
+      "stamina": 9,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.025,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 2.05,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "twohand_default_blunt_b",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_blunt",
+      "motion": "Twohand_Attack_C",
+      "prohibited_time": {
+        "0": 2.05,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_smash_blunt": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.0,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 400,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.6,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.2,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.25,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -60.0,
+          75.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.25,
+        "damage_angle": 0.0,
+        "blow_power": 150.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 4
+      },
+      "stamina": 31,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "[FFD85B]다음 공격 시[-] 무기를 강하게 휘둘러 공격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "가르기": null
+      },
+      "use_range": 350,
+      "hide_when_deactive": false,
+      "cooltime": 13.26,
+      "action_length": 2.6,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_twohand_dash",
+      "motion": "Twohand_AttackDash",
+      "prohibited_time": {
+        "0": 2.6,
+        "1": 2.6,
+        "2": 2.6
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_sweeping_blunt": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 250,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.2,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -60.0,
+          60.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.2,
+        "damage_angle": 0.0,
+        "blow_power": 140.0,
+        "weak_ratio": 0.8
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 450,
+        "damage_type": 1,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.6,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 2.666667,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          -65.0,
+          65.0
+        ],
+        "offset": [
+          0.0,
+          -50.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 2.666667,
+        "damage_angle": 0.0,
+        "blow_power": 240.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2
+      },
+      "stamina": 56,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 무기를 크게 두 번 휘둘러 주변의 모든 적에게 피해를 입습니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "휩쓸기": null
+      },
+      "use_range": 250,
+      "hide_when_deactive": false,
+      "cooltime": 34.0,
+      "action_length": 4.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_twohand_smash",
+      "motion": "Twohand_AttackStrong",
+      "prohibited_time": {
+        "0": 4.7,
+        "1": 4.7,
+        "2": 4.7
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_strike_blunt": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.6,
+        "rect_half_size": [
+          350,
+          100
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.8,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.5,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 0.0,
+          "cut": 1.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.55,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          250.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 1.55,
+        "damage_angle": 0.0,
+        "blow_power": 240.0,
+        "weak_ratio": 0.8
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 35,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 무기의 무게를 더하여 적을 수직으로 내리칩니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "대지강타": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": false,
+      "cooltime": 17.34,
+      "action_length": 4.0,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_twohand_strike",
+      "motion": "Twohand_AttackSwing_Lower",
+      "prohibited_time": {
+        "0": 4.0,
+        "1": 4.0,
+        "2": 4.0
+      }
+    },
+    "defense_info": null
+  },
+  "barehand_default_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.4,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 200,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 5.8,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.6666667,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 0.4,
+        "strong_attack": false,
+        "damage_time": 0.6666667,
+        "damage_angle": 0.0,
+        "blow_power": 80.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 0,
+      "exp_factor": 0.1,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 1.0,
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "weapon_bare_hands",
+      "motion": "Barehand_AttackPunch",
+      "prohibited_time": {
+        "0": 1.0,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "barehand_default_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.4,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 200,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 5.8,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.6,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 0.4,
+        "strong_attack": false,
+        "damage_time": 0.6,
+        "damage_angle": 0.0,
+        "blow_power": 80.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 2
+      },
+      "stamina": 0,
+      "exp_factor": 0.1,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.0,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "barehand_default_a",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "weapon_bare_hands",
+      "motion": "Barehand_Attack_B",
+      "prohibited_time": {
+        "0": 1.0,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "barehand_kick_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 150,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 6.3999999999999995,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 0.8,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.7666666,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 0.8,
+        "strong_attack": true,
+        "damage_time": 0.7666666,
+        "damage_angle": 0.0,
+        "blow_power": 180.0,
+        "weak_ratio": 0.2
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2,
+        "order": 1
+      },
+      "stamina": 20,
+      "exp_factor": 0.5,
+      "skill_category": 2,
+      "description": {
+        "즉시 적을 걷어차 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "발차기": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": false,
+      "cooltime": 6.0,
+      "action_length": 1.2,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_kick",
+      "motion": "Barehand_Attack_Kick_A",
+      "prohibited_time": {
+        "0": 1.2,
+        "1": 1.2,
+        "2": 1.2
+      }
+    },
+    "defense_info": null
+  },
+  "barehand_kick_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 150,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 6.3999999999999995,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 0.8,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.8,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 0.8,
+        "strong_attack": true,
+        "damage_time": 0.8,
+        "damage_angle": 0.0,
+        "blow_power": 180.0,
+        "weak_ratio": 0.2
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2,
+        "order": 2
+      },
+      "stamina": 20,
+      "exp_factor": 0.5,
+      "skill_category": 2,
+      "description": {
+        "즉시 적을 걷어차 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "발차기": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": true,
+      "cooltime": 6.0,
+      "action_length": 1.2,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "barehand_kick_a",
+        "active_type": 0
+      },
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_kick",
+      "motion": "Barehand_Attack_Kick_B",
+      "prohibited_time": {
+        "0": 1.2,
+        "1": 1.2,
+        "2": 1.2
+      }
+    },
+    "defense_info": null
+  },
+  "barehand_dodge": {
+    "attack_info": null,
+    "meta": {
+      "slot": {
+        "id": 0
+      },
+      "stamina": 35,
+      "exp_factor": 2.0,
+      "skill_category": 4,
+      "description": {
+        "집중력을 높여, 적의 공격에 반응합니다. 집중하는 동안 들어오는 모든 공격을 구르면서 [FFD85B]회피[-]합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "구르기": null
+      },
+      "hide_when_deactive": false,
+      "cooltime": 7.0,
+      "action_length": 1.4,
+      "prohibit_type": 2,
+      "battle_action_type": 3,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_evade",
+      "motion": "Onehand_Dodge",
+      "prohibited_time": {
+        "0": 1.4,
+        "1": 1.4,
+        "2": 1.4
+      }
+    },
+    "defense_info": {
+      "active_time": 1.2,
+      "dodge_force": 1.0,
+      "stand_by_time": 0.0
+    }
+  },
+  "barehand_smash": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.8,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 200,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 7.0,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.3,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.85,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.85,
+        "damage_angle": 0.0,
+        "blow_power": 180.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 30,
+      "exp_factor": 0.5,
+      "skill_category": 2,
+      "description": {
+        "다음 공격 시 체중을 실은 주먹으로 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "맨손 강타": null
+      },
+      "use_range": 420,
+      "hide_when_deactive": false,
+      "cooltime": 8.0,
+      "action_length": 1.8,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_barehands_smash",
+      "motion": "Barehand_AttackStrong",
+      "prohibited_time": {
+        "0": 1.8,
+        "1": 1.8,
+        "2": 1.8
+      }
+    },
+    "defense_info": null
+  },
+  "barehand_combination": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.4,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 100,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 5.8000000000000007,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 0.6,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.5,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          50.0
+        ],
+        "accuracy_ratio": 0.8,
+        "mutilate": 0.4,
+        "strong_attack": true,
+        "damage_time": 0.5,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.4
+      },
+      {
+        "frame": 10,
+        "groggy": 0.4,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 100,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 5.8000000000000007,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 0.6,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.2,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          50.0
+        ],
+        "accuracy_ratio": 0.8,
+        "mutilate": 0.4,
+        "strong_attack": true,
+        "damage_time": 1.2,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.4
+      },
+      {
+        "frame": 10,
+        "groggy": 0.4,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 100,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 5.8000000000000007,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 0.6,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.5,
+        "blockable": true,
+        "aggro_base": 5.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          50.0
+        ],
+        "accuracy_ratio": 0.8,
+        "mutilate": 0.4,
+        "strong_attack": true,
+        "damage_time": 1.5,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.4
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 4
+      },
+      "stamina": 40,
+      "exp_factor": 0.5,
+      "skill_category": 2,
+      "description": {
+        "즉시 3연타 공격으로 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "연타": null
+      },
+      "use_range": 200,
+      "hide_when_deactive": false,
+      "cooltime": 12.0,
+      "action_length": 2.7,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_barehand_combination",
+      "motion": "Barehand_Attack_TriplePunch",
+      "prohibited_time": {
+        "0": 2.7,
+        "1": 2.7,
+        "2": 2.7
+      }
+    },
+    "defense_info": null
+  },
+  "melee_tackle": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 5.0,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 300,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 6.0,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 0.2,
+        "atk_ratio": {
+          "impact": 1.0,
+          "pierce": 0.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.6,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          360.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 0.0,
+        "strong_attack": true,
+        "damage_time": 0.6,
+        "damage_angle": 0.0,
+        "blow_power": 360.0,
+        "weak_ratio": 1.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 5
+      },
+      "stamina": 50,
+      "exp_factor": 0.5,
+      "skill_category": 2,
+      "description": {
+        "몸으로 부딪혀 피해를 입힙니다. 상대를 [FFD85B]기절[-]시킬 때 유용합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "몸통박치기": null
+      },
+      "use_range": 500,
+      "hide_when_deactive": false,
+      "cooltime": 16.0,
+      "action_length": 2.0,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_tackle",
+      "motion": "Barehand_Attack_Pursuit",
+      "prohibited_time": {
+        "0": 2.0,
+        "1": 2.0,
+        "2": 2.0
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_lance_default_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 650,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.75,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          -200.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.75,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 7,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.325,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 350,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 1.5899999999999999,
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_lance",
+      "motion": "Lance_Attack_Small",
+      "prohibited_time": {
+        "0": 1.5899999999999999,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_lance_default_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 650,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.6,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          -200.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.6,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 2
+      },
+      "stamina": 7,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.325,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 350,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.5899999999999999,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "twohand_lance_default_a",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_lance",
+      "motion": "Lance_Attack_B",
+      "prohibited_time": {
+        "0": 1.5899999999999999,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_lance_default_c": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.7,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 650,
+        "damage_type": 0,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.0,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.6333333,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          -200.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": false,
+        "damage_time": 0.6333333,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 3
+      },
+      "stamina": 7,
+      "exp_factor": 0.4,
+      "skill_category": 2,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.325,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 350,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.5899999999999999,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "twohand_lance_default_b",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_lance",
+      "motion": "Lance_Attack_C",
+      "prohibited_time": {
+        "0": 1.5899999999999999,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_lance_strike": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 1.0,
+        "rect_half_size": [
+          300,
+          100
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.6,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.2,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.77,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          200.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 0.77,
+        "damage_angle": 0.0,
+        "blow_power": 200.0,
+        "weak_ratio": 0.8
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2
+      },
+      "stamina": 37,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "[FFD85B]다음 공격 시[-] 체중을 실어 적을 찔러 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "장창찌르기": null
+      },
+      "use_range": 400,
+      "hide_when_deactive": false,
+      "cooltime": 12.83,
+      "action_length": 1.6,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_lance_strike",
+      "motion": "Lance_Attack_Deep",
+      "prohibited_time": {
+        "0": 1.6,
+        "1": 1.6,
+        "2": 1.6
+      }
+    },
+    "defense_info": null
+  },
+  "twohand_lance_dash": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          200,
+          100
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.2,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          250.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.2,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.6
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          200,
+          100
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.6,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          250.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 1.6,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.6
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          200,
+          100
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 2.0,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          250.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 2.0,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.6
+      },
+      {
+        "frame": 10,
+        "groggy": 0.6,
+        "rect_half_size": [
+          200,
+          100
+        ],
+        "radius": 0,
+        "damage_type": 2,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.2,
+        "hit_force": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.2,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 2.6,
+        "blockable": true,
+        "aggro_base": 1.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          250.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.6,
+        "strong_attack": true,
+        "damage_time": 2.6,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 50,
+      "exp_factor": 1.6,
+      "skill_category": 2,
+      "description": {
+        "즉시 적에게 돌진하여 공격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "장창돌진": null
+      },
+      "use_range": 900,
+      "hide_when_deactive": false,
+      "cooltime": 32.2,
+      "action_length": 3.0,
+      "prohibit_type": 1,
+      "battle_action_type": 0,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_lance_charge",
+      "motion": "Lance_Attack_Dash",
+      "prohibited_time": {
+        "0": 3.0,
+        "1": 3.0,
+        "2": 3.0
+      }
+    },
+    "defense_info": null
+  },
+  "ranged_bow_default_a": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.3,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 750,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.3,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.15,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 0.75,
+        "mutilate": 1.0,
+        "strong_attack": false,
+        "damage_time": 1.15,
+        "damage_angle": 0.0,
+        "blow_power": 60.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 12,
+      "exp_factor": 0.4,
+      "skill_category": 3,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 0.9,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 1.8,
+      "prohibit_type": 0,
+      "battle_action_type": 1,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_bow",
+      "motion": "Bow_Attack_Shoot",
+      "prohibited_time": {
+        "0": 1.8,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "ranged_bow_default_b": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.3,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 750,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.3,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.02,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 0.75,
+        "mutilate": 1.0,
+        "strong_attack": false,
+        "damage_time": 1.02,
+        "damage_angle": 0.0,
+        "blow_power": 60.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 2
+      },
+      "stamina": 12,
+      "exp_factor": 0.4,
+      "skill_category": 3,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 0.9,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.8,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "ranged_bow_default_a",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 1,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_bow",
+      "motion": "Bow_Attack_Shoot_B",
+      "prohibited_time": {
+        "0": 1.8,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "ranged_bow_default_c": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.3,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 750,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.3,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.95,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 0.75,
+        "mutilate": 1.0,
+        "strong_attack": false,
+        "damage_time": 0.95,
+        "damage_angle": 0.0,
+        "blow_power": 60.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 3
+      },
+      "stamina": 12,
+      "exp_factor": 0.4,
+      "skill_category": 3,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 0.9,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": true,
+      "cooltime": 0.0,
+      "action_length": 1.8,
+      "active_condition": {
+        "duration": 5.0,
+        "value": "ranged_bow_default_b",
+        "active_type": 0
+      },
+      "prohibit_type": 0,
+      "battle_action_type": 1,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_bow",
+      "motion": "Bow_Attack_Shoot_C",
+      "prohibited_time": {
+        "0": 1.8,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "ranged_bow_quickshot": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.5,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 750,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.7,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.7666666,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.7666666,
+        "damage_angle": 0.0,
+        "blow_power": 80.0,
+        "weak_ratio": 0.2
+      },
+      {
+        "frame": 10,
+        "groggy": 0.5,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 700,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.7,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.4,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.0,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 1.4,
+        "damage_angle": 0.0,
+        "blow_power": 80.0,
+        "weak_ratio": 0.2
+      },
+      {
+        "frame": 10,
+        "groggy": 0.5,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 700,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.7,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.22,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 2.1,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.2,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 2.1,
+        "damage_angle": 0.0,
+        "blow_power": 80.0,
+        "weak_ratio": 0.2
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2
+      },
+      "stamina": 34,
+      "exp_factor": 1.6,
+      "skill_category": 3,
+      "description": {
+        "즉시 화살 3개를 연속으로 사격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "연속사격": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": false,
+      "cooltime": 14.7,
+      "action_length": 2.8,
+      "prohibit_type": 1,
+      "battle_action_type": 1,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_quickshot",
+      "motion": "Bow_Attack_Fast",
+      "prohibited_time": {
+        "0": 2.8,
+        "1": 2.8,
+        "2": 2.8
+      }
+    },
+    "defense_info": null
+  },
+  "ranged_bow_aimedshot": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.5,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 800,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.5,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 2.55,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.2,
+        "mutilate": 1.0,
+        "strong_attack": true,
+        "damage_time": 2.55,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 52,
+      "exp_factor": 1.6,
+      "skill_category": 3,
+      "description": {
+        "정교하게 조준한 뒤 강하게 사격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "조준사격": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": false,
+      "cooltime": 49.5,
+      "action_length": 3.3,
+      "prohibit_type": 1,
+      "battle_action_type": 1,
+      "casting_bar": [
+        0.8,
+        2.4
+      ],
+      "icon": "action_aimedshot",
+      "motion": "Bow_Attack_AimedShot",
+      "prohibited_time": {
+        "0": 3.3,
+        "1": 3.3,
+        "2": 3.3
+      }
+    },
+    "defense_info": null
+  },
+  "ranged_crossbow_default": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.3,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 750,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.3,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.2,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 0.8,
+        "mutilate": 1.0,
+        "strong_attack": false,
+        "damage_time": 0.2,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.0
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 1,
+        "order": 1
+      },
+      "stamina": 12,
+      "exp_factor": 0.4,
+      "skill_category": 3,
+      "description": {
+        "적을 가격해 피해를 입힙니다.": null
+      },
+      "playback_rate_modifier": 0.9,
+      "tags": [],
+      "name": {
+        "일반공격": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": false,
+      "cooltime": 0.0,
+      "action_length": 1.8,
+      "prohibit_type": 0,
+      "battle_action_type": 1,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_attack_crossbow",
+      "motion": "Crossbow_Attack_Shoot",
+      "prohibited_time": {
+        "0": 1.8,
+        "1": 0.3,
+        "2": 0.3
+      }
+    },
+    "defense_info": null
+  },
+  "ranged_crossbow_quickshot": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.5,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 750,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.7,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.21,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.2,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.21,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.2
+      },
+      {
+        "frame": 10,
+        "groggy": 0.5,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 750,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.7,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.0,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 0.85,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.2,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 0.85,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.2
+      },
+      {
+        "frame": 10,
+        "groggy": 0.5,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 750,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.7,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 1.22,
+        "atk_ratio": {
+          "impact": 0.2,
+          "pierce": 0.8,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.46,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.2,
+        "mutilate": 1.2,
+        "strong_attack": true,
+        "damage_time": 1.46,
+        "damage_angle": 0.0,
+        "blow_power": 100.0,
+        "weak_ratio": 0.2
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 2
+      },
+      "stamina": 34,
+      "exp_factor": 1.6,
+      "skill_category": 3,
+      "description": {
+        "즉시 화살 3개를 연속으로 사격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "연속사격": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": false,
+      "cooltime": 14.7,
+      "action_length": 3.1,
+      "prohibit_type": 1,
+      "battle_action_type": 1,
+      "casting_bar": [
+        0.0,
+        0.0
+      ],
+      "icon": "action_quickshot",
+      "motion": "CrossBow_Attack_Fast",
+      "prohibited_time": {
+        "0": 3.1,
+        "1": 3.1,
+        "2": 3.1
+      }
+    },
+    "defense_info": null
+  },
+  "ranged_crossbow_aimedshot": {
+    "attack_info": [
+      {
+        "frame": 10,
+        "groggy": 0.5,
+        "rect_half_size": [
+          0,
+          0
+        ],
+        "radius": 800,
+        "damage_type": 3,
+        "armor_penetration": 0.0,
+        "aggro_ratio": 3.5,
+        "hit_force": false,
+        "use_target_origin": false,
+        "knock_back_force": 0.0,
+        "damage_bonus": 2.1,
+        "atk_ratio": {
+          "impact": 0.0,
+          "pierce": 1.0,
+          "cut": 0.0
+        },
+        "taunt": 0.0,
+        "attack_time": 1.77,
+        "blockable": true,
+        "aggro_base": 2.0,
+        "angles": [
+          0.0,
+          0.0
+        ],
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "accuracy_ratio": 1.2,
+        "mutilate": 1.0,
+        "strong_attack": true,
+        "damage_time": 1.77,
+        "damage_angle": 0.0,
+        "blow_power": 120.0,
+        "weak_ratio": 0.6
+      }
+    ],
+    "meta": {
+      "slot": {
+        "id": 3
+      },
+      "stamina": 52,
+      "exp_factor": 1.6,
+      "skill_category": 3,
+      "description": {
+        "정교하게 조준한 뒤 강하게 사격합니다.": null
+      },
+      "playback_rate_modifier": 1.0,
+      "tags": [],
+      "name": {
+        "조준사격": null
+      },
+      "use_range": 750,
+      "hide_when_deactive": false,
+      "cooltime": 49.5,
+      "action_length": 4.4,
+      "prohibit_type": 1,
+      "battle_action_type": 1,
+      "casting_bar": [
+        0.0,
+        1.65
+      ],
+      "icon": "action_aimedshot",
+      "motion": "Crossbow_Attack_AimedShot",
+      "prohibited_time": {
+        "0": 4.4,
+        "1": 4.4,
+        "2": 4.4
+      }
+    },
+    "defense_info": null
+  }
+}

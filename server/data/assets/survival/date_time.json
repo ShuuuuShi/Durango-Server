@@ -1,0 +1,26 @@
+{
+  "default": {
+    "animal_time_lag": 120,
+    "sunset": [
+      19,
+      21
+    ],
+    "sunrise": [
+      6,
+      8
+    ],
+    "daytime": 2880
+  },
+  "season_02": {
+    "animal_time_lag": 120,
+    "sunset": [
+      21,
+      22
+    ],
+    "sunrise": [
+      4,
+      6
+    ],
+    "daytime": 204
+  }
+}

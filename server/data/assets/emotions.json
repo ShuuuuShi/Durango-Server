@@ -1,0 +1,1050 @@
+{
+  "motions": {
+    "heart": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "사랑해": null
+      },
+      "motion_names": [
+        "Emotion_Heart"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "fashion": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "패션모델 1번": null
+      },
+      "motion_names": [
+        "Emotion_Fashionking_A"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "sit3": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "편히 앉기": null
+      },
+      "motion_names": [
+        "Barehand_Sit_C"
+      ],
+      "free": true,
+      "tier": 2
+    },
+    "santa": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "눈이 내려요": null
+      },
+      "motion_names": [
+        "Emotion_Santa"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "fright": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "놀람": null
+      },
+      "motion_names": [
+        "Emotion_Fright"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "cheerup": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "옳소!": null
+      },
+      "motion_names": [
+        "Emotion_Cheerup_A"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "thumbup": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "킹왕짱": null
+      },
+      "motion_names": [
+        "Emotion_Thumbup1"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "flatter": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "좀 봐주세요": null
+      },
+      "motion_names": [
+        "Emotion_Flatter"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "dance_sway": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "휘두르기 춤": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Sway"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "dance6": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "셔플 춤": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Yajae"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "sad": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "슬픔": null
+      },
+      "motion_names": [
+        "Avatar_Crying"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "school3": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "고민이 많은 나이": null
+      },
+      "motion_names": [
+        "Emotion_School_C"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "ceremony_e": {
+      "available": false,
+      "payback_mileage": 2,
+      "name": {
+        "엉덩이춤 세리머니": null
+      },
+      "motion_names": [
+        "Emotion_Ceremony_E"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "anger": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "분노": null
+      },
+      "motion_names": [
+        "Emotion_Anger"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "school2": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "언제 오지?": null
+      },
+      "motion_names": [
+        "Emotion_School_B"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "welcome_b": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "어서옵쇼": null
+      },
+      "motion_names": [
+        "Emotion_Welcome_B"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "fear": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "두려움": null
+      },
+      "motion_names": [
+        "Emotion_Fear"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "dance_pray": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "벼락 기원": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Pray"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "school4": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "질풍노도": null
+      },
+      "motion_names": [
+        "Emotion_School_D"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "ginyu4": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "특전대 옐로": null
+      },
+      "motion_names": [
+        "Emotion_Ginyu_D"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "ginyu5": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "특전대 핑크": null
+      },
+      "motion_names": [
+        "Emotion_Ginyu_E"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "ginyu2": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "특전대 블루": null
+      },
+      "motion_names": [
+        "Emotion_Ginyu_B"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "ginyu3": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "특전대 블랙": null
+      },
+      "motion_names": [
+        "Emotion_Ginyu_C"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "no": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "아냐아냐": null
+      },
+      "motion_names": [
+        "Emotion_NO"
+      ],
+      "free": true,
+      "tier": 2
+    },
+    "spring_picnic": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "봄꽃이 내려요": null
+      },
+      "motion_names": [
+        "Emotion_Springwear"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "cheerup_d": {
+      "available": false,
+      "payback_mileage": 5,
+      "name": {
+        "승리의 치어리딩": null
+      },
+      "motion_names": [
+        "Emotion_Cheerup_D"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "dino": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "공룡 흉내": null
+      },
+      "motion_names": [
+        "Emotion_Dino"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "dance11": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "라킹 춤": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Locking_B"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "dance10": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "라킹 무브": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Locking_A"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "disgust": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "역겨움": null
+      },
+      "motion_names": [
+        "Emotion_Disgust"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "dance12": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "라킹 스텝": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Locking_C"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "heart2": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "사랑의 총알": null
+      },
+      "motion_names": [
+        "Emotion_Heart2"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "cheerup2": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "옳고말고!": null
+      },
+      "motion_names": [
+        "Emotion_Cheerup_B"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "cheerup3": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "헤드뱅잉": null
+      },
+      "motion_names": [
+        "Emotion_Cheerup_C"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "power3": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "보디빌더 3번": null
+      },
+      "motion_names": [
+        "Emotion_Bodybuilder_C"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "thumbdown": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "죽여버려": null
+      },
+      "motion_names": [
+        "Emotion_Thumbdown"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "ginyu": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "특전대 레드": null
+      },
+      "motion_names": [
+        "Emotion_Ginyu_A"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "spray_money": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "돈이다 돈 히힛!": null
+      },
+      "motion_names": [
+        "Emotion_Money"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "power2": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "보디빌더 2번": null
+      },
+      "motion_names": [
+        "Emotion_Bodybuilder_B"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "welcome": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "화려한 인사": null
+      },
+      "motion_names": [
+        "Emotion_Welcome_A"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "fashion2": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "패션모델 2번": null
+      },
+      "motion_names": [
+        "Emotion_Fashionking_B"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "power": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "보디빌더 1번": null
+      },
+      "motion_names": [
+        "Emotion_Bodybuilder_A"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "joy": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "즐거움": null
+      },
+      "motion_names": [
+        "Emotion_Joy"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "spoiled_child": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "아아 싫어싫어": null
+      },
+      "motion_names": [
+        "Emotion_Spoiled_Child"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "fashion3": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "패션모델 3번": null
+      },
+      "motion_names": [
+        "Emotion_Fashionking_C"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "dance3": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "얼쑤 좋구나": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Ulsoo"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "ttaemiri": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "때밀이 춤": null
+      },
+      "motion_names": [
+        "Emotion_Ttaemiri"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "witch": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "마녀의 유혹": null
+      },
+      "motion_names": [
+        "Emotion_Witch"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "dance_tribe": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "부족 춤": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Hula"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "dance7": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "호팍 앞스텝": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Russian"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "thumbup2": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "짱이야": null
+      },
+      "motion_names": [
+        "Emotion_Thumbup2"
+      ],
+      "free": false,
+      "tier": 2
+    },
+    "dance9": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "태국 춤": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Thailand"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "dance8": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "호팍 옆스텝": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Russian_Side"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "sit2": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "반쯤 눕기": null
+      },
+      "motion_names": [
+        "Barehand_Sit_B"
+      ],
+      "free": true,
+      "tier": 2
+    },
+    "ceremony_d": {
+      "available": false,
+      "payback_mileage": 2,
+      "name": {
+        "권투 세리머니": null
+      },
+      "motion_names": [
+        "Emotion_Ceremony_D"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "ceremony_c": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "요람 세리머니": null
+      },
+      "motion_names": [
+        "Emotion_Ceremony_C"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "ceremony_b": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "기쁨의 웨이브 춤": null
+      },
+      "motion_names": [
+        "Emotion_Ceremony_B"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "ceremony_a": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "골 세리머니": null
+      },
+      "motion_names": [
+        "Emotion_Ceremony_A"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "dance_flap": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "꼬꼬댁 춤": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Flap"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "ok": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "알았다": null
+      },
+      "motion_names": [
+        "Emotion_OK"
+      ],
+      "free": true,
+      "tier": 2
+    },
+    "dance2": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "삼바": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Samba"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "boring": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "아, 언제와": null
+      },
+      "motion_names": [
+        "Emotion_Boring"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "school1": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "필기는 기본": null
+      },
+      "motion_names": [
+        "Emotion_School_A"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "sit": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "양반다리": null
+      },
+      "motion_names": [
+        "Barehand_Sit_A"
+      ],
+      "free": true,
+      "tier": 2
+    },
+    "bow": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "절 받으세요": null
+      },
+      "motion_names": [
+        "Emotion_Bow"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "Alien": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "준비운동": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Alien"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "despair": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "꺼이꺼이": null
+      },
+      "motion_names": [
+        "Emotion_Despair"
+      ],
+      "free": false,
+      "tier": 1
+    },
+    "afterschool": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "방과 후 내 기분": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Onana"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "clap": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "박수": null
+      },
+      "motion_names": [
+        "Emotion_Clap"
+      ],
+      "free": true,
+      "tier": 2
+    },
+    "dance": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "바운스 춤": null
+      },
+      "motion_names": [
+        "Emotion_Dance_Groove"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "headache": {
+      "available": true,
+      "payback_mileage": 5,
+      "name": {
+        "비오는날 두통": null
+      },
+      "motion_names": [
+        "Emotion_Headache"
+      ],
+      "free": false,
+      "tier": 0
+    },
+    "dance5": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "골반 춤": null
+      },
+      "motion_names": [
+        "Barehand_DanceB"
+      ],
+      "free": true,
+      "tier": 2
+    },
+    "dance4": {
+      "available": true,
+      "payback_mileage": 2,
+      "name": {
+        "두구두구 춤": null
+      },
+      "motion_names": [
+        "Barehand_DanceA"
+      ],
+      "free": true,
+      "tier": 2
+    }
+  },
+  "emoticons": [
+    {
+      "default": true,
+      "sound": "Sound/Effect/emo_smile.wav",
+      "id": "smile",
+      "free": true,
+      "icon": "emoticon_001"
+    },
+    {
+      "default": true,
+      "sound": "Sound/Effect/emo_wink.wav",
+      "id": "wink",
+      "free": true,
+      "icon": "emoticon_002"
+    },
+    {
+      "default": true,
+      "sound": "Sound/Effect/emo_surprise.wav",
+      "id": "surprise",
+      "free": true,
+      "icon": "emoticon_003"
+    },
+    {
+      "default": true,
+      "sound": "Sound/Effect/emo_love.wav",
+      "id": "love",
+      "free": true,
+      "icon": "emoticon_004"
+    },
+    {
+      "default": true,
+      "sound": "Sound/Effect/emo_angry.wav",
+      "id": "sad",
+      "free": true,
+      "icon": "emoticon_005"
+    },
+    {
+      "default": true,
+      "sound": "Sound/Effect/emo_angry.wav",
+      "id": "angry",
+      "free": true,
+      "icon": "emoticon_006"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_wink.wav",
+      "id": "up",
+      "free": true,
+      "icon": "emoticon_007"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_wink.wav",
+      "id": "down",
+      "free": true,
+      "icon": "emoticon_008"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_wink.wav",
+      "id": "left",
+      "free": true,
+      "icon": "emoticon_009"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_wink.wav",
+      "id": "right",
+      "free": true,
+      "icon": "emoticon_010"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_wink.wav",
+      "id": "left_up",
+      "free": true,
+      "icon": "emoticon_011"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_wink.wav",
+      "id": "right_up",
+      "free": true,
+      "icon": "emoticon_012"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_wink.wav",
+      "id": "left_down",
+      "free": true,
+      "icon": "emoticon_013"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_wink.wav",
+      "id": "right_down",
+      "free": true,
+      "icon": "emoticon_014"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_smile.wav",
+      "id": "ok",
+      "free": true,
+      "icon": "emoticon_015"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_angry.wav",
+      "id": "no",
+      "free": true,
+      "icon": "emoticon_016"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_surprise.wav",
+      "id": "sos",
+      "free": true,
+      "icon": "emoticon_017"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_surprise.wav",
+      "id": "danger",
+      "free": true,
+      "icon": "emoticon_018"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_smile.wav",
+      "id": "peace",
+      "free": true,
+      "icon": "emoticon_019"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_angry.wav",
+      "id": "go_away",
+      "free": true,
+      "icon": "emoticon_020"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_smile.wav",
+      "id": "heart",
+      "free": true,
+      "icon": "emoticon_021"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_angry.wav",
+      "id": "broken_heart",
+      "free": true,
+      "icon": "emoticon_022"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_angry.wav",
+      "id": "dislike",
+      "free": true,
+      "icon": "emoticon_023"
+    },
+    {
+      "default": false,
+      "sound": "Sound/Effect/emo_smile.wav",
+      "id": "like",
+      "free": true,
+      "icon": "emoticon_024"
+    }
+  ]
+}

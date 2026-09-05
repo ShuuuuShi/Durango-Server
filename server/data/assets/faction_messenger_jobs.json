@@ -1,0 +1,140 @@
+{
+  "1": {
+    "portrait": "todo_icon_npc_ChlorophylForum",
+    "name": {
+      "리우": null
+    }
+  },
+  "6": {
+    "portrait": "todo_icon_npc_rodriguez",
+    "name": {
+      "로드리게즈": null
+    }
+  },
+  "9": {
+    "portrait": "todo_icon_npc_zein",
+    "name": {
+      "자인": null
+    }
+  },
+  "7": {
+    "portrait": "todo_icon_npc_sawarat",
+    "name": {
+      "사와라트": null
+    }
+  },
+  "8": {
+    "portrait": "todo_icon_npc_mccain",
+    "name": {
+      "매케인": null
+    }
+  },
+  "2": {
+    "portrait": "todo_icon_npc_ChamberOfPioneer",
+    "name": {
+      "노왁": null
+    }
+  },
+  "17": {
+    "portrait": "todo_icon_npc_hauata",
+    "name": {
+      "하우아타": null
+    }
+  },
+  "18": {
+    "portrait": "todo_icon_npc_maki",
+    "name": {
+      "마키": null
+    }
+  },
+  "19": {
+    "portrait": "todo_icon_npc_josipovic",
+    "name": {
+      "요시포비치": null
+    }
+  },
+  "3": {
+    "portrait": "todo_icon_npc_TheFirm",
+    "name": {
+      "K": null
+    }
+  },
+  "10": {
+    "portrait": "todo_icon_npc_pia",
+    "name": {
+      "피아": null
+    }
+  },
+  "11": {
+    "portrait": "todo_icon_npc_e",
+    "name": {
+      "E": null
+    }
+  },
+  "12": {
+    "portrait": "todo_icon_npc_f",
+    "name": {
+      "F": null
+    }
+  },
+  "13": {
+    "portrait": "todo_icon_npc_g",
+    "name": {
+      "G": null
+    }
+  },
+  "4": {
+    "portrait": "todo_icon_npc_TheCommittee",
+    "name": {
+      "X": null
+    }
+  },
+  "14": {
+    "portrait": "todo_icon_npc__924s",
+    "name": {
+      "924소위원회": null
+    }
+  },
+  "16": {
+    "portrait": "todo_icon_npc__415s",
+    "name": {
+      "415소위원회": null
+    }
+  },
+  "15": {
+    "portrait": "todo_icon_npc__628s",
+    "name": {
+      "628소위원회": null
+    }
+  },
+  "5": {
+    "portrait": "todo_icon_npc_Lama",
+    "name": {
+      "닥터 라마": null
+    }
+  },
+  "20": {
+    "portrait": "todo_icon_npc_Optimistic",
+    "name": {
+      "찰리": null
+    }
+  },
+  "21": {
+    "portrait": "todo_icon_npc_agent",
+    "name": {
+      "D383": null
+    }
+  },
+  "22": {
+    "portrait": "",
+    "name": {
+      "x의 편지": null
+    }
+  },
+  "23": {
+    "portrait": "todo_icon_walkie",
+    "name": {
+      "개인 무전": null
+    }
+  }
+}

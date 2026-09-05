@@ -1,0 +1,1808 @@
+{
+  "training_01": {
+    "name": {
+      "훈련 Lv.1": null
+    },
+    "hungry_required": 150.0,
+    "exp": 100,
+    "unlock_level": 1,
+    "duration": 3600,
+    "type": 1,
+    "icon": "pet_training_01"
+  },
+  "training_02": {
+    "name": {
+      "훈련 Lv.2": null
+    },
+    "hungry_required": 170.0,
+    "exp": 270,
+    "unlock_level": 10,
+    "duration": 7200,
+    "type": 1,
+    "icon": "pet_training_01"
+  },
+  "training_03": {
+    "name": {
+      "훈련 Lv.3": null
+    },
+    "hungry_required": 190.0,
+    "exp": 700,
+    "unlock_level": 20,
+    "duration": 14400,
+    "type": 1,
+    "icon": "pet_training_01"
+  },
+  "training_04": {
+    "name": {
+      "훈련 Lv.4": null
+    },
+    "hungry_required": 270.0,
+    "exp": 2700,
+    "unlock_level": 30,
+    "duration": 28800,
+    "type": 1,
+    "icon": "pet_training_01"
+  },
+  "training_05": {
+    "name": {
+      "훈련 Lv.5": null
+    },
+    "hungry_required": 460.0,
+    "exp": 9700,
+    "unlock_level": 40,
+    "duration": 36000,
+    "type": 1,
+    "icon": "pet_training_01"
+  },
+  "training_06": {
+    "name": {
+      "훈련 Lv.6": null
+    },
+    "hungry_required": 590.0,
+    "exp": 38000,
+    "unlock_level": 50,
+    "duration": 43200,
+    "type": 1,
+    "icon": "pet_training_01"
+  },
+  "production_mammal_01": {
+    "name": {
+      "생산 Lv.1": null
+    },
+    "animal_by_product": "mammal",
+    "product_quantity": "int(animal_product_quantity * 1.0)",
+    "hungry_required": 150.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "milk": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.09,
+    "unlock_level": 1,
+    "duration": 3600,
+    "exp": 40,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_02": {
+    "name": {
+      "생산 Lv.2": null
+    },
+    "animal_by_product": "mammal",
+    "product_quantity": "int(animal_product_quantity * (5.0/3))",
+    "hungry_required": 170.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "milk": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.11,
+    "unlock_level": 10,
+    "duration": 7200,
+    "exp": 110,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_03": {
+    "name": {
+      "생산 Lv.3": null
+    },
+    "animal_by_product": "mammal",
+    "product_quantity": "int(animal_product_quantity * (7.0/3))",
+    "hungry_required": 190.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "milk": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.13,
+    "unlock_level": 20,
+    "duration": 14400,
+    "exp": 290,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_04": {
+    "name": {
+      "생산 Lv.4": null
+    },
+    "animal_by_product": "mammal",
+    "product_quantity": "int(animal_product_quantity * (10.0/3))",
+    "hungry_required": 270.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "milk": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.15,
+    "unlock_level": 30,
+    "duration": 28800,
+    "exp": 1100,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_05": {
+    "name": {
+      "생산 Lv.5": null
+    },
+    "animal_by_product": "mammal",
+    "product_quantity": "int(animal_product_quantity * (14.0/3))",
+    "hungry_required": 460.0,
+    "random_prototype_count": 2,
+    "produced_prototype": {
+      "milk": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 40,
+    "duration": 36000,
+    "exp": 3900,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_06": {
+    "name": {
+      "생산 Lv.6": null
+    },
+    "animal_by_product": "mammal",
+    "product_quantity": "int(animal_product_quantity * (18.0/3))",
+    "hungry_required": 590.0,
+    "random_prototype_count": 2,
+    "produced_prototype": {
+      "milk": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 50,
+    "duration": 43200,
+    "exp": 15000,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_default_01": {
+    "name": {
+      "생산 Lv.1": null
+    },
+    "animal_by_product": "default",
+    "product_quantity": "int(animal_product_quantity * 1.0)",
+    "hungry_required": 150.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.09,
+    "unlock_level": 1,
+    "duration": 3600,
+    "exp": 40,
+    "random_prototype": {
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_default_02": {
+    "name": {
+      "생산 Lv.2": null
+    },
+    "animal_by_product": "default",
+    "product_quantity": "int(animal_product_quantity * (5.0/3))",
+    "hungry_required": 170.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.11,
+    "unlock_level": 10,
+    "duration": 7200,
+    "exp": 110,
+    "random_prototype": {
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_default_03": {
+    "name": {
+      "생산 Lv.3": null
+    },
+    "animal_by_product": "default",
+    "product_quantity": "int(animal_product_quantity * (7.0/3))",
+    "hungry_required": 190.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.13,
+    "unlock_level": 20,
+    "duration": 14400,
+    "exp": 290,
+    "random_prototype": {
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_default_04": {
+    "name": {
+      "생산 Lv.4": null
+    },
+    "animal_by_product": "default",
+    "product_quantity": "int(animal_product_quantity * (10.0/3))",
+    "hungry_required": 270.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.15,
+    "unlock_level": 30,
+    "duration": 28800,
+    "exp": 1100,
+    "random_prototype": {
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_default_05": {
+    "name": {
+      "생산 Lv.5": null
+    },
+    "animal_by_product": "default",
+    "product_quantity": "int(animal_product_quantity * (14.0/3))",
+    "hungry_required": 460.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 40,
+    "duration": 36000,
+    "exp": 3900,
+    "random_prototype": {
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_default_06": {
+    "name": {
+      "생산 Lv.6": null
+    },
+    "animal_by_product": "default",
+    "product_quantity": "int(animal_product_quantity * (18.0/3))",
+    "hungry_required": 590.0,
+    "random_prototype_count": 2,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 50,
+    "duration": 43200,
+    "exp": 15000,
+    "random_prototype": {
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_feather_01": {
+    "name": {
+      "생산 Lv.1": null
+    },
+    "animal_by_product": "feather",
+    "product_quantity": "int(animal_product_quantity * 1.0)",
+    "hungry_required": 150.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "feather": [
+        20.0,
+        -1
+      ],
+      "egg": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.09,
+    "unlock_level": 1,
+    "duration": 3600,
+    "exp": 40,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_feather_02": {
+    "name": {
+      "생산 Lv.2": null
+    },
+    "animal_by_product": "feather",
+    "product_quantity": "int(animal_product_quantity * (5.0/3))",
+    "hungry_required": 170.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "feather": [
+        20.0,
+        -1
+      ],
+      "egg": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.11,
+    "unlock_level": 10,
+    "duration": 7200,
+    "exp": 110,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_feather_03": {
+    "name": {
+      "생산 Lv.3": null
+    },
+    "animal_by_product": "feather",
+    "product_quantity": "int(animal_product_quantity * (7.0/3))",
+    "hungry_required": 190.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "feather": [
+        20.0,
+        -1
+      ],
+      "egg": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.13,
+    "unlock_level": 20,
+    "duration": 14400,
+    "exp": 290,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_feather_04": {
+    "name": {
+      "생산 Lv.4": null
+    },
+    "animal_by_product": "feather",
+    "product_quantity": "int(animal_product_quantity * (10.0/3))",
+    "hungry_required": 270.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "feather": [
+        20.0,
+        -1
+      ],
+      "egg": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.15,
+    "unlock_level": 30,
+    "duration": 28800,
+    "exp": 1100,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_feather_05": {
+    "name": {
+      "생산 Lv.5": null
+    },
+    "animal_by_product": "feather",
+    "product_quantity": "int(animal_product_quantity * (14.0/3))",
+    "hungry_required": 460.0,
+    "random_prototype_count": 2,
+    "produced_prototype": {
+      "feather": [
+        20.0,
+        -1
+      ],
+      "egg": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 40,
+    "duration": 36000,
+    "exp": 3900,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_feather_06": {
+    "name": {
+      "생산 Lv.6": null
+    },
+    "animal_by_product": "feather",
+    "product_quantity": "int(animal_product_quantity * (18.0/3))",
+    "hungry_required": 590.0,
+    "random_prototype_count": 2,
+    "produced_prototype": {
+      "feather": [
+        20.0,
+        -1
+      ],
+      "egg": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        50.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 50,
+    "duration": 43200,
+    "exp": 15000,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_no_milk_01": {
+    "name": {
+      "생산 Lv.1": null
+    },
+    "animal_by_product": "mammal_no_milk",
+    "product_quantity": "int(animal_product_quantity * 1.0)",
+    "hungry_required": 150.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.09,
+    "unlock_level": 1,
+    "duration": 3600,
+    "exp": 40,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_no_milk_02": {
+    "name": {
+      "생산 Lv.2": null
+    },
+    "animal_by_product": "mammal_no_milk",
+    "product_quantity": "int(animal_product_quantity * (5.0/3))",
+    "hungry_required": 170.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.11,
+    "unlock_level": 10,
+    "duration": 7200,
+    "exp": 110,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_no_milk_03": {
+    "name": {
+      "생산 Lv.3": null
+    },
+    "animal_by_product": "mammal_no_milk",
+    "product_quantity": "int(animal_product_quantity * (7.0/3))",
+    "hungry_required": 190.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.13,
+    "unlock_level": 20,
+    "duration": 14400,
+    "exp": 290,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_no_milk_04": {
+    "name": {
+      "생산 Lv.4": null
+    },
+    "animal_by_product": "mammal_no_milk",
+    "product_quantity": "int(animal_product_quantity * (10.0/3))",
+    "hungry_required": 270.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.15,
+    "unlock_level": 30,
+    "duration": 28800,
+    "exp": 1100,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_no_milk_05": {
+    "name": {
+      "생산 Lv.5": null
+    },
+    "animal_by_product": "mammal_no_milk",
+    "product_quantity": "int(animal_product_quantity * (14.0/3))",
+    "hungry_required": 460.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 40,
+    "duration": 36000,
+    "exp": 3900,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_no_milk_06": {
+    "name": {
+      "생산 Lv.6": null
+    },
+    "animal_by_product": "mammal_no_milk",
+    "product_quantity": "int(animal_product_quantity * (18.0/3))",
+    "hungry_required": 590.0,
+    "random_prototype_count": 2,
+    "produced_prototype": {
+      "dump": [
+        100.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 50,
+    "duration": 43200,
+    "exp": 15000,
+    "random_prototype": {
+      "money_coin": [
+        10.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_honey_01": {
+    "name": {
+      "생산 Lv.1": null
+    },
+    "animal_by_product": "mammal_honey",
+    "product_quantity": "int(animal_product_quantity * 1.0)",
+    "hungry_required": 150.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "honey": [
+        50.0,
+        -1
+      ],
+      "milk": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.09,
+    "unlock_level": 1,
+    "duration": 3600,
+    "exp": 40,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_honey_02": {
+    "name": {
+      "생산 Lv.2": null
+    },
+    "animal_by_product": "mammal_honey",
+    "product_quantity": "int(animal_product_quantity * (5.0/3))",
+    "hungry_required": 170.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "honey": [
+        50.0,
+        -1
+      ],
+      "milk": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.11,
+    "unlock_level": 10,
+    "duration": 7200,
+    "exp": 110,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_honey_03": {
+    "name": {
+      "생산 Lv.3": null
+    },
+    "animal_by_product": "mammal_honey",
+    "product_quantity": "int(animal_product_quantity * (7.0/3))",
+    "hungry_required": 190.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "honey": [
+        50.0,
+        -1
+      ],
+      "milk": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.13,
+    "unlock_level": 20,
+    "duration": 14400,
+    "exp": 290,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_honey_04": {
+    "name": {
+      "생산 Lv.4": null
+    },
+    "animal_by_product": "mammal_honey",
+    "product_quantity": "int(animal_product_quantity * (10.0/3))",
+    "hungry_required": 270.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "honey": [
+        50.0,
+        -1
+      ],
+      "milk": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.15,
+    "unlock_level": 30,
+    "duration": 28800,
+    "exp": 1100,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_honey_05": {
+    "name": {
+      "생산 Lv.5": null
+    },
+    "animal_by_product": "mammal_honey",
+    "product_quantity": "int(animal_product_quantity * (14.0/3))",
+    "hungry_required": 460.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "honey": [
+        50.0,
+        -1
+      ],
+      "milk": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 40,
+    "duration": 36000,
+    "exp": 3900,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_honey_06": {
+    "name": {
+      "생산 Lv.6": null
+    },
+    "animal_by_product": "mammal_honey",
+    "product_quantity": "int(animal_product_quantity * (18.0/3))",
+    "hungry_required": 590.0,
+    "random_prototype_count": 2,
+    "produced_prototype": {
+      "honey": [
+        50.0,
+        -1
+      ],
+      "milk": [
+        30.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 50,
+    "duration": 43200,
+    "exp": 15000,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_water_01": {
+    "name": {
+      "생산 Lv.1": null
+    },
+    "animal_by_product": "mammal_water",
+    "product_quantity": "int(animal_product_quantity * 1.0)",
+    "hungry_required": 150.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "water": [
+        30.0,
+        -1
+      ],
+      "clam_product": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.09,
+    "unlock_level": 1,
+    "duration": 3600,
+    "exp": 40,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_water_02": {
+    "name": {
+      "생산 Lv.2": null
+    },
+    "animal_by_product": "mammal_water",
+    "product_quantity": "int(animal_product_quantity * (5.0/3))",
+    "hungry_required": 170.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "water": [
+        30.0,
+        -1
+      ],
+      "clam_product": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.11,
+    "unlock_level": 10,
+    "duration": 7200,
+    "exp": 110,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_water_03": {
+    "name": {
+      "생산 Lv.3": null
+    },
+    "animal_by_product": "mammal_water",
+    "product_quantity": "int(animal_product_quantity * (7.0/3))",
+    "hungry_required": 190.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "water": [
+        30.0,
+        -1
+      ],
+      "clam_product": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.13,
+    "unlock_level": 20,
+    "duration": 14400,
+    "exp": 290,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_water_04": {
+    "name": {
+      "생산 Lv.4": null
+    },
+    "animal_by_product": "mammal_water",
+    "product_quantity": "int(animal_product_quantity * (10.0/3))",
+    "hungry_required": 270.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "water": [
+        30.0,
+        -1
+      ],
+      "clam_product": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.15,
+    "unlock_level": 30,
+    "duration": 28800,
+    "exp": 1100,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_water_05": {
+    "name": {
+      "생산 Lv.5": null
+    },
+    "animal_by_product": "mammal_water",
+    "product_quantity": "int(animal_product_quantity * (14.0/3))",
+    "hungry_required": 460.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "water": [
+        30.0,
+        -1
+      ],
+      "clam_product": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 40,
+    "duration": 36000,
+    "exp": 3900,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "production_mammal_water_06": {
+    "name": {
+      "생산 Lv.6": null
+    },
+    "animal_by_product": "mammal_water",
+    "product_quantity": "int(animal_product_quantity * (18.0/3))",
+    "hungry_required": 590.0,
+    "random_prototype_count": 2,
+    "produced_prototype": {
+      "water": [
+        30.0,
+        -1
+      ],
+      "clam_product": [
+        50.0,
+        -1
+      ],
+      "dump": [
+        20.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 50,
+    "duration": 43200,
+    "exp": 15000,
+    "random_prototype": {
+      "money_coin": [
+        5.0,
+        -1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "iguana_01": {
+    "name": {
+      "생산 Lv.1": null
+    },
+    "animal_by_product": "iguana",
+    "product_quantity": "int(animal_product_quantity * 1.0)",
+    "hungry_required": 150.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "scale_iguana_scaled": [
+        10.0,
+        2
+      ],
+      "dump": [
+        90.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.09,
+    "unlock_level": 1,
+    "duration": 3600,
+    "exp": 40,
+    "random_prototype": {
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "iguana_02": {
+    "name": {
+      "생산 Lv.2": null
+    },
+    "animal_by_product": "iguana",
+    "product_quantity": "int(animal_product_quantity * (5.0/3))",
+    "hungry_required": 170.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "scale_iguana_scaled": [
+        10.0,
+        2
+      ],
+      "dump": [
+        90.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.11,
+    "unlock_level": 10,
+    "duration": 7200,
+    "exp": 110,
+    "random_prototype": {
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "iguana_03": {
+    "name": {
+      "생산 Lv.3": null
+    },
+    "animal_by_product": "iguana",
+    "product_quantity": "int(animal_product_quantity * (7.0/3))",
+    "hungry_required": 190.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "scale_iguana_scaled": [
+        10.0,
+        2
+      ],
+      "dump": [
+        90.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.13,
+    "unlock_level": 20,
+    "duration": 14400,
+    "exp": 290,
+    "random_prototype": {
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "iguana_04": {
+    "name": {
+      "생산 Lv.4": null
+    },
+    "animal_by_product": "iguana",
+    "product_quantity": "int(animal_product_quantity * (10.0/3))",
+    "hungry_required": 270.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "scale_iguana_scaled": [
+        15.0,
+        4
+      ],
+      "dump": [
+        85.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.15,
+    "unlock_level": 30,
+    "duration": 28800,
+    "exp": 1100,
+    "random_prototype": {
+      "leather_iguana_scaled": [
+        1.0,
+        1
+      ],
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "iguana_05": {
+    "name": {
+      "생산 Lv.5": null
+    },
+    "animal_by_product": "iguana",
+    "product_quantity": "int(animal_product_quantity * (14.0/3))",
+    "hungry_required": 460.0,
+    "random_prototype_count": 1,
+    "produced_prototype": {
+      "scale_iguana_scaled": [
+        15.0,
+        5
+      ],
+      "dump": [
+        85.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 40,
+    "duration": 36000,
+    "exp": 3900,
+    "random_prototype": {
+      "leather_iguana_scaled": [
+        3.0,
+        1
+      ],
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  },
+  "iguana_06": {
+    "name": {
+      "생산 Lv.6": null
+    },
+    "animal_by_product": "iguana",
+    "product_quantity": "int(animal_product_quantity * (18.0/3))",
+    "hungry_required": 590.0,
+    "random_prototype_count": 2,
+    "produced_prototype": {
+      "scale_iguana_scaled": [
+        20.0,
+        9
+      ],
+      "dump": [
+        80.0,
+        -1
+      ]
+    },
+    "random_prototype_rate": 0.17,
+    "unlock_level": 50,
+    "duration": 43200,
+    "exp": 15000,
+    "random_prototype": {
+      "leather_iguana_scaled": [
+        5.0,
+        1
+      ],
+      "egg": [
+        20.0,
+        1
+      ],
+      "worm": [
+        10.0,
+        -1
+      ],
+      "corn_seed": [
+        10.0,
+        -1
+      ]
+    },
+    "product_level": "level",
+    "type": 0,
+    "icon": "pet_production_01"
+  }
+}

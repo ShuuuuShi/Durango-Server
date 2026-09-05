@@ -1,0 +1,62 @@
+{
+  "1": {
+    "required_resistance_level": 0,
+    "recommend_resistance_level": 1,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 53
+  },
+  "2": {
+    "required_resistance_level": 0,
+    "recommend_resistance_level": 4,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 84
+  },
+  "3": {
+    "required_resistance_level": 3,
+    "recommend_resistance_level": 8,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 126
+  },
+  "4": {
+    "required_resistance_level": 7,
+    "recommend_resistance_level": 14,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 174
+  },
+  "5": {
+    "required_resistance_level": 12,
+    "recommend_resistance_level": 19,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 233
+  },
+  "6": {
+    "required_resistance_level": 17,
+    "recommend_resistance_level": 27,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 296
+  },
+  "7": {
+    "required_resistance_level": 25,
+    "recommend_resistance_level": 39,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 367
+  },
+  "8": {
+    "required_resistance_level": 35,
+    "recommend_resistance_level": 53,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 451
+  },
+  "9": {
+    "required_resistance_level": 62,
+    "recommend_resistance_level": 70,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 538
+  },
+  "10": {
+    "required_resistance_level": 80,
+    "recommend_resistance_level": 90,
+    "recommend_combat_power": 100,
+    "recommend_collecting_power": 632
+  }
+}

@@ -1,0 +1,1549 @@
+{
+  "newbie_level": 10,
+  "skill_untrain": {
+    "free_count": 5,
+    "max_count": 15
+  },
+  "durability": {
+    "repair_damage_range": [
+      0.05,
+      0.13
+    ],
+    "deltas": {
+      "craft": 3.2,
+      "taming": 10.0,
+      "collect": 1.6,
+      "attack": 0.0768,
+      "defense": 0.064,
+      "build": 3.2,
+      "remodel": 3.2
+    },
+    "daily_velocity": -1,
+    "speeds": {
+      "burn": 1E-08,
+      "destruct": 1
+    }
+  },
+  "energy": {
+    "deltas": null,
+    "speeds": {
+      "moving": 0.032
+    }
+  },
+  "damageable_exp": {
+    "hit_factor": 0.1,
+    "auto_defense_factor": 1.0
+  },
+  "effort_standard": {
+    "collect": "2.5 + (level - 1) * 0.25",
+    "craft": "5 + (level - 1) * 0.5",
+    "build": "10 + (level - 1) * 1"
+  },
+  "unlimited_collect_queue_size": 5,
+  "farm": {
+    "planting_time": 3,
+    "preference_relation": [
+      "snowfield",
+      "tundra",
+      "temperate_forest",
+      "grassland",
+      "tropical_forest",
+      "desert",
+      "volcanic"
+    ],
+    "growing_crop_resource": "sprout_01",
+    "survivability": "seed_survivability * total_score / 50",
+    "dead_crop": "AG03_01",
+    "fitness_outlines": {
+      "3": 1.05,
+      "2": 0.9,
+      "1": 0.7
+    },
+    "max_plant_satisfaction": 10,
+    "uprooting_time": 3
+  },
+  "sprinkler": {
+    "sprinkle_water": {
+      "duration": 3,
+      "energy": 5
+    },
+    "fertilizer_tags": [
+      "fertilizer_liquid"
+    ]
+  },
+  "drink_water": {
+    "duration": 5
+  },
+  "put_water_in_container": {
+    "duration": 4,
+    "energy": 2,
+    "effort": 4
+  },
+  "put_lava_in_container": {
+    "duration": 4,
+    "energy": 2,
+    "effort": 4
+  },
+  "watering": {
+    "duration": 3.6,
+    "energy": 1
+  },
+  "fertilizing": {
+    "duration": 3.6,
+    "energy": 1
+  },
+  "wash_body": {
+    "duration": 5
+  },
+  "dash": {
+    "stamina": 20
+  },
+  "sailing": {
+    "role_opening_levels": {
+      "5": 56,
+      "6": 30
+    },
+    "archipelago": {
+      "limit_unstable_factors": {
+        "18": 6,
+        "60": 8
+      },
+      "expiration_time": 604800,
+      "renewable_time": 7200
+    },
+    "travel_cost": "t_stone_reference * 12",
+    "risky_level_ranges": {
+      "3": [
+        -1,
+        -1
+      ],
+      "6": [
+        -1,
+        -1
+      ]
+    },
+    "on_region_expiration": {
+      "alarms_before": [
+        600,
+        300,
+        120,
+        60,
+        30,
+        10
+      ],
+      "return_after": 10
+    },
+    "risky_culture_shard": {
+      "maximum_region_level": 39,
+      "minimum_region_level": 1
+    }
+  },
+  "build": {
+    "building": {
+      "energy": "1"
+    },
+    "cancel_time": 3,
+    "capsulating": {
+      "cost": {
+        "inside": "0",
+        "outside": "t_stone_reference * level"
+      },
+      "placing_time": 0.5,
+      "capsulating_time": {
+        "default": 0.5,
+        "0": 0.5,
+        "2": 0.5,
+        "4": 0.5
+      }
+    },
+    "default_durability": 7,
+    "default_time_limited_durability": 60,
+    "site_selection": {
+      "duration": "2 + (area * 1)",
+      "energy": "1 + (area * 2)"
+    },
+    "postprocess_helpable_count": 3,
+    "destruct": {
+      "energy": "10 + durability / 2.",
+      "time": "5 + durability / 10."
+    },
+    "modular": {
+      "default_door_item": [
+        "door_01_none",
+        1
+      ]
+    },
+    "ruin_destruct_reward": 3,
+    "part_durability_factor": 1,
+    "condition_scales": {
+      "3": 0.0,
+      "2": 0.1,
+      "1": 0.4,
+      "0": 1.0
+    }
+  },
+  "repair": {
+    "repair_requirement_perf": "int(max(5, int(pow(int((repair_requirement + level) / 10), 2) / 10) * 10))",
+    "item": {
+      "experienced": {
+        "tool_repair_kit": 9,
+        "clothes_repair_kit": 10
+      },
+      "success_ratio": {
+        "great_success": 0.1,
+        "success": 0.07
+      },
+      "limit_durability": 2,
+      "energy": "required_perf * 0.8",
+      "required_durable": 0.2,
+      "time": 3.0,
+      "durability_result": {
+        "failure": "max_durability",
+        "success": "max_durability"
+      }
+    },
+    "artifact": {
+      "experienced": {
+        "tool_repair_kit": 12
+      },
+      "success_ratio": {
+        "great_success": 0.1,
+        "success": 0.07
+      },
+      "limit_durability": 2,
+      "energy": "required_perf * 0.8",
+      "time": 5.0,
+      "recover_duration": "((dur_max - dur) / dur_max) * postprocess_time",
+      "durability_result": {
+        "failure": "max_durability",
+        "success": "max_durability"
+      }
+    }
+  },
+  "reform": {
+    "reformable_major_tags": {
+      "shoes": 1,
+      "weapon": 1,
+      "bag": 1,
+      "gloves": 1,
+      "hat": 1,
+      "tool": 1,
+      "clothes": 1
+    },
+    "tag_level_rareness_by_probability_step": {
+      "9": [
+        -1,
+        -2,
+        -3,
+        -4,
+        -5,
+        -6,
+        -7,
+        -8,
+        -9,
+        -10
+      ],
+      "10": [
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "11": [
+        9,
+        8,
+        7
+      ],
+      "12": [
+        10
+      ]
+    },
+    "excluded_equipment_slots": [
+      "precious"
+    ],
+    "tech_support_estimate_expires_in": 30,
+    "excluded_major_tags": [
+      "equipment_avatar",
+      "not_able_to_reform"
+    ]
+  },
+  "package_cost": "10 * size ** 2",
+  "energy_formula": "e * 0.7",
+  "duration_formula": "e",
+  "fatigue_formula": {
+    "biome": "float(x / region_level)"
+  },
+  "fatigue_velocity": {
+    "1": {
+      "1": "0"
+    },
+    "3": {
+      "1": "(0.04 + 0.001 * sl) * max(0.5, 1 - 0.05 * (sl - rl)) * 0.5"
+    },
+    "5": {
+      "1": "(0.04 + 0.001 * sl) * max(0.5, 1 - 0.05 * (sl - rl))"
+    },
+    "6": {
+      "1": "(0.04 + 0.001 * sl) * max(0.5, 1 - 0.05 * (sl - rl)) * 0.5"
+    },
+    "7": {
+      "1": "0"
+    },
+    "default": {
+      "1": "(0.04 + 0.001 * sl) * max(0.5, 1 - 0.05 * (sl - rl))"
+    }
+  },
+  "fatigue_by_unstable_factor": {
+    "minimum_factor": 2,
+    "effect_level": "unstable_factor"
+  },
+  "mission_exp_reward_ratio_by_unstable_factor": {
+    "1": 1.0,
+    "2": 2.2,
+    "3": 4.5,
+    "4": 6.3,
+    "5": 9.1,
+    "6": 11.4,
+    "7": 14.4,
+    "8": 17.6
+  },
+  "biome_effect_level": "region_level * 0.35 * biome_effect_level_ratio",
+  "biome_fatigue": "(biome_effect_level_ratio * 0.5 * max(1, biome_effect_level)) / 60",
+  "fatigue_cost": {
+    "repair_item": "2 * e ** 0.5",
+    "combat": "4 * e",
+    "default": "e",
+    "collect": "0.4 * e ** 0.5",
+    "craft": "2 * e ** 0.5",
+    "build": "4 * e ** 0.5",
+    "repair_artifact": "4 * e ** 0.5"
+  },
+  "experience": {
+    "exp_multiplier": {
+      "max": 10,
+      "min": 0.1
+    }
+  },
+  "skill_points": {
+    "initial": 10
+  },
+  "success_probability": "1 - ( max(0, d - a - correction) / 100.) ** 2",
+  "hurt_fail_probability": "max(0, d - a - correction) / 100.",
+  "loss_rate": "max(0, d - a) / 100.",
+  "energy_decrement_from_stamina": 0.01,
+  "base_critical_damage_bonus": 0.9,
+  "non_clean_hit_ratio": [
+    0.2,
+    0.3
+  ],
+  "pvp_raw_damage_multiplier": 0.15,
+  "pvp_melee_damage_multiplier": 0.8,
+  "pvp_range_damage_multiplier": 0.35,
+  "artifact_ranged_damage_reduction": 0.85,
+  "player_groggy_damage_multiplier": 0.0,
+  "residual_aggro": 0.2,
+  "initial_aggro": 10.0,
+  "taunt_attacker_bonus_level": 99,
+  "taunt_rate_decrease_per_level": 0.1,
+  "estate": {
+    "urban_level_limit": 30,
+    "activation_period": {
+      "0": 7,
+      "2": 7
+    },
+    "restricted": {
+      "warphole": 1,
+      "port": 2,
+      "crater": 4
+    },
+    "max_activation_period": {
+      "3": {
+        "0": 14,
+        "2": 14
+      },
+      "6": {
+        "0": 28,
+        "2": 14
+      }
+    },
+    "alarms": {
+      "0": [
+        {
+          "msg": {
+            "사유지 유효기간이 24시간 뒤 끝납니다. 권리를 잃지 않도록 사유지 선언을 연장해주세요.": null
+          },
+          "time": -86400
+        },
+        {
+          "msg": {
+            "사유지 유효기간이 끝나서 임시 보호중입니다! 땅과 재산을 잃지 않도록 연장하세요.": null
+          },
+          "time": 0
+        },
+        {
+          "msg": {
+            "다른 개척자들이 당신의 땅과 재산을 차지할 수 있게 됩니다! 사유지 유효기간을 지금 연장하세요!": null
+          },
+          "time": 165600
+        }
+      ],
+      "2": [
+        {
+          "msg": {
+            "부족 영토 유효기간이 24시간 뒤 끝납니다. 권리를 잃지 않도록 영토 선언을 연장해주세요.": null
+          },
+          "time": -86400
+        },
+        {
+          "msg": {
+            "부족 영토 유효기간이 끝나서 임시 보호중입니다! 땅과 재산을 잃지 않도록 연장하세요.": null
+          },
+          "time": 0
+        },
+        {
+          "msg": {
+            "다른 개척자들이 부족의 땅과 재산을 차지할 수 있게 됩니다! 부족 영토 유효기간을 지금 연장하세요!": null
+          },
+          "time": 165600
+        }
+      ]
+    },
+    "tolerance_time": 2,
+    "max_size": {
+      "3": 6
+    }
+  },
+  "item": {
+    "pioneer_cost": {
+      "cost_formula": "cost * (1.501**(tag_level - 1))",
+      "tag_id": "pioneering_material"
+    },
+    "default_improvement": {
+      "great_success_rate": 0.05,
+      "big_failure_rate": 0,
+      "success_rate": 0.8
+    },
+    "bleach_recipe": {
+      "0": "bleach_color_r",
+      "1": "bleach_color_g",
+      "2": "bleach_color_b"
+    },
+    "dye_recipe": {
+      "0": "dye_color_r",
+      "1": "dye_color_g",
+      "2": "dye_color_b"
+    },
+    "minimum_durability_by_tag": 1
+  },
+  "market": {
+    "listing_fee_rate": "0.00",
+    "sales_fee_rates": {
+      "over_threshold": "0.00",
+      "under_threshold": "0.00"
+    },
+    "sales_fee_threshold": 1000
+  },
+  "max_levels": {
+    "clan": 25,
+    "player": 60,
+    "region": 60,
+    "pet": 60,
+    "resistance": 60
+  },
+  "tutorial_boat": {
+    "session_time": 86400,
+    "help_rate_per_slot": "0.05 * max(1, 3. / player_count)",
+    "players_per_session": 1,
+    "help_period": 20
+  },
+  "skill": {
+    "survival_check_period": 30,
+    "research_reduce_time_limit": 0.25,
+    "research_time_reduce": "exp * (level / 10.)",
+    "exp_increase_limit": 3
+  },
+  "point_of_interest": {
+    "explore_dist": 16,
+    "approximate_dist": 30,
+    "conquer_dist": 16
+  },
+  "explorer": {
+    "rift_search_range": 50000,
+    "search_energy": "5",
+    "number_to_result": 3,
+    "search_cooltime": 10,
+    "adapt_conditions": [
+      {
+        "threshold": 0.1,
+        "adaptation": 0
+      },
+      {
+        "threshold": 0.3,
+        "adaptation": 1
+      },
+      {
+        "threshold": 1.0,
+        "adaptation": 2
+      }
+    ],
+    "poi_defog_chunk_delta": 0
+  },
+  "hiding_formula": "0.6 / (1 + exp(-0.16 * x - 1.6)) + 0.5",
+  "poi_finding_reward": {
+    "exp_ratio": 1.0,
+    "t_stone_warphole": "t_stone_reference * 4",
+    "status_effect_id": "delight_of_discovery",
+    "t_stone_biocom": "t_stone_reference * 4"
+  },
+  "all_pois_finding_reward": {
+    "t_stone_amount": "t_stone_reference * 40"
+  },
+  "warp": {
+    "clan_warphole_cooltime": 1800,
+    "warp_time": 2,
+    "warp_back_discount": 0.5,
+    "warp_cost": "t_stone_reference * 12 * (dist / 300.)"
+  },
+  "tension_controller": {
+    "gauge_eval_period": 10.0,
+    "update_period": 10.0
+  },
+  "memo": {
+    "collect_probability": 0.35
+  },
+  "advisor": {
+    "not_recommended_blueprints": [
+      "tradingpost_01",
+      "estate_clan_flag",
+      "estate_private_flag_01"
+    ],
+    "points": {
+      "skill": "sp * 5",
+      "skill_category": "cl * 10"
+    },
+    "reissue_interval": 30,
+    "difficulty_points": {
+      "0": 30,
+      "1": 50,
+      "2": 100
+    }
+  },
+  "required_risky_regions": {
+    "30": 1
+  },
+  "outpost": {
+    "dispenser_take_time": 10.0
+  },
+  "death_penalty": {
+    "default_item_drop_ratio": 0.5,
+    "death_point_remaining_duration": 300,
+    "gauge_ratio_by_death_count": {
+      "0": 0.6,
+      "1": 0.4,
+      "2": 0.2,
+      "3": 0.1
+    },
+    "prevent_item_drop_ratio_by_level": "1 - 0.0125 * level",
+    "fatigue_recovery_ratio_activity_factor": 2,
+    "fatigue_recovery_ratio_by_death_count": [
+      0.3,
+      0.2,
+      0.1,
+      0.0
+    ]
+  },
+  "revive_immediately": {
+    "gauge_ratio": {
+      "stamina": 0.7,
+      "life": 0.7,
+      "health": 0.7,
+      "energy": 0.7
+    }
+  },
+  "pet": {
+    "reinify_tags": [
+      "reinify"
+    ],
+    "exp_ratio_player": 0.2,
+    "milestone_failure_rewards": [
+      [
+        "animal_elixir_store",
+        30
+      ],
+      [
+        "feed_milestone_failure_01",
+        30
+      ],
+      [
+        "feed_milestone_failure_01",
+        60
+      ],
+      [
+        "feed_milestone_failure_02",
+        30
+      ],
+      [
+        "feed_milestone_failure_02",
+        60
+      ],
+      [
+        "feed_milestone_failure_03",
+        30
+      ],
+      [
+        "feed_milestone_failure_03",
+        60
+      ],
+      [
+        "feed_milestone_failure_04",
+        30
+      ],
+      [
+        "feed_milestone_failure_04",
+        60
+      ],
+      [
+        "feed_milestone_failure_05",
+        30
+      ],
+      [
+        "feed_milestone_failure_05",
+        60
+      ],
+      [
+        "feed_milestone_failure_06",
+        30
+      ],
+      [
+        "feed_milestone_failure_06",
+        60
+      ],
+      [
+        "feed_milestone_failure_07",
+        30
+      ],
+      [
+        "feed_milestone_failure_07",
+        60
+      ],
+      [
+        "feed_peptic",
+        30
+      ],
+      [
+        "feed_peptic",
+        60
+      ]
+    ],
+    "default_feed_energy": 0,
+    "domesticate_decrease_limit": 0.5,
+    "domesticate_time": "max(starts_at + total_time * decrease_limit, ends_at - (total_time * d_ratio + d_time))",
+    "resurrection_tags": [
+      "medicine_animal"
+    ],
+    "task_time": "max(since, until - (total_time * t_ratio + t_time))",
+    "performance_reference": {
+      "t_ratio": [
+        "decrease_grow_time_ratio"
+      ],
+      "d_ratio": [
+        "decrease_domesticate_time_ratio"
+      ],
+      "t_time": [
+        "decrease_grow_time"
+      ],
+      "d_time": [
+        "decrease_domesticate_time"
+      ],
+      "d_success_rate": [
+        "increase_domesticate_success_rate"
+      ]
+    },
+    "default_grazable_count": 5,
+    "advanced_tameable": [
+      2010,
+      2047,
+      2088,
+      2025,
+      2023,
+      2020
+    ],
+    "battle": {
+      "hungry_ratio_enter_battle": 0.5,
+      "hungry_ratio_remain_battle": 0.0,
+      "powerless_notice_period": 30.0
+    },
+    "oldness": {
+      "effected_abilities": [
+        50,
+        51,
+        52,
+        54,
+        100,
+        2,
+        304,
+        305,
+        56,
+        101,
+        102
+      ],
+      "factor": 0.5
+    },
+    "milestone_level": {
+      "1": [
+        [
+          60,
+          6
+        ]
+      ],
+      "2": [
+        [
+          30,
+          3
+        ],
+        [
+          60,
+          6
+        ]
+      ],
+      "3": [
+        [
+          20,
+          2
+        ],
+        [
+          40,
+          4
+        ],
+        [
+          60,
+          6
+        ]
+      ],
+      "4": [
+        [
+          20,
+          1
+        ],
+        [
+          30,
+          3
+        ],
+        [
+          40,
+          4
+        ],
+        [
+          60,
+          6
+        ]
+      ],
+      "5": [
+        [
+          20,
+          2
+        ],
+        [
+          30,
+          3
+        ],
+        [
+          40,
+          4
+        ],
+        [
+          50,
+          5
+        ],
+        [
+          60,
+          6
+        ]
+      ],
+      "6": [
+        [
+          10,
+          1
+        ],
+        [
+          20,
+          2
+        ],
+        [
+          30,
+          3
+        ],
+        [
+          40,
+          4
+        ],
+        [
+          50,
+          5
+        ],
+        [
+          60,
+          6
+        ]
+      ]
+    },
+    "active_skill_levels": [
+      60
+    ],
+    "domesticate_probability": "min(max_prob, current_prob + d_success_rate)"
+  },
+  "colosseum": {
+    "max_distance_from_herd": 6400,
+    "prelude_time_anlmal": 1.5,
+    "return_to_herd_distance": 2400,
+    "return_to_pet_master_distance": 800,
+    "cross_counter_perceive_time": 0.333,
+    "max_distance_from_pet_master": 3200,
+    "animal_attackable_yaw_threshold": 30,
+    "prelude_time_player": 1.0,
+    "distance_dead_band": 100,
+    "sched_move_to_run_distance": 500
+  },
+  "catapult": {
+    "required_projectile_tags": [
+      "chunk_big"
+    ],
+    "required_projectile_tags_error_text": {
+      "큰 덩어리 속성을 갖는 아이템을 넣어주세요.": null
+    },
+    "initial_yaw": -90
+  },
+  "animal_survival_effected_by": {
+    "stamina": [
+      52,
+      53
+    ],
+    "life": [
+      50,
+      51
+    ],
+    "groggy": [
+      54,
+      55
+    ]
+  },
+  "taming": {
+    "success_ratio": "2 * (1 / (1 + exp(-(2.2 / 6 * d_l + 2.2))) - 0.5)",
+    "taming_time": 3.0,
+    "tamable_hp_rate": 0.3,
+    "taming_cooltime": 5.0,
+    "tamable_dealing_rate": 0.2,
+    "adjust_by_life_ratio": "1 - 0.8 * pow(r / R, 2)"
+  },
+  "herd": {
+    "collectible_dispose_delay": 180
+  },
+  "war": {
+    "max_tuner_count": 4,
+    "defense": {
+      "defense_reward": "reference"
+    },
+    "tuner_destroying": {
+      "speed": "(1.0 + 10.0 * weakened_rate) * 28.3",
+      "longest_interval": 30
+    },
+    "damaged_notice_period": 300
+  },
+  "clan_applier_role": -1,
+  "clan_initial_capacity": 10,
+  "clan_creation_costs": {
+    "currency": 0,
+    "amount": 10000
+  },
+  "clan_territory_costs": {
+    "currency": 0,
+    "amount": "10000 * territory_count"
+  },
+  "warehouse": {
+    "section_size": 200
+  },
+  "letter_limits": {
+    "camp_board": 250,
+    "clan_role_name": 20,
+    "pet_name": 20,
+    "player_name": 20,
+    "artifact_name": 20,
+    "tab_name": 20,
+    "clan_intro": 100,
+    "clan_name": 20,
+    "music_sheet_name": 20,
+    "clan_notice": 250
+  },
+  "crack": {
+    "crater_look": "crater_01",
+    "required_investment": "max(1, int(level * 0.2))",
+    "required_voucher_id": "voucher_resource_induced_stone",
+    "activated_time": 600,
+    "investment_duration": 4,
+    "aqua_crater_look": "aqua_crater_01"
+  },
+  "natural_components": {
+    "15001": {
+      "poi_type": 1,
+      "components": [
+        "Warphole"
+      ]
+    },
+    "15002": {
+      "poi_type": 2,
+      "components": [
+        "Crater"
+      ]
+    },
+    "15004": {
+      "poi_type": 2,
+      "components": [
+        "Crater"
+      ]
+    },
+    "15005": {
+      "poi_type": 4,
+      "components": [
+        "FactionProp"
+      ]
+    },
+    "15006": {
+      "poi_type": 6,
+      "components": [
+        "WarpAccelerator"
+      ]
+    }
+  },
+  "timeline": {
+    "clan": {
+      "1": {
+        "name": {
+          "부족": null
+        },
+        "types": [
+          100,
+          101,
+          102,
+          115,
+          114
+        ]
+      },
+      "2": {
+        "name": {
+          "부족원": null
+        },
+        "types": [
+          103,
+          104,
+          105,
+          106
+        ]
+      },
+      "3": {
+        "name": {
+          "재무": null
+        },
+        "types": [
+          112,
+          113
+        ]
+      }
+    },
+    "play": {
+      "1": {
+        "name": {
+          "재화": null
+        },
+        "types": [
+          200,
+          201
+        ]
+      }
+    }
+  },
+  "cargo_warp": {
+    "item_warping_time": "size * 60",
+    "occupying_threshold": 1,
+    "warp_cost": "tax_percentage / 2. + 30",
+    "access_rights": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "occupying_time": 10,
+    "collectible_id": "pet_dispenser"
+  },
+  "camp": {
+    "max_board_content": 50,
+    "max_1x1_workbench_slot_count": 6,
+    "campfire_radius": 10,
+    "punchmachine_game_time": 15,
+    "max_2x2_workbench_slot_count": 1
+  },
+  "faction": {
+    "graduate_safehouse_reward_id": "sh_firm_06",
+    "mission": {
+      "shuffle": {
+        "recharge_cooltime": 1800,
+        "max_count": 3
+      },
+      "adapts": [
+        {
+          "distance": 200,
+          "ratios": {
+            "0": 1.0,
+            "1": 0.3,
+            "2": 0.1
+          }
+        },
+        {
+          "distance": 400,
+          "ratios": {
+            "0": 1.0,
+            "1": 0.3,
+            "2": 0.3
+          }
+        }
+      ],
+      "min_mission_count": 3,
+      "daily_mission": {
+        "active": true,
+        "term": 79200,
+        "gem_reward": "5"
+      },
+      "cooltime": "range_lookup([(1, 0), (15, 30), (20, 420), (25, 900), (30, 1800)], level)",
+      "activation_level": 1
+    }
+  },
+  "punch_machine_activate_cost": {
+    "currency": 0,
+    "amount": 100
+  },
+  "ally": {
+    "default_slot_count": 2,
+    "slot_opens_at": [
+      5,
+      10,
+      15,
+      20,
+      25
+    ],
+    "max_slot_count": 7
+  },
+  "animal": {
+    "groggy_message": {
+      "0": {
+        "{target:이} 기운을 되찾았습니다.": null
+      },
+      "1": {
+        "{target:이} 약해진 것 같습니다.": null
+      },
+      "2": {
+        "{target:이} 정신을 차리지 못하고 있습니다.": null
+      },
+      "3": {
+        "{target:이} 쓰러졌습니다!": null
+      }
+    },
+    "contribution_constant": 20
+  },
+  "eat_popup_tolerance": -0.2,
+  "artifact_stats": {
+    "complexity_rate": 0.5,
+    "complexity": "(artifact_size - threshold) / (modular_size - threshold)"
+  },
+  "artifact_set": {
+    "required_stat_type": "antibacterial",
+    "tag_category": "interior_set"
+  },
+  "artifact_mood": {
+    "looking_around_cooltime_key": "looking_around_cooltime",
+    "looking_around_time": 5,
+    "required_stat_type": "comfort",
+    "looking_around_seperated_cooltime_moods": [
+      "classroom01",
+      "classroom02",
+      "springtime"
+    ],
+    "tag_category": "interior_mood"
+  },
+  "artifact_floor": {
+    "floorable_types": [
+      9992,
+      9997
+    ],
+    "max_stories": 3
+  },
+  "mail": {
+    "default_expiration_days": 30
+  },
+  "encouraging_emoticons": [
+    "smile"
+  ],
+  "faction_name": {
+    "0": {
+      "엽록 포럼": null
+    },
+    "1": {
+      "개척 회의": null
+    },
+    "2": {
+      "회사": null
+    },
+    "3": {
+      "위원회": null
+    },
+    "4": {
+      "무전기 대학": null
+    },
+    "5": {
+      "구조자TF": null
+    },
+    "6": "1_ \"개인 무전\""
+  },
+  "faction_support": {
+    "support_fee": "int(amount * exp_tstone) / 10 * 10",
+    "support_start_at": "2018-12-12T00:00+0900",
+    "support_level": "max(1, int(level / support_level_step) * support_level_step)",
+    "support_level_step": 5,
+    "support_id_digit": 10,
+    "support_duration_hours": 168.0
+  },
+  "returner": {
+    "max": {
+      "user_level": 60,
+      "login_term": 30
+    },
+    "duration_days": 14,
+    "status_effect_id": "returner",
+    "min": {
+      "user_level": 20,
+      "login_term": 10
+    }
+  },
+  "clan_research": {
+    "radius_by_cycle": "(60 + (20 * pow(1.5, (cycle - 1)))) * 1.25"
+  },
+  "neutral_warphole_combat_denial_radius": 4,
+  "attendance": {
+    "restore_voucher": {
+      "voucher_id": "voucher_event_attendance",
+      "amount": 1
+    },
+    "restore_cost": {
+      "currency": 1,
+      "amount": 20
+    }
+  },
+  "tastes": {
+    "taste_amplifier": 20,
+    "sour_taste": {
+      "decreasing_rate": 0.8,
+      "sensitivity": 4,
+      "increasing_rate": 1.25,
+      "peak_taste_ratio": 0.8
+    },
+    "cash_taste": {
+      "decreasing_rate": 0.8,
+      "sensitivity": 6,
+      "increasing_rate": 1.25,
+      "peak_taste_ratio": 0.8
+    },
+    "bitter_taste": {
+      "decreasing_rate": 0.8,
+      "sensitivity": 3,
+      "increasing_rate": 1.25,
+      "peak_taste_ratio": 0.8
+    },
+    "taste_bad": -3,
+    "salty_taste": {
+      "decreasing_rate": 0.8,
+      "sensitivity": 6,
+      "increasing_rate": 1.25,
+      "peak_taste_ratio": 0.8
+    },
+    "sweet_taste": {
+      "decreasing_rate": 0.8,
+      "sensitivity": 10,
+      "increasing_rate": 1.25,
+      "peak_taste_ratio": 0.8
+    },
+    "taste_good": 3,
+    "oily_taste": {
+      "decreasing_rate": 0.8,
+      "sensitivity": 10,
+      "increasing_rate": 1.25,
+      "peak_taste_ratio": 0.8
+    },
+    "savory_taste": {
+      "decreasing_rate": 0.8,
+      "sensitivity": 10,
+      "increasing_rate": 1.25,
+      "peak_taste_ratio": 0.8
+    }
+  },
+  "season2": {
+    "ranking": [
+      75,
+      76,
+      77,
+      78
+    ],
+    "weathers": {
+      "0": {
+        "text": {
+          "안개로 인해 앞이 보이지 않아 전투할 수 없다.": null
+        },
+        "time_after": 1,
+        "effect": {
+          "id": "pvp_fog",
+          "level": 1
+        },
+        "weather_id": "pvp_fog"
+      },
+      "1": {
+        "text": {
+          "안개가 걷히고 비가 내린다. 전투를 할 수 있다.": null
+        },
+        "time_after": 60,
+        "effect": {
+          "id": "pvp_rain",
+          "level": 1
+        },
+        "weather_id": "pvp_rain"
+      },
+      "2": {
+        "text": {
+          "폭풍우가 몰아쳐 건강이 감소한다. 대피소로 이동하자.": null
+        },
+        "time_after": 150,
+        "effect": {
+          "id": "pvp_storm",
+          "level": 1
+        },
+        "weather_id": "pvp_storm_01"
+      },
+      "3": {
+        "text": {
+          "폭풍우가 거세진다. 저체온증에 걸려 대피소에서도 건강이 감소한다.": null
+        },
+        "time_after": 300,
+        "effect": {
+          "id": "pvp_hypothermy",
+          "level": 1
+        },
+        "weather_id": "pvp_storm_02"
+      }
+    },
+    "storm_sign_time": 140,
+    "battle_start_time": 60,
+    "entree_level_limit": 50,
+    "inventory_section": "__season2__",
+    "region_template_id": "testpvpisland190919"
+  },
+  "personal_region": {
+    "remove_cooltime": 86400,
+    "region_template_ids": [
+      "pe10gr_1",
+      "pe10gr_2",
+      "pe10gr_3",
+      "pe10gr_4",
+      "pe10gr_5",
+      "ra60sw",
+      "ri35de",
+      "ri35te",
+      "ri40tr",
+      "ri45sa",
+      "ri50sn",
+      "ri55tu",
+      "ua60vol"
+    ],
+    "return_time": 7200
+  },
+  "craft_great_success": {
+    "ability_result": "pa / float(ra)",
+    "min_success_rate": 0.1,
+    "max_ratio": {
+      "default": 0.1,
+      "239": 0.1,
+      "210": 0.2,
+      "211": 0.2,
+      "215": 0.1,
+      "216": 0.1,
+      "217": 0.1,
+      "218": 0.15,
+      "219": 0.15,
+      "220": 0.1
+    },
+    "max_success_rate": 0.3,
+    "result_ratio": "0.12 * ability_result * max_ratio * (1.0 - (ra - 30) * (ra - 120) / 3600.0)"
+  },
+  "represent_powers": {
+    "0": {
+      "1": 0.0005,
+      "2": 0.0006,
+      "100": 0.0003,
+      "101": 0.0002,
+      "102": 0.0005,
+      "104": 0.0002
+    },
+    "1": {
+      "239": 0.0025,
+      "210": 0.0025,
+      "211": 0.0025,
+      "215": 0.0025,
+      "216": 0.0025,
+      "217": 0.0025,
+      "218": 0.0025,
+      "219": 0.0025,
+      "220": 0.0025
+    },
+    "2": {
+      "240": 0.005,
+      "204": 0.005,
+      "238": 0.005,
+      "206": 0.005
+    }
+  },
+  "resistance": {
+    "minimum_requires_level": 60,
+    "types_by_biome": {
+      "1": 310,
+      "2": 313,
+      "3": 311,
+      "4": 314,
+      "6": 312,
+      "7": 317
+    }
+  },
+  "recoveryrate_modifier_id": {
+    "239": "recoveryrate_handicraft",
+    "210": "recoveryrate_weaponcraft",
+    "211": "recoveryrate_armorcraft",
+    "215": "recoveryrate_tailor",
+    "216": "recoveryrate_smith",
+    "217": "recoveryrate_cook",
+    "218": "recoveryrate_furnishing",
+    "219": "recoveryrate_construction"
+  },
+  "cheat_modifiers": {
+    "crafting_modifiers": [
+      "weaponcraft_plus",
+      "armorcraft_plus",
+      "handicraft_plus",
+      "smith_plus",
+      "tailor_plus",
+      "furnishing_plus",
+      "cook_plus",
+      "construction_plus"
+    ]
+  },
+  "bm": {
+    "duration": {
+      "max_reduction": 0.7
+    }
+  },
+  "skip_tutorial_missions": {
+    "sh_sq_02": {
+      "skip_time": 240,
+      "todo_id": "hunt_05tr_2051"
+    },
+    "sh_sq_01": {
+      "skip_time": 240,
+      "todo_id": "hunt_sh_2015"
+    }
+  },
+  "play_guide_conditions": {
+    "taming_experience": {
+      "min_level": 30,
+      "animal_type": "zebraceratops"
+    }
+  },
+  "put_in_container_infos": {
+    "water": {
+      "biomes": [
+        11,
+        12,
+        13,
+        14
+      ],
+      "tags": [
+        "container"
+      ]
+    },
+    "lava": {
+      "biomes": [
+        15
+      ],
+      "tags": [
+        "lava_container"
+      ]
+    }
+  },
+  "advance_reservation_rewards": {
+    "gem_amount": 300,
+    "item_rewards": [
+      {
+        "prototype_id": "broom_twohand_event",
+        "level": 10
+      },
+      {
+        "prototype_id": "hat_box_01_event",
+        "level": 10
+      },
+      {
+        "prototype_id": "hat_dogee_event",
+        "level": 10
+      },
+      {
+        "prototype_id": "clothes_dino_01_event",
+        "level": 10
+      },
+      {
+        "prototype_id": "fatigue_drug_event",
+        "level": 10
+      },
+      {
+        "prototype_id": "hp_medicine_event",
+        "level": 10
+      },
+      {
+        "prototype_id": "hardtack_event",
+        "level": 10
+      },
+      {
+        "prototype_id": "reins_compso_ancora_event",
+        "level": 10
+      }
+    ],
+    "excluded_countries": [
+      "KR",
+      "ID",
+      "JP",
+      "CN"
+    ],
+    "since_utc_at": "2019-05-15T08:00:00+09:00",
+    "mail_texts": {
+      "KR": "사전예약 선물을 지급해드려요\n 안녕하세요. 듀랑고에 오신 것을 환영합니다.\n 제 이름은 컨시어지.\n 당신을 위한 모든 것을 준비하는 사람이죠.\n 먼저 당신에게 배달된 작은 선물을 확인해볼까요?\n\n 여행을 시작하는 데 도움이 되길\n 컨시어지로부터",
+      "EN": "Pre-Registration Gift\n Greetings, and welcome to Durango: Wild Lands.\n I'm the Concierge.\n It's my job to help you get everything you need for the journey ahead.\n For now, I've sent you a small gift. Think of it as an investment in your future.\n\n May you survive until we meet again!\n The Concierge",
+      "TH": "ของขวัญลงทะเบียนล่วงหน้า\n สวัสดีทุกท่าน และขอยินดีต้อนรับสู่ Durango: Wild Lands\n ฉันคือพนักงานช่วยเหลือ\n ฉันมีหน้าที่ในการช่วยเหลือคุณอย่างเต็มที่\n สำหรับการผจญภัยที่กำลังจะเริ่มขึ้น\n ฉันได้ส่งของขวัญไปให้คุณแล้ว\n คิดซะว่ามันเป็นการลงทุนสำหรับอนาคตของคุณ\n\n ขอให้คุณรอดชีวิตจนกว่าเราจะพบกันอีกครั้ง!\n พนักงานช่วยเหลือ",
+      "TW": "發送事前預約禮物\n 你好，歡迎來到Durango:野生之地。\n 我是你的禮賓員。\n 負責協助你打理一切。\n 首先請確認剛配送給你的小禮物吧！\n\n 旅程已經開始！希望這些小禮物對你有所幫助。"
+    },
+    "until_utc_at": "2019-06-14T00:00:00+09:00"
+  },
+  "mini_game_dance": {
+    "max_music_lenth": 300,
+    "max_note_number": 150,
+    "perfect_score": 171.0,
+    "great_score": 94.0,
+    "good_score": 42.0,
+    "min_music_length": 30
+  },
+  "warp_accelerator": {
+    "max_phase": 10,
+    "warp_matter_weekly_limit": "int(round(100.0 * (3.0 / (45 * 45) * ((max(level,15) // 5) * 5 - 15) ** 2 + 1),-1))",
+    "inactivate_time": 180,
+    "title": {
+      "균열": null
+    },
+    "reward_time": 120,
+    "phase_time": 60,
+    "breaktime": 15,
+    "rewards": {
+      "reward_count": "int(round((3.0 + 2 * (max(stage_count - 1,0) // 3)) * (1.0 + 0.06 * (min(max(5,player_count),10) - 5)),0))",
+      "warp_matter": "int(round(stage_count * (1.0 + 0.06 * (min(max(5,player_count),10) - 5)) * (3.0 / (45 * 45) * (max(region_level,15) - 15) ** 2 + 1),0))",
+      "exp": 3
+    },
+    "participation_fee": {
+      "currency": 0,
+      "amount": "int(round(t_stone_reference * 30,-1))"
+    },
+    "tracking_ttl": 200,
+    "waiting_time": 10
+  },
+  "musician": {
+    "slot_count": 20,
+    "bandstand_session_duration": 3600,
+    "max_savable_size": 100000
+  },
+  "engagement": {
+    "rewards": {
+      "item": [
+        {
+          "prototype_id": "capsulated_bath_02_wood",
+          "level": 60
+        }
+      ],
+      "status_effects": [
+        {
+          "effect_id": "engagement_reward",
+          "level": 1
+        }
+      ]
+    },
+    "reward_effect_available_roles": [
+      6,
+      4,
+      5,
+      9
+    ]
+  },
+  "epic": {
+    "category": "sunset",
+    "npcs": {
+      "0": {
+        "talk_with_epic_k": {
+          "interaction": true
+        },
+        "talk_with_epic_k_t": {
+          "interaction": true
+        },
+        "talk_with_epic_t": {
+          "interaction": false
+        },
+        "coffee_with_epic_k": {
+          "count": 4,
+          "interaction": true,
+          "prototype_id": "medicine_tea_for_k"
+        }
+      },
+      "1": {
+        "talk_with_epic_k_t": {
+          "interaction": false
+        },
+        "docu_with_epic_t": {
+          "count": 1,
+          "interaction": true,
+          "prototype_id": "committee_codetext"
+        },
+        "epic_pvp_island_01": {
+          "interaction": false
+        },
+        "epic_trap": {
+          "interaction": false
+        },
+        "talk_with_epic_t": {
+          "interaction": true
+        }
+      }
+    },
+    "archipelago": {
+      "biome": 1,
+      "level": 18
+    },
+    "warp_to": {
+      "8": [
+        31.7,
+        26.9
+      ]
+    },
+    "warp_silo_region_info": {
+      "region_template_id": "ri18tr_06_02",
+      "quest_id": "mainstory_chapter7_2"
+    }
+  }
+}

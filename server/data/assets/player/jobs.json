@@ -1,0 +1,359 @@
+{
+  "0": {
+    "given_skills": [
+      [
+        "bow",
+        1,
+        "__base__"
+      ],
+      [
+        "sword_twohand",
+        1,
+        "__base__"
+      ],
+      [
+        "sword_onehand",
+        2,
+        "__base__"
+      ],
+      [
+        "lance",
+        1,
+        "__base__"
+      ]
+    ],
+    "category_levels": {
+      "9": 20
+    },
+    "description": {
+      "수공업 시대 엔지니어는 아니지만 동기부여 차원에서 손수 도구를 만든 경험이 있다.": null
+    },
+    "given_items": [
+      [
+        "chair_twohand_starting",
+        10
+      ],
+      [
+        "rope",
+        20
+      ],
+      [
+        "rope",
+        20
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ]
+    ]
+  },
+  "1": {
+    "given_skills": [
+      [
+        "worktable",
+        1,
+        "__base__"
+      ],
+      [
+        "firetool",
+        1,
+        "__base__"
+      ],
+      [
+        "loom",
+        1,
+        "__base__"
+      ],
+      [
+        "board",
+        1,
+        "__base__"
+      ]
+    ],
+    "category_levels": {
+      "12": 20
+    },
+    "description": {
+      "현장 파견을 나가 업무 조율을 한 경험 덕분에 설비, 시설 관련 지식이 있다.": null
+    },
+    "given_items": [
+      [
+        "hammer_officer_starting",
+        10
+      ],
+      [
+        "bluebull",
+        20
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ]
+    ]
+  },
+  "2": {
+    "given_skills": [
+      [
+        "herbalism",
+        1,
+        "__base__"
+      ],
+      [
+        "fiber",
+        1,
+        "__base__"
+      ],
+      [
+        "skinning",
+        1,
+        "__base__"
+      ]
+    ],
+    "category_levels": {
+      "7": 20
+    },
+    "description": {
+      "생물학과 표본 채집에 관심이 많아 책도 읽고 현장 실습도 다닌다.": null
+    },
+    "given_items": [
+      [
+        "bat_onehand_starting",
+        10
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ]
+    ]
+  },
+  "3": {
+    "given_skills": [
+      [
+        "farming_potato",
+        1,
+        "__base__"
+      ],
+      [
+        "farming_onion",
+        1,
+        "__base__"
+      ],
+      [
+        "farming",
+        1,
+        "__base__"
+      ]
+    ],
+    "category_levels": {
+      "13": 20
+    },
+    "description": {
+      "무언가를 심고 비옥하게 키워 거두는 일을 철들 시절부터 계속 해왔다.": null
+    },
+    "given_items": [
+      [
+        "hoe_twohand_farmer_starting",
+        10
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "corn_seed",
+        1
+      ],
+      [
+        "hat_bucket_starting",
+        10
+      ]
+    ]
+  },
+  "4": {
+    "given_skills": [
+      [
+        "remodel",
+        1,
+        "__base__"
+      ],
+      [
+        "reform_lightening",
+        1,
+        "__base__"
+      ],
+      [
+        "bag",
+        1,
+        "__base__"
+      ],
+      [
+        "weaving",
+        1,
+        "__base__"
+      ]
+    ],
+    "category_levels": {
+      "10": 20
+    },
+    "description": {
+      "사측에서 경비 지원을 제때 안 해주다 보니 유니폼 등 의류와 관련된 일에 익숙하다.": null
+    },
+    "given_items": [
+      [
+        "needle_waiter_starting",
+        20
+      ],
+      [
+        "thread",
+        20
+      ],
+      [
+        "thread",
+        20
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ]
+    ]
+  },
+  "5": {
+    "given_skills": [
+      [
+        "melee_weapon_mastery",
+        1,
+        "__base__"
+      ],
+      [
+        "ranged_weapon_mastery",
+        1,
+        "__base__"
+      ],
+      [
+        "base_defense",
+        1,
+        "__base__"
+      ]
+    ],
+    "category_levels": {
+      "2": 20
+    },
+    "description": {
+      "실전 경험으로 전투에 대한 반사적인 감각과 잠 못 이루는 밤을 동시에 얻게 되었다.": null
+    },
+    "given_items": [
+      [
+        "food_k",
+        1
+      ],
+      [
+        "necklace_tag_starting",
+        10
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ]
+    ]
+  },
+  "6": {
+    "given_skills": [
+      [
+        "cook_water",
+        1,
+        "__base__"
+      ],
+      [
+        "cook_med",
+        1,
+        "__base__"
+      ],
+      [
+        "mend_ingredient",
+        1,
+        "__base__"
+      ]
+    ],
+    "category_levels": {
+      "8": 20
+    },
+    "description": {
+      "커리어 초기만큼 요리에 대한 애정은 떨어졌지만 여전히 솜씨는 손길에 남아 있다.": null
+    },
+    "given_items": [
+      [
+        "hat_bucket_starting",
+        10
+      ],
+      [
+        "ramen",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ]
+    ]
+  },
+  "7": {
+    "given_skills": [
+      [
+        "hiding",
+        1,
+        "__base__"
+      ]
+    ],
+    "category_levels": {
+      "4": 20
+    },
+    "description": {
+      "오랫 동안 직업을 얻지 못 한 탓에 늘 조심스레 상대를 관찰하며 거리를 재는 버릇이 들었다.": null
+    },
+    "given_items": [
+      [
+        "keyboard_onehand_starting",
+        10
+      ],
+      [
+        "money_paper",
+        1
+      ],
+      [
+        "money_paper",
+        1
+      ]
+    ]
+  }
+}

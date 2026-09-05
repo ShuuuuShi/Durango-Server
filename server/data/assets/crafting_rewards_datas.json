@@ -1,0 +1,560 @@
+{
+  "210": {
+    "1": {
+      "reward_id": "recoveryrate_weaponcraft_01",
+      "required_value": 75
+    },
+    "2": {
+      "reward_id": "recipe_weapon_connection_t2",
+      "required_value": 96
+    },
+    "3": {
+      "reward_id": "recoveryrate_weaponcraft_02",
+      "required_value": 100
+    },
+    "4": {
+      "reward_id": "recipe_hammer_constructing",
+      "required_value": 103
+    },
+    "5": {
+      "reward_id": "recipe_axe_process",
+      "required_value": 106
+    },
+    "6": {
+      "reward_id": "recipe_sword_armorcrafting",
+      "required_value": 110
+    },
+    "7": {
+      "reward_id": "recoveryrate_weaponcraft_06",
+      "required_value": 120
+    },
+    "8": {
+      "reward_id": "recipe_blade_hammer_metal_02_t2",
+      "required_value": 133
+    },
+    "9": {
+      "reward_id": "recipe_blade_big_hammer_metal_02_t2",
+      "required_value": 136
+    },
+    "10": {
+      "reward_id": "recoveryrate_weaponcraft_07",
+      "required_value": 140
+    },
+    "11": {
+      "reward_id": "recipe_crossstick_bone_02_t2",
+      "required_value": 146
+    },
+    "12": {
+      "reward_id": "recipe_blade_axe_metal_02_t2",
+      "required_value": 153
+    },
+    "13": {
+      "reward_id": "recipe_blade_big_axe_metal_02_t2",
+      "required_value": 156
+    },
+    "14": {
+      "reward_id": "recoveryrate_weaponcraft_08",
+      "required_value": 160
+    },
+    "15": {
+      "reward_id": "recipe_blade_hammer_metal_03",
+      "required_value": 163
+    },
+    "16": {
+      "reward_id": "recipe_blade_big_hammer_metal_03",
+      "required_value": 166
+    },
+    "17": {
+      "reward_id": "recipe_bowstick_bone_04",
+      "required_value": 173
+    },
+    "18": {
+      "reward_id": "recipe_crossstick_bone_04",
+      "required_value": 176
+    }
+  },
+  "211": {
+    "1": {
+      "reward_id": "recoveryrate_armorcraft_01",
+      "required_value": 75
+    },
+    "2": {
+      "reward_id": "recipe_reform_armorcrafting",
+      "required_value": 96
+    },
+    "3": {
+      "reward_id": "recoveryrate_armorcraft_02",
+      "required_value": 100
+    },
+    "4": {
+      "reward_id": "recipe_reform_process",
+      "required_value": 103
+    },
+    "5": {
+      "reward_id": "recipe_reform_gathering",
+      "required_value": 106
+    },
+    "6": {
+      "reward_id": "recipe_reform_cooking_farming",
+      "required_value": 110
+    },
+    "7": {
+      "reward_id": "recipe_reform_constructing",
+      "required_value": 113
+    },
+    "8": {
+      "reward_id": "recipe_reform_weaponcrafting",
+      "required_value": 116
+    },
+    "9": {
+      "reward_id": "recoveryrate_armorcraft_06",
+      "required_value": 120
+    },
+    "10": {
+      "reward_id": "recipe_hat_explorer_04",
+      "required_value": 123
+    },
+    "11": {
+      "reward_id": "recipe_clothes_explorer_04",
+      "required_value": 126
+    },
+    "12": {
+      "reward_id": "recipe_hat_settler_02_sociable_t2",
+      "required_value": 133
+    },
+    "13": {
+      "reward_id": "recipe_clothes_settler_02_sociable_t2",
+      "required_value": 136
+    },
+    "14": {
+      "reward_id": "recoveryrate_armorcraft_07",
+      "required_value": 140
+    },
+    "15": {
+      "reward_id": "recipe_hat_builder_02",
+      "required_value": 143
+    },
+    "16": {
+      "reward_id": "recipe_clothes_builder_02",
+      "required_value": 146
+    },
+    "17": {
+      "reward_id": "recipe_hat_explorer_02_scout_t2",
+      "required_value": 153
+    },
+    "18": {
+      "reward_id": "recipe_clothes_explorer_02_scout_t2",
+      "required_value": 156
+    },
+    "19": {
+      "reward_id": "recoveryrate_armorcraft_08",
+      "required_value": 160
+    },
+    "20": {
+      "reward_id": "recipe_hat_hunter_03_skill_t2",
+      "required_value": 163
+    },
+    "21": {
+      "reward_id": "recipe_clothes_hunter_03_skill_t2",
+      "required_value": 166
+    },
+    "22": {
+      "reward_id": "recipe_hat_hunter_04",
+      "required_value": 173
+    },
+    "23": {
+      "reward_id": "recipe_clothes_hunter_04",
+      "required_value": 176
+    },
+    "24": {
+      "reward_id": "recipe_shoes_lavaproof",
+      "required_value": 183
+    }
+  },
+  "217": {
+    "1": {
+      "reward_id": "recoveryrate_cook_02",
+      "required_value": 75
+    },
+    "2": {
+      "reward_id": "recipe_ration_survival",
+      "required_value": 96
+    },
+    "3": {
+      "reward_id": "recoveryrate_cook_01",
+      "required_value": 100
+    },
+    "4": {
+      "reward_id": "recipe_hemostat",
+      "required_value": 113
+    },
+    "5": {
+      "reward_id": "recoveryrate_cook_06",
+      "required_value": 120
+    },
+    "6": {
+      "reward_id": "recipe_dried_persimmon",
+      "required_value": 126
+    },
+    "7": {
+      "reward_id": "recipe_painkiller_root",
+      "required_value": 133
+    },
+    "8": {
+      "reward_id": "recoveryrate_cook_07",
+      "required_value": 140
+    },
+    "9": {
+      "reward_id": "recipe_beer",
+      "required_value": 143
+    },
+    "10": {
+      "reward_id": "recipe_steak_set_meal",
+      "required_value": 146
+    },
+    "11": {
+      "reward_id": "recipe_taro_milktea",
+      "required_value": 153
+    },
+    "12": {
+      "reward_id": "recoveryrate_cook_08",
+      "required_value": 160
+    }
+  },
+  "218": {
+    "1": {
+      "reward_id": "recipe_bench_02",
+      "required_value": 96
+    },
+    "2": {
+      "reward_id": "recipe_dryingrack_02_t2",
+      "required_value": 103
+    },
+    "3": {
+      "reward_id": "recipe_medicine_table_01_t2",
+      "required_value": 106
+    },
+    "4": {
+      "reward_id": "recipe_chair_03",
+      "required_value": 110
+    },
+    "5": {
+      "reward_id": "recipe_table_04",
+      "required_value": 113
+    },
+    "6": {
+      "reward_id": "recipe_fur_box_02_leaf",
+      "required_value": 116
+    },
+    "7": {
+      "reward_id": "recipe_oil_lantern_01",
+      "required_value": 123
+    },
+    "8": {
+      "reward_id": "recipe_bed_04",
+      "required_value": 126
+    },
+    "9": {
+      "reward_id": "recipe_shelf_02",
+      "required_value": 130
+    },
+    "10": {
+      "reward_id": "recipe_shelf_01_wood",
+      "required_value": 133
+    },
+    "11": {
+      "reward_id": "recipe_chair_01_marble_01",
+      "required_value": 143
+    },
+    "12": {
+      "reward_id": "recipe_fur_table_01_marble_01",
+      "required_value": 146
+    },
+    "13": {
+      "reward_id": "recipe_fur_box_03_leaf",
+      "required_value": 156
+    },
+    "14": {
+      "reward_id": "recipe_kitchen_table_05",
+      "required_value": 160
+    },
+    "15": {
+      "reward_id": "recipe_curtain_blind_01_wood",
+      "required_value": 163
+    },
+    "16": {
+      "reward_id": "recipe_beanbag_02",
+      "required_value": 166
+    },
+    "17": {
+      "reward_id": "recipe_light_01_firefly",
+      "required_value": 173
+    },
+    "18": {
+      "reward_id": "recipe_box_04",
+      "required_value": 176
+    },
+    "19": {
+      "reward_id": "recipe_chair_01_recliner",
+      "required_value": 183
+    }
+  },
+  "219": {
+    "1": {
+      "reward_id": "recipe_modular_ground_granite",
+      "required_value": 83
+    },
+    "2": {
+      "reward_id": "recipe_modular_ground_basalt",
+      "required_value": 86
+    },
+    "3": {
+      "reward_id": "recipe_modular_wall_granite",
+      "required_value": 90
+    },
+    "4": {
+      "reward_id": "recipe_modular_wall_basalt",
+      "required_value": 93
+    },
+    "5": {
+      "reward_id": "recipe_modular_roof_granite",
+      "required_value": 96
+    },
+    "6": {
+      "reward_id": "recipe_modular_roof_basalt",
+      "required_value": 100
+    },
+    "7": {
+      "reward_id": "recipe_road_leaf",
+      "required_value": 106
+    },
+    "8": {
+      "reward_id": "recipe_road_01_leaf",
+      "required_value": 110
+    },
+    "9": {
+      "reward_id": "recipe_window_02_steel",
+      "required_value": 113
+    },
+    "10": {
+      "reward_id": "recipe_door_02_steel",
+      "required_value": 116
+    },
+    "11": {
+      "reward_id": "recipe_road_01_shell",
+      "required_value": 120
+    },
+    "12": {
+      "reward_id": "recipe_rose_fence",
+      "required_value": 123
+    },
+    "13": {
+      "reward_id": "recipe_kitchen_04",
+      "required_value": 126
+    },
+    "14": {
+      "reward_id": "recipe_kiln_04",
+      "required_value": 130
+    },
+    "15": {
+      "reward_id": "recipe_modular_wall_metal",
+      "required_value": 133
+    },
+    "16": {
+      "reward_id": "max_modular_size_01",
+      "required_value": 146
+    },
+    "17": {
+      "reward_id": "recipe_board_message_01_02",
+      "required_value": 163
+    },
+    "18": {
+      "reward_id": "recipe_modular_ground_marble",
+      "required_value": 166
+    },
+    "19": {
+      "reward_id": "max_modular_size_02",
+      "required_value": 183
+    }
+  },
+  "239": {
+    "1": {
+      "reward_id": "recoveryrate_handicraft_02",
+      "required_value": 75
+    },
+    "2": {
+      "reward_id": "recipe_charcoal_t2",
+      "required_value": 96
+    },
+    "3": {
+      "reward_id": "recoveryrate_handicraft_01",
+      "required_value": 100
+    },
+    "4": {
+      "reward_id": "recipe_jewel_grinding_02",
+      "required_value": 106
+    },
+    "5": {
+      "reward_id": "recipe_twist_rope_02_t2",
+      "required_value": 113
+    },
+    "6": {
+      "reward_id": "recoveryrate_handicraft_06",
+      "required_value": 120
+    },
+    "7": {
+      "reward_id": "recipe_glue_set_t2",
+      "required_value": 126
+    },
+    "8": {
+      "reward_id": "recoveryrate_handicraft_07",
+      "required_value": 140
+    },
+    "9": {
+      "reward_id": "recipe_necklace_electrum",
+      "required_value": 146
+    },
+    "10": {
+      "reward_id": "recipe_tan_02_t2",
+      "required_value": 156
+    },
+    "11": {
+      "reward_id": "recoveryrate_handicraft_08",
+      "required_value": 160
+    },
+    "12": {
+      "reward_id": "recipe_tan_04",
+      "required_value": 163
+    },
+    "13": {
+      "reward_id": "recipe_necklace_brachiotooth",
+      "required_value": 166
+    }
+  },
+  "215": {
+    "1": {
+      "reward_id": "recoveryrate_tailor_02",
+      "required_value": 75
+    },
+    "2": {
+      "reward_id": "recipe_thread_02_breathability_good",
+      "required_value": 96
+    },
+    "3": {
+      "reward_id": "recoveryrate_tailor_01",
+      "required_value": 100
+    },
+    "4": {
+      "reward_id": "recipe_thread_02_oily",
+      "required_value": 106
+    },
+    "5": {
+      "reward_id": "recipe_gloves_armorcrafting",
+      "required_value": 113
+    },
+    "6": {
+      "reward_id": "recipe_gloves_weaponcrafting",
+      "required_value": 116
+    },
+    "7": {
+      "reward_id": "recoveryrate_tailor_06",
+      "required_value": 120
+    },
+    "8": {
+      "reward_id": "recipe_reform_pocket_t2",
+      "required_value": 126
+    },
+    "9": {
+      "reward_id": "recipe_reform_clothover_t2",
+      "required_value": 133
+    },
+    "10": {
+      "reward_id": "recipe_reform_suncover_t2",
+      "required_value": 136
+    },
+    "11": {
+      "reward_id": "recoveryrate_tailor_07",
+      "required_value": 140
+    },
+    "12": {
+      "reward_id": "recipe_reform_lightening_t2",
+      "required_value": 146
+    },
+    "13": {
+      "reward_id": "recipe_reform_breathability_t2",
+      "required_value": 153
+    },
+    "14": {
+      "reward_id": "recipe_reform_windbreak_t2",
+      "required_value": 156
+    },
+    "15": {
+      "reward_id": "recoveryrate_tailor_08",
+      "required_value": 160
+    }
+  },
+  "216": {
+    "1": {
+      "reward_id": "recoveryrate_smith_02",
+      "required_value": 75
+    },
+    "2": {
+      "reward_id": "recipe_nail_metal_t2",
+      "required_value": 96
+    },
+    "3": {
+      "reward_id": "recoveryrate_smith_01",
+      "required_value": 100
+    },
+    "4": {
+      "reward_id": "recipe_metal_stick_t2",
+      "required_value": 106
+    },
+    "5": {
+      "reward_id": "recoveryrate_smith_06",
+      "required_value": 120
+    },
+    "6": {
+      "reward_id": "recipe_metal_set_t2",
+      "required_value": 126
+    },
+    "7": {
+      "reward_id": "recipe_refine_04",
+      "required_value": 133
+    },
+    "8": {
+      "reward_id": "recoveryrate_smith_07",
+      "required_value": 140
+    },
+    "9": {
+      "reward_id": "recipe_leadedbronze",
+      "required_value": 146
+    },
+    "10": {
+      "reward_id": "recipe_refine_03_t2",
+      "required_value": 156
+    },
+    "11": {
+      "reward_id": "recoveryrate_smith_08",
+      "required_value": 160
+    },
+    "12": {
+      "reward_id": "recipe_iron_alloy",
+      "required_value": 163
+    }
+  },
+  "220": {
+    "1": {
+      "reward_id": "recipe_farm_tile_03",
+      "required_value": 100
+    },
+    "2": {
+      "reward_id": "recipe_farm_tile_04",
+      "required_value": 103
+    },
+    "3": {
+      "reward_id": "recipe_fertilizer_maker_03",
+      "required_value": 130
+    }
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "plant": {
+    "category": 0,
+    "description": {
+      "식물 채집 기술을 연구하여, 채집 속도와 성공률이 향상됩니다.": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "clan_gathering_plant",
+      "level": 1
+    },
+    "name": {
+      "식물 채집 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "plant",
+    "icon": "act_clan_research_gathering_plant"
+  },
+  "mine": {
+    "category": 0,
+    "description": {
+      "광물 채집 기술을 연구하여, 채집 속도와 성공률이 향상됩니다.": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "clan_gathering_mine",
+      "level": 1
+    },
+    "name": {
+      "광물 채집 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "mine",
+    "icon": "act_clan_research_gathering_mine"
+  },
+  "animal": {
+    "category": 0,
+    "description": {
+      "동물 도축 기술을 연구하여, 채집 속도와 성공률이 향상됩니다.": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "clan_gathering_animal",
+      "level": 1
+    },
+    "name": {
+      "동물 도축 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "animal",
+    "icon": "act_clan_research_gathering_animal"
+  },
+  "tool": {
+    "category": 1,
+    "description": {
+      "도구 제작 노하우를 모아 더 좋은 도구를 제작할 수 있게 됩니다. (이 연구 효과는 부족 영토 안에서만 적용됩니다.)": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 0,
+      "status_effect_id": "clan_craft_tool",
+      "level": 1
+    },
+    "name": {
+      "도구 제작 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "tool",
+    "icon": "act_clan_research_craft_tool"
+  },
+  "clothes": {
+    "category": 1,
+    "description": {
+      "의상 제작 노하우를 모아 더 좋은 의상을 제작할 수 있게 됩니다. (이 연구 효과는 부족 영토 안에서만 적용됩니다.)": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 0,
+      "status_effect_id": "clan_craft_clothes",
+      "level": 1
+    },
+    "name": {
+      "의상 제작 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "clothes",
+    "icon": "act_clan_research_craft_clothes"
+  },
+  "cook": {
+    "category": 1,
+    "description": {
+      "요리 노하우를 모아 더 좋은 요리를 할 수 있게 됩니다. (이 연구 효과는 부족 영토 안에서만 적용됩니다.)": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 0,
+      "status_effect_id": "clan_craft_cook",
+      "level": 1
+    },
+    "name": {
+      "요리 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "cook",
+    "icon": "act_clan_research_craft_cook"
+  },
+  "construction": {
+    "category": 1,
+    "description": {
+      "건축 노하우를 모아 더 나은 건물을 건설할 수 있게 됩니다. (이 연구 효과는 부족 영토 안에서만 적용됩니다.)": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 0,
+      "status_effect_id": "clan_craft_construction",
+      "level": 1
+    },
+    "name": {
+      "건축 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "construction",
+    "icon": "act_clan_research_craft_construction"
+  },
+  "survival": {
+    "category": 2,
+    "description": {
+      "듀랑고의 환경을 연구하여 더 적은 피로도로 활동할 수 있게 됩니다.": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "clan_adventure_survival",
+      "level": 1
+    },
+    "name": {
+      "생존 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "survival",
+    "icon": "act_clan_research_adventure_survival"
+  },
+  "ecology": {
+    "category": 2,
+    "description": {
+      "동물의 습성을 연구하여 쉽게 발각되지 않게 됩니다.": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "clan_adventure_ecology",
+      "level": 1
+    },
+    "name": {
+      "생태 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "ecology",
+    "icon": "act_clan_research_adventure_ecology"
+  },
+  "attack": {
+    "category": 3,
+    "description": {
+      "공격 기술을 연마하여 공격력과 명중 능력이 향상됩니다.": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "clan_combat_attack",
+      "level": 1
+    },
+    "name": {
+      "공격 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "attack",
+    "icon": "act_clan_research_combat_attack"
+  },
+  "defense": {
+    "category": 3,
+    "description": {
+      "방어 기술을 연마하여, 방어력과 회피 능력이 향상됩니다.": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "clan_combat_defense",
+      "level": 1
+    },
+    "name": {
+      "방어 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "defense",
+    "icon": "act_clan_research_combat_defense"
+  },
+  "recovery": {
+    "category": 3,
+    "description": {
+      "회복 기술을 연마하여, 최대 건강과 생명력 회복 속도가 향상됩니다.": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 1,
+      "status_effect_id": "clan_combat_recovery",
+      "level": 1
+    },
+    "name": {
+      "회복 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 80000,
+    "tier": 0,
+    "id": "recovery",
+    "icon": "act_clan_research_combat_recovery"
+  },
+  "advancedbattle": {
+    "category": 4,
+    "description": {
+      "공격, 방어, 회복 등 종합적인 전투 능력이 향상됩니다.": null
+    },
+    "duration": 86400,
+    "effect": {
+      "apply_limits": 2,
+      "status_effect_id": "advanced_battle_research",
+      "level": 1
+    },
+    "name": {
+      "고급 전투 연구": null
+    },
+    "cooltime": 0,
+    "currency": 0,
+    "amount": 150000,
+    "tier": 0,
+    "id": "advancedbattle",
+    "icon": "act_clan_research_advanced_combat"
+  },
+  "advancedcapture": {
+    "category": 4,
+    "description": {
+      "딜로포사우루스, 오르니토미무스, 다이어울프를 포획할 수 있게 됩니다. ": null
+    },
+    "duration": 7200,
+    "effect": {
+      "apply_limits": 2,
+      "status_effect_id": "advanced_taming_research",
+      "level": 1
+    },
+    "name": {
+      "고급 포획 연구": null
+    },
+    "cooltime": 21600,
+    "currency": 0,
+    "amount": 150000,
+    "tier": 0,
+    "id": "advancedcapture",
+    "icon": "act_clan_research_advanced_taming"
+  },
+  "advancedgathering": {
+    "category": 4,
+    "description": {
+      "채집시 잠재 및 희귀 속성을 얻을 확률이 높아집니다.": null
+    },
+    "duration": 7200,
+    "effect": {
+      "apply_limits": 2,
+      "status_effect_id": "advanced_gathering_research",
+      "level": 1
+    },
+    "name": {
+      "고급 채집 연구": null
+    },
+    "cooltime": 21600,
+    "currency": 0,
+    "amount": 150000,
+    "tier": 0,
+    "id": "advancedgathering",
+    "icon": "act_clan_research_advanced_gathering"
+  }
+}

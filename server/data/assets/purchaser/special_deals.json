@@ -1,0 +1,128 @@
+{
+  "welcome_package_55lv_special_deal_01": {
+    "banner_item_description": {
+      "경험치와 스킬 <em>성장 속도 3배!</em>\n모든 스킬 연구 즉시 완료!": null
+    },
+    "banner_warning_description": {
+      "정해진 시간이 지나면 할인이 끝납니다.": null
+    },
+    "banner_title": {
+      "특별 할인!!": null
+    },
+    "banner_promotion_description": {
+      "<em>고속 55레벨 패키지</em>를 할인된 가격에 구매하세요.": null
+    }
+  },
+  "premium_support_package_special_deal_01": {
+    "banner_item_description": {
+      "<em>채집과 제작</em>의 속도와 성공률 증가.\n<em>강력한 기능</em>을 30일간 제공.": null
+    },
+    "banner_warning_description": {
+      "정해진 시간이 지나면 할인이 끝납니다.": null
+    },
+    "banner_title": {
+      "특별 할인!!": null
+    },
+    "banner_promotion_description": {
+      "<em>고급 지원 패키지</em>를 할인된 가격에 구매하세요.": null
+    }
+  },
+  "signal_amplifier_package_special_deal_01": {
+    "banner_item_description": {
+      "7일 동안 <em>개인섬 개척도 상승</em>이 빨라집니다.": null
+    },
+    "banner_warning_description": {
+      "정해진 시간이 지나면 할인이 끝납니다.": null
+    },
+    "banner_title": {
+      "특별 할인!!": null
+    },
+    "banner_promotion_description": {
+      "<em>신호 증폭 패키지</em>를 할인된 가격에 구매하세요.": null
+    }
+  },
+  "random_number_piece_package_special_deal_01": {
+    "banner_item_description": {
+      "30일 동안 난수 조각 매일 지급.": null
+    },
+    "banner_warning_description": {
+      "정해진 시간이 지나면 할인이 끝납니다.": null
+    },
+    "banner_title": {
+      "특별 할인!!": null
+    },
+    "banner_promotion_description": {
+      "<em>난수 조각 패키지</em>를 할인된 가격에 구매하세요.": null
+    }
+  },
+  "growth_package_30LV_special_deal_01": {
+    "banner_item_description": {
+      "대량의 워프젬과 티스톤 획득!": null
+    },
+    "banner_warning_description": {
+      "정해진 시간이 지나면 할인이 끝납니다.": null
+    },
+    "banner_title": {
+      "특별 할인!!": null
+    },
+    "banner_promotion_description": {
+      "<em>30레벨 성장 패키지</em>를 할인된 가격에 구매하세요.": null
+    }
+  },
+  "growth_package_40LV_special_deal_01": {
+    "banner_item_description": {
+      "대량의 워프젬과 티스톤 획득.": null
+    },
+    "banner_warning_description": {
+      "정해진 시간이 지나면 할인이 끝납니다.": null
+    },
+    "banner_title": {
+      "특별 할인!!": null
+    },
+    "banner_promotion_description": {
+      "<em>지원금 패키지</em>를 할인된 가격에 구매하세요.": null
+    }
+  },
+  "growth_package_60LV_special_deal_01": {
+    "banner_item_description": {
+      "대량의 워프젬과 티스톤 획득.": null
+    },
+    "banner_warning_description": {
+      "정해진 시간이 지나면 할인이 끝납니다.": null
+    },
+    "banner_title": {
+      "특별 할인!!": null
+    },
+    "banner_promotion_description": {
+      "<em>60레벨 성장 패키지</em>를 할인된 가격에 구매하세요.": null
+    }
+  },
+  "item_skill_reset_ticket_store_special_deal_01": {
+    "banner_item_description": {
+      "모든 스킬을 초기화하고 SP를 복구.": null
+    },
+    "banner_warning_description": {
+      "정해진 시간이 지나면 할인이 끝납니다.": null
+    },
+    "banner_title": {
+      "특별 할인!!": null
+    },
+    "banner_promotion_description": {
+      "<em>스킬 초기화권</em>을 할인된 가격에 구매하세요.": null
+    }
+  },
+  "monthly_package_1_special_deal_01": {
+    "banner_item_description": {
+      "30일 동안 가방 용량 증가\n매일 유용한 보상 지급.": null
+    },
+    "banner_warning_description": {
+      "정해진 시간이 지나면 할인이 끝납니다.": null
+    },
+    "banner_title": {
+      "특별 할인!!": null
+    },
+    "banner_promotion_description": {
+      "<em>월정액 패키지</em>를 할인된 가격에 구매하세요.": null
+    }
+  }
+}

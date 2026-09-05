@@ -1,0 +1,1190 @@
+{
+  "72": {
+    "v4.8": [
+      {
+        "rewards": {
+          "1": {
+            "4": 2000
+          },
+          "4": [
+            {
+              "count": 60,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 20,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 1
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1500
+          },
+          "4": [
+            {
+              "count": 54,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 18,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 2
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1000
+          },
+          "4": [
+            {
+              "count": 48,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 16,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 3
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 700
+          },
+          "4": [
+            {
+              "count": 30,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 10,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 10
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 500
+          },
+          "4": [
+            {
+              "count": 24,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 8,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 25
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 400
+          },
+          "4": [
+            {
+              "count": 18,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 6,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 50
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 300
+          },
+          "4": [
+            {
+              "count": 12,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 4,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 100
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 200
+          },
+          "4": [
+            {
+              "count": 6,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 2,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_percentage": "10%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 100
+          }
+        },
+        "ranking_percentage": "25%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 80
+          }
+        },
+        "ranking_percentage": "50%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 40
+          }
+        },
+        "ranking_percentage": "100%"
+      }
+    ],
+    "v4.4": [
+      {
+        "rewards": {
+          "1": {
+            "4": 2000
+          },
+          "4": [
+            {
+              "count": 60,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 20,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 1
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1500
+          },
+          "4": [
+            {
+              "count": 54,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 18,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 2
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1000
+          },
+          "4": [
+            {
+              "count": 48,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 16,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 3
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 700
+          },
+          "4": [
+            {
+              "count": 30,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 10,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 10
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 500
+          },
+          "4": [
+            {
+              "count": 24,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 8,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 25
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 400
+          },
+          "4": [
+            {
+              "count": 18,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 6,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 50
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 300
+          },
+          "4": [
+            {
+              "count": 12,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 4,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 100
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 200
+          },
+          "4": [
+            {
+              "count": 6,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 2,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_percentage": "10%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 100
+          }
+        },
+        "ranking_percentage": "25%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 80
+          }
+        },
+        "ranking_percentage": "50%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 40
+          }
+        },
+        "ranking_percentage": "100%"
+      }
+    ],
+    "v4.5": [
+      {
+        "rewards": {
+          "1": {
+            "4": 2000
+          },
+          "4": [
+            {
+              "count": 60,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 20,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 1
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1500
+          },
+          "4": [
+            {
+              "count": 54,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 18,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 2
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1000
+          },
+          "4": [
+            {
+              "count": 48,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 16,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 3
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 700
+          },
+          "4": [
+            {
+              "count": 30,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 10,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 10
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 500
+          },
+          "4": [
+            {
+              "count": 24,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 8,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 25
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 400
+          },
+          "4": [
+            {
+              "count": 18,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 6,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 50
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 300
+          },
+          "4": [
+            {
+              "count": 12,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 4,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 100
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 200
+          },
+          "4": [
+            {
+              "count": 6,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 2,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_percentage": "10%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 100
+          }
+        },
+        "ranking_percentage": "25%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 80
+          }
+        },
+        "ranking_percentage": "50%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 40
+          }
+        },
+        "ranking_percentage": "100%"
+      }
+    ],
+    "v4.6": [
+      {
+        "rewards": {
+          "1": {
+            "4": 2000
+          },
+          "4": [
+            {
+              "count": 60,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 20,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 1
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1500
+          },
+          "4": [
+            {
+              "count": 54,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 18,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 2
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1000
+          },
+          "4": [
+            {
+              "count": 48,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 16,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 3
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 700
+          },
+          "4": [
+            {
+              "count": 30,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 10,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 10
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 500
+          },
+          "4": [
+            {
+              "count": 24,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 8,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 25
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 400
+          },
+          "4": [
+            {
+              "count": 18,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 6,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 50
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 300
+          },
+          "4": [
+            {
+              "count": 12,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 4,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 100
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 200
+          },
+          "4": [
+            {
+              "count": 6,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 2,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_percentage": "10%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 100
+          }
+        },
+        "ranking_percentage": "25%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 80
+          }
+        },
+        "ranking_percentage": "50%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 40
+          }
+        },
+        "ranking_percentage": "100%"
+      }
+    ],
+    "v4.7": [
+      {
+        "rewards": {
+          "1": {
+            "4": 2000
+          },
+          "4": [
+            {
+              "count": 60,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 20,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 1
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1500
+          },
+          "4": [
+            {
+              "count": 54,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 18,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 2
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 1000
+          },
+          "4": [
+            {
+              "count": 48,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 16,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 3
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 700
+          },
+          "4": [
+            {
+              "count": 30,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 10,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 10
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 500
+          },
+          "4": [
+            {
+              "count": 24,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 8,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 25
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 400
+          },
+          "4": [
+            {
+              "count": 18,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 6,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 50
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 300
+          },
+          "4": [
+            {
+              "count": 12,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 4,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_num": 100
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 200
+          },
+          "4": [
+            {
+              "count": 6,
+              "prototype_id": "modular_wall_stonetile",
+              "level": 60
+            },
+            {
+              "count": 2,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ]
+        },
+        "ranking_percentage": "10%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 100
+          }
+        },
+        "ranking_percentage": "25%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 80
+          }
+        },
+        "ranking_percentage": "50%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "4": 40
+          }
+        },
+        "ranking_percentage": "100%"
+      }
+    ]
+  },
+  "71": {
+    "all": [
+      {
+        "rewards": {
+          "1": {
+            "1": 2000
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_01",
+              "level": 60
+            },
+            {
+              "count": 20,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_1"
+          ]
+        },
+        "ranking_num": 1
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 1500
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_01",
+              "level": 60
+            },
+            {
+              "count": 18,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_1"
+          ]
+        },
+        "ranking_num": 2
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 1000
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_01",
+              "level": 60
+            },
+            {
+              "count": 16,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_1"
+          ]
+        },
+        "ranking_num": 3
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 500
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_01",
+              "level": 60
+            },
+            {
+              "count": 10,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_2"
+          ]
+        },
+        "ranking_num": 10
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 300
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_02",
+              "level": 60
+            },
+            {
+              "count": 8,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_3"
+          ]
+        },
+        "ranking_num": 100
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 200
+          },
+          "4": [
+            {
+              "count": 6,
+              "prototype_id": "modular_roof_woodtile",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_4"
+          ]
+        },
+        "ranking_percentage": "10%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 100
+          }
+        },
+        "ranking_percentage": "100%"
+      }
+    ],
+    "season03": [
+      {
+        "rewards": {
+          "1": {
+            "1": 2000
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_01",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_1"
+          ]
+        },
+        "ranking_num": 1
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 1500
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_01",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_1"
+          ]
+        },
+        "ranking_num": 2
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 1000
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_01",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_1"
+          ]
+        },
+        "ranking_num": 3
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 500
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_01",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_2"
+          ]
+        },
+        "ranking_num": 10
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 300
+          },
+          "4": [
+            {
+              "count": 1,
+              "prototype_id": "clothes_warprush_pajamas_02",
+              "level": 60
+            }
+          ],
+          "13": [
+            "s03_season_ranking_3"
+          ]
+        },
+        "ranking_num": 100
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 200
+          },
+          "13": [
+            "s03_season_ranking_4"
+          ]
+        },
+        "ranking_percentage": "10%"
+      },
+      {
+        "rewards": {
+          "1": {
+            "1": 100
+          }
+        },
+        "ranking_percentage": "100%"
+      }
+    ]
+  }
+}

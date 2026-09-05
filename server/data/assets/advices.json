@@ -1,0 +1,6145 @@
+{
+  "combat_basic_1": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_basic",
+    "reward_items": [
+      {
+        "count": 1,
+        "prototype_id": "sword_onehand_stone_01",
+        "level": 15
+      },
+      {
+        "count": 1,
+        "prototype_id": "clothes_shield",
+        "level": 15
+      }
+    ],
+    "reward_title_id": "combat_basic_1",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_proficiency",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_mastery",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_smash",
+        "level": 2
+      },
+      {
+        "sub_id": "critical",
+        "skill_id": "onehanded_smash",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_flurry",
+        "level": 1
+      },
+      {
+        "sub_id": "duration",
+        "skill_id": "dodge",
+        "level": 1
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "dodge",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 1
+      }
+    ],
+    "description": {
+      "목축과 농경의 시대가 올 때까지, 사냥으로 필요한 영양분을 얻어야 한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 2,
+      "level": 1
+    },
+    "difficulty": 1,
+    "recommended": false,
+    "advisor_reward_point": 100,
+    "cooperation": 1,
+    "reward_items_name": {
+      "기초사냥전술 세트": null
+    },
+    "hints": [],
+    "name": {
+      "기초사냥전술": null
+    }
+  },
+  "combat_melee_onehand_2": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_melee_onehand",
+    "reward_items": [],
+    "reward_title_id": "combat_melee_onehand_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_proficiency",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_mastery",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_smash",
+        "level": 3
+      },
+      {
+        "sub_id": "critical",
+        "skill_id": "onehanded_smash",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_flurry",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_stab",
+        "level": 1
+      },
+      {
+        "sub_id": "duration",
+        "skill_id": "dodge",
+        "level": 2
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "dodge",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 2
+      }
+    ],
+    "description": {
+      "마음은 생물의 모든 행동의 근원으로, 전투 또한 마음에 그 뿌리가 있다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 2,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 1,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>한손무기</em>와 <em>양손무기</em>는 액션이 다릅니다.": null
+      },
+      {
+        "<em>근접전</em> 계열에서 배운 액션은 기본 공격보다 좋은 것들이니 전투에서 잘 활용해서 숙련도를 높이세요.": null
+      },
+      {
+        "<em>방어</em> 계열에서 추가로 배울 수 있는 스킬들도 잘 활용해서 숙련도를 높여 보세요.": null
+      }
+    ],
+    "name": {
+      "한손전투와 마음읽기": null
+    }
+  },
+  "combat_melee_onehand_3": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_melee_onehand",
+    "reward_items": [],
+    "reward_title_id": "combat_melee_onehand_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_proficiency",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_mastery",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_smash",
+        "level": 4
+      },
+      {
+        "sub_id": "critical",
+        "skill_id": "onehanded_smash",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_flurry",
+        "level": 4
+      },
+      {
+        "sub_id": "critical",
+        "skill_id": "onehanded_flurry",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_stab",
+        "level": 3
+      },
+      {
+        "sub_id": "penetrate",
+        "skill_id": "onehanded_stab",
+        "level": 2
+      },
+      {
+        "sub_id": "duration",
+        "skill_id": "dodge",
+        "level": 3
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "dodge",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 3
+      }
+    ],
+    "description": {
+      "전투에서 중요한 정보를 인지하지 못 한다면 승리할 가능성은 위축된다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 2,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>한손무기</em>는 <em>양손무기</em>에 비하여 빠르게 공격할 수 있습니다.": null
+      },
+      {
+        "하지만 <em>무기의 피해량</em>은 양손무기 보다 낮아 전투에서 보다 많은 횟수의 공격을 요구합니다.": null
+      },
+      {
+        "잦은 움직임을 통해 지속적으로 공격을 할 수 있도록 전투의 기회를 잡아보세요.": null
+      }
+    ],
+    "name": {
+      "한손전투와 인지심리": null
+    }
+  },
+  "combat_melee_onehand_4": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_melee_onehand",
+    "reward_items": [],
+    "reward_title_id": "combat_melee_onehand_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_proficiency",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_mastery",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_smash",
+        "level": 4
+      },
+      {
+        "sub_id": "critical",
+        "skill_id": "onehanded_smash",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_flurry",
+        "level": 4
+      },
+      {
+        "sub_id": "critical",
+        "skill_id": "onehanded_flurry",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "onehanded_stab",
+        "level": 4
+      },
+      {
+        "sub_id": "penetrate",
+        "skill_id": "onehanded_stab",
+        "level": 3
+      },
+      {
+        "sub_id": "duration",
+        "skill_id": "dodge",
+        "level": 3
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "dodge",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 5
+      }
+    ],
+    "description": {
+      "다른 개척자를 공격하는 범죄자는, 무법의 판사가 되어 심판한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 2,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "전투의 액션은 <em>전문화 스킬</em>을 찍어 강화할 수 있습니다.": null
+      },
+      {
+        "<em>무기의 레벨</em>도 레벨대에 따라 꾸준히 높여야 합니다. 직접 만들거나 장터에서 구해보세요.": null
+      },
+      {
+        "<em>칼</em>은 상대의 방어 관통에, <em>도끼</em>는 부위 파괴에, <em>둔기</em>는 기절에 유용합니다.": null
+      }
+    ],
+    "name": {
+      "한손전투와 범죄심리": null
+    }
+  },
+  "combat_melee_twohand_2": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_melee_twohand",
+    "reward_items": [],
+    "reward_title_id": "combat_melee_twohand_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_proficiency",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_mastery",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "twohanded_smash",
+        "level": 3
+      },
+      {
+        "sub_id": "blow_power",
+        "skill_id": "twohanded_smash",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "twohanded_sweeping",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "twohanded_strike",
+        "level": 1
+      },
+      {
+        "sub_id": "duration",
+        "skill_id": "dodge",
+        "level": 2
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "dodge",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 2
+      }
+    ],
+    "description": {
+      "비판적 사고는, 전투를 가능한 빠르게 끝내 피해를 줄인다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 2,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 1,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>한손무기</em>와 <em>양손무기</em>는 액션이 다릅니다.": null
+      },
+      {
+        "<em>근접전</em> 계열에서 배운 액션은 기본 공격보다 좋은 것들이니 전투에서 잘 활용해서 숙련도를 높이세요.": null
+      },
+      {
+        "<em>방어</em> 계열에서 추가로 배울 수 있는 스킬들도 잘 활용해서 숙련도를 높여 보세요.": null
+      }
+    ],
+    "name": {
+      "양손전투와 비판적사고": null
+    }
+  },
+  "combat_melee_twohand_3": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_melee_twohand",
+    "reward_items": [],
+    "reward_title_id": "combat_melee_twohand_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_proficiency",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_mastery",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "twohanded_smash",
+        "level": 4
+      },
+      {
+        "sub_id": "blow_power",
+        "skill_id": "twohanded_smash",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "twohanded_sweeping",
+        "level": 4
+      },
+      {
+        "sub_id": "hit_rate",
+        "skill_id": "twohanded_sweeping",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "twohanded_strike",
+        "level": 3
+      },
+      {
+        "sub_id": "hit_rate",
+        "skill_id": "twohanded_strike",
+        "level": 2
+      },
+      {
+        "sub_id": "duration",
+        "skill_id": "dodge",
+        "level": 3
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "dodge",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 3
+      }
+    ],
+    "description": {
+      "전투는 운동 에너지가 교차하는 곳이며, 철학이 없는 공간은 없다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 2,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>양손무기</em>는 <em>한손무기</em>에 비하여 공격 속도가 느립니다.": null
+      },
+      {
+        "하지만 <em>무기의 피해량</em>은 한손무기 보다 높아 효율적인 전투를 진행할 수 있습니다.": null
+      },
+      {
+        "전투에서 공격 가능한 시점을 잘 파악하여 타격을 명중시킬 수 있는 기회를 잡아보세요.": null
+      }
+    ],
+    "name": {
+      "양손전투와 운동철학": null
+    }
+  },
+  "combat_melee_twohand_4": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_melee_twohand",
+    "reward_items": [],
+    "reward_title_id": "combat_melee_twohand_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_proficiency",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "melee_weapon_mastery",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "twohanded_smash",
+        "level": 4
+      },
+      {
+        "sub_id": "blow_power",
+        "skill_id": "twohanded_smash",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "twohanded_sweeping",
+        "level": 4
+      },
+      {
+        "sub_id": "hit_rate",
+        "skill_id": "twohanded_sweeping",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "twohanded_strike",
+        "level": 4
+      },
+      {
+        "sub_id": "hit_rate",
+        "skill_id": "twohanded_strike",
+        "level": 3
+      },
+      {
+        "sub_id": "duration",
+        "skill_id": "dodge",
+        "level": 3
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "dodge",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 5
+      }
+    ],
+    "description": {
+      "싸움에서 윤리의 목적은, 전투로 모두가 잃게 될 것을 고민하는 데 있다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 2,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "전투의 액션은 <em>전문화 스킬</em>을 찍어 강화할 수 있습니다.": null
+      },
+      {
+        "<em>무기의 레벨</em>도 레벨대에 따라 꾸준히 높여야 합니다. 직접 만들거나 장터에서 구해보세요.": null
+      },
+      {
+        "<em>칼</em>은 상대의 방어 관통에, <em>도끼</em>는 부위 파괴에, <em>둔기</em>는 기절에 유용합니다.": null
+      }
+    ],
+    "name": {
+      "양손전투와 전투윤리": null
+    }
+  },
+  "combat_ranged_2": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_ranged",
+    "reward_items": [],
+    "reward_title_id": "combat_ranged_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "ranged_weapon_proficiency",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "ranged_weapon_mastery",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "quick_shot",
+        "level": 2
+      },
+      {
+        "sub_id": "hit_rate",
+        "skill_id": "quick_shot",
+        "level": 1
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "quick_shot",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "aimed_shot",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 2
+      }
+    ],
+    "description": {
+      "무언가를 상대에게 처음 던졌던 날에, 수학은 발전할 이유를 찾았다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 3,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 1,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "원거리 무기가 속하는 <em>궁술 계열</em>의 액션은 근접전 계열과 양상이 다릅니다.": null
+      },
+      {
+        "궁술 계열의 액션을 전투에서 써야, 궁술 계열의 <em>숙련도</em>가 올라갑니다.": null
+      }
+    ],
+    "name": {
+      "궁술과 미적분학": null
+    }
+  },
+  "combat_ranged_3": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_ranged",
+    "reward_items": [],
+    "reward_title_id": "combat_ranged_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "ranged_weapon_proficiency",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "ranged_weapon_mastery",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "quick_shot",
+        "level": 4
+      },
+      {
+        "sub_id": "hit_rate",
+        "skill_id": "quick_shot",
+        "level": 3
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "quick_shot",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "aimed_shot",
+        "level": 3
+      },
+      {
+        "sub_id": "critical",
+        "skill_id": "aimed_shot",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 3
+      }
+    ],
+    "description": {
+      "전투엔 많은 물체가 있고, 역학은 여러 물체 사이에서 움직인다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 3,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "전투 때 화면 왼쪽에 <em>태세</em>가 나옵니다. <em>태세</em>는 전투에서 싸우는 방식을 말합니다.": null
+      },
+      {
+        "<em>태세</em>에 따라 스킬의 배치가 달라집니다.": null
+      },
+      {
+        "태세는 <em>무기</em>에 따라 다릅니다. 다만, 원거리 계열의 무기는 방어 계열의 태세를 사용하지 않습니다.": null
+      }
+    ],
+    "name": {
+      "궁술과 고전역학": null
+    }
+  },
+  "combat_ranged_4": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_ranged",
+    "reward_items": [],
+    "reward_title_id": "combat_ranged_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "ranged_weapon_proficiency",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "ranged_weapon_mastery",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "quick_shot",
+        "level": 4
+      },
+      {
+        "sub_id": "hit_rate",
+        "skill_id": "quick_shot",
+        "level": 3
+      },
+      {
+        "sub_id": "stamina",
+        "skill_id": "quick_shot",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "aimed_shot",
+        "level": 4
+      },
+      {
+        "sub_id": "critical",
+        "skill_id": "aimed_shot",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "base_defense",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "health",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "life_regen",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stamina_regen",
+        "level": 5
+      }
+    ],
+    "description": {
+      "별이나 화살이나 움직이는 데 작동하는 힘의 근원은 보편적이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 3,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "전투의 액션은 <em>전문화 스킬</em>을 찍어 강화할 수 있습니다.": null
+      },
+      {
+        "<em>무기의 레벨</em>도 레벨대에 따라 꾸준히 높여야 합니다. 직접 만들거나 장터에서 구해보세요.": null
+      },
+      {
+        "<em>활</em>은 상대의 방어 관통에, <em>석궁</em>은 기절에 유용합니다.": null
+      }
+    ],
+    "name": {
+      "궁술과 상대성이론": null
+    }
+  },
+  "combat_butchery_2": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_butchery",
+    "reward_items": [],
+    "reward_title_id": "combat_butchery_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "skinning",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "feather",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fur",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "deboning",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "horn",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tooth",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "skull",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "butchering_train",
+        "level": 1
+      }
+    ],
+    "description": {
+      "동물을 잘 해부해 최대한 뽑아낼수록, 잡을 일이 줄어들 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 5,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 1,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "죽은 동물에서 채집물을 얻어낼 수록 도축 계열의 <em>숙련도</em>를 높일 수 있습니다.": null
+      },
+      {
+        "초기의 도축은 돌날 같은 <em>작업용 칼</em>로 충분하지만, 뒤로 갈수록 더 좋은 도구를 만들어야 합니다.": null
+      },
+      {
+        "초반의 고기, 뼈는 스킬 없이 채집할 수 있습니다. 하지만 뒤로 갈수록 <em>스킬</em>을 필요로 합니다.": null
+      },
+      {
+        "바닷가나 야자나무에서 조개나 게를 채집해도 도축 숙련도를 높일 수 있습니다.": null
+      }
+    ],
+    "name": {
+      "동물 해부학": null
+    }
+  },
+  "combat_butchery_3": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_butchery",
+    "reward_items": [],
+    "reward_title_id": "combat_butchery_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cutting",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "skinning",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "feather",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fur",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "boneplate",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "deboning",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "horn",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tooth",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "skull",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "butchering_train",
+        "level": 3
+      }
+    ],
+    "description": {
+      "죽은 동물을 잘 알수록, 산 동물에게 더 좋은 일을 할 수 있을 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 5,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "어느 정도 숙련도가 오르면, 더 다양한 도축물을 채집해야 도축의 <em>숙련도</em>를 높일 수 있습니다.": null
+      },
+      {
+        "도축 계열에서 <em>연습</em> 스킬을 익힐수록 채집에 성공할 확률이 높아집니다.": null
+      }
+    ],
+    "name": {
+      "동물 해부실습": null
+    }
+  },
+  "combat_butchery_4": {
+    "category": "combat",
+    "category_levels": {},
+    "subcategory": "combat_butchery",
+    "reward_items": [],
+    "reward_title_id": "combat_butchery_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cutting",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "skinning",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "feather",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fur",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "boneplate",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "deboning",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "horn",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tooth",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "skull",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "butchering_train",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blade_stone",
+        "level": 3
+      }
+    ],
+    "description": {
+      "최대한 정밀하게 동물의 주검을 처리해, 그 의미를 키우고자 한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 5,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "높은 수준의 동물 자원일수록 구하기 어려우면서도, 각종 제작에서 수요가 큽니다.": null
+      },
+      {
+        "채집한 도축물을 <em>장터</em>에 후한 값에 팔아보세요. 그 값으로 장비를 마련할 자금 이상을 얻을 수 있을지도 모릅니다.": null
+      }
+    ],
+    "name": {
+      "동물 분자영양학": null
+    }
+  },
+  "weaponcrafting_basic_1": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_basic",
+    "reward_items": [
+      {
+        "count": 3,
+        "prototype_id": "handle",
+        "level": 20
+      },
+      {
+        "count": 3,
+        "prototype_id": "rope",
+        "level": 20
+      }
+    ],
+    "reward_title_id": "weaponcrafting_basic_1",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "sword_onehand",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sword_twohand",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_onehand",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_twohand",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bow",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "worktable",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "con_board",
+        "level": 1
+      }
+    ],
+    "description": {
+      "비무장도 안전한 세상이 최선이나, 그렇게 되기 전까진 스스로를 무장한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 1
+    },
+    "difficulty": 1,
+    "recommended": false,
+    "advisor_reward_point": 100,
+    "cooperation": 1,
+    "reward_items_name": {
+      "무기제작개론 세트": null
+    },
+    "hints": [],
+    "name": {
+      "무기제작개론": null
+    }
+  },
+  "weaponcrafting_sword_2": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_sword",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_sword_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "sword_onehand",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sword_twohand",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "saw",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "nail_normal",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 2
+      }
+    ],
+    "description": {
+      "이 칼이 누군가를 억압하는 데 쓰이지 않기를 바란다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>부품</em>이 좋아야 완성품도 좋습니다. 무기를 구성하는 개별 부품의 레벨을 높여 보세요.": null
+      },
+      {
+        "무기엔 등급이 있습니다. 처음엔 <em>급조한</em> 무기 등급부터 시작합니다. 그 다음은 <em>보통의</em> 무기 등급입니다.": null
+      },
+      {
+        "<em>보통의</em> 등급 무기를 만들려면, 정식으로 <em>손잡이</em> 부품을 만들어야 합니다. 예전처럼 나뭇가지를 손잡이로 쓰던 시대는 지나간 거죠.": null
+      },
+      {
+        "좋은 부품과 재료를 만들려면 <em>가공</em> 계열의 스킬이 필요합니다. 가공 계열의 활동을 해서 숙련도를 높여 보세요.": null
+      }
+    ],
+    "name": {
+      "도검 제작공정 기초": null
+    }
+  },
+  "weaponcrafting_sword_3": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_sword",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_sword_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "sword_onehand",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sword_twohand",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blade_stone",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "saw",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_connection",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dry",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "rope",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "string_leather",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smith_drill",
+        "level": 1
+      }
+    ],
+    "description": {
+      "듀랑고의 철을 구성하는 원소들도 그 빅뱅에서 나왔을 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>보통의</em> 무기 등급 다음엔 <em>개선된</em> 무기 등급입니다. 더 높은 레벨의 무기를 제작할 수 있는 제작법입니다.": null
+      },
+      {
+        "부품 날과 부품 손잡이를 연결하는 부품도 발전이 필요합니다. <em>개선된</em> 무기 등급에서는 <em>슴베</em> 같은 연결부품이 필요합니다.": null
+      },
+      {
+        "부품 손잡이 역시, 기존의 <em>손잡이</em>에서 나아가, <em>개선된 손잡이</em>가 필요합니다.": null
+      },
+      {
+        "이런 좋은 부품을 만들려면, 그만큼 좋은 재료가 필요합니다. <em>불안정섬</em>에 가서 좋은 재료를 구하거나, <em>장터</em>를 이용해보세요.": null
+      }
+    ],
+    "name": {
+      "도검 제작공정 숙련": null
+    }
+  },
+  "weaponcrafting_sword_4": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_sword",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_sword_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "sword_onehand",
+        "level": 9
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sword_twohand",
+        "level": 9
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blade_stone",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_connection",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "process",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "refine",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smith_drill",
+        "level": 4
+      }
+    ],
+    "description": {
+      "좋은 칼을 만들었으니, 사람들이 칼을 올바르게 쓰는지 감시해야 한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>개선된</em> 등급의 무기보다 더 좋은 무기는 <em>프로토급</em> 등급의 무기입니다. 프로토케라톱스에서 이름을 따온 이 제작법은 더 높은 레벨대의 무기를 만들 수 있는 제작법입니다.": null
+      },
+      {
+        "부품 역시 이전의 제작법들보다 더 높은 수준의 것을 요구합니다. <em>자루</em> 같은 것이 있죠.": null
+      },
+      {
+        "등급에 속하는 무기 이외에도, 독특한 모양과 능력을 갖춘 다양한 무기가 있습니다. <em>스킬</em>을 배워서 만들고 <em>숙련도</em>를 높여 보세요.": null
+      }
+    ],
+    "name": {
+      "도검 제작공정 전문": null
+    }
+  },
+  "weaponcrafting_axe_2": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_axe",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_axe_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_onehand",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_twohand",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "saw",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "nail_normal",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 2
+      }
+    ],
+    "description": {
+      "목기 시대란 말이 따로 없는 건 나무가 어느 때나 보편적이기 때문이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>부품</em>이 좋아야 완성품도 좋습니다. 무기를 구성하는 개별 부품의 레벨을 높여 보세요.": null
+      },
+      {
+        "무기엔 등급이 있습니다. 처음엔 <em>급조한</em> 무기 등급부터 시작합니다. 그 다음은 <em>보통의</em> 무기 등급입니다.": null
+      },
+      {
+        "<em>보통의</em> 등급 무기를 만들려면, 정식으로 <em>손잡이</em> 부품을 만들어야 합니다. 예전처럼 나뭇가지를 손잡이로 쓰던 시대는 지나간 거죠.": null
+      },
+      {
+        "좋은 부품과 재료를 만들려면 <em>가공</em> 계열의 스킬이 필요합니다. 가공 계열의 활동을 해서 숙련도를 높여 보세요.": null
+      }
+    ],
+    "name": {
+      "도끼 제작공정 기초": null
+    }
+  },
+  "weaponcrafting_axe_3": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_axe",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_axe_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_onehand",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_twohand",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_tool",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "saw",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_connection",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dry",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "rope",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "string_leather",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smith_drill",
+        "level": 1
+      }
+    ],
+    "description": {
+      "숲이 곡식이 익은 들판이 되려면, 탐욕만으로는 부족하다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>보통의</em> 무기 등급 다음엔 <em>개선된</em> 무기 등급입니다. 더 높은 레벨의 무기를 제작할 수 있는 제작법입니다.": null
+      },
+      {
+        "부품 날과 부품 손잡이를 연결하는 부품도 발전이 필요합니다. <em>개선된</em> 무기 등급에서는 <em>슴베</em> 같은 연결부품이 필요합니다.": null
+      },
+      {
+        "부품 손잡이 역시, 기존의 <em>손잡이</em>에서 나아가, <em>개선된 손잡이</em>가 필요합니다.": null
+      },
+      {
+        "이런 좋은 부품을 만들려면, 그만큼 좋은 재료가 필요합니다. <em>불안정섬</em>에 가서 좋은 재료를 구하거나, <em>장터</em>를 이용해보세요.": null
+      }
+    ],
+    "name": {
+      "도끼 제작공정 숙련": null
+    }
+  },
+  "weaponcrafting_axe_4": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_axe",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_axe_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_onehand",
+        "level": 9
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_twohand",
+        "level": 9
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_tool",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_connection",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "process",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "refine",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smith_drill",
+        "level": 4
+      }
+    ],
+    "description": {
+      "도끼가 베어내는 숲만큼, 다른 숲을 일구는 것도 잊지 않도록 한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>개선된</em> 등급의 무기보다 더 좋은 무기는 <em>프로토급</em> 등급의 무기입니다. 프로토케라톱스에서 이름을 따온 이 제작법은 더 높은 레벨대의 무기를 만들 수 있는 제작법입니다.": null
+      },
+      {
+        "부품 역시 이전의 제작법들보다 더 높은 수준의 것을 요구합니다. <em>자루</em> 같은 것이 있죠.": null
+      },
+      {
+        "등급에 속하는 무기 이외에도, 독특한 모양과 능력을 갖춘 다양한 무기가 있습니다. <em>스킬</em>을 배워서 만들고 <em>숙련도</em>를 높여 보세요.": null
+      }
+    ],
+    "name": {
+      "도끼 제작공정 전문": null
+    }
+  },
+  "weaponcrafting_hammer_2": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_hammer",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_hammer_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "hammer_onehand",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "hammer_twohand",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "saw",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "nail_normal",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 2
+      }
+    ],
+    "description": {
+      "찌르거나 베는 대신에, 질량만으로 승부하는 무기도 있다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>부품</em>이 좋아야 완성품도 좋습니다. 무기를 구성하는 개별 부품의 레벨을 높여 보세요.": null
+      },
+      {
+        "무기엔 등급이 있습니다. 처음엔 <em>급조한</em> 무기 등급부터 시작합니다. 그 다음은 <em>보통의</em> 무기 등급입니다.": null
+      },
+      {
+        "<em>보통의</em> 등급 무기를 만들려면, 정식으로 <em>손잡이</em> 부품을 만들어야 합니다. 예전처럼 나뭇가지를 손잡이로 쓰던 시대는 지나간 거죠.": null
+      },
+      {
+        "좋은 부품과 재료를 만들려면 <em>가공</em> 계열의 스킬이 필요합니다. 가공 계열의 활동을 해서 숙련도를 높여 보세요.": null
+      }
+    ],
+    "name": {
+      "둔기 제작공정 기초": null
+    }
+  },
+  "weaponcrafting_hammer_3": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_hammer",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_hammer_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "hammer_onehand",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "hammer_twohand",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "hammer_tool",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "saw",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_connection",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dry",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "rope",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "string_leather",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smith_drill",
+        "level": 1
+      }
+    ],
+    "description": {
+      "사신조차도 둔기가 주는 고통엔 익숙해질 수가 없다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>보통의</em> 무기 등급 다음엔 <em>개선된</em> 무기 등급입니다. 더 높은 레벨의 무기를 제작할 수 있는 제작법입니다.": null
+      },
+      {
+        "부품 날과 부품 손잡이를 연결하는 부품도 발전이 필요합니다. <em>개선된</em> 무기 등급에서는 <em>슴베</em> 같은 연결부품이 필요합니다.": null
+      },
+      {
+        "부품 손잡이 역시, 기존의 <em>손잡이</em>에서 나아가, <em>개선된 손잡이</em>가 필요합니다.": null
+      },
+      {
+        "이런 좋은 부품을 만들려면, 그만큼 좋은 재료가 필요합니다. <em>불안정섬</em>에 가서 좋은 재료를 구하거나, <em>장터</em>를 이용해보세요.": null
+      }
+    ],
+    "name": {
+      "둔기 제작공정 숙련": null
+    }
+  },
+  "weaponcrafting_hammer_4": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_hammer",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_hammer_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "hammer_onehand",
+        "level": 7
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "hammer_twohand",
+        "level": 7
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "hammer_tool",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handle",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_connection",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "process",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "refine",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smith_drill",
+        "level": 4
+      }
+    ],
+    "description": {
+      "개척자들의 둔기가 상대를 부수기 보단 편견을 부수길 기원해본다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>개선된</em> 등급의 무기보다 더 좋은 무기는 <em>프로토급</em> 등급의 무기입니다. 프로토케라톱스에서 이름을 따온 이 제작법은 더 높은 레벨대의 무기를 만들 수 있는 제작법입니다.": null
+      },
+      {
+        "부품 역시 이전의 제작법들보다 더 높은 수준의 것을 요구합니다. <em>자루</em> 같은 것이 있죠.": null
+      },
+      {
+        "등급에 속하는 무기 이외에도, 독특한 모양과 능력을 갖춘 다양한 무기가 있습니다. <em>스킬</em>을 배워서 만들고 <em>숙련도</em>를 높여 보세요.": null
+      }
+    ],
+    "name": {
+      "둔기 제작공정 전문": null
+    }
+  },
+  "weaponcrafting_bow_2": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_bow",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_bow_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "bow",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "saw",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "nail_normal",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 2
+      }
+    ],
+    "description": {
+      "거리를 두고 싸우는 건 인간의 육체가 지닌 단점을 보완해준다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "최초의 <em>원거리 무기</em>는 근거리 무기에 비해 상대적으로 요구되는 계열 레벨의 수준이 높습니다.": null
+      },
+      {
+        "원거리 무기는 여러 <em>부품</em>으로 구성됩니다. 부품이 좋을수록 더 높은 레벨의 원거리 무기를 만들 수 있습니다.": null
+      },
+      {
+        "특히 원거리 무기는 다양한 <em>가공</em> 스킬을 필요로 합니다. 가공 스킬을 배워서 <em>숙련도</em>를 높여보세요.": null
+      },
+      {
+        "직접 만들지 않고 <em>장터</em>에서 구할 수도 있습니다.": null
+      }
+    ],
+    "name": {
+      "활 제작공정 기초": null
+    }
+  },
+  "weaponcrafting_bow_3": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_bow",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_bow_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "bow",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blade_stone",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "saw",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_connection",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dry",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "rope",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "string_leather",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smith_drill",
+        "level": 1
+      }
+    ],
+    "description": {
+      "총은 활이라는 위대한 선임자가 있지 않았다면 상상하지 못 했을 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "활은 근거리 무기에 비해 고급 기술입니다. 그 때문에 첫 등급이 <em>보통의</em> 무기 등급입니다.": null
+      },
+      {
+        "석궁은 <em>개선된</em> 무기 등급부터 시작합니다. 그만큼 요구되는 부품의 레벨이나 스킬 등이 많습니다.": null
+      },
+      {
+        "이런 좋은 부품을 만들려면, 그만큼 좋은 재료가 필요합니다. <em>불안정섬</em>에 가서 좋은 재료를 구하거나, <em>장터</em>를 이용해보세요.": null
+      }
+    ],
+    "name": {
+      "활 제작공정 숙련": null
+    }
+  },
+  "weaponcrafting_bow_4": {
+    "category": "weaponcrafting",
+    "category_levels": {},
+    "subcategory": "weaponcrafting_bow",
+    "reward_items": [],
+    "reward_title_id": "weaponcrafting_bow_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "bow",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blade_stone",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_tools",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_connection",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_nail",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weapon_drill",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "process",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "refine",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smith_drill",
+        "level": 4
+      }
+    ],
+    "description": {
+      "모든 개척자가 활을 한 장씩 들고 다닌다면 매너가 탄생할 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 9,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "프로토케라톱스에서 그 이름을 딴 <em>프로토급</em> 활과 석궁도 존재합니다. 좋은 제작법이니만큼 요구되는 부품의 조건이 높습니다.": null
+      },
+      {
+        "등급에 속하는 무기 이외에도, 독특한 모양과 능력을 갖춘 다양한 무기가 있습니다. <em>스킬</em>을 배워서 만들고 <em>숙련도</em>를 높여 보세요.": null
+      }
+    ],
+    "name": {
+      "활 제작공정 전문": null
+    }
+  },
+  "armorcrafting_basic_1": {
+    "category": "armorcrafting",
+    "category_levels": {},
+    "subcategory": "armorcrafting_basic",
+    "reward_items": [
+      {
+        "count": 3,
+        "prototype_id": "leather_raw",
+        "level": 20
+      },
+      {
+        "count": 8,
+        "prototype_id": "skin_wood",
+        "level": 20
+      }
+    ],
+    "reward_title_id": "armorcrafting_basic_1",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_novice",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_log",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gloves",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shoes",
+        "level": 2
+      },
+      {
+        "sub_id": "defense",
+        "skill_id": "shoes",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_clothes",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "acc_necklace",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "basicwork",
+        "level": 2
+      }
+    ],
+    "description": {
+      "개척자는 옷을 입음으로써 거친 야생을 다스리려는 첫 충동을 느낀다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 10,
+      "level": 1
+    },
+    "difficulty": 1,
+    "recommended": false,
+    "advisor_reward_point": 100,
+    "cooperation": 1,
+    "reward_items_name": {
+      "의상제작입문 세트": null
+    },
+    "hints": [],
+    "name": {
+      "의상제작입문": null
+    }
+  },
+  "armorcrafting_basic_2": {
+    "category": "armorcrafting",
+    "category_levels": {},
+    "subcategory": "armorcrafting_basic",
+    "reward_items": [],
+    "reward_title_id": "armorcrafting_basic_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_log",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_settler",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_explorer",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_hunter",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "armor_drill",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tailor_drill",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_lightening",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_pocket",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sewing",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weaving",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gloves",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shoes",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_clothes",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "water_bottle",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "acc_necklace",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "basicwork",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dry",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "string_leather",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "worktable",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dryingrack",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "loom",
+        "level": 1
+      }
+    ],
+    "description": {
+      "개척자의 옷은 그 시대와 그 장소에 걸맞는 재료로 만들어야 한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 10,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>실</em>은 옷의 근원입니다. 아마 같은 식물에서 <em>실</em>을 얻을 수 있습니다.": null
+      },
+      {
+        "다양한 옷을 만들기 위해선 다양한 재료가 필요합니다. 스스로 <em>채집</em>이나 <em>도축</em> 계열의 스킬을 배우는 방법도 있고, <em>장터</em>를 이용하는 방법도 있습니다.": null
+      },
+      {
+        "장갑이나 샌들 같은 장신구를 만드는 것도 옷 제작 계열의 <em>숙련도</em>를 높이는 데 도움이 됩니다.": null
+      },
+      {
+        "<em>가방</em>을 만들어 장착하면, 소지할 수 있는 아이템의 양이 늘어납니다.": null
+      }
+    ],
+    "name": {
+      "의류소재의 이해": null
+    }
+  },
+  "armorcrafting_settler_3": {
+    "category": "armorcrafting",
+    "category_levels": {},
+    "subcategory": "armorcrafting_settler",
+    "reward_items": [],
+    "reward_title_id": "armorcrafting_settler_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "remodel",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_settler",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_settler",
+        "level": 5
+      },
+      {
+        "sub_id": "cook",
+        "skill_id": "clothes_settler",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "armor_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tailor_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sewing",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weaving",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gloves",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shoes",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_clothes",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "acc_necklace",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tan",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "rope",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "worktable",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dryingrack",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "loom",
+        "level": 1
+      }
+    ],
+    "description": {
+      "사람들이 비슷한 옷을 갖춰 입을 때 사회는 예절을 논한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 10,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "정착자들은 다양한 섬에서 획득한 자원을 가공해 도구와 무기, 의류와 건축물을 만들어냅니다.": null
+      },
+      {
+        "이들이 작업하는데 긍정적인 효과를 주는 옷 제작법을 <em>옷 제작</em> 계열의 스킬로 배울 수 있습니다.": null
+      },
+      {
+        "고급 의류일수록 고급 재료 뿐만 아니라, 의상을 만드는 <em>건축물</em>이 필요합니다. 직접 <em>건설</em> 계열의 스킬을 배워 만들어 쓸 수도 있고, <em>캠프</em>의 것을 쓸 수도 있습니다.": null
+      }
+    ],
+    "name": {
+      "정착의류와 일반사회학": null
+    }
+  },
+  "armorcrafting_settler_4": {
+    "category": "armorcrafting",
+    "category_levels": {},
+    "subcategory": "armorcrafting_settler",
+    "reward_items": [],
+    "reward_title_id": "armorcrafting_settler_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "remodel",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_settler",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_settler",
+        "level": 7
+      },
+      {
+        "sub_id": "cook",
+        "skill_id": "clothes_settler",
+        "level": 3
+      },
+      {
+        "sub_id": "build",
+        "skill_id": "clothes_settler",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "armor_drill",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tailor_drill",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sewing",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weaving",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gloves",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shoes",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_clothes",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "water_bottle",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "acc_necklace",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tan",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 4
+      }
+    ],
+    "description": {
+      "고정된 곳에서 일하는 사람들은 비슷한 정치적 입장을 형성한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 10,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "고급 옷 제작법일수록 다양한 효과와 높은 능력치를 지니게 됩니다. <em>의상 수리키트</em>를 만들어 이런 옷의 떨어진 <em>내구도</em>를 회복할 수 있습니다.": null
+      },
+      {
+        "좋은 옷을 만들면 <em>장터</em>에 올려 좋은 값을 받고 팔 수도 있고, 다른 개척자들을 지원할 수 있습니다.": null
+      }
+    ],
+    "name": {
+      "정착의류와 사회조직론": null
+    }
+  },
+  "armorcrafting_explorer_3": {
+    "category": "armorcrafting",
+    "category_levels": {},
+    "subcategory": "armorcrafting_explorer",
+    "reward_items": [],
+    "reward_title_id": "armorcrafting_explorer_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_explorer",
+        "level": 4
+      },
+      {
+        "sub_id": "search",
+        "skill_id": "clothes_explorer",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "armor_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tailor_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_pocket",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sewing",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weaving",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gloves",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shoes",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_clothes",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "water_bottle",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dry",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tan",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "rope",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "extend_sheet",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fabric_waterproof",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 3
+      }
+    ],
+    "description": {
+      "새로운 것을 찾는 사람들은 지리에 탁월한 감수성을 갖게 된다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 10,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "탐험가들은 불안정섬 등 오지를 돌아다니며, 자신을 숨기고 귀중한 자원을 찾고 안정해역으로 옮깁니다.": null
+      },
+      {
+        "이들의 탐험에 긍정적인 효과를 주는 옷 제작법을 <em>옷 제작</em> 계열의 스킬로 배울 수 있습니다.": null
+      },
+      {
+        "고급 의류일수록 고급 재료 뿐만 아니라, 의상을 만드는 <em>건축물</em>이 필요합니다. 직접 <em>건설</em> 계열의 스킬을 배워 만들어 쓸 수도 있고, <em>캠프</em>의 것을 쓸 수도 있습니다.": null
+      }
+    ],
+    "name": {
+      "탐험의류와 지리학입문": null
+    }
+  },
+  "armorcrafting_explorer_4": {
+    "category": "armorcrafting",
+    "category_levels": {},
+    "subcategory": "armorcrafting_explorer",
+    "reward_items": [],
+    "reward_title_id": "armorcrafting_explorer_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_explorer",
+        "level": 5
+      },
+      {
+        "sub_id": "search",
+        "skill_id": "clothes_explorer",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "armor_drill",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tailor_drill",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_pocket",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sewing",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weaving",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gloves",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shoes",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_clothes",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "water_bottle",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tan",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "make_fur",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 5
+      }
+    ],
+    "description": {
+      "옷은 개척자가 태어난 기후 너머로 탐험할 수 있게 하는 길이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 10,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "고급 옷 제작법일수록 다양한 효과와 높은 능력치를 지니게 됩니다. <em>의상 수리키트</em>를 만들어 이런 옷의 떨어진 <em>내구도</em>를 회복할 수 있습니다.": null
+      },
+      {
+        "좋은 옷을 만들면 <em>장터</em>에 올려 좋은 값을 받고 팔 수도 있고, 다른 개척자들을 지원할 수 있습니다.": null
+      }
+    ],
+    "name": {
+      "탐험의류와 기후지리학": null
+    }
+  },
+  "armorcrafting_hunter_3": {
+    "category": "armorcrafting",
+    "category_levels": {},
+    "subcategory": "armorcrafting_hunter",
+    "reward_items": [],
+    "reward_title_id": "armorcrafting_hunter_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_hunter",
+        "level": 4
+      },
+      {
+        "sub_id": "ranged",
+        "skill_id": "clothes_hunter",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "armor_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tailor_drill",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_pocket",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sewing",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weaving",
+        "level": 3
+      },
+      {
+        "sub_id": "defense",
+        "skill_id": "gloves",
+        "level": 1
+      },
+      {
+        "sub_id": "defense",
+        "skill_id": "shoes",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_clothes",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "water_bottle",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tan",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "rope",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "make_fur",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 3
+      }
+    ],
+    "description": {
+      "폭력이 세상을 다스릴지라도, 누군가는 사람을 살릴 옷을 만든다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 10,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "전투원들은 야생동물이나 적대적인 개척자와 싸워서 상대의 전투 능력을 분쇄합니다.": null
+      },
+      {
+        "이들의 전투에 긍정적인 효과를 주는 옷 제작법을 <em>옷 제작</em> 계열의 스킬로 배울 수 있습니다.": null
+      },
+      {
+        "고급 의류일수록 고급 재료 뿐만 아니라, 의상을 만드는 <em>건축물</em>이 필요합니다. 직접 <em>건설</em> 계열의 스킬을 배워 만들어 쓸 수도 있고, <em>캠프</em>의 것을 쓸 수도 있습니다.": null
+      }
+    ],
+    "name": {
+      "전투의류와 지구전쟁사": null
+    }
+  },
+  "armorcrafting_hunter_4": {
+    "category": "armorcrafting",
+    "category_levels": {},
+    "subcategory": "armorcrafting_hunter",
+    "reward_items": [],
+    "reward_title_id": "armorcrafting_hunter_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_hunter",
+        "level": 5
+      },
+      {
+        "sub_id": "towhand",
+        "skill_id": "clothes_hunter",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "armor_drill",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tailor_drill",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_pocket",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sewing",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weaving",
+        "level": 3
+      },
+      {
+        "sub_id": "defense",
+        "skill_id": "gloves",
+        "level": 2
+      },
+      {
+        "sub_id": "defense",
+        "skill_id": "shoes",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_clothes",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "water_bottle",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "acc_necklace",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tan",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "process",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 5
+      }
+    ],
+    "description": {
+      "옷에 달린 장식과 죽으면 그 위에 덮일 깃발 때문에 사람들은 싸우다 죽는다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 10,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "고급 옷 제작법일수록 다양한 효과와 높은 능력치를 지니게 됩니다. <em>의상 수리키트</em>를 만들어 이런 옷의 떨어진 <em>내구도</em>를 회복할 수 있습니다.": null
+      },
+      {
+        "좋은 옷을 만들면 <em>장터</em>에 올려 좋은 값을 받고 팔 수도 있고, 다른 개척자들을 지원할 수 있습니다.": null
+      }
+    ],
+    "name": {
+      "전투의류와 국가안보론": null
+    }
+  },
+  "cooking_basic_1": {
+    "category": "cooking",
+    "category_levels": {},
+    "subcategory": "cooking_basic",
+    "reward_items": [
+      {
+        "count": 1,
+        "prototype_id": "pot_01",
+        "level": 15
+      },
+      {
+        "count": 1,
+        "prototype_id": "grill_stone",
+        "level": 15
+      },
+      {
+        "count": 4,
+        "prototype_id": "clay",
+        "level": 20
+      }
+    ],
+    "reward_title_id": "cooking_basic_1",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_fire",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_water",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_preserve",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mend_ingredient",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_practice",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tool_cooking_pot",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tool_cooking_mortar",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tool_cooking_grill_pan",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "firetool",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "worktable",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "con_board",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "con_board",
+        "level": 1
+      }
+    ],
+    "description": {
+      "야생의 먹거리는 위험하지만, 요리는 위험을 없애고 반가움으로 맛을 낸다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 8,
+      "level": 1
+    },
+    "difficulty": 1,
+    "recommended": false,
+    "advisor_reward_point": 100,
+    "cooperation": 1,
+    "reward_items_name": {
+      "생존요리의 세계 세트": null
+    },
+    "hints": [],
+    "name": {
+      "생존요리의 세계": null
+    }
+  },
+  "cooking_basic_2": {
+    "category": "cooking",
+    "category_levels": {},
+    "subcategory": "cooking_basic",
+    "reward_items": [],
+    "reward_title_id": "cooking_basic_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_fire",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_water",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_preserve",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_med_animal",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_med",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mend_ingredient",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_practice",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dryingrack",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "basicwork",
+        "level": 2
+      }
+    ],
+    "description": {
+      "요리는 개척자의 활동 시간을 고정하고 시간을 논리적으로 쓰게 한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 8,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "요리를 할 수 있는 환경도 중요합니다. <em>캠프</em>의 여러 건축물에서 요리를 할 수도 있고, 직접 건설을 배워 요리용 건축물을 지을 수도 있습니다.": null
+      },
+      {
+        "<em>건강</em>을 회복할 수 있는 <em>약</em>도 넓게 보면 요리의 방법론을 취하고 있기에, 약을 만들면 요리의 <em>숙련도</em>가 올라갑니다.": null
+      },
+      {
+        "<em>향신료</em>를 만드는 것도 요리의 숙련도 향상에 도움이 됩니다.": null
+      }
+    ],
+    "name": {
+      "논리적 식품가공": null
+    }
+  },
+  "cooking_cooking_3": {
+    "category": "cooking",
+    "category_levels": {},
+    "subcategory": "cooking_cooking",
+    "reward_items": [],
+    "reward_title_id": "cooking_cooking_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_fire",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_stir",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_fry",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_water",
+        "level": 7
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_preserve",
+        "level": 7
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mend_ingredient",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fermentation",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sqeeze_oil",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "local_food",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_practice",
+        "level": 3
+      }
+    ],
+    "description": {
+      "처음엔 누군가의 단순한 맛 취향이겠지만, 나중엔 전통 요리가 될 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 8,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "다양한 요리 방법을 <em>스킬</em>로 배워보고, 어떤 요리가 어떤 활동에 도움이 되는지를 연구해보세요.": null
+      },
+      {
+        "고급 요리법일수록 다양한 재료와 다양한 작업대(건축물)을 필요로 합니다.": null
+      },
+      {
+        "요리도구는 <em>무기/도구 제작<em> 계열에서, 건축물은 <em>건설</em> 계열에서 스킬을 배울 수 있습니다.": null
+      }
+    ],
+    "name": {
+      "음식과 인류문화": null
+    }
+  },
+  "cooking_cooking_4": {
+    "category": "cooking",
+    "category_levels": {},
+    "subcategory": "cooking_cooking",
+    "reward_items": [],
+    "reward_title_id": "cooking_cooking_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_fire",
+        "level": 7
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_stir",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_fry",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_water",
+        "level": 10
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_preserve",
+        "level": 10
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dough",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mend_ingredient",
+        "level": 6
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fermentation",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sqeeze_oil",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "local_food",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sauce",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_practice",
+        "level": 5
+      }
+    ],
+    "description": {
+      "왔노라. 보았노라. 먹었노라.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 8,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "요리법을 조합하여 새로운 <em>요리</em>를 만들면, 세상에 없던 새로운 게 생깁니다. 최고의 요리사는 최고의 개척자랍니다.": null
+      },
+      {
+        "새롭고 뛰어난 요리를 만들려면, 높은 수준의 재료가 필요합니다. 직접 <em>불안정섬</em>에 갈 수도 있고, <em>장터</em>에서 구할 수도 있습니다.": null
+      }
+    ],
+    "name": {
+      "주방행동론": null
+    }
+  },
+  "cooking_baking_3": {
+    "category": "cooking",
+    "category_levels": {},
+    "subcategory": "cooking_baking",
+    "reward_items": [],
+    "reward_title_id": "cooking_baking_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_bake",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dough",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mend_ingredient",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "yeast_fungui",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sauce",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "combine_food",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_practice",
+        "level": 3
+      }
+    ],
+    "description": {
+      "가루로 만든 음식은 그만큼 여러 곳에서 기술 진보가 이뤄졌음을 뜻한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 8,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "제빵은 곡물을 원래의 형태를 잃게 하고, 가루내어 더 높은 수준의 효율을 뽑을 수 있게 유도하는 요리법입니다. 요리 계열에서 <em>스킬</em>을 배울 수 있습니다.": null
+      },
+      {
+        "잘 만들어진 요리를 <em>장터</em>에 올려 판다면, 많은 사람들에게 도움이 될 것입니다.": null
+      }
+    ],
+    "name": {
+      "제빵기능사 2급": null
+    }
+  },
+  "cooking_baking_4": {
+    "category": "cooking",
+    "category_levels": {},
+    "subcategory": "cooking_baking",
+    "reward_items": [],
+    "reward_title_id": "cooking_baking_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_bake",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dough",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mend_milk",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mend_ingredient",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "yeast_fungui",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fermentation",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sauce",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "combine_food",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_practice",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "ice_food",
+        "level": 2
+      }
+    ],
+    "description": {
+      "배고픔에서 배부름으로, 배부름에서 맛있음으로 혁신은 행진한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 8,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "좋은 효과가 있는 것도 중요하지만, 맛있는 음식은 맛있는 음식대로 영원히 이어질 만한 가치가 있습니다.": null
+      },
+      {
+        "요리 과정은 복잡해집니다. 다양한 스킬을 갖고 직접 재료를 구하고 설비를 구축할 수도 있고, <em>장터</em>를 이용할 수도 있습니다.": null
+      }
+    ],
+    "name": {
+      "제빵기능사 1급": null
+    }
+  },
+  "cooking_pharmacy_3": {
+    "category": "cooking",
+    "category_levels": {},
+    "subcategory": "cooking_pharmacy",
+    "reward_items": [],
+    "reward_title_id": "cooking_pharmacy_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_preserve",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_med_animal",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_med",
+        "level": 2
+      },
+      {
+        "sub_id": "tea",
+        "skill_id": "cook_med",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_med_immune",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mend_ingredient",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fermentation",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sqeeze_oil",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_practice",
+        "level": 3
+      }
+    ],
+    "description": {
+      "약재를 찾는 건, 개척자들이 운명에 순응하지 않기 때문이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 8,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "<em>약</em>은 자연의 재료를 화학적, 물리적으로 가공하여, 생물의 몸에 도움이 되는 것으로 만든단 점에서 <em>요리</em>와 비슷합니다. 그래서 약을 만들면 요리의 <em>숙련도</em>가 오릅니다.": null
+      },
+      {
+        "약은 여러 종류가 있습니다. 전투에 참여하는 <em>동물</em>을 회복하는 약, 중독을 해독하는 약 등 다양합니다.": null
+      },
+      {
+        "<em>에너지</em>를 회복하는 건 음식의 역할이지만, <em>건강</em>을 회복하는 건 약의 역할입니다.": null
+      },
+      {
+        "여러 대상을 염색할 수 있는 <em>염색약</em>도 요리 계열의 약 제조 스킬에서 배울 수 있습니다.": null
+      }
+    ],
+    "name": {
+      "약학개론": null
+    }
+  },
+  "cooking_pharmacy_4": {
+    "category": "cooking",
+    "category_levels": {},
+    "subcategory": "cooking_pharmacy",
+    "reward_items": [],
+    "reward_title_id": "cooking_pharmacy_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_preserve",
+        "level": 10
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_med_animal",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_med",
+        "level": 3
+      },
+      {
+        "sub_id": "tea",
+        "skill_id": "cook_med",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_med_immune",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mend_ingredient",
+        "level": 7
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fermentation",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sqeeze_oil",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cook_practice",
+        "level": 5
+      }
+    ],
+    "description": {
+      "모든 물질은 화학작용으로 소통하고 개척자도 이에 동참한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 8,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 4,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "개척자들의 수명은 위생과 의료에 직결되어 있습니다. 다양한 <em>약</em>을 만드는 건, 개척자들이 갖은 위협에도 나아갈 수 있는 힘이 됩니다.": null
+      },
+      {
+        "다양한 도구와 재료가 필요한 만큼 관련된 스킬 계열도 챙기는 게 좋습니다.": null
+      }
+    ],
+    "name": {
+      "자연생약학": null
+    }
+  },
+  "constructing_basic_1": {
+    "category": "constructing",
+    "category_levels": {},
+    "subcategory": "constructing_basic",
+    "reward_items": [
+      {
+        "count": 1,
+        "prototype_id": "hammer_onehand_stone_01",
+        "level": 15
+      },
+      {
+        "count": 10,
+        "prototype_id": "board_wood",
+        "level": 20
+      }
+    ],
+    "reward_title_id": "constructing_basic_1",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "firetool",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "worktable",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dryingrack",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "loom",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furniture_box",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shelter",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furniture_room",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "con_board",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "constructing",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furnishing",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "coal",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "nail_normal",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 1
+      }
+    ],
+    "description": {
+      "건축은 물과 바람이 만든 지리적 조건에서 벗어나는 인간적인 발돋움이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 12,
+      "level": 1
+    },
+    "difficulty": 1,
+    "recommended": false,
+    "advisor_reward_point": 100,
+    "cooperation": 1,
+    "reward_items_name": {
+      "생활건축실습 세트": null
+    },
+    "hints": [],
+    "name": {
+      "생활건축실습": null
+    }
+  },
+  "constructing_basic_2": {
+    "category": "constructing",
+    "category_levels": {},
+    "subcategory": "constructing_basic",
+    "reward_items": [],
+    "reward_title_id": "constructing_basic_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "firetool",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "worktable",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dryingrack",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "loom",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "box_secure",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furniture_room",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shelter",
+        "level": 2
+      },
+      {
+        "sub_id": "house",
+        "skill_id": "modular",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "con_board",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "constructing",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furnishing",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "cage",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "well",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gate",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fence",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "trim",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "saw",
+        "level": 1
+      }
+    ],
+    "description": {
+      "흙과 암석, 목재가 서로에게 미치는 힘을 이해할수록 공간은 넓어진다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 12,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 1,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "개척자들이 해야 할 작업은 정말 많습니다. 그만큼 다양한 건축물 <em>작업대</em>가 존재합니다. 이런 작업대를 짓다 보면 <em>숙련도</em>가 올라가게 됩니다.": null
+      },
+      {
+        "작업대는 자신이 무언가를 제작하는 데 쓸 수도 있고, 다른 개척자가 쓸 수 있게 공개할 수도 있습니다. 건축가가 개척자 사이에서 중요한 이유입니다.": null
+      },
+      {
+        "건축 스킬의 수준이 높아질수록 요구되는 재료의 수준도 높기 때문에 <em>가공</em> 등의 스킬 계열도 함께 챙기는 게 좋습니다.": null
+      }
+    ],
+    "name": {
+      "건축학개론": null
+    }
+  },
+  "constructing_furniture_3": {
+    "category": "constructing",
+    "category_levels": {},
+    "subcategory": "constructing_furniture",
+    "reward_items": [],
+    "reward_title_id": "constructing_furniture_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "bonfire",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "firetool",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "worktable",
+        "level": 3
+      },
+      {
+        "sub_id": "medicine",
+        "skill_id": "worktable",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "klin",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dryingrack",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "loom",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "box_secure",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furniture_room",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furniture_shelter",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "pillarwork",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "con_board",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furnishing",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "rope",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 3
+      }
+    ],
+    "description": {
+      "목적을 갖춘 가구를 만들 때 인간의 삶은 더 풍성해진다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 12,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "가구는 한 자리에서 머무는 도구입니다. 가구를 만들어 <em>사유지</em> 등 다양한 환경을 인간적인 공간으로 바꿀 수 있습니다.": null
+      },
+      {
+        "건설의 복잡도가 증가할수록 들어가는 재료와 건설법의 복잡도 역시 증가합니다. 다양한 건설 자재와 건설법 <em>스킬</em>을 건설 계열에서 배워보세요.": null
+      },
+      {
+        "건설에 필요한 물질을 다루는 기술은 <em>가공</em>과도 연관성이 높습니다. 재료를 가공하는 과정도 거쳐보세요.": null
+      }
+    ],
+    "name": {
+      "가구제작의 이해": null
+    }
+  },
+  "constructing_furniture_4": {
+    "category": "constructing",
+    "category_levels": {},
+    "subcategory": "constructing_furniture",
+    "reward_items": [],
+    "reward_title_id": "constructing_furniture_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "bonfire",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "firetool",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "worktable",
+        "level": 4
+      },
+      {
+        "sub_id": "medicine",
+        "skill_id": "worktable",
+        "level": 1
+      },
+      {
+        "sub_id": "weapon",
+        "skill_id": "worktable",
+        "level": 1
+      },
+      {
+        "sub_id": "amor",
+        "skill_id": "worktable",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "klin",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "dryingrack",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "loom",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "box_secure",
+        "level": 2
+      },
+      {
+        "sub_id": "amor",
+        "skill_id": "furniture_box",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furniture_room",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furniture_shelter",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "repair_kit_building",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "pillarwork",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furniture_room",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "furnishing",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "process",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 5
+      }
+    ],
+    "description": {
+      "가구를 만드는 기술은 서로 영향을 주며 발전하고 산업의 밑그림이 된다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 12,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "높은 수준의 가구들은 옷 제작, 무기/도구 제작, 요리, 가공 등 다양한 제작 활동과 의존성이 높습니다. <em>스킬</em>을 배워 다른 활동에 긍정적인 영향력을 행사해 보세요.": null
+      },
+      {
+        "<em>장터</em>를 이용해 높은 수준의 가구를 만드는 데 필요한 것을 구할 수도 있고, 직접 관련 스킬을 배워서 구할 수도 있습니다.": null
+      }
+    ],
+    "name": {
+      "가구개발공학": null
+    }
+  },
+  "constructing_building_3": {
+    "category": "constructing",
+    "category_levels": {},
+    "subcategory": "constructing_building",
+    "reward_items": [],
+    "reward_title_id": "constructing_building_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cage",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "modular",
+        "level": 1
+      },
+      {
+        "sub_id": "house",
+        "skill_id": "modular",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "window",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "door",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "modular_size",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "road",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gate",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fence",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "well",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "modular_roof",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "modular_wall",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "modular_ground",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "hinge",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "board",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "pillarwork",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "con_board",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "constructing",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "rope",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "glue",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blacksmith",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "smelt",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 3
+      }
+    ],
+    "description": {
+      "건축물은 모여서 마을을 이루고, 집중된 인구는 법의 태동으로 이어진다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 12,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "마을은 서로 다른 집과 벽, 담이 이어지면서 형성됩니다. 이런 마을이 세워지는 데는 건축가들의 의지가 중요합니다.": null
+      },
+      {
+        "정해진 면적의 건축물과 달리 <em>조립식 건축</em>스킬은 원하는 면적의 건축물을 지을 수 있게 합니다. ": null
+      },
+      {
+        "창문이나 문과 각종 실내 가구를 구하거나 만들어서 <em>실내</em>에 설치할 수도 있습니다.": null
+      }
+    ],
+    "name": {
+      "마을설계와 법규": null
+    }
+  },
+  "constructing_building_4": {
+    "category": "constructing",
+    "category_levels": {},
+    "subcategory": "constructing_building",
+    "reward_items": [],
+    "reward_title_id": "constructing_building_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "cage",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "window",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "door",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "warp",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "road",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gate",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fence",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "well",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "modular_roof",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "modular_wall",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "modular_ground",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "hinge",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "modular_size",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "pillarwork",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "con_board",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "constructing",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "process",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "handicraft_train",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tan",
+        "level": 1
+      }
+    ],
+    "description": {
+      "도시가 생기며 떨어져 있던 사람들이 만나면, 그 상호작용은 문화가 된다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 12,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "도시를 이루는 데는 건축가의 많은 노고가 필요합니다. 그만큼 다양한 <em>스킬</em>을 배우고 <em>숙련도</em>를 쌓야아 합니다.": null
+      },
+      {
+        "섬마다 도시가 어떻게 생기고 발전하는지 그 과정에 동참해 보십시오. 훗날, 도시에 도착한 사람들이 도시를 세운 개척자가 누구인지 물을 때 대답해주십시오.": null
+      }
+    ],
+    "name": {
+      "도시건축과 인문": null
+    }
+  },
+  "gathering_basic_1": {
+    "category": "gathering",
+    "category_levels": {},
+    "subcategory": "gathering_basic",
+    "reward_items": [
+      {
+        "count": 1,
+        "prototype_id": "sword_onehand_stone_01",
+        "level": 15
+      },
+      {
+        "count": 1,
+        "prototype_id": "bag_fabric",
+        "level": 15
+      }
+    ],
+    "reward_title_id": "gathering_basic_1",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "fiber",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "seed",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "herbalism",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clay",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stone",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gathering",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shovel",
+        "level": 1
+      }
+    ],
+    "description": {
+      "자연을 해치지 않고, 생존에 필요한 자원을 얻는다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 7,
+      "level": 1
+    },
+    "difficulty": 1,
+    "recommended": false,
+    "advisor_reward_point": 100,
+    "cooperation": 1,
+    "reward_items_name": {
+      "채집의 이해 세트": null
+    },
+    "hints": [],
+    "name": {
+      "채집의 이해": null
+    }
+  },
+  "gathering_basic_2": {
+    "category": "gathering",
+    "category_levels": {},
+    "subcategory": "gathering_basic",
+    "reward_items": [],
+    "reward_title_id": "gathering_basic_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "fruit",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fiber",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mushroom",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "resin",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "seed",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "herbalism",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "forester",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clay",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stone",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gathering",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shoes",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 1
+      }
+    ],
+    "description": {
+      "거듭되는 관찰은 인지 능력을 강화하고, 지식은 과학으로 이어진다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 7,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 1,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "자연의 다양한 자원들은 섬세한 이해가 있어야 채집에 성공할 수 있습니다. 채집 계열에서 해당 자원의 채집 <em>스킬</em>을 배워보세요.": null
+      },
+      {
+        "채집물의 <em>레벨</em>에 따라서 요구되는 도구의 레벨대도 달라집니다. 자신의 도구가 맞는지, 더 상위 등급의 도구가 필요한 것은 아닌지 확인해 보세요.": null
+      },
+      {
+        "<em>불안정섬</em>에서 채집을 하다 보면 더 넓은 범위의 보관공간이 필요합니다. <em>가방</em>을 구해 장착하고, 기후에 맞는 옷차림도 챙겨보세요.": null
+      }
+    ],
+    "name": {
+      "채집과 생물과학": null
+    }
+  },
+  "gathering_plants_3": {
+    "category": "gathering",
+    "category_levels": {},
+    "subcategory": "gathering_plants",
+    "reward_items": [],
+    "reward_title_id": "gathering_plants_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "fruit",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fiber",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mushroom",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "resin",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bug",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "seed",
+        "level": 7
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "herbalism",
+        "level": 8
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "forester",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gathering",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_explorer",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_pocket",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sewing",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weaving",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 2
+      }
+    ],
+    "description": {
+      "길들일 수 없는 식물이라 하여도, 이용할 수 없는 것은 아니다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 7,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "식물을 알면 알수록, 식물의 복잡함과 다양성을 알게 됩니다. 이에 접근할 수 있는 능력을 <em>스킬</em>로 배워보세요.": null
+      },
+      {
+        "옷이나 무기, 도구, 요리를 제작하는 개척자들에겐 다양한 식물자원이 필요합니다. <em>장터</em>에서 채집한 것을 팔고, 채집에 필요한 것들을 살 수 있습니다.": null
+      }
+    ],
+    "name": {
+      "응용식물학": null
+    }
+  },
+  "gathering_plants_4": {
+    "category": "gathering",
+    "category_levels": {},
+    "subcategory": "gathering_plants",
+    "reward_items": [],
+    "reward_title_id": "gathering_plants_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "fruit",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fiber",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "mushroom",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "resin",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bug",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "seed",
+        "level": 14
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "herbalism",
+        "level": 12
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "forester",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "gathering",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_explorer",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "blade_stone",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "axe_tool",
+        "level": 2
+      }
+    ],
+    "description": {
+      "거대한 복잡계로서 산림을 이해하는 건 개척자의 지식을 확장할 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 7,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "채집 계열에서 채집과 관련된 <em>전문화</em> 스킬을 익힐수록 채집의 효율성이 올라갑니다.": null
+      },
+      {
+        "<em>불안정섬</em>에서 오래 활동할 수 있도록 적절한 복장을 갖추고 도구도 주기적으로 점검하세요. 도구의 여분을 확보하는 것도 중요합니다.": null
+      }
+    ],
+    "name": {
+      "산림생태학": null
+    }
+  },
+  "gathering_mineral_3": {
+    "category": "gathering",
+    "category_levels": {},
+    "subcategory": "gathering_mineral",
+    "reward_items": [],
+    "reward_title_id": "gathering_mineral_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "clay",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stone",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "jewel",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "ore",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "pickaxe_train",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_explorer",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "reform_pocket",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "sewing",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "weaving",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shovel",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "pickaxe",
+        "level": 2
+      }
+    ],
+    "description": {
+      "듀랑고의 오래 된 지질을 표면부터 이해해 갈 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 7,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "광물은 에너지를 유기물이 아닌 무기물로 저장한 형태입니다. 개척자의 역사는 어떤 광물을 썼는가에 따라 구분되어 왔습니다.": null
+      },
+      {
+        "채집 계열에서 광물과 관련된 <em>스킬</em>을 배우고, 실제로 광물을 채집하여 숙련도를 높여 보세요.": null
+      },
+      {
+        "광물은 수요가 높습니다. <em>장터</em>에서 핵심이 되는 자원이고, 많은 부족과 단체에게도 전략 자원입니다.": null
+      },
+      {
+        "광물은 귀한 만큼, 채집에 적절한 레벨대나 등급의 <em>도구</em>를 갖고 있는지 확인하는 게 중요합니다.": null
+      }
+    ],
+    "name": {
+      "광물과 지구화학": null
+    }
+  },
+  "gathering_mineral_4": {
+    "category": "gathering",
+    "category_levels": {},
+    "subcategory": "gathering_mineral",
+    "reward_items": [],
+    "reward_title_id": "gathering_mineral_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "clay",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "stone",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "jewel",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "precious_metal",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "ore",
+        "level": 4
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "pickaxe_train",
+        "level": 5
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "clothes_explorer",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shovel",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "pickaxe",
+        "level": 3
+      }
+    ],
+    "description": {
+      "지구와는 다른 이곳만의 광물학적인 특성을 연구할 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 7,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "귀중한 광물을 채집하는 만큼, 채집의 <em>전문화</em> 스킬을 찍어서 채집에 성공할 확률을 높여 보세요.": null
+      },
+      {
+        "<em>불안정섬</em>에서 광물을 채집하는 데 적합한 옷차림과 도구를 준비하고, 예비 장비와 광물을 저장할 수 있는 공간 확보도 필수적입니다.": null
+      }
+    ],
+    "name": {
+      "특수광물학": null
+    }
+  },
+  "farming_basic_1": {
+    "category": "farming",
+    "category_levels": {},
+    "subcategory": "farming_basic",
+    "reward_items": [
+      {
+        "count": 1,
+        "prototype_id": "hoe_bone_01",
+        "level": 15
+      },
+      {
+        "count": 1,
+        "prototype_id": "shovel_wooden_01",
+        "level": 15
+      },
+      {
+        "count": 2,
+        "prototype_id": "potato_seed",
+        "level": 20
+      }
+    ],
+    "reward_title_id": "farming_basic_1",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_onion",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_potato",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_pumpkin",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farm",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fertilizer",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shovel",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "hoe",
+        "level": 1
+      }
+    ],
+    "description": {
+      "늘어나는 인구는 채집 위주의 생활을 흔들고 농사로의 전환을 이끈다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 13,
+      "level": 1
+    },
+    "difficulty": 1,
+    "recommended": false,
+    "advisor_reward_point": 100,
+    "cooperation": 1,
+    "reward_items_name": {
+      "농사의 기본 세트": null
+    },
+    "hints": [],
+    "name": {
+      "농사의 기본": null
+    }
+  },
+  "farming_basic_2": {
+    "category": "farming",
+    "category_levels": {},
+    "subcategory": "farming_basic",
+    "reward_items": [],
+    "reward_title_id": "farming_basic_2",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_wheat",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_onion",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_potato",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_pumpkin",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_fiber",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farm",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fertilizer",
+        "level": 1
+      },
+      {
+        "sub_id": "process",
+        "skill_id": "fertilizer",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "tool_cooking_pot",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shoes",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "bag",
+        "level": 1
+      }
+    ],
+    "description": {
+      "농경이 시작되면 해와 달, 별은 시간 속으로 걸어 들어 오게 된다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 13,
+      "level": 15
+    },
+    "difficulty": 2,
+    "recommended": false,
+    "advisor_reward_point": 300,
+    "cooperation": 1,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "다른 작물을 재배하려면, 농사 계열에서 <em>농사법</em> 스킬을 배워야 합니다.": null
+      },
+      {
+        "야생에서 <em>종자</em>를 채집하는 스킬들도 농사법 스킬에 포함됩니다.": null
+      },
+      {
+        "상자나 크레이터 주변을 찾다 보면 작물의 종자를 구할 수 있습니다. <em>불안정섬</em>을 탐험해보세요. <em>장터</em>도 좋은 대안입니다.": null
+      },
+      {
+        "<em>비료</em>를 주면, 수확량이 늘어날 가능성이 높아집니다.": null
+      }
+    ],
+    "name": {
+      "농사와 실전": null
+    }
+  },
+  "farming_basic_3": {
+    "category": "farming",
+    "category_levels": {},
+    "subcategory": "farming_basic",
+    "reward_items": [],
+    "reward_title_id": "farming_basic_3",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_wheat",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_bean",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_onion",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_potato",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_pumpkin",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_tomato",
+        "level": 1
+      },
+      {
+        "sub_id": "cotton",
+        "skill_id": "farming_fiber",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_dogrose",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_mushroom",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_lavender",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_sugarcane",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farm",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fertilizer",
+        "level": 1
+      },
+      {
+        "sub_id": "process",
+        "skill_id": "fertilizer",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming",
+        "level": 3
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "shovel",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "hoe",
+        "level": 2
+      }
+    ],
+    "description": {
+      "흙 위에 씨를 뿌리면, 언젠가 불평등도 함께 싹을 틔울 것임을 각오해야 한다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 13,
+      "level": 25
+    },
+    "difficulty": 3,
+    "recommended": false,
+    "advisor_reward_point": 600,
+    "cooperation": 2,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "더 높은 수준의 농사를 지으려면, 더 좋은 밭, 농기구, 종자가 필요합니다. 직접 만들 수도 있고 <em>장터</em>에서 구할 수도 있습니다.": null
+      },
+      {
+        "작물엔 꼭 식량만 있는 것은 아닙니다. 섬유나 약용, 관상용 등 다양한 작물을 재배할 수 있습니다.": null
+      }
+    ],
+    "name": {
+      "농업과 미래사회": null
+    }
+  },
+  "farming_basic_4": {
+    "category": "farming",
+    "category_levels": {},
+    "subcategory": "farming_basic",
+    "reward_items": [],
+    "reward_title_id": "farming_basic_4",
+    "skills": [
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_wheat",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_bean",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_onion",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_potato",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_pumpkin",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_tomato",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_bellpepper",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_chilipepper",
+        "level": 1
+      },
+      {
+        "sub_id": "cotton",
+        "skill_id": "farming_fiber",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_dogrose",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_mushroom",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_lavender",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_poppy",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_desertagave",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_grape",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_fig",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_banana",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_sugarcane",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming_tea",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farm",
+        "level": 2
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "fertilizer",
+        "level": 2
+      },
+      {
+        "sub_id": "process",
+        "skill_id": "fertilizer",
+        "level": 1
+      },
+      {
+        "sub_id": "__base__",
+        "skill_id": "farming",
+        "level": 5
+      }
+    ],
+    "description": {
+      "작물의 특성을 익혀가면서, 언젠간 교배로 더 유리한 형질로 바꿀 것이다.": null
+    },
+    "conditional": false,
+    "required_skill": {
+      "skill_category": 13,
+      "level": 40
+    },
+    "difficulty": 4,
+    "recommended": false,
+    "advisor_reward_point": 1000,
+    "cooperation": 3,
+    "reward_items_name": {
+      "": null
+    },
+    "hints": [
+      {
+        "농사 계열의 <em>전문화</em> 스킬을 배우면 농사의 성공 확률을 높일 수 있습니다.": null
+      },
+      {
+        "고급 작물일수록 <em>장터</em>에서 수요가 높습니다. 팔아보세요.": null
+      }
+    ],
+    "name": {
+      "작물생산농업학": null
+    }
+  }
+}

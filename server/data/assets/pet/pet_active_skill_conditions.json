@@ -1,0 +1,1132 @@
+{
+  "ankylo_taunt": {
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3075
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3075
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3075
+      ]
+    }
+  },
+  "pachy_dash": {
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3019
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3019
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3019
+      ]
+    }
+  },
+  "charming_fartigue": {
+    "12": {
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3072,
+        3030
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "speed_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3072,
+        3030
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "speed_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3072,
+        3030
+      ]
+    }
+  },
+  "speed_up_gastor": {
+    "12": {
+      "tag_condition": {},
+      "for_ridable": true,
+      "weight": 100,
+      "entity_type": [
+        3071,
+        3028
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "speed_amplifier_10": 1
+      },
+      "for_ridable": true,
+      "weight": 60,
+      "entity_type": [
+        3071,
+        3028
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "speed_amplifier_10": 2
+      },
+      "for_ridable": true,
+      "weight": 20,
+      "entity_type": [
+        3071,
+        3028
+      ]
+    }
+  },
+  "master_life_recovery": {
+    "12": {
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3072,
+        3030
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "defense_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3072,
+        3030
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "defense_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3072,
+        3030
+      ]
+    }
+  },
+  "master_lick_clean": {
+    "12": {
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3072,
+        3030
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "inventory_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3072,
+        3030
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "inventory_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3072,
+        3030
+      ]
+    }
+  },
+  "master_wash_up": {
+    "12": {
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3035
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "defense_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3035
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "defense_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3035
+      ]
+    }
+  },
+  "master_stamina_recovery": {
+    "12": {
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3072,
+        3000,
+        3032,
+        3030
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "attack_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3072,
+        3000,
+        3032,
+        3030
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "attack_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3072,
+        3000,
+        3032,
+        3030
+      ]
+    }
+  },
+  "bag_size_ratio": {
+    "12": {
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3047,
+        3000,
+        3032,
+        3035
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "inventory_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3047,
+        3000,
+        3032,
+        3035
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "inventory_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3047,
+        3000,
+        3032,
+        3035
+      ]
+    }
+  },
+  "bag_speed_both": {
+    "12": {
+      "tag_condition": {},
+      "for_ridable": true,
+      "weight": 100,
+      "entity_type": [
+        3043
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "inventory_amplifier_10": 1
+      },
+      "for_ridable": true,
+      "weight": 60,
+      "entity_type": [
+        3043
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "inventory_amplifier_10": 1,
+        "speed_amplifier_10": 1
+      },
+      "for_ridable": true,
+      "weight": 20,
+      "entity_type": [
+        3043
+      ]
+    }
+  },
+  "life_regen_max_ratio": {
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 40,
+      "entity_type": []
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_amplifier_10": 1
+      },
+      "weight": 25,
+      "entity_type": []
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_amplifier_10": 2
+      },
+      "weight": 10,
+      "entity_type": []
+    }
+  },
+  "attack_increase_ratio": {
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_amplifier_10": 1
+      },
+      "weight": 40,
+      "entity_type": []
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_amplifier_10": 2
+      },
+      "weight": 25,
+      "entity_type": []
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_amplifier_10": 3
+      },
+      "weight": 15,
+      "entity_type": []
+    }
+  },
+  "defense_increase_ratio": {
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_amplifier_10": 1
+      },
+      "weight": 40,
+      "entity_type": []
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_amplifier_10": 2
+      },
+      "weight": 25,
+      "entity_type": []
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_amplifier_10": 3
+      },
+      "weight": 15,
+      "entity_type": []
+    }
+  },
+  "vitality_speed_ratio": {
+    "12": {
+      "tag_condition": {},
+      "weight": 40,
+      "entity_type": []
+    },
+    "13": {
+      "tag_condition": {
+        "speed_amplifier_10": 1
+      },
+      "weight": 25,
+      "entity_type": []
+    },
+    "14": {
+      "tag_condition": {
+        "speed_amplifier_10": 2
+      },
+      "weight": 15,
+      "entity_type": []
+    }
+  },
+  "accuracy_increase_ratio": {
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "accuracy_amplifier_10": 1
+      },
+      "weight": 40,
+      "entity_type": []
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "accuracy_amplifier_10": 2
+      },
+      "weight": 25,
+      "entity_type": []
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "accuracy_amplifier_10": 3
+      },
+      "weight": 15,
+      "entity_type": []
+    }
+  },
+  "attack_increase": {
+    "11": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 30,
+      "entity_type": []
+    },
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 1
+      },
+      "weight": 20,
+      "entity_type": []
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 2
+      },
+      "weight": 10,
+      "entity_type": []
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 3
+      },
+      "weight": 2,
+      "entity_type": []
+    }
+  },
+  "defense_increase": {
+    "11": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 30,
+      "entity_type": []
+    },
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_plus_10": 1
+      },
+      "weight": 20,
+      "entity_type": []
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_plus_10": 2
+      },
+      "weight": 10,
+      "entity_type": []
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_plus_10": 3
+      },
+      "weight": 2,
+      "entity_type": []
+    }
+  },
+  "life_regen_increase": {
+    "11": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 30,
+      "entity_type": []
+    },
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_plus_10": 1
+      },
+      "weight": 20,
+      "entity_type": []
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_plus_10": 2
+      },
+      "weight": 10,
+      "entity_type": []
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_plus_10": 3
+      },
+      "weight": 2,
+      "entity_type": []
+    }
+  },
+  "bag_size_increase": {
+    "11": {
+      "tag_condition": {
+        "inventory_plus_10": 1
+      },
+      "weight": 30,
+      "entity_type": []
+    },
+    "12": {
+      "tag_condition": {
+        "inventory_plus_10": 2
+      },
+      "weight": 20,
+      "entity_type": []
+    },
+    "13": {
+      "tag_condition": {
+        "inventory_plus_10": 3
+      },
+      "weight": 10,
+      "entity_type": []
+    },
+    "14": {
+      "tag_condition": {
+        "inventory_plus_10": 4
+      },
+      "weight": 2,
+      "entity_type": []
+    }
+  },
+  "speed_up": {
+    "11": {
+      "tag_condition": {
+        "speed_plus_10": 1
+      },
+      "for_ridable": true,
+      "weight": 30,
+      "entity_type": []
+    },
+    "12": {
+      "tag_condition": {
+        "speed_plus_10": 2
+      },
+      "for_ridable": true,
+      "weight": 20,
+      "entity_type": []
+    },
+    "13": {
+      "tag_condition": {
+        "speed_plus_10": 3
+      },
+      "for_ridable": true,
+      "weight": 10,
+      "entity_type": []
+    },
+    "14": {
+      "tag_condition": {
+        "speed_plus_10": 4
+      },
+      "for_ridable": true,
+      "weight": 2,
+      "entity_type": []
+    }
+  },
+  "master_energetic": {
+    "11": {
+      "tag_condition": {},
+      "weight": 30,
+      "entity_type": []
+    },
+    "12": {
+      "tag_condition": {
+        "inventory_plus_10": 1
+      },
+      "weight": 20,
+      "entity_type": []
+    },
+    "13": {
+      "tag_condition": {
+        "inventory_plus_10": 2
+      },
+      "weight": 10,
+      "entity_type": []
+    },
+    "14": {
+      "tag_condition": {
+        "inventory_plus_10": 3
+      },
+      "weight": 2,
+      "entity_type": []
+    }
+  },
+  "master_excited": {
+    "11": {
+      "tag_condition": {},
+      "weight": 30,
+      "entity_type": []
+    },
+    "12": {
+      "tag_condition": {
+        "speed_plus_10": 1
+      },
+      "weight": 20,
+      "entity_type": []
+    },
+    "13": {
+      "tag_condition": {
+        "speed_plus_10": 2
+      },
+      "weight": 10,
+      "entity_type": []
+    },
+    "14": {
+      "tag_condition": {
+        "speed_plus_10": 3
+      },
+      "weight": 2,
+      "entity_type": []
+    }
+  },
+  "tricera_dash": {
+    "11": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 60,
+      "entity_type": [
+        3070,
+        3049,
+        3033,
+        3055
+      ]
+    },
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 1
+      },
+      "weight": 45,
+      "entity_type": [
+        3070,
+        3049,
+        3033,
+        3055
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 2
+      },
+      "weight": 30,
+      "entity_type": [
+        3070,
+        3049,
+        3033,
+        3055
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 3
+      },
+      "weight": 15,
+      "entity_type": [
+        3070,
+        3049,
+        3033,
+        3055
+      ]
+    }
+  },
+  "phenaco_gas": {
+    "11": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 60,
+      "entity_type": [
+        3069,
+        3056,
+        3059
+      ]
+    },
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 1
+      },
+      "weight": 45,
+      "entity_type": [
+        3069,
+        3056,
+        3059
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 2
+      },
+      "weight": 30,
+      "entity_type": [
+        3069,
+        3056,
+        3059
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 3
+      },
+      "weight": 15,
+      "entity_type": [
+        3069,
+        3056,
+        3059
+      ]
+    }
+  },
+  "macrau_kick": {
+    "11": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 60,
+      "entity_type": [
+        3025,
+        3026,
+        3043,
+        3051
+      ]
+    },
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 1
+      },
+      "weight": 45,
+      "entity_type": [
+        3025,
+        3026,
+        3043,
+        3051
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 2
+      },
+      "weight": 30,
+      "entity_type": [
+        3025,
+        3026,
+        3043,
+        3051
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 3
+      },
+      "weight": 15,
+      "entity_type": [
+        3025,
+        3026,
+        3043,
+        3051
+      ]
+    }
+  },
+  "macrau_head": {
+    "11": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 60,
+      "entity_type": [
+        3025,
+        3026,
+        3043,
+        3051
+      ]
+    },
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_plus_10": 1
+      },
+      "weight": 45,
+      "entity_type": [
+        3025,
+        3026,
+        3043,
+        3051
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_plus_10": 2
+      },
+      "weight": 30,
+      "entity_type": [
+        3025,
+        3026,
+        3043,
+        3051
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "defense_plus_10": 3
+      },
+      "weight": 15,
+      "entity_type": [
+        3025,
+        3026,
+        3043,
+        3051
+      ]
+    }
+  },
+  "direwolf_bite": {
+    "11": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 60,
+      "entity_type": [
+        3018,
+        3017
+      ]
+    },
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 1
+      },
+      "weight": 45,
+      "entity_type": [
+        3018,
+        3017
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 2
+      },
+      "weight": 30,
+      "entity_type": [
+        3018,
+        3017
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_plus_10": 3
+      },
+      "weight": 15,
+      "entity_type": [
+        3018,
+        3017
+      ]
+    }
+  },
+  "coelo_mad": {
+    "11": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 60,
+      "entity_type": [
+        3011,
+        3012
+      ]
+    },
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {
+        "accuracy_plus_10": 1
+      },
+      "weight": 45,
+      "entity_type": [
+        3011,
+        3012
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "accuracy_plus_10": 2
+      },
+      "weight": 30,
+      "entity_type": [
+        3011,
+        3012
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "accuracy_plus_10": 3
+      },
+      "weight": 15,
+      "entity_type": [
+        3011,
+        3012
+      ]
+    }
+  },
+  "mammoth_turn": {
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3031
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3031
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3031
+      ]
+    }
+  },
+  "brachio_junior_attack": {
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3034
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_amplifier_10": 1
+      },
+      "weight": 60,
+      "entity_type": [
+        3034
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {
+        "attack_amplifier_10": 2
+      },
+      "weight": 20,
+      "entity_type": [
+        3034
+      ]
+    }
+  },
+  "master_life_health_recovery": {
+    "12": {
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3036
+      ]
+    },
+    "13": {
+      "tag_condition": {},
+      "weight": 60,
+      "entity_type": [
+        3036
+      ]
+    },
+    "14": {
+      "tag_condition": {},
+      "weight": 20,
+      "entity_type": [
+        3036
+      ]
+    }
+  },
+  "master_attack_increase": {
+    "12": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 100,
+      "entity_type": [
+        3039
+      ]
+    },
+    "13": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 60,
+      "entity_type": [
+        3039
+      ]
+    },
+    "14": {
+      "for_fightable": true,
+      "tag_condition": {},
+      "weight": 20,
+      "entity_type": [
+        3039
+      ]
+    }
+  },
+  "hadrosaurus_immune_larva": {
+    "12": {
+      "tag_condition": {},
+      "weight": 20,
+      "entity_type": [
+        3038
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "attack_plus_10": 2
+      },
+      "weight": 10,
+      "entity_type": [
+        3038
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "attack_plus_10": 3
+      },
+      "weight": 2,
+      "entity_type": [
+        3038
+      ]
+    }
+  },
+  "iguana_shining_hand": {
+    "12": {
+      "tag_condition": {},
+      "weight": 45,
+      "entity_type": [
+        3040
+      ]
+    },
+    "13": {
+      "tag_condition": {
+        "inventory_amplifier_10": 2
+      },
+      "weight": 30,
+      "entity_type": [
+        3040
+      ]
+    },
+    "14": {
+      "tag_condition": {
+        "inventory_amplifier_10": 3
+      },
+      "weight": 15,
+      "entity_type": [
+        3040
+      ]
+    }
+  },
+  "hadrosaurus_immune_larva_enhance": {
+    "12": {
+      "tag_condition": {},
+      "weight": 45,
+      "entity_type": [
+        3041
+      ]
+    },
+    "13": {
+      "tag_condition": {},
+      "weight": 30,
+      "entity_type": [
+        3041
+      ]
+    },
+    "14": {
+      "tag_condition": {},
+      "weight": 15,
+      "entity_type": [
+        3041
+      ]
+    }
+  }
+}

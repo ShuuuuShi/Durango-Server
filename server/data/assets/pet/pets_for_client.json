@@ -1,0 +1,1638 @@
+{
+  "3001": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "페나코두스": null
+    },
+    "vehicle_entity_type": 2006,
+    "is_reinifiable": true,
+    "type_name": "pet_phenaco",
+    "rein_id": "reins_phenaco",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Herbivore",
+    "species": "phenaco",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3002": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "타르보사우루스": null
+    },
+    "vehicle_entity_type": 2089,
+    "is_reinifiable": true,
+    "type_name": "pet_tarbo_snowy",
+    "rein_id": "reins_tarbo_snowy",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack_advanced",
+    "type": "Carnivore",
+    "species": "tarbo_snowy",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3003": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "타르보사우루스": null
+    },
+    "vehicle_entity_type": 2086,
+    "is_reinifiable": true,
+    "type_name": "pet_tarbo",
+    "rein_id": "reins_tarbo",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Carnivore",
+    "species": "tarbo",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3004": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "티라노사우루스": null
+    },
+    "vehicle_entity_type": 2005,
+    "is_reinifiable": true,
+    "type_name": "pet_trex",
+    "rein_id": "reins_trex",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Carnivore",
+    "species": "trex",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3016": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "검은 다이어울프": null
+    },
+    "vehicle_entity_type": 2069,
+    "is_reinifiable": true,
+    "type_name": "pet_direwolf_black",
+    "rein_id": "reins_direwolf_black",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Carnivore",
+    "species": "direwolf_black",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3060": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "카스모사우루스": null
+    },
+    "vehicle_entity_type": 2018,
+    "is_reinifiable": true,
+    "type_name": "pet_chasmo",
+    "rein_id": "reins_chasmo",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Herbivore",
+    "species": "chasmo",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3023": {
+    "family_level": 2,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "스밀로돈": null
+    },
+    "vehicle_entity_type": 2007,
+    "is_reinifiable": true,
+    "type_name": "pet_sabertooth",
+    "rein_id": "reins_sabertooth",
+    "is_ridable": true,
+    "family_id": "family_mammal_attack_advanced",
+    "type": "Carnivore",
+    "species": "sabertooth",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3046": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "파라사우롤로푸스": null
+    },
+    "vehicle_entity_type": 2009,
+    "is_reinifiable": true,
+    "type_name": "pet_parasau",
+    "rein_id": "reins_parasau",
+    "is_ridable": true,
+    "family_id": "family_mammal_balance",
+    "type": "Herbivore",
+    "species": "parasau",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3054": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "트리케라톱스": null
+    },
+    "vehicle_entity_type": 2062,
+    "is_reinifiable": true,
+    "type_name": "pet_tricera",
+    "rein_id": "reins_tricera",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag",
+    "type": "Herbivore",
+    "species": "tricera",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3057": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "매머드": null
+    },
+    "vehicle_entity_type": 2008,
+    "is_reinifiable": true,
+    "type_name": "pet_mammoth",
+    "rein_id": "reins_mammoth",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Herbivore",
+    "species": "mammoth",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3058": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "아랫뿔코끼리": null
+    },
+    "vehicle_entity_type": 2087,
+    "is_reinifiable": true,
+    "type_name": "pet_deinotherium",
+    "rein_id": "reins_deinotherium",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Herbivore",
+    "species": "deinotherium",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3064": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "브라키오사우루스": null
+    },
+    "vehicle_entity_type": 2004,
+    "is_reinifiable": true,
+    "type_name": "pet_brachio",
+    "rein_id": "reins_brachio",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Herbivore",
+    "species": "brachio",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3014": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "암컷 메갈로케로스": null
+    },
+    "vehicle_entity_type": 2063,
+    "is_reinifiable": true,
+    "type_name": "pet_megalo_female",
+    "rein_id": "reins_megalo_female",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Herbivore",
+    "species": "megalo",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3053": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "유오플로케팔루스": null
+    },
+    "vehicle_entity_type": 2011,
+    "is_reinifiable": true,
+    "type_name": "pet_euoplo",
+    "rein_id": "reins_euoplo",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag",
+    "type": "Herbivore",
+    "species": "euoplo",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3015": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "암컷 흰배메갈로케로스": null
+    },
+    "vehicle_entity_type": 2080,
+    "is_reinifiable": true,
+    "type_name": "pet_megalo_snowy_female",
+    "rein_id": "reins_megalo_snowy_female",
+    "is_ridable": true,
+    "family_id": "family_compso_ancora",
+    "type": "Herbivore",
+    "species": "megalo",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3043": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "루돌프 메갈로케로스": null
+    },
+    "vehicle_entity_type": 2053,
+    "is_reinifiable": true,
+    "type_name": "pet_megalo_xmas_elite_store",
+    "rein_id": "reins_megalo_xmas_elite_store",
+    "is_ridable": true,
+    "family_id": "family_megalo_xmas_elite",
+    "type": "Herbivore",
+    "species": "phenaco",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3071": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "가스토르니스": null
+    },
+    "vehicle_entity_type": 2130,
+    "is_reinifiable": true,
+    "type_name": "pet_gastornis",
+    "rein_id": "reins_gastornis",
+    "is_ridable": true,
+    "family_id": "family_gastornis",
+    "type": "Carnivore",
+    "species": "gastornis",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3028": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "까치 가스토르니스": null
+    },
+    "vehicle_entity_type": 2149,
+    "is_reinifiable": true,
+    "type_name": "pet_magpie_gastornis",
+    "rein_id": "reins_magpie_gastornis",
+    "is_ridable": true,
+    "family_id": "family_gastornis",
+    "type": "Carnivore",
+    "species": "gastornis",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3072": {
+    "family_level": 1,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "래브라도 리트리버": null
+    },
+    "vehicle_entity_type": 2131,
+    "is_reinifiable": true,
+    "type_name": "pet_retriever_labrador",
+    "rein_id": "reins_retriever_labrador",
+    "is_ridable": false,
+    "family_id": "family_retriever_labrador",
+    "type": "Carnivore",
+    "species": "retriever_labrador",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3030": {
+    "family_level": 1,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "깜장 래브라도 리트리버": null
+    },
+    "vehicle_entity_type": 2152,
+    "is_reinifiable": true,
+    "type_name": "pet_retriever_labrador_black",
+    "rein_id": "reins_retriever_labrador_black",
+    "is_ridable": false,
+    "family_id": "family_retriever_labrador",
+    "type": "Carnivore",
+    "species": "retriever_labrador",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3075": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "땅거북안킬로": null
+    },
+    "vehicle_entity_type": 2054,
+    "is_reinifiable": true,
+    "type_name": "pet_tortoise_ankylosaurus",
+    "rein_id": "reins_tortoise_ankylosaurus",
+    "is_ridable": true,
+    "family_id": "family_tortoise_ankylosaurus",
+    "type": "Herbivore",
+    "species": "tortoise_ankylosaurus",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3047": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "보누사우루스": null
+    },
+    "vehicle_entity_type": 2094,
+    "is_reinifiable": true,
+    "type_name": "pet_bonusaurus",
+    "rein_id": "reins_bonusaurus",
+    "is_ridable": true,
+    "family_id": "family_bonusaurus",
+    "type": "Herbivore",
+    "species": "bonusaurus",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3000": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "호박마녀 페나코두스": null
+    },
+    "vehicle_entity_type": 2052,
+    "is_reinifiable": true,
+    "type_name": "pet_phenaco_pumpkinwitch",
+    "rein_id": "reins_phenacodus_pumpkinwitch",
+    "is_ridable": true,
+    "family_id": "family_phenaco_pumpkinwitch",
+    "type": "Herbivore",
+    "species": "phenaco",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3019": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "파키케팔로사우루스": null
+    },
+    "vehicle_entity_type": 2059,
+    "is_reinifiable": true,
+    "type_name": "pet_pachycephalosaurus",
+    "rein_id": "reins_pachycephalosaurus",
+    "is_ridable": true,
+    "family_id": "family_pachycephalo",
+    "type": "Herbivore",
+    "species": "pachycephalo",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3029": {
+    "family_level": 1,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "흰 코끼리": null
+    },
+    "vehicle_entity_type": 2151,
+    "is_reinifiable": true,
+    "type_name": "pet_elephant_albino_small",
+    "rein_id": "reins_elephant_albino_small",
+    "is_ridable": true,
+    "family_id": "family_elephant",
+    "type": "Herbivore",
+    "species": "deinotherium",
+    "available_ranks": [
+      13
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3031": {
+    "family_level": 1,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "아프리카 코끼리": null
+    },
+    "vehicle_entity_type": 2154,
+    "is_reinifiable": true,
+    "type_name": "pet_elephant_small_store",
+    "rein_id": "reins_elephant_small_store",
+    "is_ridable": true,
+    "family_id": "family_elephant_store",
+    "type": "Herbivore",
+    "species": "deinotherium",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3067": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "줄무늬 콤프소그나투스": null
+    },
+    "vehicle_entity_type": 2036,
+    "is_reinifiable": false,
+    "type_name": "pet_compso_ancora",
+    "rein_id": "reins_compso_ancora_event",
+    "is_ridable": false,
+    "family_id": "family_compso_ancora",
+    "type": "Carnivore",
+    "species": "compso",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3018": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "흰털다이어울프": null
+    },
+    "vehicle_entity_type": 2091,
+    "is_reinifiable": false,
+    "type_name": "pet_direwolf_snow",
+    "rein_id": "reins_direwolf_snow",
+    "is_ridable": true,
+    "family_id": "family_direwolf_snow",
+    "type": "Carnivore",
+    "species": "direwolf_white",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3042": {
+    "family_level": 1,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "붉은코 메갈로케로스": null
+    },
+    "vehicle_entity_type": 2148,
+    "is_reinifiable": false,
+    "type_name": "pet_megalo_xmas",
+    "rein_id": "reins_megalo_xmas",
+    "is_ridable": true,
+    "family_id": "family_megalo_xmas",
+    "type": "Herbivore",
+    "species": "megalo",
+    "available_ranks": [
+      13
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3077": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "산타 페나코두스": null
+    },
+    "vehicle_entity_type": 2129,
+    "is_reinifiable": true,
+    "type_name": "pet_phenacodus_xmas",
+    "rein_id": "reins_phenacodus_xmas",
+    "is_ridable": false,
+    "family_id": "family_phenaco_event",
+    "type": "Herbivore",
+    "species": "phenaco",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3073": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "한복 페나코두스": null
+    },
+    "vehicle_entity_type": 2049,
+    "is_reinifiable": true,
+    "type_name": "pet_phenacodus_hanbok",
+    "rein_id": "reins_phenacodus_hanbok",
+    "is_ridable": false,
+    "family_id": "family_phenaco_event",
+    "type": "Herbivore",
+    "species": "phenaco",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3076": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "마녀 페나코두스": null
+    },
+    "vehicle_entity_type": 2050,
+    "is_reinifiable": true,
+    "type_name": "pet_phenacodus_witch",
+    "rein_id": "reins_phenacodus_witch",
+    "is_ridable": false,
+    "family_id": "family_phenaco_event",
+    "type": "Herbivore",
+    "species": "phenaco",
+    "available_ranks": [
+      12
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3009": {
+    "family_level": 1,
+    "by_product": "feather",
+    "name": {
+      "갈리미무스": null
+    },
+    "vehicle_entity_type": 2025,
+    "is_reinifiable": true,
+    "type_name": "pet_gallymimus",
+    "rein_id": "reins_gallymimus",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack_advanced",
+    "type": "Herbivore",
+    "species": "gallymimus",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3017": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "다이어울프": null
+    },
+    "vehicle_entity_type": 2055,
+    "is_reinifiable": true,
+    "type_name": "pet_direwolf",
+    "rein_id": "reins_direwolf",
+    "is_ridable": true,
+    "family_id": "family_mammal_attack_advanced",
+    "type": "Carnivore",
+    "species": "direwolf",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3021": {
+    "family_level": 1,
+    "by_product": "feather",
+    "name": {
+      "유타랍토르": null
+    },
+    "vehicle_entity_type": 2023,
+    "is_reinifiable": true,
+    "type_name": "pet_utahraptor",
+    "rein_id": "reins_utahraptor",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack_advanced",
+    "type": "Carnivore",
+    "species": "utahraptor",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3074": {
+    "family_level": 2,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "스밀로돈": null
+    },
+    "vehicle_entity_type": 2047,
+    "is_reinifiable": true,
+    "type_name": "pet_sabertooth_tem",
+    "rein_id": "reins_sabertooth_tem",
+    "is_ridable": true,
+    "family_id": "family_mammal_attack_advanced",
+    "type": "Carnivore",
+    "species": "sabertooth",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3024": {
+    "family_level": 2,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "스밀로돈": null
+    },
+    "vehicle_entity_type": 2088,
+    "is_reinifiable": true,
+    "type_name": "pet_sabertooth_golden",
+    "rein_id": "reins_sabertooth_golden",
+    "is_ridable": true,
+    "family_id": "family_mammal_attack_advanced",
+    "type": "Carnivore",
+    "species": "sabertooth",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3052": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "안킬로사우루스": null
+    },
+    "vehicle_entity_type": 2010,
+    "is_reinifiable": true,
+    "type_name": "pet_ankylo",
+    "rein_id": "reins_ankylo",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag_advanced",
+    "type": "Herbivore",
+    "species": "ankylo",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3006": {
+    "family_level": 1,
+    "by_product": "feather",
+    "name": {
+      "픽타랍토르": null
+    },
+    "vehicle_entity_type": 2078,
+    "is_reinifiable": true,
+    "type_name": "pet_oviraptor_tropical",
+    "rein_id": "reins_oviraptor_tropical",
+    "is_ridable": true,
+    "family_id": "family_2leg_speed",
+    "type": "Carnivore",
+    "species": "oviraptor",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3007": {
+    "family_level": 1,
+    "by_product": "feather",
+    "name": {
+      "오비랍토르": null
+    },
+    "vehicle_entity_type": 2002,
+    "is_reinifiable": true,
+    "type_name": "pet_oviraptor",
+    "rein_id": "reins_oviraptor",
+    "is_ridable": true,
+    "family_id": "family_2leg_speed",
+    "type": "Carnivore",
+    "species": "oviraptor",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3005": {
+    "family_level": 1,
+    "by_product": "feather",
+    "name": {
+      "알비랍토르": null
+    },
+    "vehicle_entity_type": 2077,
+    "is_reinifiable": true,
+    "type_name": "pet_oviraptor_snowy",
+    "rein_id": "reins_oviraptor_snowy",
+    "is_ridable": true,
+    "family_id": "family_2leg_speed",
+    "type": "Carnivore",
+    "species": "oviraptor_snowy",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3068": {
+    "family_level": 1,
+    "by_product": "feather",
+    "name": {
+      "데이노니쿠스": null
+    },
+    "vehicle_entity_type": 2029,
+    "is_reinifiable": true,
+    "type_name": "pet_deinonychus",
+    "rein_id": "reins_deinonychus",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack",
+    "type": "Carnivore",
+    "species": "deinonychus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3008": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "마크라우케니아": null
+    },
+    "vehicle_entity_type": 2056,
+    "is_reinifiable": true,
+    "type_name": "pet_macrau",
+    "rein_id": "reins_macrau",
+    "is_ridable": true,
+    "family_id": "family_mammal_balance",
+    "type": "Herbivore",
+    "species": "macrau",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3044": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "프로토케라톱스": null
+    },
+    "vehicle_entity_type": 2017,
+    "is_reinifiable": true,
+    "type_name": "pet_protoceratops",
+    "rein_id": "reins_protoceratops",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag",
+    "type": "Herbivore",
+    "species": "protoceratops",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3066": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "제브라케라톱스": null
+    },
+    "vehicle_entity_type": 2027,
+    "is_reinifiable": true,
+    "type_name": "pet_zebraceratops",
+    "rein_id": "reins_zebraceratops",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag",
+    "type": "Herbivore",
+    "species": "zebraceratops",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3027": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "연분홍 프로토케라톱스": null
+    },
+    "vehicle_entity_type": 2040,
+    "is_reinifiable": true,
+    "type_name": "pet_protoceratops_pink",
+    "rein_id": "reins_protoceratops_pink",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag",
+    "type": "Herbivore",
+    "species": "protoceratops",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3069": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "스컹코두스": null
+    },
+    "vehicle_entity_type": 2060,
+    "is_reinifiable": true,
+    "type_name": "pet_skunkodus",
+    "rein_id": "reins_skunkodus",
+    "is_ridable": true,
+    "family_id": "family_mammal_attack",
+    "type": "Herbivore",
+    "species": "skunkodus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3013": {
+    "family_level": 2,
+    "by_product": "feather",
+    "name": {
+      "랩터": null
+    },
+    "vehicle_entity_type": 2001,
+    "is_reinifiable": true,
+    "type_name": "pet_raptor",
+    "rein_id": "reins_raptor",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack",
+    "type": "Carnivore",
+    "species": "raptor",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3011": {
+    "family_level": 2,
+    "by_product": "feather",
+    "name": {
+      "설원 코엘로피시스": null
+    },
+    "vehicle_entity_type": 2146,
+    "is_reinifiable": true,
+    "type_name": "pet_coelophysis_snowy",
+    "rein_id": "reins_coelophysis_snowy",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack",
+    "type": "Carnivore",
+    "species": "coelophysis",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3012": {
+    "family_level": 2,
+    "by_product": "feather",
+    "name": {
+      "코엘로피시스": null
+    },
+    "vehicle_entity_type": 2058,
+    "is_reinifiable": true,
+    "type_name": "pet_coelophysis",
+    "rein_id": "reins_coelophysis",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack",
+    "type": "Carnivore",
+    "species": "coelophysis",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3010": {
+    "family_level": 2,
+    "by_product": "feather",
+    "name": {
+      "파보미무스": null
+    },
+    "vehicle_entity_type": 2093,
+    "is_reinifiable": true,
+    "type_name": "pet_pavomimus",
+    "rein_id": "reins_pavomimus",
+    "is_ridable": true,
+    "family_id": "family_2leg_speed",
+    "type": "Carnivore",
+    "species": "pavomimus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3025": {
+    "family_level": 2,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "수컷 메갈로케로스": null
+    },
+    "vehicle_entity_type": 2057,
+    "is_reinifiable": true,
+    "type_name": "pet_megalo",
+    "rein_id": "reins_megalo",
+    "is_ridable": true,
+    "family_id": "family_mammal_balance",
+    "type": "Herbivore",
+    "species": "megalo",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3026": {
+    "family_level": 2,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "수컷 흰배메갈로케로스": null
+    },
+    "vehicle_entity_type": 2092,
+    "is_reinifiable": true,
+    "type_name": "pet_megalo_snowy",
+    "rein_id": "reins_megalo_snowy",
+    "is_ridable": true,
+    "family_id": "family_mammal_balance",
+    "type": "Herbivore",
+    "species": "megalo",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3020": {
+    "family_level": 3,
+    "by_product": "feather",
+    "name": {
+      "오르니토미무스": null
+    },
+    "vehicle_entity_type": 2014,
+    "is_reinifiable": true,
+    "type_name": "pet_ornitho",
+    "rein_id": "reins_ornitho",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack",
+    "type": "Carnivore",
+    "species": "ornitho",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3022": {
+    "family_level": 3,
+    "by_product": "feather",
+    "name": {
+      "딜로포사우루스": null
+    },
+    "vehicle_entity_type": 2024,
+    "is_reinifiable": true,
+    "type_name": "pet_dilophosaurus",
+    "rein_id": "reins_dilophosaurus",
+    "is_ridable": true,
+    "family_id": "family_2leg_speed",
+    "type": "Carnivore",
+    "species": "dilophosaurus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3049": {
+    "family_level": 2,
+    "by_product": "default",
+    "name": {
+      "스티라코사우루스": null
+    },
+    "vehicle_entity_type": 2147,
+    "is_reinifiable": true,
+    "type_name": "pet_styraco",
+    "rein_id": "reins_styraco",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag",
+    "type": "Herbivore",
+    "species": "styraco",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3070": {
+    "family_level": 2,
+    "by_product": "default",
+    "name": {
+      "센트로사우루스": null
+    },
+    "vehicle_entity_type": 2096,
+    "is_reinifiable": true,
+    "type_name": "pet_centrosaurus",
+    "rein_id": "reins_centrosaurus",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag",
+    "type": "Herbivore",
+    "species": "centrosaurus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3033": {
+    "family_level": 2,
+    "by_product": "default",
+    "name": {
+      "센트로사우루스": null
+    },
+    "vehicle_entity_type": 2168,
+    "is_reinifiable": true,
+    "type_name": "pet_centrosaurus_offerwall",
+    "rein_id": "reins_centrosaurus_offerwall",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag",
+    "type": "Herbivore",
+    "species": "centrosaurus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": false
+  },
+  "3032": {
+    "family_level": 1,
+    "by_product": "mammal_honey",
+    "name": {
+      "꿀벌 페나코두스": null
+    },
+    "vehicle_entity_type": 2156,
+    "is_reinifiable": true,
+    "type_name": "pet_phenacodus_bee",
+    "rein_id": "reins_phenacodus_bee",
+    "is_ridable": true,
+    "family_id": "family_phenaco_pumpkinwitch",
+    "type": "Herbivore",
+    "species": "phenaco",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3034": {
+    "family_level": 1,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "작은 브라키오사우루스": null
+    },
+    "vehicle_entity_type": 2169,
+    "is_reinifiable": true,
+    "type_name": "pet_brachio_junior_store",
+    "rein_id": "reins_brachio_junior_store",
+    "is_ridable": true,
+    "family_id": "family_brachio_junior_store",
+    "type": "Herbivore",
+    "species": "brachio",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3035": {
+    "family_level": 1,
+    "by_product": "mammal_water",
+    "name": {
+      "해녀 스컹코두스": null
+    },
+    "vehicle_entity_type": 2173,
+    "is_reinifiable": true,
+    "type_name": "pet_skunkodus_diver",
+    "rein_id": "reins_skunkodus_diver",
+    "is_ridable": true,
+    "family_id": "family_phenaco_pumpkinwitch",
+    "type": "Herbivore",
+    "species": "skunkodus",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3036": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "축제 엘리펀툴루스": null
+    },
+    "vehicle_entity_type": 2180,
+    "is_reinifiable": true,
+    "type_name": "pet_elephantulus_hula",
+    "rein_id": "reins_elephantulus_hula",
+    "is_ridable": false,
+    "family_id": "family_elephantulus_hula",
+    "type": "Herbivore",
+    "species": "elephantulus",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3037": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "상어 페나코두스": null
+    },
+    "vehicle_entity_type": 2181,
+    "is_reinifiable": true,
+    "type_name": "pet_phenacodus_shark",
+    "rein_id": "reins_phenacodus_shark",
+    "is_ridable": false,
+    "family_id": "family_phenaco_event",
+    "type": "Herbivore",
+    "species": "phenaco",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3039": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "광대 콤프소그나투스": null
+    },
+    "vehicle_entity_type": 2182,
+    "is_reinifiable": true,
+    "type_name": "pet_compso_clownfish",
+    "rein_id": "reins_compso_clownfish",
+    "is_ridable": false,
+    "family_id": "family_compso_clownfish",
+    "type": "Carnivore",
+    "species": "compso",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3038": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "용암 하드로사우루스": null
+    },
+    "vehicle_entity_type": 2177,
+    "is_reinifiable": true,
+    "type_name": "pet_hadrosaurus",
+    "rein_id": "reins_hadrosaurus_volcanic",
+    "is_ridable": true,
+    "family_id": "family_mammal_balance",
+    "type": "Herbivore",
+    "species": "hadrosaurus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3040": {
+    "family_level": 1,
+    "by_product": "iguana",
+    "name": {
+      "오색비늘 이구아나": null
+    },
+    "vehicle_entity_type": 2183,
+    "is_reinifiable": true,
+    "type_name": "pet_iguana_emerald",
+    "rein_id": "reins_iguana_emerald",
+    "is_ridable": false,
+    "family_id": "family_iguana",
+    "type": "Carnivore",
+    "species": "iguana",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": false,
+    "is_craft": true
+  },
+  "3041": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "돌격전차 하드로사우루스": null
+    },
+    "vehicle_entity_type": 2184,
+    "is_reinifiable": true,
+    "type_name": "pet_hadrosaurus_offroad",
+    "rein_id": "reins_hadrosaurus_offroad",
+    "is_ridable": true,
+    "family_id": "family_brachio_junior_store",
+    "type": "Herbivore",
+    "species": "hadrosaurus",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3045": {
+    "family_level": 2,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "스밀로돈": null
+    },
+    "vehicle_entity_type": 2157,
+    "is_reinifiable": true,
+    "type_name": "pet_sabertooth_factor6",
+    "rein_id": "reins_sabertooth_factor6",
+    "is_ridable": true,
+    "family_id": "family_mammal_attack_advanced",
+    "type": "Carnivore",
+    "species": "sabertooth",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3048": {
+    "family_level": 1,
+    "by_product": "feather",
+    "name": {
+      "갈리미무스": null
+    },
+    "vehicle_entity_type": 2162,
+    "is_reinifiable": true,
+    "type_name": "pet_gallymimus_factor6",
+    "rein_id": "reins_gallymimus_factor6",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack_advanced",
+    "type": "Herbivore",
+    "species": "gallymimus",
+    "available_ranks": [
+      14,
+      13,
+      12
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3050": {
+    "family_level": 1,
+    "by_product": "feather",
+    "name": {
+      "데이노니쿠스": null
+    },
+    "vehicle_entity_type": 2161,
+    "is_reinifiable": true,
+    "type_name": "pet_deinonychus_factor6",
+    "rein_id": "reins_deinonychus_factor6",
+    "is_ridable": true,
+    "family_id": "family_2leg_attack",
+    "type": "Carnivore",
+    "species": "deinonychus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3051": {
+    "family_level": 2,
+    "by_product": "mammal_no_milk",
+    "name": {
+      "수컷 메갈로케로스": null
+    },
+    "vehicle_entity_type": 2164,
+    "is_reinifiable": true,
+    "type_name": "pet_megalo_factor6",
+    "rein_id": "reins_megalo_factor6",
+    "is_ridable": true,
+    "family_id": "family_mammal_balance",
+    "type": "Herbivore",
+    "species": "megalo",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3055": {
+    "family_level": 1,
+    "by_product": "default",
+    "name": {
+      "화산재 카스모사우루스": null
+    },
+    "vehicle_entity_type": 2178,
+    "is_reinifiable": true,
+    "type_name": "pet_chasmo_volcanic",
+    "rein_id": "reins_chasmo_volcanic",
+    "is_ridable": true,
+    "family_id": "family_4leg_defense_bag",
+    "type": "Herbivore",
+    "species": "chasmo",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3056": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "유황 스컹코두스": null
+    },
+    "vehicle_entity_type": 2174,
+    "is_reinifiable": true,
+    "type_name": "pet_skunkodus_volcanic",
+    "rein_id": "reins_skunkodus_volcanic",
+    "is_ridable": true,
+    "family_id": "family_mammal_attack",
+    "type": "Herbivore",
+    "species": "skunkodus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  },
+  "3059": {
+    "family_level": 1,
+    "by_product": "mammal",
+    "name": {
+      "스컹코두스": null
+    },
+    "vehicle_entity_type": 2167,
+    "is_reinifiable": true,
+    "type_name": "pet_skunkodus_factor6",
+    "rein_id": "reins_skunkodus_factor6",
+    "is_ridable": true,
+    "family_id": "family_mammal_attack",
+    "type": "Herbivore",
+    "species": "skunkodus",
+    "available_ranks": [
+      14,
+      13,
+      12,
+      11
+    ],
+    "is_fightable": true,
+    "is_craft": true
+  }
+}

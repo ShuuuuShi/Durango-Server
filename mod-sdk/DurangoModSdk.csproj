@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    DurangoModSdk — API เล็ก ๆ ที่ mod ภายนอกอ้างอิงได้โดยไม่ต้องพ่วงทั้ง DurangoServer.dll
+    (คนละแอสเซมบลีกับ server จริง ⇒ อัปเดตเซิร์ฟแล้วไม่ต้องคอมไพล์ mod ใหม่ทุกครั้ง ตราบใดที่
+    ไม่ได้แก้ interface พวกนี้ — ดู docs/server/Modding.md)
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>DurangoModSdk</AssemblyName>
+    <RootNamespace>DurangoServer.Modding</RootNamespace>
+  </PropertyGroup>
+
+</Project>

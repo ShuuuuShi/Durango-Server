@@ -1,0 +1,850 @@
+{
+  "corn_seed": {
+    "name": {
+      "옥수수": null
+    },
+    "required_water": "2",
+    "max_level": 60,
+    "description": {
+      "지구에서 옥수수는 바이오 연료와 동물 사료로 많이 쓰입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "(60 * level + 600) * 0.5",
+    "color_g": "",
+    "required_fertilizer": "20",
+    "color_r": "#F4DF4A",
+    "icon": "icon_nat_farm_corn"
+  },
+  "onion_seed": {
+    "name": {
+      "양파 ": null
+    },
+    "required_water": "2",
+    "max_level": 60,
+    "description": {
+      "고대 이집트에선 양파 구근을 영원한 삶의 상징으로 봤습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "(60 * level + 1800) * 0.5",
+    "color_g": "",
+    "required_fertilizer": "20",
+    "color_r": "#FFE2AB",
+    "icon": "icon_nat_farm_onion"
+  },
+  "potato_seed": {
+    "name": {
+      "감자": null
+    },
+    "required_water": "2",
+    "max_level": 60,
+    "description": {
+      "감자의 식용 부위는 줄기가 변하여 만들어집니다.": null
+    },
+    "color_b": "",
+    "grows_until": "(60 * level + 3600) * 0.5",
+    "color_g": "",
+    "required_fertilizer": "30",
+    "color_r": "#DD971F",
+    "icon": "icon_nat_farm_potato"
+  },
+  "pumpkin_seed": {
+    "name": {
+      "호박": null
+    },
+    "required_water": "3",
+    "max_level": 60,
+    "description": {
+      "호박을 알기 전엔 순무로 할로윈 장식을 꾸몄습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "(60 * level + 3600) * 0.5",
+    "color_g": "",
+    "required_fertilizer": "30",
+    "color_r": "#FF8A00",
+    "icon": "icon_nat_farm_pumpkin"
+  },
+  "flax_seed": {
+    "name": {
+      "아마 ": null
+    },
+    "required_water": "2",
+    "max_level": 60,
+    "description": {
+      "아마는 비옥한 초승달 지역에서 처음 길들여졌습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "5400",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "#D5C2A1",
+    "icon": "icon_nat_fiber_flax"
+  },
+  "wheat_seed": {
+    "name": {
+      "밀": null
+    },
+    "required_water": "3",
+    "max_level": 60,
+    "description": {
+      "글루텐 덕분에 밀은 다양한 식재료가 되었습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "5400",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "#FFE6A8",
+    "icon": "icon_nat_farm_wheat"
+  },
+  "bean_seed": {
+    "name": {
+      "콩": null
+    },
+    "required_water": "4",
+    "max_level": 60,
+    "description": {
+      "콩의 뿌리는 질소를 땅에 고정합니다.": null
+    },
+    "color_b": "",
+    "grows_until": "5400",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "#9EB659",
+    "icon": "icon_nat_farm_bean"
+  },
+  "dogrose_seed": {
+    "name": {
+      "들장미": null
+    },
+    "required_water": "6",
+    "max_level": 60,
+    "description": {
+      "자연에서 푸른 장미는 존재하지 않습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "10800",
+    "color_g": "",
+    "required_fertilizer": "70",
+    "color_r": "#DF5C23",
+    "icon": "icon_nat_flower2"
+  },
+  "rice_seed": {
+    "name": {
+      "벼": null
+    },
+    "required_water": "4",
+    "max_level": 60,
+    "description": {
+      "벼농사는 협업을 기반으로 높은 인구밀도를 감당합니다.": null
+    },
+    "color_b": "",
+    "grows_until": "10800",
+    "color_g": "",
+    "required_fertilizer": "70",
+    "color_r": "#FFF0CC",
+    "icon": "icon_nat_farm_rice"
+  },
+  "sugarcane_seed": {
+    "name": {
+      "사탕수수": null
+    },
+    "required_water": "8",
+    "max_level": 60,
+    "description": {
+      "설탕은 높은 칼로리로 산업혁명의 기반이 되었습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "21600",
+    "color_g": "",
+    "required_fertilizer": "80",
+    "color_r": "#605D24",
+    "icon": "icon_nat_sugarcane"
+  },
+  "mushroom_seed": {
+    "name": {
+      "버섯": null
+    },
+    "required_water": "4",
+    "max_level": 60,
+    "description": {
+      "버섯은 균류입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "21600",
+    "color_g": "",
+    "required_fertilizer": "80",
+    "color_r": "#B58C61",
+    "icon": "icon_nat_mushroom"
+  },
+  "tomato_seed": {
+    "name": {
+      "토마토": null
+    },
+    "required_water": "5",
+    "max_level": 60,
+    "description": {
+      "1893년 미국 연방대법원은 토마토를 채소로 판결했습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "16200",
+    "color_g": "",
+    "required_fertilizer": "80",
+    "color_r": "#DD5251",
+    "icon": "icon_nat_farm_tomato"
+  },
+  "lavender_seed": {
+    "name": {
+      "라벤더": null
+    },
+    "required_water": "8",
+    "max_level": 60,
+    "description": {
+      "로마 제국에서 라벤더는 무척 비쌌습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "21600",
+    "color_g": "",
+    "required_fertilizer": "100",
+    "color_r": "#362D65",
+    "icon": "icon_nat_farm_lavender"
+  },
+  "flax_tropical_seed": {
+    "name": {
+      "열대 아마": null
+    },
+    "required_water": "8",
+    "max_level": 60,
+    "description": {
+      "아마는 3만 년 전에도 직물로 사용되었습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "21600",
+    "color_g": "",
+    "required_fertilizer": "60",
+    "color_r": "#86805E",
+    "icon": "icon_nat_fiber_flax"
+  },
+  "cotton_seed": {
+    "name": {
+      "목화": null
+    },
+    "required_water": "3",
+    "max_level": 60,
+    "description": {
+      "목화는 신대륙과 구대륙에서 각각 길들여졌습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "21600",
+    "color_g": "",
+    "required_fertilizer": "100",
+    "color_r": "#C4BFB4",
+    "icon": "icon_nat_cotton"
+  },
+  "grape_seed": {
+    "name": {
+      "포도나무": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "포도는 지구에서 가장 많이 생산되는 과일입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "32400",
+    "color_g": "",
+    "required_fertilizer": "130",
+    "color_r": "#6600FF",
+    "icon": "icon_nat_farm_grape"
+  },
+  "teatree_seed": {
+    "name": {
+      "차나무": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "차는 여러 전쟁에 영감을 제공했습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "32400",
+    "color_g": "",
+    "required_fertilizer": "150",
+    "color_r": "#4E6229",
+    "icon": "icon_nat_leaf_tea"
+  },
+  "violettulip_seed": {
+    "name": {
+      "보라튤립": null
+    },
+    "required_water": "12",
+    "max_level": 60,
+    "description": {
+      "17세기 네덜란드에선 튤립이 투기 대상이 되었습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "32400",
+    "color_g": "",
+    "required_fertilizer": "150",
+    "color_r": "#6600B0",
+    "icon": "icon_nat_flower_violoettulip"
+  },
+  "fig_seed": {
+    "name": {
+      "무화과 나무": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "무화과는 사실 꽃입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "36000",
+    "color_g": "",
+    "required_fertilizer": "150",
+    "color_r": "#FF8500",
+    "icon": "icon_nat_fruit_fig"
+  },
+  "poppy_seed": {
+    "name": {
+      "개양귀비": null
+    },
+    "required_water": "16",
+    "max_level": 60,
+    "description": {
+      "개양귀비는 마약 성분이 없습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "43200",
+    "color_g": "",
+    "required_fertilizer": "150",
+    "color_r": "#9D0A0B",
+    "icon": "icon_nat_farm_poppy"
+  },
+  "coffee_seed": {
+    "name": {
+      "커피 나무": null
+    },
+    "required_water": "12",
+    "max_level": 60,
+    "description": {
+      "많은 일터에서 카페인을 권장합니다.": null
+    },
+    "color_b": "",
+    "grows_until": "86400",
+    "color_g": "",
+    "required_fertilizer": "200",
+    "color_r": "#996600",
+    "icon": "icon_nat_fruit_coffee"
+  },
+  "desertagave_seed": {
+    "name": {
+      "사막용설란": null
+    },
+    "required_water": "20",
+    "max_level": 60,
+    "description": {
+      "용설란은 꽃을 피우는 데 오래 걸립니다.": null
+    },
+    "color_b": "",
+    "grows_until": "43200",
+    "color_g": "",
+    "required_fertilizer": "200",
+    "color_r": "#B7E6AE",
+    "icon": "icon_nat_desertagave"
+  },
+  "banana_seed": {
+    "name": {
+      "바나나나무": null
+    },
+    "required_water": "12",
+    "max_level": 60,
+    "description": {
+      "바나나는 탄수화물의 비중이 높습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "75600",
+    "color_g": "",
+    "required_fertilizer": "200",
+    "color_r": "#FFCC33",
+    "icon": "icon_nat_fruit_banana"
+  },
+  "chilipepper_seed": {
+    "name": {
+      "고추": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "고추는 더운 지역에 자생할수록 매워집니다.": null
+    },
+    "color_b": "",
+    "grows_until": "32400",
+    "color_g": "",
+    "required_fertilizer": "170",
+    "color_r": "#AF2424",
+    "icon": "icon_nat_farm_chilipepper"
+  },
+  "pepper_seed": {
+    "name": {
+      "피망": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "피망은 고추속 식물의 일종입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "32400",
+    "color_g": "",
+    "required_fertilizer": "170",
+    "color_r": "#457720",
+    "icon": "icon_nat_farm_bellpepper"
+  },
+  "rose_misterlincoln_seed": {
+    "name": {
+      "미스터 링컨": null
+    },
+    "required_water": "5",
+    "max_level": 60,
+    "description": {
+      "미스터 링컨은 1964년에 첫 개량되었습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "10800",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "#A7211E",
+    "icon": "icon_nat_rose"
+  },
+  "rose_damask_seed": {
+    "name": {
+      "다마스크 장미": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "다마스크 장미는 장미유를 추출하는 데 씁니다.": null
+    },
+    "color_b": "",
+    "grows_until": "21600",
+    "color_g": "",
+    "required_fertilizer": "70",
+    "color_r": "#B00910",
+    "icon": "icon_nat_rose"
+  },
+  "sunflower_seed": {
+    "name": {
+      "해바라기": null
+    },
+    "required_water": "5",
+    "max_level": 60,
+    "description": {
+      "꽃봉오리가 피면 더 이상 해를 쫓지 않습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "10800",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "#EABE00",
+    "icon": "icon_nat_sunflower"
+  },
+  "oleander_seed": {
+    "name": {
+      "협죽도": null
+    },
+    "required_water": "40",
+    "max_level": 60,
+    "description": {
+      "협죽도엔 강력한 독성이 있습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "86400",
+    "color_g": "",
+    "required_fertilizer": "120",
+    "color_r": "#E888C2",
+    "icon": "icon_nat_oleander"
+  },
+  "mapletree_seed": {
+    "name": {
+      "단풍 나무": null
+    },
+    "required_water": "30",
+    "max_level": 60,
+    "description": {
+      "단풍나무엔 당이 많아 벌레가 많이 꼬입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "86400",
+    "color_g": "",
+    "required_fertilizer": "100",
+    "color_r": "#9E2318",
+    "icon": "icon_nat_mapletree"
+  },
+  "ginkgotree_seed": {
+    "name": {
+      "은행 나무": null
+    },
+    "required_water": "30",
+    "max_level": 60,
+    "description": {
+      "은행나무문 은행나무강 은행나무목 은행나무과 은행나무속 은행나무.": null
+    },
+    "color_b": "",
+    "grows_until": "86400",
+    "color_g": "",
+    "required_fertilizer": "200",
+    "color_r": "#D8C542",
+    "icon": "icon_nat_ginkgotree"
+  },
+  "jpapricot_01_seed": {
+    "name": {
+      "매화나무": null
+    },
+    "required_water": "30",
+    "max_level": 60,
+    "description": {
+      "매화는 추위 속에 피어납니다.": null
+    },
+    "color_b": "",
+    "grows_until": "75600",
+    "color_g": "",
+    "required_fertilizer": "100",
+    "color_r": "#D6A1AC",
+    "icon": "icon_nat_jpapricot"
+  },
+  "jpapricot_02_seed": {
+    "name": {
+      "붉은 매화나무": null
+    },
+    "required_water": "30",
+    "max_level": 60,
+    "description": {
+      "매화, 대나무, 난초, 국화는 동아시아에서 지배 계층의 상징이었습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "75600",
+    "color_g": "",
+    "required_fertilizer": "100",
+    "color_r": "#9F5354",
+    "icon": "icon_nat_jpapricot"
+  },
+  "jpapricot_03_seed": {
+    "name": {
+      "하얀 매화나무": null
+    },
+    "required_water": "30",
+    "max_level": 60,
+    "description": {
+      "덜 익은 매실은 생으로 먹기 위험합니다.": null
+    },
+    "color_b": "",
+    "grows_until": "75600",
+    "color_g": "",
+    "required_fertilizer": "100",
+    "color_r": "#DAE9E1",
+    "icon": "icon_nat_jpapricot"
+  },
+  "cherryblossom_01_seed": {
+    "name": {
+      "벚나무": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "일본에서 벚꽃은 덧없는 삶을 상징하기도 합니다.": null
+    },
+    "color_b": "",
+    "grows_until": "14400",
+    "color_g": "",
+    "required_fertilizer": "20",
+    "color_r": "#F2CDC0",
+    "icon": "icon_nat_cherryblossom_01"
+  },
+  "cherryblossom_02_seed": {
+    "name": {
+      "겹벚나무": null
+    },
+    "required_water": "15",
+    "max_level": 60,
+    "description": {
+      "벚나무의 수명은 짧은 편이나 고목도 있습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "14400",
+    "color_g": "",
+    "required_fertilizer": "20",
+    "color_r": "#E9BDC2",
+    "icon": "icon_nat_cherryblossom_02"
+  },
+  "carnation_seed": {
+    "name": {
+      "카네이션": null
+    },
+    "required_water": "5",
+    "max_level": 60,
+    "description": {
+      "카네이션은 여러 지역에서 기념화로 쓰입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "9000",
+    "color_g": "",
+    "required_fertilizer": "80",
+    "color_r": "#AE0621",
+    "icon": "icon_nat_farm_carnation"
+  },
+  "watermelon_01_seed": {
+    "name": {
+      "수박": null
+    },
+    "required_water": "5",
+    "max_level": 60,
+    "description": {
+      "씨 없는 수박은 1939년에 첫 개발되었습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "14400",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "#459721",
+    "icon": "icon_nat_farm_watermelon_01"
+  },
+  "barley_seed": {
+    "name": {
+      "보리": null
+    },
+    "required_water": "3",
+    "max_level": 60,
+    "description": {
+      "보리의 날알을 싹 틔운 뒤 말린 것이 맥아입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "10800",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "#E5D448",
+    "icon": "icon_nat_farm_barley"
+  },
+  "persimmontree_seed": {
+    "name": {
+      "감나무": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "감을 많이 먹으면 변비에 걸릴 수 있습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "75600",
+    "color_g": "#AD9031",
+    "required_fertilizer": "150",
+    "color_r": "#7F080F",
+    "icon": "icon_nat_persimmon"
+  },
+  "cosmos_seed": {
+    "name": {
+      "코스모스": null
+    },
+    "required_water": "2",
+    "max_level": 60,
+    "description": {
+      "코스모스의 원산지는 멕시코입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "21600",
+    "color_g": "#F5E547",
+    "required_fertilizer": "70",
+    "color_r": "#CC79AB",
+    "icon": "icon_nat_cosmos"
+  },
+  "halloween_pumpkin_seed": {
+    "name": {
+      "수상한 호박": null
+    },
+    "required_water": "5",
+    "max_level": 60,
+    "description": {
+      "대형 호박은 1톤까지 자란 사례도 있습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "3600",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "",
+    "icon": "icon_nat_farm_pumpkin"
+  },
+  "halloween_spidertree_seed": {
+    "name": {
+      "거미줄 나무": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "가장 오래 된 거미줄 화석은 1억년이 넘습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "75600",
+    "color_g": "",
+    "required_fertilizer": "150",
+    "color_r": "",
+    "icon": "icon_nat_spider_web"
+  },
+  "valentine_cacaotree_seed": {
+    "name": {
+      "카카오 나무": null
+    },
+    "required_water": "15",
+    "max_level": 60,
+    "description": {
+      "카카오 나무는 상록수입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "43200",
+    "color_g": "",
+    "required_fertilizer": "150",
+    "color_r": "#5E3932",
+    "icon": "icon_nat_farm_cacaobean"
+  },
+  "white_rose_seed": {
+    "name": {
+      "하얀 장미": null
+    },
+    "required_water": "5",
+    "max_level": 60,
+    "description": {
+      "장미는 미국의 국화입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "9000",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "#ffffff",
+    "icon": "icon_nat_rose"
+  },
+  "jasmine_seed": {
+    "name": {
+      "재스민": null
+    },
+    "required_water": "3",
+    "max_level": 60,
+    "description": {
+      "태국에서 흰 재스민은 어머니의 날의 상징입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "5400",
+    "color_g": "",
+    "required_fertilizer": "30",
+    "color_r": "#f8f8ff",
+    "icon": "icon_nat_jasmine"
+  },
+  "taro_seed": {
+    "name": {
+      "타로": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "타로의 식용 부위는 줄기가 변해 만들어집니다.": null
+    },
+    "color_b": "",
+    "grows_until": "32400",
+    "color_g": "",
+    "required_fertilizer": "170",
+    "color_r": "color_bone_basic",
+    "icon": "icon_nat_taro"
+  },
+  "oxalis_seed_yellow": {
+    "name": {
+      "노란 사랑초": null
+    },
+    "required_water": "8",
+    "max_level": 60,
+    "description": {
+      "사랑초는 화산섬 온천 근처에서 자생합니다.": null
+    },
+    "color_b": "",
+    "grows_until": "10800",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "color_flower_lemon",
+    "icon": "icon_nat_oleander"
+  },
+  "oxalis_seed_red": {
+    "name": {
+      "빨간 사랑초": null
+    },
+    "required_water": "8",
+    "max_level": 60,
+    "description": {
+      "사랑초는 화산섬 온천 근처에서 자생합니다.": null
+    },
+    "color_b": "",
+    "grows_until": "10800",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "color_rock_ruby",
+    "icon": "icon_nat_oleander"
+  },
+  "oxalis_seed_blue": {
+    "name": {
+      "파란 사랑초": null
+    },
+    "required_water": "8",
+    "max_level": 60,
+    "description": {
+      "사랑초는 화산섬 온천 근처에서 자생합니다.": null
+    },
+    "color_b": "",
+    "grows_until": "10800",
+    "color_g": "",
+    "required_fertilizer": "50",
+    "color_r": "color_flower_wine",
+    "icon": "icon_nat_oleander"
+  },
+  "orange_seed": {
+    "name": {
+      "오렌지": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "오렌지는 도시 이름으로도 꽤 쓰였습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "36000",
+    "color_g": "",
+    "required_fertilizer": "150",
+    "color_r": "#FF9900",
+    "icon": "icon_nat_fruit_orange"
+  },
+  "mango_seed": {
+    "name": {
+      "망고": null
+    },
+    "required_water": "10",
+    "max_level": 60,
+    "description": {
+      "지구에서 가장 많이 재배되고 있는 열대 과수입니다.": null
+    },
+    "color_b": "",
+    "grows_until": "32400",
+    "color_g": "",
+    "required_fertilizer": "130",
+    "color_r": "#FFCC00",
+    "icon": "icon_nat_fruit_mango"
+  },
+  "apple_seed": {
+    "name": {
+      "사과": null
+    },
+    "required_water": "0",
+    "max_level": 60,
+    "description": {
+      "해 질 녘과 닮은 모습을 하고 있습니다.": null
+    },
+    "color_b": "",
+    "grows_until": "600",
+    "color_g": "",
+    "required_fertilizer": "0",
+    "color_r": "#e34200",
+    "icon": "icon_nat_fruit_apple"
+  }
+}

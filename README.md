@@ -64,6 +64,14 @@ Full guide: **[docs/install/INSTALL.en.md](docs/install/INSTALL.en.md)**
 
 ---
 
+## สนับสนุนโปรเจกต์ / Support & Donate
+
+**ไทย:** ถ้าอยากสนับสนุนค่าเซิร์ฟเวอร์/การพัฒนาต่อ หรือติดต่อสอบถามเรื่องโดเนท โดเนทรายเดือน หรือเปิดเซิร์ฟเวอร์ของตัวเอง ติดต่อได้ที่อีเมล: **[supercodeth@gmail.com](mailto:supercodeth@gmail.com)**
+
+**English:** If you'd like to support server costs and ongoing development, or have questions about donations, monthly support, or running your own server, contact: **[supercodeth@gmail.com](mailto:supercodeth@gmail.com)**
+
+---
+
 ## License
 
 Newly-written code is licensed under **[GPL-3.0](LICENSE)**. Game-derived content is **not** covered by this license — see [NOTICE.md](NOTICE.md) for details. · โค้ดที่เขียนขึ้นใหม่อยู่ภายใต้ [GPL-3.0](LICENSE) ส่วนที่มาจากตัวเกมอยู่นอก license — รายละเอียดที่ [NOTICE.md](NOTICE.md)
